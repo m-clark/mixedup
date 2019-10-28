@@ -14,8 +14,8 @@ status](https://ci.appveyor.com/api/projects/status/github/m-clark/mixedup?branc
 <!-- badges: end -->
 
 Provides extended functionality for mixed models. The goal of mixedup is
-to solve little problems that slip through the cracks from package,
-broom and others.
+to solve little problems that slip through the cracks from the various
+packages, broom, and others.
 
 ## Installation
 
