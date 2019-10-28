@@ -1,0 +1,13 @@
+Package: mixedup
+Title: Miscellaneous functions for mixed models.
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Michael",
+           family = "Clark",
+           role = c("aut", "cre"),
+           email = "micl@umich.edu",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: What the package does (one paragraph).
+License: MIT
+Encoding: UTF-8
+LazyData: true
