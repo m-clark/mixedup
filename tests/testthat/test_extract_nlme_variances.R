@@ -1,6 +1,7 @@
 context('test extract_nlme_variances')
 
 library(nlme)
+
 res <- lme(distance ~ age + Sex,
            data = Orthodont,
            random = ~ 1|Subject,

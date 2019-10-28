@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![Travis build status](https://travis-ci.org/m-clark/mixedup.svg?branch=master)](https://travis-ci.org/m-clark/mixedup)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/m-clark/mixedup?branch=master&svg=true)](https://ci.appveyor.com/project/m-clark/mixedup)
 <!-- badges: end -->
 
 The goal of mixedup is to ...
@@ -32,7 +34,10 @@ devtools::install_github('m-clark/mixedup')
 ## Example
 
 
+
 ## Other stuff
+
+### Code of Conduct
 
 Please note that the 'mixedup' project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md).
 

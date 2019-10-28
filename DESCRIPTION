@@ -1,15 +1,27 @@
 Package: mixedup
-Title: Miscellaneous functions for mixed models.
+Title: Miscellaneous functions for mixed models
 Version: 0.0.0.9000
 Authors@R: 
     person(given = "Michael",
            family = "Clark",
            role = c("aut", "cre"),
-           email = "micl@umich.edu",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           email = "micl@umich.edu")
 Description: What the package does (one paragraph).
-License: MIT
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 URL: https://github.com/m-clark/mixedup
 BugReports: https://github.com/m-clark/mixedup/issues
+Depends:
+  R (>= 3.5.0)
+Imports:
+    dplyr,
+    lme4,
+    glmmTMB
+Suggests:
+    testthat (>= 2.1.0),
+    nlme,
+    covr,
+    tidyr (>= 1.0.0),
+    knitr
+RoxygenNote: 6.1.1

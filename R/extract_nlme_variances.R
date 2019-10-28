@@ -15,14 +15,14 @@
 #'
 #' @examples
 #' library(nlme)
-#' fm2 <- lme(distance ~ age + Sex, data = Orthodont, random = ~ 1|Subject,
+#' model <- lme(distance ~ age + Sex, data = Orthodont, random = ~ 1|Subject,
 #' weights=varIdent(form = ~1|Sex))
-#' summary(fm2)
-#' extract_nlme_variances(fm2)
+#' summary(model)
+#' extract_nlme_variances(model)
 
 extract_nlme_variances <- function(model) {
-  init = coef(model$modelStruct$varStruct, unconstrained=F)
-  out = (c(1.0, init)*model$sigma)^2
+  init = coef(model$modelStruct$varStruct, unconstrained = F)
+  out = (c(1.0, init) * model$sigma) ^ 2
   reflev = attributes(model$modelStruct$varStruct)$groupNames[1]
   names(out)[1] = reflev
   out
