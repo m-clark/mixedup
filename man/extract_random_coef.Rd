@@ -2,14 +2,21 @@
 % Please edit documentation in R/extract_random_coef.R
 \name{extract_random_coef}
 \alias{extract_random_coef}
+\alias{extract_random_coef.merMod}
+\alias{extract_random_coef.glmmTMB}
 \title{Extract random coefficients and their variances}
 \usage{
 extract_random_coef(model, which_re = NULL, zi = FALSE)
+
+\method{extract_random_coef}{merMod}(model, which_re = NULL)
+
+\method{extract_random_coef}{glmmTMB}(model, which_re = NULL,
+  zi = FALSE)
 }
 \arguments{
 \item{model}{A merMod or glmmTMB object}
 
-\item{which_re}{The name of the grouping variable desired.}
+\item{which_re}{The name of the grouping variable for the random effects.}
 
 \item{zi}{For a zero-inflated glmmTMB model, which part of the model you want random coefficients for?}
 }
@@ -18,6 +25,9 @@ A data frame
 }
 \description{
 Extract random coefficients and their variances
+}
+\details{
+Returns a data frame with random coefficients, a.k.a. random intercepts and random slopes, and their standard errors.   The standard errors are the sum of variances for the fixed and random effects. See Bolker's demo \href{here}{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}.
 }
 \examples{
 library(lme4)

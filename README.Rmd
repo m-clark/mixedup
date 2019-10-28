@@ -7,7 +7,7 @@ output: github_document
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
+  comment = NA,
   fig.path = "man/figures/README-",
   out.width = "100%"
 )
@@ -21,11 +21,11 @@ knitr::opts_chunk$set(
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/m-clark/mixedup?branch=master&svg=true)](https://ci.appveyor.com/project/m-clark/mixedup)
 <!-- badges: end -->
 
-The goal of mixedup is to ...
+Provides extended functionality for mixed models. The goal of mixedup is to solve little problems that slip through the cracks from package, broom and others.
 
 ## Installation
 
-You can install mixedup from GitHub(https://CRAN.R-project.org) with:
+You can install mixedup from GitHub with `devtools`:
 
 ``` r
 devtools::install_github('m-clark/mixedup')
@@ -33,6 +33,53 @@ devtools::install_github('m-clark/mixedup')
 
 ## Example
 
+Extract the random coefficients with their standard errors from `lme4` or `glmmTMB` objects.
+
+```{r mods}
+library(lme4)
+
+lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
+lmer_2 <- lmer(Reaction ~ Days + (1 + Days| Subject), data = sleepstudy)
+
+library(glmmTMB)
+
+tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
+tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+```
+
+
+
+```{r coefs}
+library(mixedup)
+extract_random_coef(lmer_1, which_re = 'Subject')
+
+
+extract_random_coef(lmer_2, which_re = 'Subject')
+
+
+extract_random_coef(tmb_1,  which_re = 'Subject')
+
+
+extract_random_coef(tmb_2,  which_re = 'Subject')
+```
+
+
+Extract heterogeneous variances from nlme, which only reports the relative standard deviation values by default.
+
+```{r nlme}
+library(nlme)
+
+model <- lme(
+  distance ~ age + Sex, 
+  data = Orthodont, 
+  random = ~ 1|Subject,
+  weights = varIdent(form = ~ 1 | Sex)
+)
+
+summary(model)
+
+extract_nlme_variances(model)
+```
 
 
 ## Other stuff

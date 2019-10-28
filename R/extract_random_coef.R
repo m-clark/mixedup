@@ -1,8 +1,10 @@
 #' Extract random coefficients and their variances
 #'
 #' @param model A merMod or glmmTMB object
-#' @param which_re The name of the grouping variable desired.
+#' @param which_re The name of the grouping variable for the random effects.
 #' @param zi For a zero-inflated glmmTMB model, which part of the model you want random coefficients for?
+#'
+#' @details Returns a data frame with random coefficients, a.k.a. random intercepts and random slopes, and their standard errors.   The standard errors are the sum of variances for the fixed and random effects. See Bolker's demo \href{here}{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}.
 #'
 #' @return A data frame
 #'
@@ -23,8 +25,10 @@ extract_random_coef <- function(model, which_re = NULL, zi = FALSE) {
   UseMethod('extract_random_coef')
 }
 
+#' @export
+#' @rdname extract_random_coef
 extract_random_coef.merMod <- function(model, which_re = NULL) {
-  # https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme
+
 
   if (is.null(which_re)) {
     warning('No random effect specified, using first.')
@@ -47,24 +51,22 @@ extract_random_coef.merMod <- function(model, which_re = NULL) {
   # extract only pertinent fe
   fe_names = names(lme4::fixef(model))
   re_names = colnames(random_effects)
-  fixed_effect_var = diag(lme4::vcov.merMod(model))
+  fixed_effect_var = diag(as.matrix(vcov(model)))
   fixed_effect_var = fixed_effect_var[fe_names %in% re_names]
 
   se <- sqrt(sweep(random_effect_var, 2, fixed_effect_var, "+"))
   se = as.data.frame(se)
-  colnames(se) = paste0('se_', re_names)
 
-  out = cbind(ran_coefs, se)
+  ran_coefs = ran_coefs[, re_names, drop = FALSE]
 
-  dplyr::rename_all(out,
-                    function(nam) gsub(nam,
-                                       pattern = '[\\(, \\)]',
-                                       replacement = ''
-                                       )
-                    )
+  # cleanup names, i.e. remove parens from (Intercept)
+  out = cleanup_coefs(re_names, ran_coefs, se)
+
+  out
 }
 
-
+#' @export
+#' @rdname extract_random_coef
 extract_random_coef.glmmTMB <- function(model, which_re = NULL, zi = FALSE) {
   # https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme
 
@@ -98,14 +100,38 @@ extract_random_coef.glmmTMB <- function(model, which_re = NULL, zi = FALSE) {
 
   se <- sqrt(sweep(random_effect_var, 2, fixed_effect_var, "+"))
   se = as.data.frame(se)
+
+  ran_coefs = ran_coefs[, re_names, drop = FALSE]
+
+  # cleanup names, i.e. remove parens from (Intercept)
+  out = cleanup_coefs(re_names, ran_coefs, se)
+
+  out
+}
+
+
+
+cleanup_coefs <- function(re_names, ran_coefs, se) {
   colnames(se) = paste0('se_', re_names)
-
-  out = cbind(ran_coefs, se)
-
-  dplyr::rename_all(out,
-                    function(nam) gsub(nam,
-                                       pattern = '[\\(, \\)]',
-                                       replacement = ''
-                    )
+  colnames(se) = gsub(
+    colnames(se),
+    pattern = '[\\(, \\)]',
+    replacement = ''
   )
+
+  colnames(ran_coefs) = gsub(
+    colnames(ran_coefs),
+    pattern = '[\\(, \\)]',
+    replacement = ''
+  )
+
+  out = data.frame(
+    group = rownames(ran_coefs),
+    ran_coefs,
+    se
+  )
+
+  rownames(out) = NULL # remove
+
+  out
 }
