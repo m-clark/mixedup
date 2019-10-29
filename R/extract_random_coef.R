@@ -3,16 +3,17 @@
 #' @param model A merMod or glmmTMB object
 #' @param re The name of the grouping variable for the random effects.
 #' @param zi For a zero-inflated glmmTMB model, which part of the model you want
-#'   random coefficients for?
+#'   random coefficients for? Default is false, as typical mixed models are not
+#'   zero-inflated models. This will use the 'conditional model' results.
 #'
 #' @details Returns a data frame with random coefficients, a.k.a. random
-#'   intercepts and random slopes, and their standard errors.   The standard
-#'   errors are the sum of variances for the fixed and random effects. See
-#'   Bolker's demo
-#'   \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}.
+#' intercepts and random slopes, and their standard errors.   The standard
+#' errors are the sum of variances for the fixed and random effects. See
+#' Bolker's demo
+#' \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}.
 #'
 #'
-#' @return A data frame
+#' @return A data frame of the random coefficients and their standard errors.
 #'
 #' @importFrom stats coef vcov
 #' @importFrom lme4 fixef ranef vcov.merMod
@@ -38,7 +39,6 @@ extract_random_coef <- function(model, re = NULL, zi = FALSE) {
 }
 
 #' @export
-#' @rdname extract_random_coef
 extract_random_coef.merMod <- function(model, re = NULL, zi) {
 
   if (is.null(re)) {
@@ -77,7 +77,6 @@ extract_random_coef.merMod <- function(model, re = NULL, zi) {
 }
 
 #' @export
-#' @rdname extract_random_coef
 extract_random_coef.glmmTMB <- function(model, re = NULL, zi = FALSE) {
 
   if (is.null(re)) {
