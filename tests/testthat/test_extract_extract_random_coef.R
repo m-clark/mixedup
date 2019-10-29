@@ -14,6 +14,11 @@ library(glmmTMB)
 tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
 tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 tmb_3 <- glmmTMB(y ~ service + (1 | s) + (1 | d), data = InstEval[1:1000, ])
+tmb_zip <- glmmTMB(
+  count ~ spp + mined + (1 | site),
+  zi =  ~ spp + mined,
+  family = truncated_poisson, Salamanders
+)
 
 
 test_that('extract_random_coef basic functionality', {
