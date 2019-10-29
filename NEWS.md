@@ -1,5 +1,5 @@
 # mixedup (development version)
 
-# mixedup 0.1.0
+* Add some basic tests
 
-* Successful build
+
