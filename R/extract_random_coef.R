@@ -1,10 +1,16 @@
 #' Extract random coefficients and their variances
 #'
 #' @param model A merMod or glmmTMB object
-#' @param which_re The name of the grouping variable for the random effects.
-#' @param zi For a zero-inflated glmmTMB model, which part of the model you want random coefficients for?
+#' @param re The name of the grouping variable for the random effects.
+#' @param zi For a zero-inflated glmmTMB model, which part of the model you want
+#'   random coefficients for?
 #'
-#' @details Returns a data frame with random coefficients, a.k.a. random intercepts and random slopes, and their standard errors.   The standard errors are the sum of variances for the fixed and random effects. See Bolker's demo \href{here}{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}.
+#' @details Returns a data frame with random coefficients, a.k.a. random
+#'   intercepts and random slopes, and their standard errors.   The standard
+#'   errors are the sum of variances for the fixed and random effects. See
+#'   Bolker's demo
+#'   \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}.
+#'
 #'
 #' @return A data frame
 #'
@@ -15,9 +21,15 @@
 #'
 #' @examples
 #' library(lme4)
+#' lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
+#' extract_random_coef(lmer_1, re = 'Subject')
+
+#' library(glmmTMB)
+#' tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
+#' extract_random_coef(tmb_1, re = 'Subject')
 #'
 #' @export
-extract_random_coef <- function(model, which_re = NULL, zi = FALSE) {
+extract_random_coef <- function(model, re = NULL, zi = FALSE) {
 
   if (!inherits(model, c('merMod', 'glmmTMB')))
     stop('This only works for merMod objects from lme4 or models from glmmTMB.')
@@ -27,17 +39,16 @@ extract_random_coef <- function(model, which_re = NULL, zi = FALSE) {
 
 #' @export
 #' @rdname extract_random_coef
-extract_random_coef.merMod <- function(model, which_re = NULL) {
+extract_random_coef.merMod <- function(model, re = NULL, zi) {
 
-
-  if (is.null(which_re)) {
+  if (is.null(re)) {
     warning('No random effect specified, using first.')
-    which_re = 1
+    re = 1
   }
 
   # call method for merMod vs. glmmTMB
-  ran_coefs = coef(model)[[which_re]]
-  random_effects = lme4::ranef(model, condVar = TRUE)[[which_re]]
+  ran_coefs = coef(model)[[re]]
+  random_effects = lme4::ranef(model, condVar = TRUE)[[re]]
   random_effect_covar <- attr(random_effects, "postVar")
 
   # deal with single random effect
@@ -67,21 +78,16 @@ extract_random_coef.merMod <- function(model, which_re = NULL) {
 
 #' @export
 #' @rdname extract_random_coef
-extract_random_coef.glmmTMB <- function(model, which_re = NULL, zi = FALSE) {
-  # https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme
+extract_random_coef.glmmTMB <- function(model, re = NULL, zi = FALSE) {
 
-
-  if (is.null(which_re)) {
+  if (is.null(re)) {
     warning('No random effect specified, using first.')
-    which_re = 1
+    re = 1
   }
 
-
-  # call method for merMod vs. glmmTMB?
-
   cond_zi = 1 + zi
-  ran_coefs = coef(model)[[cond_zi]][[which_re]]
-  random_effects = glmmTMB::ranef(model, condVar = TRUE)[[cond_zi]][[which_re]]
+  ran_coefs = coef(model)[[cond_zi]][[re]]
+  random_effects = glmmTMB::ranef(model, condVar = TRUE)[[cond_zi]][[re]]
   random_effect_covar <- attr(random_effects, "condVar")
 
   # deal with single random effect

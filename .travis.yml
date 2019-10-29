@@ -25,5 +25,5 @@ r_packages:
   - covr
 
 after_success:
-  - Rscript -e "covr::codecov(line_exclusions = list('R/extract_random_coef.R'=186:192)"
+  - Rscript -e "covr::codecov()"  # line_exclusions = list('R/extract_random_coef.R'=186:192
 

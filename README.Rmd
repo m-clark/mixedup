@@ -4,7 +4,7 @@ output: github_document
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-```{r, include = FALSE}
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = NA,
@@ -19,6 +19,7 @@ knitr::opts_chunk$set(
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
 [![Travis build status](https://travis-ci.org/m-clark/mixedup.svg?branch=master)](https://travis-ci.org/m-clark/mixedup)
 [![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/m-clark/mixedup?branch=master&svg=true)](https://ci.appveyor.com/project/m-clark/mixedup)
+[![Codecov test coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](https://codecov.io/gh/m-clark/mixedup?branch=master)
 <!-- badges: end -->
 
 Provides extended functionality for mixed models. The goal of mixedup is to solve little problems that slip through the cracks from the various packages, broom, and others.
@@ -51,16 +52,16 @@ tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
 ```{r coefs}
 library(mixedup)
-extract_random_coef(lmer_1, which_re = 'Subject')
+extract_random_coef(lmer_1, re = 'Subject')
 
 
-extract_random_coef(lmer_2, which_re = 'Subject')
+extract_random_coef(lmer_2, re = 'Subject')
 
 
-extract_random_coef(tmb_1,  which_re = 'Subject')
+extract_random_coef(tmb_1,  re = 'Subject')
 
 
-extract_random_coef(tmb_2,  which_re = 'Subject')
+extract_random_coef(tmb_2,  re = 'Subject')
 ```
 
 

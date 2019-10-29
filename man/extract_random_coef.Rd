@@ -6,19 +6,19 @@
 \alias{extract_random_coef.glmmTMB}
 \title{Extract random coefficients and their variances}
 \usage{
-extract_random_coef(model, which_re = NULL, zi = FALSE)
+extract_random_coef(model, re = NULL, zi = FALSE)
 
-\method{extract_random_coef}{merMod}(model, which_re = NULL)
+\method{extract_random_coef}{merMod}(model, re = NULL, zi)
 
-\method{extract_random_coef}{glmmTMB}(model, which_re = NULL,
-  zi = FALSE)
+\method{extract_random_coef}{glmmTMB}(model, re = NULL, zi = FALSE)
 }
 \arguments{
 \item{model}{A merMod or glmmTMB object}
 
-\item{which_re}{The name of the grouping variable for the random effects.}
+\item{re}{The name of the grouping variable for the random effects.}
 
-\item{zi}{For a zero-inflated glmmTMB model, which part of the model you want random coefficients for?}
+\item{zi}{For a zero-inflated glmmTMB model, which part of the model you want
+random coefficients for?}
 }
 \value{
 A data frame
@@ -27,9 +27,18 @@ A data frame
 Extract random coefficients and their variances
 }
 \details{
-Returns a data frame with random coefficients, a.k.a. random intercepts and random slopes, and their standard errors.   The standard errors are the sum of variances for the fixed and random effects. See Bolker's demo \href{here}{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}.
+Returns a data frame with random coefficients, a.k.a. random
+  intercepts and random slopes, and their standard errors.   The standard
+  errors are the sum of variances for the fixed and random effects. See
+  Bolker's demo
+  \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}.
 }
 \examples{
 library(lme4)
+lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
+extract_random_coef(lmer_1, re = 'Subject')
+library(glmmTMB)
+tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
+extract_random_coef(tmb_1, re = 'Subject')
 
 }
