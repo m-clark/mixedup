@@ -32,7 +32,10 @@ You can install mixedup from GitHub with `devtools`:
 devtools::install_github('m-clark/mixedup')
 ```
 
-## Example
+## Examples
+
+
+### Extract random coefficients
 
 Extract the random coefficients with their standard errors from `lme4` or `glmmTMB` objects.
 
@@ -49,7 +52,6 @@ tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 ```
 
 
-
 ```{r coefs}
 library(mixedup)
 extract_random_coef(lmer_1, re = 'Subject')
@@ -64,6 +66,18 @@ extract_random_coef(tmb_1,  re = 'Subject')
 extract_random_coef(tmb_2,  re = 'Subject')
 ```
 
+
+### Extract variance components
+
+```{r vc}
+extract_vc(lmer_2)
+
+
+extract_vc(lmer_2, ci_scale = 'var', show_cor = TRUE, digits = 2)
+```
+
+
+### Extract heterogeneous variances from nlme
 
 Extract heterogeneous variances from nlme, which only reports the relative standard deviation values by default.
 
