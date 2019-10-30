@@ -27,7 +27,9 @@ You can install mixedup from GitHub with `devtools`:
 devtools::install_github('m-clark/mixedup')
 ```
 
-## Example
+## Examples
+
+### Extract random coefficients
 
 Extract the random coefficients with their standard errors from `lme4`
 or `glmmTMB` objects.
@@ -115,25 +117,53 @@ extract_random_coef(tmb_1,  re = 'Subject')
 
 extract_random_coef(tmb_2,  re = 'Subject')
    group Intercept       Days se_Intercept  se_Days
-1    308  254.2208 19.5428220     15.17932 3.126006
-2    309  211.3566  1.8232199     15.33703 3.120443
-3    310  212.9719  4.9539090     15.25110 3.101256
-4    330  274.2374  5.8085333     15.44505 3.150622
-5    331  272.9551  7.5227641     15.13186 3.097337
-6    332  260.2207 10.2320764     14.51503 3.001257
-7    333  267.8471 10.3084613     14.67960 3.024610
-8    334  244.4084 11.5000233     14.51872 3.002611
-9    335  250.3677 -0.1321596     15.50940 3.185673
-10   337  286.0714 19.0996630     15.16467 3.099331
-11   349  226.8469 11.5316893     15.04704 3.079282
-12   350  239.0705 16.9389922     15.25422 3.129111
-13   351  255.6792  7.5119417     14.58899 3.016100
-14   352  272.0273 14.0289898     14.67544 3.022977
-15   369  254.6636 11.3389965     14.44783 2.991643
-16   370  226.6948 15.1270247     15.54490 3.165635
-17   371  252.1284  9.4962301     14.45344 2.992800
-18   372  263.5240 11.7779766     14.52830 3.002347
+1    308  254.2208 19.5428228     15.17931 3.126006
+2    309  211.3566  1.8232182     15.33703 3.120443
+3    310  212.9719  4.9539076     15.25109 3.101256
+4    330  274.2374  5.8085334     15.44505 3.150622
+5    331  272.9551  7.5227642     15.13185 3.097337
+6    332  260.2207 10.2320766     14.51502 3.001257
+7    333  267.8471 10.3084617     14.67959 3.024610
+8    334  244.4084 11.5000232     14.51872 3.002611
+9    335  250.3677 -0.1321606     15.50939 3.185673
+10   337  286.0714 19.0996645     15.16466 3.099331
+11   349  226.8469 11.5316888     15.04704 3.079282
+12   350  239.0705 16.9389925     15.25422 3.129111
+13   351  255.6792  7.5119415     14.58899 3.016100
+14   352  272.0273 14.0289905     14.67544 3.022977
+15   369  254.6636 11.3389967     14.44782 2.991643
+16   370  226.6948 15.1270245     15.54490 3.165635
+17   371  252.1284  9.4962300     14.45343 2.992800
+18   372  263.5240 11.7779769     14.52829 3.002347
 ```
+
+### Extract variance components
+
+``` r
+extract_vc(lmer_2)
+Computing profile confidence intervals ...
+     group coefficient variance     sd sd_2.5 sd_97.5 var_prop
+1  Subject   Intercept  611.898 24.737 14.382  37.716    0.470
+2  Subject        Days   35.081  5.923 -0.482   0.685    0.027
+3 Residual              654.941 25.592 22.898  28.858    0.503
+
+
+extract_vc(lmer_2, ci_scale = 'var', show_cor = TRUE, digits = 2)
+Computing profile confidence intervals ...
+$`Variance Components`
+     group coefficient variance    sd var_2.5 var_97.5 var_prop
+1  Subject   Intercept   611.90 24.74  206.83  1422.50     0.47
+2  Subject        Days    35.08  5.92    0.23     0.47     0.03
+3 Residual               654.94 25.59  524.33   832.78     0.50
+
+$Cor
+$Cor$Subject
+          Intercept Days
+Intercept      1.00 0.07
+Days           0.07 1.00
+```
+
+### Extract heterogeneous variances from nlme
 
 Extract heterogeneous variances from nlme, which only reports the
 relative standard deviation values by default.
