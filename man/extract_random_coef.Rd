@@ -4,16 +4,16 @@
 \alias{extract_random_coef}
 \title{Extract random coefficients and their variances}
 \usage{
-extract_random_coef(model, re = NULL, zi = FALSE)
+extract_random_coef(model, re = NULL, component = "cond")
 }
 \arguments{
 \item{model}{A merMod or glmmTMB object}
 
 \item{re}{The name of the grouping variable for the random effects.}
 
-\item{zi}{For a zero-inflated glmmTMB model, which part of the model you want
-random coefficients for? Default is false, as typical mixed models are not
-zero-inflated models. This will use the 'conditional model' results.}
+\item{component}{Which of the three components 'cond', 'zi' or 'other' to
+select for a glmmTMB model. Default is cond. Minimal testing on other
+options.}
 }
 \value{
 A data frame of the random coefficients and their standard errors.

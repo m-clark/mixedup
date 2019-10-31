@@ -2,9 +2,9 @@
 #'
 #' @param model A merMod or glmmTMB object
 #' @param re The name of the grouping variable for the random effects.
-#' @param zi For a zero-inflated glmmTMB model, which part of the model you want
-#'   random coefficients for? Default is false, as typical mixed models are not
-#'   zero-inflated models. This will use the 'conditional model' results.
+#' @param component Which of the three components 'cond', 'zi' or 'other' to
+#'   select for a glmmTMB model. Default is cond. Minimal testing on other
+#'   options.
 #'
 #' @details Returns a data frame with random coefficients, a.k.a. random
 #' intercepts and random slopes, and their standard errors.   The standard
@@ -30,7 +30,7 @@
 #' extract_random_coef(tmb_1, re = 'Subject')
 #'
 #' @export
-extract_random_coef <- function(model, re = NULL, zi = FALSE) {
+extract_random_coef <- function(model, re = NULL, component = 'cond') {
 
   if (!inherits(model, c('merMod', 'glmmTMB')))
     stop('This only works for merMod objects from lme4 or models from glmmTMB.')
@@ -39,7 +39,7 @@ extract_random_coef <- function(model, re = NULL, zi = FALSE) {
 }
 
 #' @export
-extract_random_coef.merMod <- function(model, re = NULL, zi) {
+extract_random_coef.merMod <- function(model, re = NULL, component) {
 
   if (is.null(re)) {
     warning('No random effect specified, using first.')
@@ -77,16 +77,19 @@ extract_random_coef.merMod <- function(model, re = NULL, zi) {
 }
 
 #' @export
-extract_random_coef.glmmTMB <- function(model, re = NULL, zi = FALSE) {
+extract_random_coef.glmmTMB <- function(
+  model,
+  re = NULL,
+  component = 'cond'
+  ) {
 
   if (is.null(re)) {
     warning('No random effect specified, using first.')
     re = 1
   }
 
-  cond_zi = 1 + zi
-  ran_coefs = coef(model)[[cond_zi]][[re]]
-  random_effects = glmmTMB::ranef(model, condVar = TRUE)[[cond_zi]][[re]]
+  ran_coefs = coef(model)[[component]][[re]]
+  random_effects = glmmTMB::ranef(model, condVar = TRUE)[[component]][[re]]
   random_effect_covar <- attr(random_effects, "condVar")
 
   # deal with single random effect
@@ -98,9 +101,9 @@ extract_random_coef.glmmTMB <- function(model, re = NULL, zi = FALSE) {
   }
 
   # extract only pertinent fe
-  fe_names = names(glmmTMB::fixef(model)[[cond_zi]])
+  fe_names = names(glmmTMB::fixef(model)[[component]])
   re_names = colnames(random_effects)
-  fixed_effect_var = diag(vcov(model)[[cond_zi]])
+  fixed_effect_var = diag(vcov(model)[[component]])
   fixed_effect_var = fixed_effect_var[fe_names %in% re_names]
 
   se <- sqrt(sweep(random_effect_var, 2, fixed_effect_var, "+"))

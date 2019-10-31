@@ -20,6 +20,13 @@ tmb_zip <- glmmTMB(
   family = truncated_poisson, Salamanders
 )
 
+test_that('extract_random_coef errors with wrong type of model', {
+  mod = lm(mpg ~ vs, mtcars)
+  expect_error(extract_random_coef(mod))
+})
+
+
+context('test extract_random_coef.merMod')
 
 test_that('extract_random_coef basic functionality', {
   expect_s3_class(extract_random_coef(lmer_1, re = 'Subject'), 'data.frame')
@@ -43,6 +50,8 @@ test_that('extract_random_coef warns with no group input', {
 
 
 # glmmTMB -----------------------------------------------------------------
+
+context('test extract_random_coef.glmmTMB')
 
 test_that('extract_random_coef basic functionality', {
   expect_s3_class(extract_random_coef(tmb_1, re = 'Subject'), 'data.frame')

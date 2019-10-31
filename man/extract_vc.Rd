@@ -2,10 +2,19 @@
 % Please edit documentation in R/extract_vc.R
 \name{extract_vc}
 \alias{extract_vc}
+\alias{extract_vc.merMod}
+\alias{extract_vc.glmmTMB}
 \title{Extract variance components}
 \usage{
 extract_vc(model, ci_level = 0.95, ci_args = NULL, ci_scale = "sd",
-  show_cor = FALSE, digits = 3, ...)
+  component = "cond", show_cor = FALSE, digits = 3, ...)
+
+\method{extract_vc}{merMod}(model, ci_level = 0.95, ci_args = NULL,
+  ci_scale = "sd", show_cor = FALSE, digits = 3, ...)
+
+\method{extract_vc}{glmmTMB}(model, ci_level = 0.95, ci_args = NULL,
+  ci_scale = "sd", show_cor = FALSE, digits = 3,
+  component = "cond", ...)
 }
 \arguments{
 \item{model}{an lme4 or glmmTMB model}
@@ -16,22 +25,26 @@ not report it. Default is .95.}
 \item{ci_args}{Additional arguments to the corresponding confint method.}
 
 \item{ci_scale}{A character string of 'sd' or 'var' to note the scale of the
-interval estimate.  Default is 'sd'.}
+interval estimate.  Default is 'sd'.
+at present.}
+
+\item{component}{Which of the three components 'cond', 'zi' or 'other' to
+select for a glmmTMB model. Default is cond. Minimal testing on other
+options.}
 
 \item{show_cor}{Return the intercept/slope correlations. Default is
 \code{FALSE}.}
 
 \item{digits}{Rounding. Default is 3.}
 
-\item{...}{Other stuff to pass to the corresponding function. Unused/tested
-at present.}
+\item{...}{Other stuff to pass to the corresponding function. Unused/tested}
 }
 \value{
 A data frame with output for variance components or list that also
 contains the correlations of the random effects.
 }
 \description{
-Right now this only works for lme4 model objects (i.e.
+Right now this only works for lme4 and glmmTMB model objects (i.e.
   \code{merMod}).
 }
 \details{
