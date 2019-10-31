@@ -129,7 +129,7 @@ extract_random_effects.lme <- function(
   digits = 3
 ) {
 
-  # output is inconsistent and inconsistently names, so just get all ranefs and
+  # output is inconsistent and inconsistently named, so just get all ranefs and
   # extract as needed
 
   re0 = nlme::ranef(model)

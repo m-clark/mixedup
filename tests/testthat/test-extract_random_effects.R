@@ -108,7 +108,13 @@ lme_1 <- lme(Reaction ~ Days, random = ~ 1 | Subject, data = sleepstudy)
 lme_2 <- lme(Reaction ~ Days, random = ~ 1 + Days | Subject, data = sleepstudy)
 lme_3 <- lme(y ~ service, random = list(s = ~ 1, d = ~ 1), data = InstEval[1:1000, ])
 
-context('test extract_random_effects.nlme')
+nlme_1 <-  nlme(height ~ SSasymp(age, Asym, R0, lrc),
+                data = Loblolly,
+                fixed = Asym + R0 + lrc ~ 1,
+                random = Asym ~ 1,
+                start = c(Asym = 103, R0 = -8.5, lrc = -3.3))
+
+context('test extract_random_effects.lme')
 
 test_that('extract_random_effects.lme basic functionality', {
   expect_s3_class(extract_random_effects(lme_1, re = 'Subject'), 'data.frame')
@@ -128,14 +134,22 @@ test_that('extract_random_effects.lme correct output', {
 test_that('extract_random_effects.lme warns with no group input', {
   expect_warning(extract_random_effects(lme_1))
 })
-#
-# test_that('extract_random_effects.lme works with multiple re', {
-#   expect_equal(
-#     nrow(extract_random_effects(lme_3, re = 's')),
-#     nlevels(lme_3$data$s)
-#   )
-# })
+
+test_that('extract_random_effects.lme works with multiple re', {
+  expect_equal(
+    nrow(extract_random_effects(lme_3, re = 's')),
+    nlevels(droplevels(lme_3$data)$s)
+  )
+})
 
 test_that('extract_random_effects.lme errors with bad re name', {
   expect_error(extract_random_effects(lme_2, re = 'subject'))
+})
+
+
+test_that('extract_random_effects.lme works with nlme', {
+  expect_equal(
+    nrow(extract_random_effects(nlme_1, re = 'Seed')),
+    nlevels(Loblolly$Seed)
+  )
 })

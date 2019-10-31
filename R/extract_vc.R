@@ -244,7 +244,7 @@ extract_vc.glmmTMB <- function(
 }
 
 #' @export
-extract_vc.nlme <- function(
+extract_vc.lme <- function(
   model,
   ci_level = .95,
   ci_args = NULL,

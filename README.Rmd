@@ -22,7 +22,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](https://codecov.io/gh/m-clark/mixedup?branch=master)
 <!-- badges: end -->
 
-Provides extended functionality for mixed models. The goal of mixedup is to solve little problems that slip through the cracks from the various packages, broom, and others.
+Provides extended functionality for mixed models. The goal of mixedup is to solve little problems that slip through the cracks from the various packages, broom, and others.  Basically the idea is to create objects that are easy to use and mostly ready for presentation.
 
 ## Installation
 

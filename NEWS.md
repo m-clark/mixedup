@@ -1,6 +1,8 @@
+
+
 # mixedup 0.1.2
 
-* Start extract_random_effects
+* Add extract_random_effects
 
 # mixedup 0.1.1
 
