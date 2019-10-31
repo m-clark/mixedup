@@ -13,7 +13,7 @@ extract_random_effects(model, re = NULL, component = "cond",
 \item{re}{The name of the grouping variable for the random effects.}
 
 \item{component}{Which of the three components 'cond', 'zi' or 'other' to
-select for a glmmTMB model. Default is cond. Minimal testing on other
+select for a glmmTMB model. Default is 'cond'. Minimal testing on other
 options.}
 
 \item{digits}{Rounding. Default is 3.}
@@ -27,6 +27,8 @@ Extracts the random effects and their standard errors.
 \details{
 Relative to \code{ranef} for the various packages, this just adds
   the standard errors and cluster ids as columns.
+
+\code{nlme} only provides the estimated random effect parameters, not their uncertainty, so it isn't provided.
 }
 \examples{
 library(lme4)
@@ -35,5 +37,5 @@ extract_random_effects(lmer_2)
 
 }
 \seealso{
-\code{\link{extract_random_coef}}
+\code{\link{extract_random_coef}}, \code{\link{ranef.merMod}}, \code{\link{ranef.glmmTMB}}, \code{\link{ranef.nlme}}
 }

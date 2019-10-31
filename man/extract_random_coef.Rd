@@ -12,7 +12,7 @@ extract_random_coef(model, re = NULL, component = "cond", digits = 3)
 \item{re}{The name of the grouping variable for the random effects.}
 
 \item{component}{Which of the three components 'cond', 'zi' or 'other' to
-select for a glmmTMB model. Default is cond. Minimal testing on other
+select for a glmmTMB model. Default is 'cond'. Minimal testing on other
 options.}
 
 \item{digits}{Rounding. Default is 3.}
@@ -25,10 +25,17 @@ Extract random coefficients and their variances
 }
 \details{
 Returns a data frame with random coefficients, a.k.a. random
-intercepts and random slopes, and their standard errors.   The standard
-errors are the sum of variances for the fixed and random effects. See
-Bolker's demo
-\href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}.
+  intercepts and random slopes, and their standard errors. Note that the
+  standard errors assume independence of the conditional variance and the
+  fixed-effects variance, thus the standard errors are the sum of variances
+  for the fixed and random effects. See Bolker's demo
+  \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}
+  and additional discussion at the
+  \href{https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#confidence-intervals-on-conditional-meansblupsrandom-effects}{GLMM
+  FAQ}. This assumption may not be appropriate.
+
+
+\code{nlme} only provides the coefficients, so this doesn't add to what you get from \code{broom::tidy(model, effects='random')} for those models.
 }
 \examples{
 library(lme4)

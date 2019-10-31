@@ -3,16 +3,22 @@
 #' @param model A merMod or glmmTMB object
 #' @param re The name of the grouping variable for the random effects.
 #' @param component Which of the three components 'cond', 'zi' or 'other' to
-#'   select for a glmmTMB model. Default is cond. Minimal testing on other
+#'   select for a glmmTMB model. Default is 'cond'. Minimal testing on other
 #'   options.
 #' @param digits Rounding. Default is 3.
 #'
 #' @details Returns a data frame with random coefficients, a.k.a. random
-#' intercepts and random slopes, and their standard errors.   The standard
-#' errors are the sum of variances for the fixed and random effects. See
-#' Bolker's demo
-#' \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}.
+#'   intercepts and random slopes, and their standard errors. Note that the
+#'   standard errors assume independence of the conditional variance and the
+#'   fixed-effects variance, thus the standard errors are the sum of variances
+#'   for the fixed and random effects. See Bolker's demo
+#'   \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}
+#'   and additional discussion at the
+#'   \href{https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#confidence-intervals-on-conditional-meansblupsrandom-effects}{GLMM
+#'   FAQ}. This assumption may not be appropriate.
 #'
+#'
+#' \code{nlme} only provides the coefficients, so this doesn't add to what you get from \code{broom::tidy(model, effects='random')} for those models.
 #'
 #' @return A data frame of the random coefficients and their standard errors.
 #'
@@ -131,27 +137,4 @@ extract_random_coef.glmmTMB <- function(
 
 
 
-cleanup_coefs <- function(re_names, ran_coefs, se) {
-  colnames(se) = paste0('se_', re_names)
-  colnames(se) = gsub(
-    colnames(se),
-    pattern = '[\\(, \\)]',
-    replacement = ''
-  )
 
-  colnames(ran_coefs) = gsub(
-    colnames(ran_coefs),
-    pattern = '[\\(, \\)]',
-    replacement = ''
-  )
-
-  out = data.frame(
-    group = rownames(ran_coefs),
-    ran_coefs,
-    se
-  )
-
-  rownames(out) = NULL # remove
-
-  out
-}

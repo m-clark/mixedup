@@ -2,6 +2,8 @@
 
 S3method(extract_random_coef,glmmTMB)
 S3method(extract_random_coef,merMod)
+S3method(extract_random_effects,glmmTMB)
+S3method(extract_random_effects,lme)
 S3method(extract_random_effects,merMod)
 S3method(extract_vc,glmmTMB)
 S3method(extract_vc,merMod)

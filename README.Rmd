@@ -57,7 +57,7 @@ devtools::install_github('m-clark/mixedup')
 - [ ] glmmTMB
 - [X] nlme
 
-##### Find typical
+##### Find Typical
 
 - [ ] lme4
 - [ ] glmmTMB
