@@ -20,11 +20,17 @@ tmb_zip <- glmmTMB(
   family = truncated_poisson, Salamanders
 )
 
+
+
+# Overall -----------------------------------------------------------------
+
 test_that('extract_random_coef errors with wrong type of model', {
   mod = lm(mpg ~ vs, mtcars)
   expect_error(extract_random_coef(mod))
 })
 
+
+# lme4 --------------------------------------------------------------------
 
 context('test extract_random_coef.merMod')
 

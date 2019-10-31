@@ -10,11 +10,11 @@ extract_vc(model, ci_level = 0.95, ci_args = NULL, ci_scale = "sd",
   component = "cond", show_cor = FALSE, digits = 3, ...)
 
 \method{extract_vc}{merMod}(model, ci_level = 0.95, ci_args = NULL,
-  ci_scale = "sd", show_cor = FALSE, digits = 3, ...)
+  ci_scale = "sd", component, show_cor = FALSE, digits = 3, ...)
 
 \method{extract_vc}{glmmTMB}(model, ci_level = 0.95, ci_args = NULL,
-  ci_scale = "sd", show_cor = FALSE, digits = 3,
-  component = "cond", ...)
+  ci_scale = "sd", component = "cond", show_cor = FALSE,
+  digits = 3, ...)
 }
 \arguments{
 \item{model}{an lme4 or glmmTMB model}

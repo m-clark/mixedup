@@ -32,12 +32,40 @@ You can install mixedup from GitHub with `devtools`:
 devtools::install_github('m-clark/mixedup')
 ```
 
+## Feature list
+
+##### Extract Variance Components
+
+- [X] lme4
+- [X] glmmTMB
+- [ ] nlme
+
+##### Extract Random Effects
+
+- [X] lme4
+- [ ] glmmTMB
+- [ ] nlme
+
+##### Extract Random Coefficients
+
+- [X] lme4
+- [X] glmmTMB
+- [ ] nlme
+
+##### Extract Heterogeneous Variances
+
+- [ ] glmmTMB
+- [X] nlme
+
+##### Find typical
+
+- [ ] lme4
+- [ ] glmmTMB
+- [ ] nlme
+
 ## Examples
 
-
-### Extract random coefficients
-
-Extract the random coefficients with their standard errors from `lme4` or `glmmTMB` objects.
+### Setup
 
 ```{r mods}
 library(lme4)
@@ -52,8 +80,27 @@ tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 ```
 
 
-```{r coefs}
+### Extract random effects
+
+Extract the random effects with their standard errors from `lme4` or `glmmTMB` objects.
+
+```{r extract-re}
 library(mixedup)
+
+extract_random_effects(lmer_1, re = 'Subject')
+
+
+extract_random_effects(lmer_2, re = 'Subject')
+
+```
+
+
+### Extract random coefficients
+
+Extract the random coefficients with their standard errors from `lme4` or `glmmTMB` objects.
+
+
+```{r coefs}
 extract_random_coef(lmer_1, re = 'Subject')
 
 

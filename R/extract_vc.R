@@ -68,6 +68,7 @@ extract_vc.merMod <- function(
   ci_level = .95,
   ci_args = NULL,
   ci_scale = 'sd',
+  component,
   show_cor = FALSE,
   digits = 3,
   ...
@@ -147,9 +148,9 @@ extract_vc.glmmTMB <- function(
   ci_level = .95,
   ci_args = NULL,
   ci_scale = 'sd',
+  component = 'cond',
   show_cor = FALSE,
   digits = 3,
-  component = 'cond',
   ...
 ) {
   vc_mat = glmmTMB::VarCorr(model)[[component]]
@@ -248,6 +249,7 @@ extract_vc.nlme <- function(
   ci_level = .95,
   ci_args = NULL,
   ci_scale = 'sd',
+  component,
   show_cor = FALSE,
   digits = 3,
   ...

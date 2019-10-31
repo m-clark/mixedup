@@ -1,3 +1,7 @@
+# mixedup 0.1.2
+
+* Start extract_random_effects
+
 # mixedup 0.1.1
 
 * Add glmmTMB method for for extract_vc

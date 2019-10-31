@@ -5,6 +5,7 @@
 #' @param component Which of the three components 'cond', 'zi' or 'other' to
 #'   select for a glmmTMB model. Default is cond. Minimal testing on other
 #'   options.
+#' @param digits Rounding. Default is 3.
 #'
 #' @details Returns a data frame with random coefficients, a.k.a. random
 #' intercepts and random slopes, and their standard errors.   The standard
@@ -30,7 +31,12 @@
 #' extract_random_coef(tmb_1, re = 'Subject')
 #'
 #' @export
-extract_random_coef <- function(model, re = NULL, component = 'cond') {
+extract_random_coef <- function(
+  model,
+  re = NULL,
+  component = 'cond',
+  digits = 3
+) {
 
   if (!inherits(model, c('merMod', 'glmmTMB')))
     stop('This only works for merMod objects from lme4 or models from glmmTMB.')
@@ -39,7 +45,12 @@ extract_random_coef <- function(model, re = NULL, component = 'cond') {
 }
 
 #' @export
-extract_random_coef.merMod <- function(model, re = NULL, component) {
+extract_random_coef.merMod <- function(
+  model,
+  re = NULL,
+  component,
+  digits = 3
+) {
 
   if (is.null(re)) {
     warning('No random effect specified, using first.')
@@ -73,14 +84,15 @@ extract_random_coef.merMod <- function(model, re = NULL, component) {
   # cleanup names, i.e. remove parens from (Intercept)
   out = cleanup_coefs(re_names, ran_coefs, se)
 
-  out
+  dplyr::mutate_if(out, is.numeric, round, digits = digits)
 }
 
 #' @export
 extract_random_coef.glmmTMB <- function(
   model,
   re = NULL,
-  component = 'cond'
+  component = 'cond',
+  digits = 3
   ) {
 
   if (is.null(re)) {
@@ -114,7 +126,7 @@ extract_random_coef.glmmTMB <- function(
   # cleanup names, i.e. remove parens from (Intercept)
   out = cleanup_coefs(re_names, ran_coefs, se)
 
-  out
+  dplyr::mutate_if(out, is.numeric, round, digits = digits)
 }
 
 
