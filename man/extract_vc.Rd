@@ -28,8 +28,8 @@ not report it. Default is .95.}
 interval estimate.  Default is 'sd'.
 at present.}
 
-\item{component}{Which of the three components 'cond', 'zi' or 'other' to
-select for a glmmTMB model. Default is cond. Minimal testing on other
+\item{component}{For glmmTMB objects, which of the three components 'cond',
+'zi' or 'other' to select. Default is cond. Minimal testing on other
 options.}
 
 \item{show_cor}{Return the intercept/slope correlations. Default is
@@ -64,5 +64,6 @@ extract_vc(lmer_mod, ci_scale = 'var')
 }
 \seealso{
 \code{\link{confint.merMod}}, \code{\link{VarCorr.merMod}},
-  \code{\link{confint.glmmTMB}}, \code{\link{VarCorr.glmmTMB}}
+  \code{\link{confint.glmmTMB}}, \code{\link{VarCorr.glmmTMB}},
+  \code{\link{intervals}}, \code{\link{VarCorr.lme}}
 }

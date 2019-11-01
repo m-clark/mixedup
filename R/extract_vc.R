@@ -10,8 +10,8 @@
 #' @param ci_scale A character string of 'sd' or 'var' to note the scale of the
 #'   interval estimate.  Default is 'sd'.
 #'   at present.
-#' @param component Which of the three components 'cond', 'zi' or 'other' to
-#'   select for a glmmTMB model. Default is cond. Minimal testing on other
+#' @param component For glmmTMB objects, which of the three components 'cond',
+#'   'zi' or 'other' to select. Default is cond. Minimal testing on other
 #'   options.
 #' @param show_cor Return the intercept/slope correlations. Default is
 #'   \code{FALSE}.
@@ -27,7 +27,8 @@
 #' contains the correlations of the random effects.
 #'
 #' @seealso \code{\link{confint.merMod}}, \code{\link{VarCorr.merMod}},
-#'   \code{\link{confint.glmmTMB}}, \code{\link{VarCorr.glmmTMB}}
+#'   \code{\link{confint.glmmTMB}}, \code{\link{VarCorr.glmmTMB}},
+#'   \code{\link{intervals}}, \code{\link{VarCorr.lme}}
 #'
 #' @examples
 #' library(lme4)
@@ -49,8 +50,8 @@ extract_vc <- function(
   digits = 3,
   ...
 ) {
-  if (!inherits(model, c('merMod', 'glmmTMB')))
-    stop('This only works for merMod objects from lme4 or models from glmmTMB.')
+  if (!inherits(model, c('merMod', 'glmmTMB', 'lme')))
+    stop('This only works for model objects from lme4, glmmTMB, and nlme.')
 
   if (ci_level < 0 | ci_level >= 1)
     stop('Nonsensical confidence level for ci_level.  Must be between 0 and 1.')
@@ -242,7 +243,8 @@ extract_vc.glmmTMB <- function(
 
   vc
 }
-
+#' @importFrom tidyr fill
+#' @importFrom nlme ranef intervals
 #' @export
 extract_vc.lme <- function(
   model,
@@ -254,6 +256,117 @@ extract_vc.lme <- function(
   digits = 3,
   ...
 ) {
-  'Not there yet'
+  re_struct <- model$modelStruct$reStruct
+  re_names <- names(re_struct)
+
+  vc_mat0 <- nlme::VarCorr(model)
+  vc_mat <- suppressWarnings(apply(vc_mat0, 2, as.numeric))
+
+  # make dataframe and add names
+  vc <- data.frame(vc_mat)
+
+  if (length(re_names) == 1) {
+    vc <- dplyr::mutate(
+      vc,
+      coefficient = rownames(vc_mat0),
+      group = re_names,
+      group = ifelse(coefficient == 'Residual', 'Residual', group),
+      # group = sapply(strsplit(group, ' '), function(x) x[1]),
+      coefficient = ifelse(coefficient == 'Residual', '', coefficient)
+    )
+  }
+  else {
+    vc <- dplyr::mutate(
+      vc,
+      coefficient = rownames(vc_mat0),
+      group = ifelse(is.na(Variance), coefficient, NA),
+      group = ifelse(coefficient == 'Residual', 'Residual', group),
+      group = sapply(strsplit(group, ' '), function(x) x[1]),
+      coefficient = ifelse(coefficient == 'Residual', '', coefficient)
+    )
+  }
+
+  vc  <- tidyr::fill(vc, group)
+  vc  <- dplyr::filter(vc, !is.na(Variance))
+
+  # add trycatch for interval fail
+
+  if (ci_level > 0) {
+
+    ci <- tryCatch(
+      nlme::intervals(model, level = ci_level),
+      error = function(c) {
+        msg <- conditionMessage(c)
+        invisible(structure(msg, class = "try-error"))
+      })
+
+    if (inherits(ci, 'try-error')) {
+      warning('Intervals could not be computed')
+      ci <- NULL
+    }
+    else {
+      ci_re <- mapply(function(x, y) {x$group = y; x},
+                     ci$reStruct,
+                     names(ci$reStruct),
+                     SIMPLIFY = FALSE)
+      ci_re <- do.call(rbind, ci_re)
+      ci_residual <- as.list(ci$sigma)
+      ci_residual$group <- 'Residual'
+      ci <- rbind(ci_re, data.frame(ci_residual))
+
+      if (ci_scale == 'var') {
+        ci <- ci[,1:3]^2
+        ci <- dplyr::rename(ci, var_lower = lower, var_upper = upper)
+        ci <- dplyr::rename(ci, var = est.)
+      }
+      else {
+        ci <- dplyr::rename(ci, sd_lower = lower, sd_upper = upper)
+        ci <- dplyr::rename(ci, sd = est.)
+      }
+
+      ci <- dplyr::filter(ci, !grepl(rownames(ci), pattern = '.cor\\('))
+    }
+  }
+
+  if (!exists('ci')) ci = NULL
+
+
+  vc <- dplyr::mutate(
+    vc,
+    var_prop = Variance / sum(Variance),
+    coefficient = gsub(coefficient, pattern = '[\\(,\\)]', replacement = '')
+  )
+
+  vc <- dplyr::rename(vc, sd = StdDev)
+  vc <- dplyr::rename_all(vc, tolower)
+
+
+  if (is.null(ci)) {
+    vc <- dplyr::select(vc, group, coefficient, dplyr::everything(), var_prop)
+  }
+  else {
+    vc <- cbind(vc, dplyr::select(ci, dplyr::matches('upper|lower')))
+    vc <- dplyr::select(vc, group, coefficient, dplyr::everything(), var_prop)
+  }
+
+  vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)
+
+  if (show_cor) {
+
+    cormats <- lapply(re_struct, function(x) stats::cov2cor(as.matrix(x)))
+
+    remove_parens <- function(x) {
+      colnames(x) = gsub(colnames(x), pattern = '[\\(,\\)]', replacement = '')
+      rownames(x) = colnames(x)
+      x
+    }
+
+    cormats <- lapply(cormats, remove_parens)
+    cormats <- lapply(cormats, round, digits = digits)
+
+    return(list(`Variance Components` = vc, Cor = cormats))
+  }
+
+  vc
 }
 

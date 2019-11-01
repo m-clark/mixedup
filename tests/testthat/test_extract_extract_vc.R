@@ -19,6 +19,7 @@ context('test extract_vc.merMod')
 test_that('extract_vc.merMod basic functionality: random intercept only', {
   expect_s3_class(extract_vc(lmer_1, ci_level = 0), 'data.frame')
 })
+
 test_that('extract_vc.merMod basic functionality: random slopes', {
   expect_s3_class(extract_vc(lmer_2, ci_level = 0), 'data.frame')
 })
@@ -26,6 +27,7 @@ test_that('extract_vc.merMod basic functionality: random slopes', {
 test_that('extract_vc.merMod basic functionality: multiple grouping factors', {
   expect_s3_class(extract_vc(lmer_3, ci_level = 0), 'data.frame')
 })
+
 test_that('extract_vc.merMod basic functionality: ints/slopes with multiple grouping factors', {
   expect_s3_class(extract_vc(lmer_4, ci_level = 0), 'data.frame')
 })
@@ -54,7 +56,6 @@ test_that('extract_vc.merMod errors with wrong model', {
 })
 
 test_that('extract_vc.merMod errors with wrong ci_level', {
-  mod = lm(mpg ~ vs, mtcars)
   expect_error(extract_vc(lmer_1, ci_level = 2))
 })
 
@@ -100,6 +101,7 @@ tmb_zip <- glmmTMB(
 test_that('extract_vc basic functionality: random intercept only', {
   expect_s3_class(extract_vc(tmb_1, ci_level = 0), 'data.frame')
 })
+
 test_that('extract_vc basic functionality: random slopes', {
   expect_s3_class(extract_vc(tmb_2, ci_level = 0), 'data.frame')
 })
@@ -107,6 +109,7 @@ test_that('extract_vc basic functionality: random slopes', {
 test_that('extract_vc basic functionality: multiple grouping factors', {
   expect_s3_class(extract_vc(tmb_3, ci_level = 0), 'data.frame')
 })
+
 test_that('extract_vc basic functionality: ints/slopes with multiple grouping factors', {
   expect_s3_class(extract_vc(tmb_4, ci_level = 0), 'data.frame')
 })
@@ -139,7 +142,6 @@ test_that('extract_vc.glmmTMB errors with wrong model', {
 })
 
 test_that('extract_vc.glmmTMB errors with wrong ci_level', {
-  mod = lm(mpg ~ vs, mtcars)
   expect_error(extract_vc(tmb_1, ci_level = 2))
 })
 
@@ -157,9 +159,84 @@ test_that('extract_vc.glmmTMB works with ci_scale = var', {
 
 # Test nlme ---------------------------------------------------------------
 
-# library(nlme)
-#
-# nlme_1 <- lme(Reaction ~ Days, random = ~ 1 | Subject, data = sleepstudy)
-# nlme_2 <- lme(Reaction ~ Days, random = ~ 1 + Days | Subject, data = sleepstudy)
+library(nlme)
+
+lme_1 <- lme(Reaction ~ Days, random = ~ 1 | Subject, data = sleepstudy)
+lme_2 <- lme(Reaction ~ Days, random = ~ 1 + Days | Subject, data = sleepstudy)
+lme_3 <- lme(y ~ service,
+             random = list(d = ~ 1, s = ~ 1),
+             data = droplevels(InstEval[1:1000, ]))
+lme_4 <- lme(y ~ service,
+             random = list(d = ~ 1 + service, s = ~ 1 ),
+             data = droplevels(InstEval[1:3000, ]))
+
+# won't converge
+# lme_5 <- lme(y ~ service,
+#              random = list(d = ~ 1 + as.numeric(lectage) + as.numeric(studage) + service) ,
+#              data = droplevels(InstEval[1:5000, ]))
+
+nlme_1 <-  nlme(height ~ SSasymp(age, Asym, R0, lrc),
+                data = Loblolly,
+                fixed = Asym + R0 + lrc ~ 1,
+                random = Asym ~ 1,
+                start = c(Asym = 103, R0 = -8.5, lrc = -3.3))
+
+test_that('extract_vc.lme basic functionality: random intercept only', {
+  expect_s3_class(extract_vc(lme_1, ci_level = 0), 'data.frame')
+})
+
+test_that('extract_vc.lme basic functionality: random slopes', {
+  expect_s3_class(extract_vc(lme_2, ci_level = 0), 'data.frame')
+})
+
+test_that('extract_vc.lme basic functionality: multiple grouping factors', {
+  expect_s3_class(extract_vc(lme_3, ci_level = 0), 'data.frame')
+})
+
+test_that('extract_vc.lme basic functionality: ints/slopes with multiple grouping factors', {
+  expect_s3_class(extract_vc(lme_4, ci_level = 0), 'data.frame')
+})
+
+test_that('extract_vc.lme basic functionality: nlme', {
+  expect_s3_class(extract_vc(nlme_1, ci_level = 0), 'data.frame')
+})
+
+test_that('extract_vc.lme returns correlation', {
+  init = extract_vc(lme_2, ci_level = 0, show_cor = TRUE)$Cor[[1]]
+  expect_equal(dim(init), c(2, 2))
+})
+
+test_that('extract_vc.lme returns correlation', {
+  init = extract_vc(lme_4, ci_level = 0, show_cor = TRUE)$Cor
+
+  expect_type(init, 'list')
+
+  dims = lapply(init, dim)
+
+  expect_equal(dims$d, c(2, 2))
+  expect_equal(dims$s, c(1, 1))
+})
+
+test_that('extract_vc.lme errors with wrong model', {
+  mod = lm(mpg ~ vs, mtcars)
+  expect_error(extract_vc(mod))
+})
+
+test_that('extract_vc.lme errors with wrong ci_level', {
+  expect_error(extract_vc(lme_1, ci_level = 2))
+})
+
+test_that('extract_vc.lme errors with wrong ci_scale', {
+  expect_error(extract_vc(lme_1, ci_scale = 'varience'))
+})
+
+test_that('extract_vc.lme warns with no ci', {
+  expect_warning(extract_vc(lme_4))
+})
 
 
+# maybe change names for consistency to other objects in the future
+test_that('extract_vc.lme works with ci_scale = var', {
+  expect_type(extract_vc(lme_1, ci_scale = 'var')$var_lower, 'double')
+  expect_type(extract_vc(lme_1, ci_scale = 'sd')$sd_lower, 'double')
+})

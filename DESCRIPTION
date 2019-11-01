@@ -1,6 +1,6 @@
 Package: mixedup
 Title: Miscellaneous functions for mixed models
-Version: 0.1.2
+Version: 0.1.3
 Authors@R: 
     person(given = "Michael",
            family = "Clark",
@@ -16,12 +16,12 @@ Depends:
   R (>= 3.5.0)
 Imports:
     dplyr,
+    tidyr (>= 1.0.0),
     lme4,
-    glmmTMB
+    glmmTMB,
+    nlme
 Suggests:
     testthat (>= 2.1.0),
-    nlme,
     covr,
-    tidyr (>= 1.0.0),
     knitr
 RoxygenNote: 6.1.1

@@ -38,13 +38,13 @@ devtools::install_github('m-clark/mixedup')
 
 - [X] lme4
 - [X] glmmTMB
-- [ ] nlme
+- [X] nlme
 
 ##### Extract Random Effects
 
 - [X] lme4
-- [ ] glmmTMB
-- [ ] nlme
+- [X] glmmTMB
+- [X] nlme
 
 ##### Extract Random Coefficients
 

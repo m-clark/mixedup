@@ -1,4 +1,6 @@
+# mixedup 0.1.3
 
+* extract_random_effects includes n/lme method
 
 # mixedup 0.1.2
 

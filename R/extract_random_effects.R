@@ -16,7 +16,8 @@
 #' lmer_2 <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #' extract_random_effects(lmer_2)
 #'
-#' @seealso \code{\link{extract_random_coef}}, \code{\link{ranef.merMod}}, \code{\link{ranef.glmmTMB}}, \code{\link{ranef.nlme}}
+#' @seealso \code{\link{extract_random_coef}}, \code{\link{ranef.merMod}},
+#' \code{\link{ranef.glmmTMB}}, \code{\link{ranef.lme}}
 #'
 #' @export
 extract_random_effects <- function(
