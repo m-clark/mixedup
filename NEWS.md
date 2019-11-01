@@ -1,3 +1,7 @@
+# mixedup 0.2.0
+
+* Core functions for primary packages working 
+
 # mixedup 0.1.3
 
 * extract_random_effects includes n/lme method
