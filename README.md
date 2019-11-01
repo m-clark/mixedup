@@ -17,7 +17,8 @@ coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](
 
 Provides extended functionality for mixed models. The goal of mixedup is
 to solve little problems that slip through the cracks from the various
-packages, broom, and others.
+packages, broom, and others. Basically the idea is to create objects
+that are easy to use and mostly ready for presentation.
 
 ## Installation
 
@@ -31,26 +32,37 @@ devtools::install_github('m-clark/mixedup')
 
 ##### Extract Variance Components
 
-  - [x] lme4
-  - [x] glmmTMB
-  - [ ] nlme
+  - \[X\] lme4
+  - \[X\] glmmTMB
+  - \[X\] nlme
 
 ##### Extract Random Effects
 
-  - [x] lme4
-  - [ ] glmmTMB
-  - [ ] nlme
+  - \[X\] lme4
+  - \[X\] glmmTMB
+  - \[X\] nlme
 
-##### Extract Variance Components
+##### Extract Random Coefficients
 
-  - [x] lme4
-  - [x] glmmTMB
-  - [ ] nlme
+  - \[X\] lme4
+  - \[X\] glmmTMB
+  - \[ \] nlme
 
 ##### Extract Heterogeneous Variances
 
-  - [ ] glmmTMB
-  - [x] nlme
+  - \[ \] glmmTMB
+  - \[X\] nlme
+
+##### Find Typical
+
+  - \[ \] lme4
+  - \[ \] glmmTMB
+  - \[ \] nlme
+
+Just a note, <span class="pack" style="">nlme</span> has pretty much
+been superceded by <span class="pack" style="">glmmTMB</span>,
+<span class="pack" style="">brms</span>, and others, so support here is
+pretty minimal.
 
 ## Examples
 
@@ -67,12 +79,27 @@ library(glmmTMB)
 
 tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
 tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+
+library(nlme)
+
+Attaching package: 'nlme'
+The following object is masked from 'package:lme4':
+
+    lmList
+
+nlme_1 <-  nlme(
+  height ~ SSasymp(age, Asym, R0, lrc),
+  data = Loblolly,
+  fixed = Asym + R0 + lrc ~ 1,
+  random = Asym ~ 1,
+  start = c(Asym = 103, R0 = -8.5, lrc = -3.3)
+)
 ```
 
 ### Extract random effects
 
-Extract the random effects with their standard errors from `lme4` or
-`glmmTMB` objects.
+Extract the random effects with their (not necessarily valid) standard
+errors from model objects.
 
 ``` r
 library(mixedup)
@@ -123,8 +150,8 @@ extract_random_effects(lmer_2, re = 'Subject')
 
 ### Extract random coefficients
 
-Extract the random coefficients with their standard errors from `lme4`
-or `glmmTMB` objects.
+Extract the random coefficients with their standard errors model
+objects.
 
 ``` r
 extract_random_coef(lmer_1, re = 'Subject')
@@ -221,8 +248,8 @@ extract_random_coef(tmb_2,  re = 'Subject')
 extract_vc(lmer_2)
 Computing profile confidence intervals ...
      group coefficient variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject   Intercept  611.898 24.737 14.382  37.716    0.470
-2  Subject        Days   35.081  5.923 -0.482   0.685    0.027
+1  Subject   Intercept  611.898 24.737 14.382  37.714    0.470
+2  Subject        Days   35.081  5.923 -0.481   0.685    0.027
 3 Residual              654.941 25.592 22.898  28.858    0.503
 
 
@@ -230,7 +257,7 @@ extract_vc(lmer_2, ci_scale = 'var', show_cor = TRUE, digits = 2)
 Computing profile confidence intervals ...
 $`Variance Components`
      group coefficient variance    sd var_2.5 var_97.5 var_prop
-1  Subject   Intercept   611.90 24.74  206.83  1422.50     0.47
+1  Subject   Intercept   611.90 24.74  206.84  1422.33     0.47
 2  Subject        Days    35.08  5.92    0.23     0.47     0.03
 3 Residual               654.94 25.59  524.33   832.78     0.50
 
@@ -239,6 +266,11 @@ $Cor$Subject
           Intercept Days
 Intercept      1.00 0.07
 Days           0.07 1.00
+
+extract_vc(nlme_1)
+     group coefficient variance    sd sd_lower sd_upper var_prop
+1     Seed        Asym   13.327 3.651    2.479    5.375    0.963
+2 Residual                0.517 0.719    0.609    0.849    0.037
 ```
 
 ### Extract heterogeneous variances from nlme
@@ -248,11 +280,6 @@ relative standard deviation values by default.
 
 ``` r
 library(nlme)
-
-Attaching package: 'nlme'
-The following object is masked from 'package:lme4':
-
-    lmList
 
 model <- lme(
   distance ~ age + Sex, 

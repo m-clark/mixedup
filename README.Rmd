@@ -1,5 +1,7 @@
 ---
-output: github_document
+output: 
+  github_document:
+    toc: true
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -63,6 +65,9 @@ devtools::install_github('m-clark/mixedup')
 - [ ] glmmTMB
 - [ ] nlme
 
+
+Just a note, <span class="pack" style = "">nlme</span> has pretty much been superceded by <span class="pack" style = "">glmmTMB</span>, <span class="pack" style = "">brms</span>, and others, so support here is pretty minimal.
+
 ## Examples
 
 ### Setup
@@ -77,12 +82,22 @@ library(glmmTMB)
 
 tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
 tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+
+library(nlme)
+
+nlme_1 <-  nlme(
+  height ~ SSasymp(age, Asym, R0, lrc),
+  data = Loblolly,
+  fixed = Asym + R0 + lrc ~ 1,
+  random = Asym ~ 1,
+  start = c(Asym = 103, R0 = -8.5, lrc = -3.3)
+)
 ```
 
 
 ### Extract random effects
 
-Extract the random effects with their standard errors from `lme4` or `glmmTMB` objects.
+Extract the random effects with their (not necessarily valid) standard errors from model objects.
 
 ```{r extract-re}
 library(mixedup)
@@ -91,13 +106,12 @@ extract_random_effects(lmer_1, re = 'Subject')
 
 
 extract_random_effects(lmer_2, re = 'Subject')
-
 ```
 
 
 ### Extract random coefficients
 
-Extract the random coefficients with their standard errors from `lme4` or `glmmTMB` objects.
+Extract the random coefficients with their standard errors model objects.
 
 
 ```{r coefs}
@@ -121,6 +135,8 @@ extract_vc(lmer_2)
 
 
 extract_vc(lmer_2, ci_scale = 'var', show_cor = TRUE, digits = 2)
+
+extract_vc(nlme_1)
 ```
 
 
