@@ -35,7 +35,10 @@ Returns a data frame with random coefficients, a.k.a. random
   FAQ}. This assumption may not be appropriate.
 
 
-\code{nlme} only provides the coefficients, so this doesn't add to what you get from \code{broom::tidy(model, effects='random')} for those models.
+\code{nlme} only provides the coefficients no estimated variance, so this
+doesn't add to what you get from basic functionality for those models.  In
+addition, nlme adds all random effects to the fixed effects, whereas
+\code{lme4} and others only add the effects requested.
 }
 \examples{
 library(lme4)

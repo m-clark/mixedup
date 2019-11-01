@@ -52,7 +52,7 @@ devtools::install_github('m-clark/mixedup')
 
 - [X] lme4
 - [X] glmmTMB
-- [ ] nlme
+- [X] nlme
 
 ##### Extract Heterogeneous Variances
 
@@ -118,12 +118,6 @@ Extract the random coefficients with their standard errors model objects.
 extract_random_coef(lmer_1, re = 'Subject')
 
 
-extract_random_coef(lmer_2, re = 'Subject')
-
-
-extract_random_coef(tmb_1,  re = 'Subject')
-
-
 extract_random_coef(tmb_2,  re = 'Subject')
 ```
 
@@ -136,13 +130,14 @@ extract_vc(lmer_2)
 
 extract_vc(lmer_2, ci_scale = 'var', show_cor = TRUE, digits = 2)
 
+
 extract_vc(nlme_1)
 ```
 
 
-### Extract heterogeneous variances from nlme
+### Extract heterogeneous variances
 
-Extract heterogeneous variances from nlme, which only reports the relative standard deviation values by default.
+Extract heterogeneous variances from nlme (and eventually glmmTMB), which only reports the relative standard deviation values by default.
 
 ```{r nlme}
 library(nlme)

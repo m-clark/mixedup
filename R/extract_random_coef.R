@@ -18,7 +18,10 @@
 #'   FAQ}. This assumption may not be appropriate.
 #'
 #'
-#' \code{nlme} only provides the coefficients, so this doesn't add to what you get from \code{broom::tidy(model, effects='random')} for those models.
+#' \code{nlme} only provides the coefficients no estimated variance, so this
+#' doesn't add to what you get from basic functionality for those models.  In
+#' addition, nlme adds all random effects to the fixed effects, whereas
+#' \code{lme4} and others only add the effects requested.
 #'
 #' @return A data frame of the random coefficients and their standard errors.
 #'
@@ -44,8 +47,8 @@ extract_random_coef <- function(
   digits = 3
 ) {
 
-  if (!inherits(model, c('merMod', 'glmmTMB')))
-    stop('This only works for merMod objects from lme4 or models from glmmTMB.')
+  if (!inherits(model, c('merMod', 'glmmTMB', 'lme')))
+    stop('This only works for merMod objects from lme4, glmmTMB, and nlme.')
 
   UseMethod('extract_random_coef')
 }
@@ -135,6 +138,31 @@ extract_random_coef.glmmTMB <- function(
   dplyr::mutate_if(out, is.numeric, round, digits = digits)
 }
 
+#' @export
+extract_random_coef.lme <- function(
+  model,
+  re = NULL,
+  component,
+  digits = 3
+) {
 
+  fe = fixef(model)
 
+  names(fe) =  gsub(
+    names(fe),
+    pattern = '[\\(, \\)]',
+    replacement = ''
+  )
+
+  # necessary checks will be done via this
+  re = extract_random_effects(model = model, re = re)
+
+  out = sweep(re[,-1, drop = FALSE], 2, fe[names(fe) %in% names(re)], `+`)
+
+  out$group = re$group
+
+  out = dplyr::mutate_if(out, is.numeric, round, digits = digits)
+
+  dplyr::select(out, group, dplyr::everything())
+}
 

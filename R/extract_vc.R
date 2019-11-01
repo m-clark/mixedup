@@ -330,7 +330,7 @@ extract_vc.lme <- function(
 
   if (!exists('ci')) ci = NULL
 
-
+  # cleanup
   vc <- dplyr::mutate(
     vc,
     var_prop = Variance / sum(Variance),
@@ -340,13 +340,15 @@ extract_vc.lme <- function(
   vc <- dplyr::rename(vc, sd = StdDev)
   vc <- dplyr::rename_all(vc, tolower)
 
-
+  # reorder columns
   if (is.null(ci)) {
-    vc <- dplyr::select(vc, group, coefficient, dplyr::everything(), var_prop)
+    vc <- dplyr::select(vc, group, coefficient, dplyr::everything())
   }
   else {
     vc <- cbind(vc, dplyr::select(ci, dplyr::matches('upper|lower')))
-    vc <- dplyr::select(vc, group, coefficient, dplyr::everything(), var_prop)
+    vc <- dplyr::select(vc,
+                        group, coefficient, dplyr::matches('sd$|variance'),
+                        dplyr::matches('upper|lower'), var_prop)
   }
 
   vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)

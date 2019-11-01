@@ -46,7 +46,7 @@ devtools::install_github('m-clark/mixedup')
 
   - \[X\] lme4
   - \[X\] glmmTMB
-  - \[ \] nlme
+  - \[X\] nlme
 
 ##### Extract Heterogeneous Variances
 
@@ -176,50 +176,6 @@ extract_random_coef(lmer_1, re = 'Subject')
 18   372   269.521       13.594
 
 
-extract_random_coef(lmer_2, re = 'Subject')
-   group Intercept   Days se_Intercept se_Days
-1    308   253.663 19.667       13.866   2.775
-2    309   211.011  1.847       13.866   2.775
-3    310   212.449  5.018       13.866   2.775
-4    330   275.094  5.653       13.866   2.775
-5    331   273.664  7.398       13.866   2.775
-6    332   260.444 10.195       13.866   2.775
-7    333   268.244 10.244       13.866   2.775
-8    334   244.173 11.542       13.866   2.775
-9    335   251.072 -0.285       13.866   2.775
-10   337   286.292 19.096       13.866   2.775
-11   349   226.197 11.640       13.866   2.775
-12   350   238.336 17.082       13.866   2.775
-13   351   255.983  7.452       13.866   2.775
-14   352   272.267 14.004       13.866   2.775
-15   369   254.680 11.340       13.866   2.775
-16   370   225.794 15.290       13.866   2.775
-17   371   252.212  9.479       13.866   2.775
-18   372   263.718 11.752       13.866   2.775
-
-
-extract_random_coef(tmb_1,  re = 'Subject')
-   group Intercept se_Intercept
-1    308   292.040       15.732
-2    309   173.839       15.824
-3    310   188.526       15.781
-4    330   255.795       15.697
-5    331   261.584       15.699
-6    332   259.596       15.698
-7    333   267.845       15.702
-8    334   248.419       15.697
-9    335   206.288       15.740
-10   337   323.325       15.806
-11   349   230.286       15.706
-12   350   265.465       15.701
-13   351   243.572       15.698
-14   352   287.651       15.725
-15   369   258.416       15.698
-16   370   245.066       15.698
-17   371   248.123       15.697
-18   372   269.455       15.704
-
-
 extract_random_coef(tmb_2,  re = 'Subject')
    group Intercept   Days se_Intercept se_Days
 1    308   254.221 19.543       15.179   3.126
@@ -267,16 +223,17 @@ $Cor$Subject
 Intercept      1.00 0.07
 Days           0.07 1.00
 
+
 extract_vc(nlme_1)
      group coefficient variance    sd sd_lower sd_upper var_prop
 1     Seed        Asym   13.327 3.651    2.479    5.375    0.963
 2 Residual                0.517 0.719    0.609    0.849    0.037
 ```
 
-### Extract heterogeneous variances from nlme
+### Extract heterogeneous variances
 
-Extract heterogeneous variances from nlme, which only reports the
-relative standard deviation values by default.
+Extract heterogeneous variances from nlme (and eventually glmmTMB),
+which only reports the relative standard deviation values by default.
 
 ``` r
 library(nlme)

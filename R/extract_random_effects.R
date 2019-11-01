@@ -142,7 +142,6 @@ extract_random_effects.lme <- function(
   else {
     n_re = length(re0)
     all_re_names = names(re0)
-
   }
 
   # add check on re name
@@ -168,6 +167,4 @@ extract_random_effects.lme <- function(
   re = cleanup_coefs(re_names, random_effects, se = NULL)
 
   dplyr::mutate_if(re, is.numeric, round, digits = digits)
-
-
 }
