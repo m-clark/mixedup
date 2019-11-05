@@ -1,4 +1,16 @@
 # so that check ignores
-utils::globalVariables(c('variance', 'coefficient', 'coefficient_2', 'StdDev',
-                         'Variance', 'est.', 'group', 'intervals', 'lower',
-                         'upper', 'var_prop'))
+utils::globalVariables(
+  c('variance',
+    'coefficient',
+    'coefficient_2',
+    'StdDev',
+    'Variance',
+    'est.',
+    'group',
+    'intervals',
+    'lower',
+    'upper',
+    'var_prop',
+    'effect',
+    'value'
+    ))
