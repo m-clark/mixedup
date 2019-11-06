@@ -1,4 +1,25 @@
 
+  - [mixedup](#mixedup)
+      - [Installation](#installation)
+      - [Feature list](#feature-list)
+          - [Extract Variance Components](#extract-variance-components)
+          - [Extract Random Effects](#extract-random-effects)
+          - [Extract Random Coefficients](#extract-random-coefficients)
+          - [Extract Heterogeneous
+            Variances](#extract-heterogeneous-variances)
+          - [Find Typical](#find-typical)
+      - [Examples](#examples)
+          - [Setup](#setup)
+          - [Extract random effects](#extract-random-effects-1)
+          - [Extract random
+            coefficients](#extract-random-coefficients-1)
+          - [Extract variance
+            components](#extract-variance-components-1)
+          - [Extract heterogeneous
+            variances](#extract-heterogeneous-variances-1)
+      - [Other stuff](#other-stuff)
+          - [Code of Conduct](#code-of-conduct)
+
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 # mixedup
@@ -32,35 +53,36 @@ devtools::install_github('m-clark/mixedup')
 
 ##### Extract Variance Components
 
-  - \[X\] lme4
-  - \[X\] glmmTMB
-  - \[X\] nlme
+  - [x] lme4
+  - [x] glmmTMB
+  - [x] nlme
+  - [x] brms
 
 ##### Extract Random Effects
 
-  - \[X\] lme4
-  - \[X\] glmmTMB
-  - \[X\] nlme
+  - [x] lme4
+  - [x] glmmTMB
+  - [x] nlme
 
 ##### Extract Random Coefficients
 
-  - \[X\] lme4
-  - \[X\] glmmTMB
-  - \[X\] nlme
+  - [x] lme4
+  - [x] glmmTMB
+  - [x] nlme
 
 ##### Extract Heterogeneous Variances
 
-  - \[ \] glmmTMB
-  - \[X\] nlme
+  - [ ] glmmTMB
+  - [x] nlme
 
 ##### Find Typical
 
-  - \[ \] lme4
-  - \[ \] glmmTMB
-  - \[ \] nlme
+  - [ ] lme4
+  - [ ] glmmTMB
+  - [ ] nlme
 
 Just a note, <span class="pack" style="">nlme</span> has pretty much
-been superceded by <span class="pack" style="">glmmTMB</span>,
+been superseded by <span class="pack" style="">glmmTMB</span>,
 <span class="pack" style="">brms</span>, and others, so support here is
 pretty minimal.
 
@@ -94,6 +116,68 @@ nlme_1 <-  nlme(
   random = Asym ~ 1,
   start = c(Asym = 103, R0 = -8.5, lrc = -3.3)
 )
+
+library(brms)
+Loading required package: Rcpp
+Registered S3 method overwritten by 'xts':
+  method     from
+  as.zoo.xts zoo 
+Loading 'brms' package (version 2.10.0). Useful instructions
+can be found by typing help('brms'). A more detailed introduction
+to the package is available through vignette('brms_overview').
+
+Attaching package: 'brms'
+The following object is masked from 'package:lme4':
+
+    ngrps
+
+brm_1 = brm(Reaction ~ Days + (1 + Days| Subject), data = sleepstudy, refresh = -1)
+Compiling the C++ model
+Start sampling
+Chain 1: 
+Chain 1: Gradient evaluation took 0 seconds
+Chain 1: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+Chain 1: Adjust your expectations accordingly!
+Chain 1: 
+Chain 1: 
+Chain 1: 
+Chain 1:  Elapsed Time: 1.973 seconds (Warm-up)
+Chain 1:                0.691 seconds (Sampling)
+Chain 1:                2.664 seconds (Total)
+Chain 1: 
+Chain 2: 
+Chain 2: Gradient evaluation took 0 seconds
+Chain 2: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+Chain 2: Adjust your expectations accordingly!
+Chain 2: 
+Chain 2: 
+Chain 2: 
+Chain 2:  Elapsed Time: 1.878 seconds (Warm-up)
+Chain 2:                0.861 seconds (Sampling)
+Chain 2:                2.739 seconds (Total)
+Chain 2: 
+Chain 3: 
+Chain 3: Gradient evaluation took 0 seconds
+Chain 3: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+Chain 3: Adjust your expectations accordingly!
+Chain 3: 
+Chain 3: 
+Chain 3: 
+Chain 3:  Elapsed Time: 1.882 seconds (Warm-up)
+Chain 3:                1.003 seconds (Sampling)
+Chain 3:                2.885 seconds (Total)
+Chain 3: 
+Chain 4: 
+Chain 4: Gradient evaluation took 0 seconds
+Chain 4: 1000 transitions using 10 leapfrog steps per transition would take 0 seconds.
+Chain 4: Adjust your expectations accordingly!
+Chain 4: 
+Chain 4: 
+Chain 4: 
+Chain 4:  Elapsed Time: 2.127 seconds (Warm-up)
+Chain 4:                0.736 seconds (Sampling)
+Chain 4:                2.863 seconds (Total)
+Chain 4: 
 ```
 
 ### Extract random effects
@@ -204,8 +288,8 @@ extract_random_coef(tmb_2,  re = 'Subject')
 extract_vc(lmer_2)
 Computing profile confidence intervals ...
      group coefficient variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject   Intercept  611.898 24.737 14.382  37.714    0.470
-2  Subject        Days   35.081  5.923 -0.481   0.685    0.027
+1  Subject   Intercept  611.898 24.737 14.382  37.716    0.470
+2  Subject        Days   35.081  5.923 -0.482   0.685    0.027
 3 Residual              654.941 25.592 22.898  28.858    0.503
 
 
@@ -213,7 +297,7 @@ extract_vc(lmer_2, ci_scale = 'var', show_cor = TRUE, digits = 2)
 Computing profile confidence intervals ...
 $`Variance Components`
      group coefficient variance    sd var_2.5 var_97.5 var_prop
-1  Subject   Intercept   611.90 24.74  206.84  1422.33     0.47
+1  Subject   Intercept   611.90 24.74  206.83  1422.50     0.47
 2  Subject        Days    35.08  5.92    0.23     0.47     0.03
 3 Residual               654.94 25.59  524.33   832.78     0.50
 
@@ -228,12 +312,19 @@ extract_vc(nlme_1)
      group coefficient variance    sd sd_lower sd_upper var_prop
 1     Seed        Asym   13.327 3.651    2.479    5.375    0.963
 2 Residual                0.517 0.719    0.609    0.849    0.037
+
+
+extract_vc(brm_1)
+     group coefficient variance     sd sd_2.5 sd_97.5 var_prop
+1  Subject   Intercept  725.797 26.941 15.815  42.461    0.504
+2  Subject        Days   42.382  6.510  4.167   9.880    0.029
+3 Residual              672.173 25.926 23.055  29.275    0.467
 ```
 
 ### Extract heterogeneous variances
 
-Extract heterogeneous variances from nlme (and eventually glmmTMB),
-which only reports the relative standard deviation values by default.
+Extract heterogeneous variances from nlme (and eventually others), which
+only reports the relative standard deviation values by default.
 
 ``` r
 library(nlme)

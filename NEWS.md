@@ -1,3 +1,7 @@
+# mixedup 0.2.1
+
+* Add method to extract_vc for brmsfit objects
+
 # mixedup 0.2.0
 
 * Core functions for primary packages working 
