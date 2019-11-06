@@ -390,11 +390,10 @@ extract_vc.brmsfit <- function(
   ...
 ) {
 
-  if (ci_level > 0) {
-    # convert ci level
-    lower = (1-ci_level)/2
-    vc_0 <- brms::VarCorr(model, probs = c(lower, lower + ci_level))
-  }
+
+  # convert ci level; no check on value really needed until later
+  lower <-  (1 - ci_level)/2
+  vc_0  <- brms::VarCorr(model, probs = c(lower, lower + ci_level))
 
   vc_mat  <- lapply(vc_0, function(x) data.frame(x$sd))
 
@@ -420,10 +419,13 @@ extract_vc.brmsfit <- function(
     )
 
   if (ci_level > 0) {
-    vc <- dplyr::rename_at(dplyr::vars(dplyr::starts_with('Q')), function(x)
-      gsub(x, pattern = 'Q', replacement = paste0(ci_scale, '_')))
+    vc <-
+      vc %>%
+      dplyr::rename_at(dplyr::vars(dplyr::starts_with('Q')), function(x)
+        gsub(x, pattern = 'Q', replacement = paste0(ci_scale, '_')))
     if (ci_scale == 'var') {
-      vc <- vc %>%
+      vc <-
+        vc %>%
         dplyr::mutate_at(dplyr::vars(dplyr::starts_with('var_')), `^`, 2)
     }
   }

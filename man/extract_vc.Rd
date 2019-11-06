@@ -73,5 +73,5 @@ extract_vc(lmer_mod, ci_scale = 'var')
 \seealso{
 \code{\link{confint.merMod}}, \code{\link{VarCorr.merMod}},
   \code{\link{confint.glmmTMB}}, \code{\link{VarCorr.glmmTMB}},
-  \code{\link{intervals}}, \code{\link{VarCorr.lme}}, \code{\link{VarCorr.brm}}
+  \code{\link{intervals}}, \code{\link{VarCorr.lme}}, \code{\link{VarCorr.brmsfit}}
 }

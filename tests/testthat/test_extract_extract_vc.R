@@ -12,6 +12,27 @@ lmer_4 <- lmer(y ~ service + (1 + as.numeric(lectage)| s) + (1 + as.numeric(stud
 lmer_5 <- lmer(y ~ service + (1 + as.numeric(lectage) + as.numeric(studage) + service| d) , data = InstEval[1:5000, ])
 
 
+
+
+# Test initial checks -----------------------------------------------------
+
+
+
+test_that('extract_vc errors with wrong model', {
+  mod = lm(mpg ~ vs, mtcars)
+  expect_error(extract_vc(mod))
+})
+
+test_that('extract_vc errors with wrong ci_level', {
+  expect_error(extract_vc(lmer_1, ci_level = 2))
+})
+
+test_that('extract_vc errors with wrong ci_scale', {
+  expect_error(extract_vc(lmer_1, ci_scale = 'varience'))
+})
+
+
+
 # Test lme4 ---------------------------------------------------------------
 
 context('test extract_vc.merMod')
@@ -48,20 +69,6 @@ test_that('extract_vc.merMod returns correlation', {
   expect_equal(dims$d, c(2, 2))
   expect_equal(dims$s, c(2, 2))
   expect_equal(dims$dept, c(1, 1))
-})
-
-test_that('extract_vc.merMod errors with wrong model', {
-  mod = lm(mpg ~ vs, mtcars)
-  expect_error(extract_vc(mod))
-})
-
-test_that('extract_vc.merMod errors with wrong ci_level', {
-  expect_error(extract_vc(lmer_1, ci_level = 2))
-})
-
-test_that('extract_vc.merMod errors with wrong ci_scale', {
-
-  expect_error(extract_vc(lmer_1, ci_scale = 'varience'))
 })
 
 test_that('extract_vc.merMod works with ci_scale = var', {
@@ -136,19 +143,6 @@ test_that('extract_vc.glmmTMB returns correlation', {
   expect_equal(dims$dept, c(1, 1))
 })
 
-test_that('extract_vc.glmmTMB errors with wrong model', {
-  mod = lm(mpg ~ vs, mtcars)
-  expect_error(extract_vc(mod))
-})
-
-test_that('extract_vc.glmmTMB errors with wrong ci_level', {
-  expect_error(extract_vc(tmb_1, ci_level = 2))
-})
-
-test_that('extract_vc.glmmTMB errors with wrong ci_scale', {
-
-  expect_error(extract_vc(tmb_1, ci_scale = 'varience'))
-})
 
 test_that('extract_vc.glmmTMB works with ci_scale = var', {
 
@@ -219,18 +213,6 @@ test_that('extract_vc.lme returns correlation', {
   expect_equal(dims$s, c(1, 1))
 })
 
-test_that('extract_vc.lme errors with wrong model', {
-  mod = lm(mpg ~ vs, mtcars)
-  expect_error(extract_vc(mod))
-})
-
-test_that('extract_vc.lme errors with wrong ci_level', {
-  expect_error(extract_vc(lme_1, ci_level = 2))
-})
-
-test_that('extract_vc.lme errors with wrong ci_scale', {
-  expect_error(extract_vc(lme_1, ci_scale = 'varience'))
-})
 
 test_that('extract_vc.lme warns with no ci', {
   expect_warning(extract_vc(lme_4))
@@ -248,58 +230,50 @@ test_that('extract_vc.lme works with ci_scale = var', {
 # Test brms ---------------------------------------------------------------
 
 
-context('test extract_vc.brm')
+context('test extract_vc.brmsfit')
 
-# test_that('extract_vc.brm basic functionality: random intercept only', {
-#   expect_s3_class(extract_vc(brm_1, ci_level = 0), 'data.frame')
-# })
-#
-# test_that('extract_vc.brm basic functionality: random slopes', {
-#   expect_s3_class(extract_vc(brm_2, ci_level = 0), 'data.frame')
-# })
-#
-# test_that('extract_vc.brm basic functionality: multiple grouping factors', {
-#   expect_s3_class(extract_vc(brm_3, ci_level = 0), 'data.frame')
-# })
-#
-# test_that('extract_vc.brm basic functionality: ints/slopes with multiple grouping factors', {
-#   expect_s3_class(extract_vc(brm_4, ci_level = 0), 'data.frame')
-# })
-#
-# test_that('extract_vc.brm returns correlation', {
-#   init = extract_vc(brm_2, ci_level = 0, show_cor = TRUE)$Cor[[1]]
-#   expect_equal(dim(init),
-#                c(2, 2))
-# })
-#
-# test_that('extract_vc.brm returns correlation', {
-#   init = extract_vc(brm_4, ci_level = 0, show_cor = TRUE)$Cor
-#
-#   expect_type(init, 'list')
-#
-#   dims = lapply(init, dim)
-#
-#   expect_equal(dims$d, c(2, 2))
-#   expect_equal(dims$s, c(2, 2))
-#   expect_equal(dims$dept, c(1, 1))
-# })
-#
-# test_that('extract_vc.brm errors with wrong model', {
-#   mod = lm(mpg ~ vs, mtcars)
-#   expect_error(extract_vc(mod))
-# })
-#
-# test_that('extract_vc.brm errors with wrong ci_level', {
-#   expect_error(extract_vc(brm_1, ci_level = 2))
-# })
-#
-# test_that('extract_vc.brm errors with wrong ci_scale', {
-#
-#   expect_error(extract_vc(brm_1, ci_scale = 'varience'))
-# })
-#
-# test_that('extract_vc.brm works with ci_scale = var', {
-#
-#   expect_type(extract_vc(brm_1, ci_scale = 'var')$var_2.5, 'double')
-#   expect_type(extract_vc(brm_1, ci_scale = 'sd')$sd_2.5, 'double')
-# })
+test_that('extract_vc.brmsfit basic functionality: random intercept only', {
+  expect_s3_class(extract_vc(brm_1), 'data.frame')
+})
+
+test_that('extract_vc.brmsfit basic functionality: random slopes', {
+  expect_s3_class(extract_vc(brm_2), 'data.frame')
+})
+
+test_that('extract_vc.brmsfit basic functionality: multiple grouping factors', {
+  expect_s3_class(extract_vc(brm_3), 'data.frame')
+})
+
+test_that('extract_vc.brmsfit basic functionality: ints/slopes with multiple grouping factors', {
+  expect_equivalent(unique(extract_vc(brm_4)$group), c('continent', 'country', 'Residual'))
+  expect_equivalent(unique(extract_vc(brm_4)$coefficient), c('Intercept', 'year', ''))
+})
+
+test_that('extract_vc.brmsfit returns correlation', {
+  init = extract_vc(brm_2, ci_level = 0, show_cor = TRUE)$Cor[[1]]
+  expect_equal(dim(init),
+               c(2, 2))
+})
+
+test_that('extract_vc.brmsfit returns correlation', {
+  init = extract_vc(brm_4, ci_level = 0, show_cor = TRUE)$Cor
+
+  expect_type(init, 'list')
+
+  dims = lapply(init, dim)
+
+  expect_equal(dims$continent, c(2, 2))
+  expect_equal(dims$country, c(2, 2))
+})
+
+
+test_that('extract_vc.brmsfit works with ci_scale = var', {
+
+  expect_type(extract_vc(brm_1, ci_scale = 'var')$var_2.5, 'double')
+  expect_type(extract_vc(brm_1, ci_scale = 'sd')$sd_2.5, 'double')
+})
+
+
+test_that('extract_vc.brmsfit basic functionality: non-gaussian', {
+  expect_equal(nrow(extract_vc(brm_glm)), 1)  # no residual var
+})
