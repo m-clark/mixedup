@@ -159,6 +159,8 @@ test_that('extract_vc.glmmTMB works with ci_scale = var', {
 
 # Test nlme ---------------------------------------------------------------
 
+context('test extract_vc.lme')
+
 library(nlme)
 
 lme_1 <- lme(Reaction ~ Days, random = ~ 1 | Subject, data = sleepstudy)
@@ -240,3 +242,64 @@ test_that('extract_vc.lme works with ci_scale = var', {
   expect_type(extract_vc(lme_1, ci_scale = 'var')$var_lower, 'double')
   expect_type(extract_vc(lme_1, ci_scale = 'sd')$sd_lower, 'double')
 })
+
+
+
+# Test brms ---------------------------------------------------------------
+
+
+context('test extract_vc.brm')
+
+# test_that('extract_vc.brm basic functionality: random intercept only', {
+#   expect_s3_class(extract_vc(brm_1, ci_level = 0), 'data.frame')
+# })
+#
+# test_that('extract_vc.brm basic functionality: random slopes', {
+#   expect_s3_class(extract_vc(brm_2, ci_level = 0), 'data.frame')
+# })
+#
+# test_that('extract_vc.brm basic functionality: multiple grouping factors', {
+#   expect_s3_class(extract_vc(brm_3, ci_level = 0), 'data.frame')
+# })
+#
+# test_that('extract_vc.brm basic functionality: ints/slopes with multiple grouping factors', {
+#   expect_s3_class(extract_vc(brm_4, ci_level = 0), 'data.frame')
+# })
+#
+# test_that('extract_vc.brm returns correlation', {
+#   init = extract_vc(brm_2, ci_level = 0, show_cor = TRUE)$Cor[[1]]
+#   expect_equal(dim(init),
+#                c(2, 2))
+# })
+#
+# test_that('extract_vc.brm returns correlation', {
+#   init = extract_vc(brm_4, ci_level = 0, show_cor = TRUE)$Cor
+#
+#   expect_type(init, 'list')
+#
+#   dims = lapply(init, dim)
+#
+#   expect_equal(dims$d, c(2, 2))
+#   expect_equal(dims$s, c(2, 2))
+#   expect_equal(dims$dept, c(1, 1))
+# })
+#
+# test_that('extract_vc.brm errors with wrong model', {
+#   mod = lm(mpg ~ vs, mtcars)
+#   expect_error(extract_vc(mod))
+# })
+#
+# test_that('extract_vc.brm errors with wrong ci_level', {
+#   expect_error(extract_vc(brm_1, ci_level = 2))
+# })
+#
+# test_that('extract_vc.brm errors with wrong ci_scale', {
+#
+#   expect_error(extract_vc(brm_1, ci_scale = 'varience'))
+# })
+#
+# test_that('extract_vc.brm works with ci_scale = var', {
+#
+#   expect_type(extract_vc(brm_1, ci_scale = 'var')$var_2.5, 'double')
+#   expect_type(extract_vc(brm_1, ci_scale = 'sd')$sd_2.5, 'double')
+# })

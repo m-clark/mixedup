@@ -7,7 +7,7 @@
 cleanup_coefs(re_names, ran_coefs, se)
 }
 \arguments{
-\item{re_names}{Names of the randome effects}
+\item{re_names}{Names of the random effects}
 
 \item{ran_coefs}{The coefficients}
 
