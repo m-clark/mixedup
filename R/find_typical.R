@@ -55,6 +55,30 @@ find_typical <- function(
     re_typical <- dplyr::slice(re, idx)
   }
   else {
+    p_names <- paste0(probs * 100, "%")
+    res = lapply(re[, -1, drop = FALSE], quantile, probs = probs, na.rm = TRUE)
+
+    # get indices of values nearest quantiles; looked at ecdf, but wasn't really able to simplify
+    indices = purrr::map2(
+      re[, -1, drop = FALSE],
+      res,
+      function(x, y)
+        map_int(y, function(z)
+          which.min(abs(x - z)))
+    )
+
+    # extract
+    re_typical = map2_df(indices,
+                   re_names,
+                   function(x, y) select(slice(re, x), group, y))
+    return(
+      re_typical %>%
+        pivot_longer(cols = re_names, names_to = 'effect') %>%
+        drop_na() %>%
+        group_by(effect) %>%
+        mutate(probs = p_names) %>%
+        ungroup()
+    )
 
   }
 
