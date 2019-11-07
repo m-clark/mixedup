@@ -25,5 +25,5 @@ extract_nlme_variances <- function(model) {
   out = (c(1.0, init) * model$sigma) ^ 2
   reflev = attributes(model$modelStruct$varStruct)$groupNames[1]
   names(out)[1] = reflev
-  out
+  as.data.frame(out)
 }

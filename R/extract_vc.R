@@ -316,13 +316,18 @@ extract_vc.lme <- function(
       ci_residual$group <- 'Residual'
       ci <- rbind(ci_re, data.frame(ci_residual))
 
+      lower_val = (1 - ci_level) / 2
+      upper_val = (ci_level + lower_val)
+
       if (ci_scale == 'var') {
         ci <- ci[,1:3]^2
-        ci <- dplyr::rename(ci, var_lower = lower, var_upper = upper)
+        colnames(ci)[colnames(ci) %in% c('lower', 'upper')] =
+          c(paste0('var_', 100 * lower_val), paste0('var_', 100 * upper_val))
         ci <- dplyr::rename(ci, var = est.)
       }
       else {
-        ci <- dplyr::rename(ci, sd_lower = lower, sd_upper = upper)
+        colnames(ci)[colnames(ci) %in% c('lower', 'upper')] =
+          c(paste0('sd_', 100 * lower_val), paste0('sd_', 100 * upper_val))
         ci <- dplyr::rename(ci, sd = est.)
       }
 
@@ -342,15 +347,15 @@ extract_vc.lme <- function(
   vc <- dplyr::rename(vc, sd = StdDev)
   vc <- dplyr::rename_all(vc, tolower)
 
-  # reorder columns
+  # reorder columns, with var_prop at the end
   if (is.null(ci)) {
-    vc <- dplyr::select(vc, group, coefficient, dplyr::everything())
+    vc <- dplyr::select(vc,
+                        group, coefficient, dplyr::everything(), -var_prop, var_prop)
   }
   else {
-    vc <- cbind(vc, dplyr::select(ci, dplyr::matches('upper|lower')))
+    vc <- cbind(vc, dplyr::select(ci, dplyr::matches('var\\_|sd\\_')))
     vc <- dplyr::select(vc,
-                        group, coefficient, dplyr::matches('sd$|variance'),
-                        dplyr::matches('upper|lower'), var_prop)
+                        group, coefficient, dplyr::everything(), -var_prop, var_prop)
   }
 
   vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)

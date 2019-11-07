@@ -221,8 +221,8 @@ test_that('extract_vc.lme warns with no ci', {
 
 # maybe change names for consistency to other objects in the future
 test_that('extract_vc.lme works with ci_scale = var', {
-  expect_type(extract_vc(lme_1, ci_scale = 'var')$var_lower, 'double')
-  expect_type(extract_vc(lme_1, ci_scale = 'sd')$sd_lower, 'double')
+  expect_type(extract_vc(lme_1, ci_scale = 'var')$var_2.5, 'double')
+  expect_type(extract_vc(lme_1, ci_scale = 'sd')$sd_2.5, 'double')
 })
 
 

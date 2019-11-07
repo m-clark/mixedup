@@ -141,9 +141,9 @@ Chain 1: Adjust your expectations accordingly!
 Chain 1: 
 Chain 1: 
 Chain 1: 
-Chain 1:  Elapsed Time: 1.973 seconds (Warm-up)
-Chain 1:                0.691 seconds (Sampling)
-Chain 1:                2.664 seconds (Total)
+Chain 1:  Elapsed Time: 1.77 seconds (Warm-up)
+Chain 1:                0.799 seconds (Sampling)
+Chain 1:                2.569 seconds (Total)
 Chain 1: 
 Chain 2: 
 Chain 2: Gradient evaluation took 0 seconds
@@ -152,9 +152,9 @@ Chain 2: Adjust your expectations accordingly!
 Chain 2: 
 Chain 2: 
 Chain 2: 
-Chain 2:  Elapsed Time: 1.878 seconds (Warm-up)
-Chain 2:                0.861 seconds (Sampling)
-Chain 2:                2.739 seconds (Total)
+Chain 2:  Elapsed Time: 1.9 seconds (Warm-up)
+Chain 2:                1.112 seconds (Sampling)
+Chain 2:                3.012 seconds (Total)
 Chain 2: 
 Chain 3: 
 Chain 3: Gradient evaluation took 0 seconds
@@ -163,9 +163,9 @@ Chain 3: Adjust your expectations accordingly!
 Chain 3: 
 Chain 3: 
 Chain 3: 
-Chain 3:  Elapsed Time: 1.882 seconds (Warm-up)
-Chain 3:                1.003 seconds (Sampling)
-Chain 3:                2.885 seconds (Total)
+Chain 3:  Elapsed Time: 2.093 seconds (Warm-up)
+Chain 3:                0.693 seconds (Sampling)
+Chain 3:                2.786 seconds (Total)
 Chain 3: 
 Chain 4: 
 Chain 4: Gradient evaluation took 0 seconds
@@ -174,9 +174,9 @@ Chain 4: Adjust your expectations accordingly!
 Chain 4: 
 Chain 4: 
 Chain 4: 
-Chain 4:  Elapsed Time: 2.127 seconds (Warm-up)
-Chain 4:                0.736 seconds (Sampling)
-Chain 4:                2.863 seconds (Total)
+Chain 4:  Elapsed Time: 2.057 seconds (Warm-up)
+Chain 4:                0.798 seconds (Sampling)
+Chain 4:                2.855 seconds (Total)
 Chain 4: 
 ```
 
@@ -309,16 +309,16 @@ Days           0.07 1.00
 
 
 extract_vc(nlme_1)
-     group coefficient variance    sd sd_lower sd_upper var_prop
-1     Seed        Asym   13.327 3.651    2.479    5.375    0.963
-2 Residual                0.517 0.719    0.609    0.849    0.037
+     group coefficient variance    sd sd_2.5 sd_97.5 var_prop
+1     Seed        Asym   13.327 3.651  2.479   5.375    0.963
+2 Residual                0.517 0.719  0.609   0.849    0.037
 
 
 extract_vc(brm_1)
      group coefficient variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject   Intercept  725.797 26.941 15.815  42.461    0.504
-2  Subject        Days   42.382  6.510  4.167   9.880    0.029
-3 Residual              672.173 25.926 23.055  29.275    0.467
+1  Subject   Intercept  734.783 27.107 15.784  42.241    0.507
+2  Subject        Days   43.719  6.612  4.138  10.238    0.030
+3 Residual              671.248 25.908 22.985  29.209    0.463
 ```
 
 ### Extract heterogeneous variances
