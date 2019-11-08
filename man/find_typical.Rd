@@ -4,7 +4,7 @@
 \alias{find_typical}
 \title{Find typical groups}
 \usage{
-find_typical(model, re = NULL, probs = NULL)
+find_typical(model, re = NULL, probs = NULL, ...)
 }
 \arguments{
 \item{model}{A supported model, e.g. lme4, glmmTMB, or lme}
@@ -12,6 +12,8 @@ find_typical(model, re = NULL, probs = NULL)
 \item{re}{The name of the grouping variable for the random effects.}
 
 \item{probs}{Quantile probabilities}
+
+\item{...}{Other arguments to pass to \link{extract_random_effects}}
 }
 \value{
 A data frame of group label(s) and their random effect values.
@@ -50,5 +52,4 @@ library(lme4)
 lmer_1 <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
 find_typical(lmer_1, re = 'Subject')
-
 }

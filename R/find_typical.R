@@ -4,6 +4,7 @@
 #'
 #' @param model A supported model, e.g. lme4, glmmTMB, or lme
 #' @param probs Quantile probabilities
+#' @param ... Other arguments to pass to \link{extract_random_effects}
 #'
 #' @details In many cases, predictions are made by holding the random effects to
 #'   zero, which can be seen as the typical case. When the clusters carry
@@ -38,17 +39,20 @@
 #' lmer_1 <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #'
 #' find_typical(lmer_1, re = 'Subject')
-#'
+#' @importFrom purrr map2 map2_df map_int
+#' @importFrom tidyr pivot_longer drop_na
+#' @importFrom stats quantile
 #' @export
 find_typical <- function(
   model,
   re = NULL,
-  probs = NULL
+  probs = NULL,
+  ...
 ) {
 
-  re <- extract_random_effects(model, re = re)
+  re <- extract_random_effects(model, re = re, ...)
   re <- dplyr::select(re, -dplyr::starts_with('se_'))
-  re_names <- colnames(re)[-1]
+  re_names <- colnames(re)[-1]  # 1 is the 'group' column
 
   if (is.null(probs)) {
     idx <- sapply(re[, -1, drop = FALSE], function(x) which.min(abs(x)))
@@ -63,30 +67,33 @@ find_typical <- function(
       re[, -1, drop = FALSE],
       res,
       function(x, y)
-        map_int(y, function(z)
+        purrr::map_int(y, function(z)
           which.min(abs(x - z)))
     )
 
     # extract
-    re_typical = map2_df(indices,
-                   re_names,
-                   function(x, y) select(slice(re, x), group, y))
-    return(
-      re_typical %>%
-        pivot_longer(cols = re_names, names_to = 'effect') %>%
-        drop_na() %>%
-        group_by(effect) %>%
-        mutate(probs = p_names) %>%
-        ungroup()
+    re_typical = map2_df(
+      indices,
+      re_names,
+      function(x, y)
+        dplyr::select(dplyr::slice(re, x), group, y)
     )
 
+    return(
+      re_typical %>%
+        tidyr::pivot_longer(cols = re_names, names_to = 'effect') %>%
+        tidyr::drop_na() %>%
+        dplyr::group_by(effect) %>%
+        dplyr::mutate(probs = p_names) %>%
+        dplyr::ungroup()
+    )
   }
 
   re <- dplyr::mutate(
     re_typical,
     effect = re_names,
     value  = diag(as.matrix(dplyr::select(re_typical, re_names)))
-    )
+  )
 
   dplyr::select(re, group, effect, value)
 }

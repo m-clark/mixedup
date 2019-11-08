@@ -17,11 +17,13 @@ Depends:
 Imports:
     dplyr,
     tidyr (>= 1.0.0),
+    purrr,
     lme4,
     glmmTMB,
     nlme
 Suggests:
     testthat (>= 2.1.0),
     covr,
-    knitr
+    knitr,
+    brms
 RoxygenNote: 6.1.1
