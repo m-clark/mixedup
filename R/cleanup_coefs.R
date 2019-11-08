@@ -2,7 +2,7 @@
 #'
 #' Only used internally to clean up names.
 #'
-#' @param re_names Names of the randome effects
+#' @param re_names Names of the random effects
 #' @param ran_coefs The coefficients
 #' @param se The standard errors of the coefficients
 #'

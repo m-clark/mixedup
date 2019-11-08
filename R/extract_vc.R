@@ -1,9 +1,8 @@
 #' Extract variance components
 #'
-#' @description Right now this only works for lme4 and glmmTMB model objects (i.e.
-#'   \code{merMod}).
+#' @description This has functionality for simpler models from \code{lme4}, \code{glmmTMB}, \code{nlme}, and \code{brms}.
 #'
-#' @param model an lme4 or glmmTMB model
+#' @param model an lme4, glmmTMB, nlme, or brms model
 #' @param ci_level confidence level < 1, typically above 0.90. A value of 0 will
 #'   not report it. Default is .95.
 #' @param ci_args Additional arguments to the corresponding confint method.
@@ -28,7 +27,7 @@
 #'
 #' @seealso \code{\link{confint.merMod}}, \code{\link{VarCorr.merMod}},
 #'   \code{\link{confint.glmmTMB}}, \code{\link{VarCorr.glmmTMB}},
-#'   \code{\link{intervals}}, \code{\link{VarCorr.lme}}
+#'   \code{\link{intervals}}, \code{\link{VarCorr.lme}}, \code{\link{VarCorr.brmsfit}}
 #'
 #' @examples
 #' library(lme4)
@@ -50,8 +49,8 @@ extract_vc <- function(
   digits = 3,
   ...
 ) {
-  if (!inherits(model, c('merMod', 'glmmTMB', 'lme')))
-    stop('This only works for model objects from lme4, glmmTMB, and nlme.')
+  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit')))
+    stop('This only works for model objects from lme4, glmmTMB, brms, and nlme.')
 
   if (ci_level < 0 | ci_level >= 1)
     stop('Nonsensical confidence level for ci_level.  Must be between 0 and 1.')
@@ -243,8 +242,11 @@ extract_vc.glmmTMB <- function(
 
   vc
 }
+
+
 #' @importFrom tidyr fill
 #' @importFrom nlme ranef intervals
+#' @rdname extract_vc
 #' @export
 extract_vc.lme <- function(
   model,
@@ -314,13 +316,18 @@ extract_vc.lme <- function(
       ci_residual$group <- 'Residual'
       ci <- rbind(ci_re, data.frame(ci_residual))
 
+      lower_val = (1 - ci_level) / 2
+      upper_val = (ci_level + lower_val)
+
       if (ci_scale == 'var') {
         ci <- ci[,1:3]^2
-        ci <- dplyr::rename(ci, var_lower = lower, var_upper = upper)
+        colnames(ci)[colnames(ci) %in% c('lower', 'upper')] =
+          c(paste0('var_', 100 * lower_val), paste0('var_', 100 * upper_val))
         ci <- dplyr::rename(ci, var = est.)
       }
       else {
-        ci <- dplyr::rename(ci, sd_lower = lower, sd_upper = upper)
+        colnames(ci)[colnames(ci) %in% c('lower', 'upper')] =
+          c(paste0('sd_', 100 * lower_val), paste0('sd_', 100 * upper_val))
         ci <- dplyr::rename(ci, sd = est.)
       }
 
@@ -340,15 +347,15 @@ extract_vc.lme <- function(
   vc <- dplyr::rename(vc, sd = StdDev)
   vc <- dplyr::rename_all(vc, tolower)
 
-  # reorder columns
+  # reorder columns, with var_prop at the end
   if (is.null(ci)) {
-    vc <- dplyr::select(vc, group, coefficient, dplyr::everything())
+    vc <- dplyr::select(vc,
+                        group, coefficient, dplyr::everything(), -var_prop, var_prop)
   }
   else {
-    vc <- cbind(vc, dplyr::select(ci, dplyr::matches('upper|lower')))
+    vc <- cbind(vc, dplyr::select(ci, dplyr::matches('var\\_|sd\\_')))
     vc <- dplyr::select(vc,
-                        group, coefficient, dplyr::matches('sd$|variance'),
-                        dplyr::matches('upper|lower'), var_prop)
+                        group, coefficient, dplyr::everything(), -var_prop, var_prop)
   }
 
   vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)
@@ -372,3 +379,84 @@ extract_vc.lme <- function(
   vc
 }
 
+
+
+#' @importFrom dplyr %>%
+#' @rdname extract_vc
+#' @export
+extract_vc.brmsfit <- function(
+  model,
+  ci_level = .95,
+  ci_args = NULL,
+  ci_scale = 'sd',
+  component = 'cond',
+  show_cor = FALSE,
+  digits = 3,
+  ...
+) {
+
+
+  # convert ci level; no check on value really needed until later
+  lower <-  (1 - ci_level)/2
+  vc_0  <- brms::VarCorr(model, probs = c(lower, lower + ci_level))
+
+  vc_mat  <- lapply(vc_0, function(x) data.frame(x$sd))
+
+  # make prettier names
+  effect_names <- unlist(lapply(vc_mat, rownames))
+  effect_names <- ifelse(effect_names == '1', '', effect_names)
+
+  group_names <- rep(names(vc_mat), sapply(vc_mat, nrow))
+  group_names <- gsub(group_names, pattern = '\\_\\_', replacement = '')
+  group_names <- ifelse(group_names == 'residual', 'Residual', group_names)
+
+  vc = do.call(rbind, vc_mat)
+
+  # create basic output with correct names
+  vc = vc %>%
+    dplyr::mutate(
+      coefficient = effect_names,
+      group = group_names,
+      variance = Estimate^2
+    ) %>%
+    dplyr::rename(
+      sd = Estimate
+    )
+
+  if (ci_level > 0) {
+    vc <-
+      vc %>%
+      dplyr::rename_at(dplyr::vars(dplyr::starts_with('Q')), function(x)
+        gsub(x, pattern = 'Q', replacement = paste0(ci_scale, '_')))
+    if (ci_scale == 'var') {
+      vc <-
+        vc %>%
+        dplyr::mutate_at(dplyr::vars(dplyr::starts_with('var_')), `^`, 2)
+    }
+  }
+
+  vc <- vc %>%
+    dplyr::select(group, coefficient, variance, sd, dplyr::matches('\\_')) %>%
+    dplyr::mutate(var_prop = variance / sum(variance)) %>%
+    dplyr::mutate_if(is.numeric, round, digits = digits)
+
+  if (show_cor) {
+    # rerun with VarCorr with summary FALSE and extract array of cor matrices
+    cormats <-
+      lapply(brms::VarCorr(
+        model,
+        probs = c(lower, lower + ci_level),
+        summary = FALSE
+      ), `[[`, 'cor')
+
+    # remove NULL cor
+    cormats = cormats[!sapply(cormats, is.null)]
+
+    # get mean matrix
+    cormats = lapply(cormats, function(x) apply(x, 2:3, mean))
+
+    return(list(`Variance Components` = vc, Cor = cormats))
+  }
+
+  vc
+}

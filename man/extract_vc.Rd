@@ -4,6 +4,8 @@
 \alias{extract_vc}
 \alias{extract_vc.merMod}
 \alias{extract_vc.glmmTMB}
+\alias{extract_vc.lme}
+\alias{extract_vc.brmsfit}
 \title{Extract variance components}
 \usage{
 extract_vc(model, ci_level = 0.95, ci_args = NULL, ci_scale = "sd",
@@ -15,9 +17,16 @@ extract_vc(model, ci_level = 0.95, ci_args = NULL, ci_scale = "sd",
 \method{extract_vc}{glmmTMB}(model, ci_level = 0.95, ci_args = NULL,
   ci_scale = "sd", component = "cond", show_cor = FALSE,
   digits = 3, ...)
+
+\method{extract_vc}{lme}(model, ci_level = 0.95, ci_args = NULL,
+  ci_scale = "sd", component, show_cor = FALSE, digits = 3, ...)
+
+\method{extract_vc}{brmsfit}(model, ci_level = 0.95, ci_args = NULL,
+  ci_scale = "sd", component = "cond", show_cor = FALSE,
+  digits = 3, ...)
 }
 \arguments{
-\item{model}{an lme4 or glmmTMB model}
+\item{model}{an lme4, glmmTMB, nlme, or brms model}
 
 \item{ci_level}{confidence level < 1, typically above 0.90. A value of 0 will
 not report it. Default is .95.}
@@ -44,8 +53,7 @@ A data frame with output for variance components or list that also
 contains the correlations of the random effects.
 }
 \description{
-Right now this only works for lme4 and glmmTMB model objects (i.e.
-  \code{merMod}).
+This has functionality for simpler models from \code{lme4}, \code{glmmTMB}, \code{nlme}, and \code{brms}.
 }
 \details{
 Returns a more usable (my opinion) version of variance components
@@ -65,5 +73,5 @@ extract_vc(lmer_mod, ci_scale = 'var')
 \seealso{
 \code{\link{confint.merMod}}, \code{\link{VarCorr.merMod}},
   \code{\link{confint.glmmTMB}}, \code{\link{VarCorr.glmmTMB}},
-  \code{\link{intervals}}, \code{\link{VarCorr.lme}}
+  \code{\link{intervals}}, \code{\link{VarCorr.lme}}, \code{\link{VarCorr.brmsfit}}
 }

@@ -41,6 +41,7 @@ devtools::install_github('m-clark/mixedup')
 - [X] lme4
 - [X] glmmTMB
 - [X] nlme
+- [X] brms
 
 ##### Extract Random Effects
 
@@ -66,7 +67,7 @@ devtools::install_github('m-clark/mixedup')
 - [ ] nlme
 
 
-Just a note, <span class="pack" style = "">nlme</span> has pretty much been superceded by <span class="pack" style = "">glmmTMB</span>, <span class="pack" style = "">brms</span>, and others, so support here is pretty minimal.
+Just a note, <span class="pack" style = "">nlme</span> has pretty much been superseded by <span class="pack" style = "">glmmTMB</span>, <span class="pack" style = "">brms</span>, and others, so support here is pretty minimal.
 
 ## Examples
 
@@ -92,6 +93,10 @@ nlme_1 <-  nlme(
   random = Asym ~ 1,
   start = c(Asym = 103, R0 = -8.5, lrc = -3.3)
 )
+
+library(brms)
+
+brm_1 = brm(Reaction ~ Days + (1 + Days| Subject), data = sleepstudy, refresh = -1)
 ```
 
 
@@ -132,12 +137,15 @@ extract_vc(lmer_2, ci_scale = 'var', show_cor = TRUE, digits = 2)
 
 
 extract_vc(nlme_1)
+
+
+extract_vc(brm_1)
 ```
 
 
 ### Extract heterogeneous variances
 
-Extract heterogeneous variances from nlme (and eventually glmmTMB), which only reports the relative standard deviation values by default.
+Extract heterogeneous variances from nlme (and eventually others), which only reports the relative standard deviation values by default.
 
 ```{r nlme}
 library(nlme)
