@@ -1,4 +1,8 @@
-# mixedup (development version)
+# mixedup 0.2.3
+
+* Add find_typical
+
+# mixedup 0.2.2
 
 * Minor edit to fix ordering and names for extract_vc.lme
 
