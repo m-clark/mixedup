@@ -1,18 +1,5 @@
 context('test extract_vc')
 
-# Test data ---------------------------------------------------------------
-
-library(lme4)
-
-lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-lmer_2 <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
-lmer_3 <- lmer(y ~ service + (1 | s) + (1 | d), data = InstEval[1:1000, ])
-# unusually complex models just for testing
-lmer_4 <- lmer(y ~ service + (1 + as.numeric(lectage)| s) + (1 + as.numeric(studage)| d) + (1|dept), data = InstEval[1:5000, ])
-lmer_5 <- lmer(y ~ service + (1 + as.numeric(lectage) + as.numeric(studage) + service| d) , data = InstEval[1:5000, ])
-
-
-
 
 # Test initial checks -----------------------------------------------------
 
@@ -86,24 +73,6 @@ test_that('extract_vc.merMod works with ci_scale = var', {
 
 context('test extract_vc.glmmTMB')
 
-library(glmmTMB)
-
-tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
-tmb_3 <- glmmTMB(y ~ service + (1 | s) + (1 | d), data = InstEval[1:1000, ])
-
-suppressWarnings({
-tmb_4 <- glmmTMB(y ~ service + (1 + as.numeric(lectage)| s) + (1 + as.numeric(studage)| d) + (1|dept),
-                 data = InstEval[1:5000, ])
-})
-
-tmb_zip <- glmmTMB(
-  count ~ spp + mined + (1 | site),
-  zi =  ~ spp + mined + (1 | site),
-  family = truncated_poisson,
-  data = Salamanders
-)
-
 
 test_that('extract_vc basic functionality: random intercept only', {
   expect_s3_class(extract_vc(tmb_1, ci_level = 0), 'data.frame')
@@ -155,27 +124,6 @@ test_that('extract_vc.glmmTMB works with ci_scale = var', {
 
 context('test extract_vc.lme')
 
-library(nlme)
-
-lme_1 <- lme(Reaction ~ Days, random = ~ 1 | Subject, data = sleepstudy)
-lme_2 <- lme(Reaction ~ Days, random = ~ 1 + Days | Subject, data = sleepstudy)
-lme_3 <- lme(y ~ service,
-             random = list(d = ~ 1, s = ~ 1),
-             data = droplevels(InstEval[1:1000, ]))
-lme_4 <- lme(y ~ service,
-             random = list(d = ~ 1 + service, s = ~ 1 ),
-             data = droplevels(InstEval[1:3000, ]))
-
-# won't converge
-# lme_5 <- lme(y ~ service,
-#              random = list(d = ~ 1 + as.numeric(lectage) + as.numeric(studage) + service) ,
-#              data = droplevels(InstEval[1:5000, ]))
-
-nlme_1 <-  nlme(height ~ SSasymp(age, Asym, R0, lrc),
-                data = Loblolly,
-                fixed = Asym + R0 + lrc ~ 1,
-                random = Asym ~ 1,
-                start = c(Asym = 103, R0 = -8.5, lrc = -3.3))
 
 test_that('extract_vc.lme basic functionality: random intercept only', {
   expect_s3_class(extract_vc(lme_1, ci_level = 0), 'data.frame')

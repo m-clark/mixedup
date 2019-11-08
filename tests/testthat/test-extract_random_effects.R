@@ -13,15 +13,6 @@ test_that('extract_random_effects errors with wrong type of model', {
 # lme4 --------------------------------------------------------------------
 
 
-library(lme4)
-
-lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-lmer_2 <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
-lmer_3 <- lmer(y ~ service + (1 | s) + (1 | d), data = InstEval[1:1000, ])
-
-
-
-
 context('test extract_random_effects.merMod')
 
 test_that('extract_random_effects.merMod basic functionality', {
@@ -58,16 +49,6 @@ test_that('extract_random_effects.merMod errors with bad re name', {
 
 context('test extract_random_effects.glmmTMB')
 
-library(glmmTMB)
-
-tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
-tmb_3 <- glmmTMB(y ~ service + (1 | s) + (1 | d), data = InstEval[1:1000, ])
-tmb_zip <- glmmTMB(
-  count ~ spp + mined + (1 | site),
-  zi =  ~ spp + mined + (1 | site),
-  family = truncated_poisson, Salamanders
-)
 
 test_that('extract_random_effects basic functionality', {
   expect_s3_class(extract_random_effects(tmb_1, re = 'Subject'), 'data.frame')
@@ -102,17 +83,6 @@ test_that('extract_random_effects errors with bad re name', {
 
 # nlme --------------------------------------------------------------------
 
-library(nlme)
-
-lme_1 <- lme(Reaction ~ Days, random = ~ 1 | Subject, data = sleepstudy)
-lme_2 <- lme(Reaction ~ Days, random = ~ 1 + Days | Subject, data = sleepstudy)
-lme_3 <- lme(y ~ service, random = list(s = ~ 1, d = ~ 1), data = InstEval[1:1000, ])
-
-nlme_1 <-  nlme(height ~ SSasymp(age, Asym, R0, lrc),
-                data = Loblolly,
-                fixed = Asym + R0 + lrc ~ 1,
-                random = Asym ~ 1,
-                start = c(Asym = 103, R0 = -8.5, lrc = -3.3))
 
 context('test extract_random_effects.lme')
 
@@ -137,8 +107,8 @@ test_that('extract_random_effects.lme warns with no group input', {
 
 test_that('extract_random_effects.lme works with multiple re', {
   expect_equal(
-    nrow(extract_random_effects(lme_3, re = 's')),
-    nlevels(droplevels(lme_3$data)$s)
+    nrow(extract_random_effects(lme_3, re = 'd')),
+    nlevels(droplevels(lme_3$data)$d)
   )
 })
 

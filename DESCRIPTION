@@ -25,6 +25,5 @@ Suggests:
     testthat (>= 2.1.0),
     brms,
     covr,
-    knitr,
-    brms
+    knitr
 RoxygenNote: 6.1.1

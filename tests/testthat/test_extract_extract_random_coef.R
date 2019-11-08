@@ -1,27 +1,6 @@
 context('test extract_random_coef')
 
 
-# Test data ---------------------------------------------------------------
-
-library(lme4)
-
-lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-lmer_2 <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
-lmer_3 <- lmer(y ~ service + (1 | s) + (1 | d), data = InstEval[1:1000, ])
-
-library(glmmTMB)
-
-tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
-tmb_3 <- glmmTMB(y ~ service + (1 | s) + (1 | d), data = InstEval[1:1000, ])
-tmb_zip <- glmmTMB(
-  count ~ spp + mined + (1 | site),
-  zi =  ~ spp + mined,
-  family = truncated_poisson, Salamanders
-)
-
-
-
 # Overall -----------------------------------------------------------------
 
 test_that('extract_random_coef errors with wrong type of model', {
@@ -81,18 +60,6 @@ test_that('extract_random_coef warns with no group input', {
 
 
 # nlme --------------------------------------------------------------------
-
-library(nlme)
-
-lme_1 <- lme(Reaction ~ Days, random = ~ 1 | Subject, data = sleepstudy)
-lme_2 <- lme(Reaction ~ Days, random = ~ 1 + Days | Subject, data = sleepstudy)
-lme_3 <- lme(y ~ service, random = list(s = ~ 1, d = ~ 1), data = InstEval[1:1000, ])
-
-nlme_1 <-  nlme(height ~ SSasymp(age, Asym, R0, lrc),
-                data = Loblolly,
-                fixed = Asym + R0 + lrc ~ 1,
-                random = Asym ~ 1,
-                start = c(Asym = 103, R0 = -8.5, lrc = -3.3))
 
 
 context('test extract_random_coef.lme')
