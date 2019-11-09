@@ -26,7 +26,7 @@ Extracts the random effects and their standard errors.
 }
 \details{
 Relative to \code{ranef} for the various packages, this just adds
-  the standard errors and cluster ids as columns.
+  the standard errors and cluster ids as columns, and intervals for brmsfit objects.
 
 \code{nlme} only provides the estimated random effect parameters, not their uncertainty, so it isn't provided.
 }
@@ -38,5 +38,5 @@ extract_random_effects(lmer_2)
 }
 \seealso{
 \code{\link{extract_random_coef}}, \code{\link{ranef.merMod}},
-\code{\link{ranef.glmmTMB}}, \code{\link{ranef.lme}}
+\code{\link{ranef.glmmTMB}}, \code{\link{ranef.lme}}, \code{\link{ranef.brmsfit}}
 }

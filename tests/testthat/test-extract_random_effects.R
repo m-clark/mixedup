@@ -15,6 +15,13 @@ test_that('extract_random_effects errors with wrong type of model', {
 
 context('test extract_random_effects.merMod')
 
+test_that("lme4 installation is checked", {
+  with_mock(
+    'mixedup::is_package_installed' = function() FALSE,
+    expect_error(extract_random_effects(lmer_1, re = 'Subject'))
+  )
+})
+
 test_that('extract_random_effects.merMod basic functionality', {
   expect_s3_class(extract_random_effects(lmer_1, re = 'Subject'), 'data.frame')
 })
@@ -49,6 +56,12 @@ test_that('extract_random_effects.merMod errors with bad re name', {
 
 context('test extract_random_effects.glmmTMB')
 
+test_that("glmmTMB installation is checked", {
+  with_mock(
+    'mixedup::is_package_installed' = function() FALSE,
+    expect_error(extract_random_effects(tmb_1, re = 'Subject'))
+  )
+})
 
 test_that('extract_random_effects basic functionality', {
   expect_s3_class(extract_random_effects(tmb_1, re = 'Subject'), 'data.frame')
@@ -85,6 +98,8 @@ test_that('extract_random_effects errors with bad re name', {
 
 
 context('test extract_random_effects.lme')
+
+# no check on package install as it is a base/recommended package
 
 test_that('extract_random_effects.lme basic functionality', {
   expect_s3_class(extract_random_effects(lme_1, re = 'Subject'), 'data.frame')
@@ -123,3 +138,46 @@ test_that('extract_random_effects.lme works with nlme', {
     nlevels(Loblolly$Seed)
   )
 })
+
+
+# brms --------------------------------------------------------------------
+
+context('test extract_random_effects.brmsfit')
+
+test_that("brms installation is checked", {
+  with_mock(
+    'mixedup::is_package_installed' = function() FALSE,
+    expect_error(extract_random_effects(brm_1, re = 'Subject'))
+  )
+})
+
+test_that('extract_random_effects.brmsfit basic functionality', {
+  expect_s3_class(extract_random_effects(brm_1, re = 'Subject'), 'data.frame')
+})
+
+test_that('extract_random_effects.brmsfit basic functionality', {
+  expect_s3_class(extract_random_effects(brm_2, re = 'Subject'), 'data.frame')
+})
+
+test_that('extract_random_effects.brmsfit correct output', {
+  expect_equal(
+    nrow(extract_random_effects(brm_2, re = 'Subject')),
+    nlevels(sleepstudy$Subject)
+  )
+})
+
+test_that('extract_random_effects.brmsfit warns with no group input', {
+  expect_warning(extract_random_effects(brm_1))
+})
+
+test_that('extract_random_effects.brmsfit works with multiple re', {
+  expect_equal(
+    nrow(extract_random_effects(brm_3, re = 's')),
+    nlevels(brm_3$data$s)
+  )
+})
+
+test_that('extract_random_effects.brmsfit errors with bad re name', {
+  expect_error(extract_random_effects(brm_2, re = 'subject'))
+})
+

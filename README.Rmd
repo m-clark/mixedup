@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](https://codecov.io/gh/m-clark/mixedup?branch=master)
 <!-- badges: end -->
 
-Provides extended functionality for mixed models. The goal of mixedup is to solve little problems that slip through the cracks from the various packages, broom, and others.  Basically the idea is to create objects that are easy to use and mostly ready for presentation.
+Provides extended functionality for mixed models. The goal of mixedup is to solve little problems that slip through the cracks from the various packages, broom, and others.  Basically the idea is to create (tidy) objects that are easy to use and mostly ready for presentation, and consistent across packages.
 
 ## Installation
 
@@ -48,6 +48,7 @@ devtools::install_github('m-clark/mixedup')
 - [X] lme4
 - [X] glmmTMB
 - [X] nlme
+- [X] brms
 
 ##### Extract Random Coefficients
 
@@ -110,7 +111,10 @@ library(mixedup)
 extract_random_effects(lmer_1, re = 'Subject')
 
 
-extract_random_effects(lmer_2, re = 'Subject')
+extract_random_effects(tmb_2, re = 'Subject')
+
+
+extract_random_effects(brm_2, re = 'Subject')
 ```
 
 

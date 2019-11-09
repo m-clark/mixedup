@@ -15,6 +15,7 @@ utils::globalVariables(
     'Estimate',
     'sd',
     'effect',
-    'value'
+    'value',
+    'Est.Error'
   )
 )

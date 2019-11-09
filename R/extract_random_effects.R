@@ -5,7 +5,7 @@
 #' @inheritParams extract_random_coef
 #'
 #' @details Relative to \code{ranef} for the various packages, this just adds
-#'   the standard errors and cluster ids as columns.
+#'   the standard errors and cluster ids as columns, and intervals for brmsfit objects.
 #'
 #' \code{nlme} only provides the estimated random effect parameters, not their uncertainty, so it isn't provided.
 #'
@@ -17,7 +17,7 @@
 #' extract_random_effects(lmer_2)
 #'
 #' @seealso \code{\link{extract_random_coef}}, \code{\link{ranef.merMod}},
-#' \code{\link{ranef.glmmTMB}}, \code{\link{ranef.lme}}
+#' \code{\link{ranef.glmmTMB}}, \code{\link{ranef.lme}}, \code{\link{ranef.brmsfit}}
 #'
 #' @export
 extract_random_effects <- function(
@@ -26,8 +26,8 @@ extract_random_effects <- function(
   component = 'cond',
   digits = 3
 ) {
-  if (!inherits(model, c('merMod', 'glmmTMB', 'lme')))
-    stop('This only works for merMod objects from lme4 or models from glmmTMB.')
+  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit')))
+    stop('This only works for model objects from lme4, glmmTMB, brms, and nlme.')
 
   UseMethod('extract_random_effects')
 }
@@ -41,8 +41,11 @@ extract_random_effects.merMod <- function(
   digits = 3
 ) {
 
+  if (!is_package_installed('lme4'))
+    stop('lme4 package required', call. = FALSE)
+
   # add check on re name
-  all_re_names = names(ranef(model))
+  all_re_names = names(lme4::ranef(model))
 
   if (!is.null(re) && !re %in% all_re_names)
     stop(
@@ -57,6 +60,7 @@ extract_random_effects.merMod <- function(
   }
 
   random_effects <- lme4::ranef(model, condVar = TRUE)[[re]]
+
   re_names <- colnames(random_effects)
 
   random_effect_covar <- attr(random_effects, "postVar")
@@ -67,7 +71,9 @@ extract_random_effects.merMod <- function(
   }
   else {
     random_effect_var <- t(apply(random_effect_covar, 3, diag))
+
     colnames(random_effect_var) <- paste0(colnames(random_effects), '_se')
+
     random_effect_var <- data.frame(random_effect_var)
   }
 
@@ -85,6 +91,9 @@ extract_random_effects.glmmTMB <- function(
   digits = 3
 ) {
 
+  if (!is_package_installed('glmmTMB'))
+    stop('glmmTMB package required', call. = FALSE)
+
   # add check on re name
   all_re_names = names(ranef(model)[[component]])
 
@@ -101,6 +110,7 @@ extract_random_effects.glmmTMB <- function(
   }
 
   random_effects <- glmmTMB::ranef(model, condVar = TRUE)[[component]][[re]]
+
   re_names <- colnames(random_effects)
 
   random_effect_covar <- attr(random_effects, "condVar")
@@ -111,7 +121,9 @@ extract_random_effects.glmmTMB <- function(
   }
   else {
     random_effect_var <- t(apply(random_effect_covar, 3, diag))
+
     colnames(random_effect_var) <- paste0(colnames(random_effects), '_se')
+
     random_effect_var <- data.frame(random_effect_var)
   }
 
@@ -167,4 +179,58 @@ extract_random_effects.lme <- function(
   re = cleanup_coefs(re_names, random_effects, se = NULL)
 
   dplyr::mutate_if(re, is.numeric, round, digits = digits)
+}
+
+#' @export
+extract_random_effects.brmsfit <- function(
+  model,
+  re = NULL,
+  component,
+  digits = 3
+) {
+
+  if (!is_package_installed('brms'))
+    stop('brms package required', call. = FALSE)
+
+  # add check on re name
+  all_re_names = names(brms::ranef(model))
+
+  if (!is.null(re) && !re %in% all_re_names)
+    stop(
+      paste0('re is not among the names of the random effects: ',
+             paste0(all_re_names, collapse = ' ')
+      )
+    )
+
+  if (is.null(re)) {
+    warning('No random effect specified, using first.')
+    re <- 1
+  }
+
+  random_effects <- brms::ranef(model)[[re]]
+
+  group_names <- dimnames(random_effects)[[1]]
+
+  re_names <- dimnames(random_effects)[[3]]
+
+  random_effects <-
+    apply(random_effects, 3, function(x)
+      as.data.frame(x) %>%
+        dplyr::mutate(group = group_names) %>%
+        dplyr::rename(value = Estimate, se = Est.Error) %>%
+        dplyr::rename_at(dplyr::vars(dplyr::starts_with('Q')), function(x)
+          gsub(x, pattern = 'Q', replacement = 'q\\_')))
+
+  re = purrr::reduce(
+    random_effects,
+    dplyr::left_join,
+    by = 'group',
+    suffix = paste0('_', re_names)
+  )
+
+  re %>%
+    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+    dplyr::rename_at(dplyr::vars(dplyr::starts_with('value_')), function(x)
+      gsub(x, pattern = 'value_', replacement = '')) %>%
+    dplyr::select(group, dplyr::everything())
 }
