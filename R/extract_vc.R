@@ -25,9 +25,14 @@
 #' @return A data frame with output for variance components or list that also
 #' contains the correlations of the random effects.
 #'
-#' @seealso \code{\link{confint.merMod}}, \code{\link{VarCorr.merMod}},
-#'   \code{\link{confint.glmmTMB}}, \code{\link{VarCorr.glmmTMB}},
-#'   \code{\link{intervals}}, \code{\link{VarCorr.lme}}, \code{\link{VarCorr.brmsfit}}
+#' @seealso
+#'   \code{\link[lme4]{confint.merMod}},
+#'   \code{\link[lme4:VarCorr]{VarCorr.merMod}},
+#'   \code{\link[glmmTMB]{confint.glmmTMB}},
+#'   \code{\link[glmmTMB:VarCorr]{VarCorr.glmmTMB}},
+#'   \code{\link[nlme:intervals]{intervals}},
+#'   \code{\link[nlme:VarCorr]{VarCorr.lme}},
+#'   \code{\link[brms:VarCorr]{VarCorr.brmsfit}}
 #'
 #' @examples
 #' library(lme4)
@@ -244,7 +249,6 @@ extract_vc.glmmTMB <- function(
 }
 
 
-#' @importFrom tidyr fill
 #' @rdname extract_vc
 #' @export
 extract_vc.lme <- function(
@@ -380,7 +384,6 @@ extract_vc.lme <- function(
 
 
 
-#' @importFrom dplyr %>%
 #' @rdname extract_vc
 #' @export
 extract_vc.brmsfit <- function(

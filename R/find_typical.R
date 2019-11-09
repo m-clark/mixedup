@@ -39,8 +39,6 @@
 #' lmer_1 <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #'
 #' find_typical(lmer_1, re = 'Subject')
-#' @importFrom purrr map2 map2_df map_int
-#' @importFrom tidyr pivot_longer drop_na
 #' @importFrom stats quantile
 #' @export
 find_typical <- function(
@@ -72,7 +70,7 @@ find_typical <- function(
     )
 
     # extract
-    re_typical = map2_df(
+    re_typical = purrr::map2_df(
       indices,
       re_names,
       function(x, y)

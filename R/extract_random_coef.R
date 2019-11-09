@@ -26,7 +26,6 @@
 #' @return A data frame of the random coefficients and their standard errors.
 #'
 #' @importFrom stats coef vcov
-#' @importFrom dplyr rename_all
 #'
 #' @examples
 #' library(lme4)
@@ -150,7 +149,7 @@ extract_random_coef.lme <- function(
   digits = 3
 ) {
 
-  fe = fixef(model)
+  fe = nlme::fixef(model)
 
   names(fe) =  gsub(
     names(fe),

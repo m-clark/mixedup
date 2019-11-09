@@ -37,6 +37,6 @@ extract_random_effects(lmer_2)
 
 }
 \seealso{
-\code{\link{extract_random_coef}}, \code{\link{ranef.merMod}},
-\code{\link{ranef.glmmTMB}}, \code{\link{ranef.lme}}, \code{\link{ranef.brmsfit}}
+\code{\link[lme4:ranef]{ranef.merMod}}, \code{\link[glmmTMB:ranef]{ranef.glmmTMB}},
+\code{\link[nlme:ranef]{ranef.lme}}, \code{\link[brms:ranef]{ranef.brmsfit}}
 }

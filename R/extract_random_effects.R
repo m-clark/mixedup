@@ -16,8 +16,8 @@
 #' lmer_2 <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #' extract_random_effects(lmer_2)
 #'
-#' @seealso \code{\link{extract_random_coef}}, \code{\link{ranef.merMod}},
-#' \code{\link{ranef.glmmTMB}}, \code{\link{ranef.lme}}, \code{\link{ranef.brmsfit}}
+#'@seealso \code{\link[lme4:ranef]{ranef.merMod}}, \code{\link[glmmTMB:ranef]{ranef.glmmTMB}},
+#' \code{\link[nlme:ranef]{ranef.lme}}, \code{\link[brms:ranef]{ranef.brmsfit}}
 #'
 #' @export
 extract_random_effects <- function(
@@ -95,7 +95,7 @@ extract_random_effects.glmmTMB <- function(
     stop('glmmTMB package required', call. = FALSE)
 
   # add check on re name
-  all_re_names = names(ranef(model)[[component]])
+  all_re_names = names(glmmTMB::ranef(model)[[component]])
 
   if (!is.null(re) && !re %in% all_re_names)
     stop(
