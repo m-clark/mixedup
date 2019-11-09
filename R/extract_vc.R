@@ -245,7 +245,6 @@ extract_vc.glmmTMB <- function(
 
 
 #' @importFrom tidyr fill
-#' @importFrom nlme ranef intervals
 #' @rdname extract_vc
 #' @export
 extract_vc.lme <- function(

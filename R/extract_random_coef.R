@@ -26,8 +26,6 @@
 #' @return A data frame of the random coefficients and their standard errors.
 #'
 #' @importFrom stats coef vcov
-#' @importFrom lme4 fixef ranef vcov.merMod
-#' @importFrom glmmTMB fixef ranef
 #' @importFrom dplyr rename_all
 #'
 #' @examples
@@ -60,6 +58,9 @@ extract_random_coef.merMod <- function(
   component,
   digits = 3
 ) {
+
+  if (!is_package_installed('lme4'))
+    stop('lme4 package required', call. = FALSE)
 
   if (is.null(re)) {
     warning('No random effect specified, using first.')
@@ -103,6 +104,9 @@ extract_random_coef.glmmTMB <- function(
   component = 'cond',
   digits = 3
   ) {
+
+  if (!is_package_installed('glmmTMB'))
+    stop('glmmTMB package required', call. = FALSE)
 
   if (is.null(re)) {
     warning('No random effect specified, using first.')

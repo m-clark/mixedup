@@ -17,12 +17,12 @@ Depends:
 Imports:
     dplyr,
     tidyr (>= 1.0.0),
-    purrr,
-    lme4,
-    glmmTMB,
-    nlme
+    purrr
 Suggests:
     testthat (>= 2.1.0),
+    lme4,
+    glmmTMB,
+    nlme,
     brms,
     covr,
     knitr
