@@ -1,3 +1,7 @@
+# mixedup 0.2.4
+
+* Add brms method for extract_random_effects
+
 # mixedup 0.2.3
 
 * Add find_typical
