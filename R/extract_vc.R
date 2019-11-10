@@ -131,11 +131,7 @@ extract_vc.merMod <- function(
 
     cormats = lapply(vc_mat, attr, 'correlation')
 
-    remove_parens = function(x) {
-      colnames(x) = gsub(colnames(x), pattern = '[\\(,\\)]', replacement = '')
-      rownames(x) = colnames(x)
-      x
-    }
+
 
     cormats <- lapply(cormats, remove_parens)
     cormats <- lapply(cormats, round, digits = digits)
@@ -232,13 +228,6 @@ extract_vc.glmmTMB <- function(
   if (show_cor) {
 
     cormats = lapply(vc_mat, attr, 'correlation')
-
-    remove_parens = function(x) {
-      colnames(x) = gsub(colnames(x), pattern = '[\\(,\\)]', replacement = '')
-      rownames(x) = colnames(x)
-      x
-    }
-
     cormats <- lapply(cormats, remove_parens)
     cormats <- lapply(cormats, round, digits = digits)
 
@@ -364,16 +353,10 @@ extract_vc.lme <- function(
   vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)
 
   if (show_cor) {
-
     cormats <- lapply(re_struct, function(x) stats::cov2cor(as.matrix(x)))
 
-    remove_parens <- function(x) {
-      colnames(x) = gsub(colnames(x), pattern = '[\\(,\\)]', replacement = '')
-      rownames(x) = colnames(x)
-      x
-    }
-
     cormats <- lapply(cormats, remove_parens)
+
     cormats <- lapply(cormats, round, digits = digits)
 
     return(list(`Variance Components` = vc, Cor = cormats))
@@ -461,4 +444,12 @@ extract_vc.brmsfit <- function(
   }
 
   vc
+}
+
+
+
+remove_parens <- function(x) {
+  colnames(x) <- gsub(colnames(x), pattern = '[\\(,\\)]', replacement = '')
+  rownames(x) <- colnames(x)
+  x
 }
