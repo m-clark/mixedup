@@ -10,13 +10,12 @@ extract_random_effects(model, re = NULL, component = "cond",
 \arguments{
 \item{model}{A merMod or glmmTMB object}
 
-\item{re}{The name of the grouping variable for the random effects.}
+\item{re}{The name of the grouping variable for the random effects. Default
+is \code{NULL} to return all.}
 
 \item{component}{Which of the three components 'cond', 'zi' or 'other' to
 select for a glmmTMB model. Default is 'cond'. Minimal testing on other
 options.}
-
-\item{digits}{Rounding. Default is 3.}
 }
 \value{
 data frame of the random effects
