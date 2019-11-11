@@ -13,6 +13,12 @@ suppressWarnings({
   lmer_5 <- lmer(y ~ service + (1 + as.numeric(lectage) + as.numeric(studage) + service| d) , data = InstEval[1:5000, ])
 })
 
+glmer_1 <- glmer(
+  count ~ spp + mined + (1 | site),
+  family = poisson,
+  data = glmmTMB::Salamanders
+)
+
 # Run TMB models ----------------------------------------------------------
 
 library(glmmTMB)
