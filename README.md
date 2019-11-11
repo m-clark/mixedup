@@ -45,6 +45,13 @@ devtools::install_github('m-clark/mixedup')
   - \[X\] nlme
   - \[X\] brms
 
+##### Extract Fixed Effects
+
+  - \[X\] lme4
+  - \[X\] glmmTMB
+  - \[X\] nlme
+  - \[X\] brms
+
 ##### Extract Random Coefficients
 
   - \[X\] lme4
@@ -58,9 +65,10 @@ devtools::install_github('m-clark/mixedup')
 
 ##### Find Typical
 
-  - \[ \] lme4
-  - \[ \] glmmTMB
-  - \[ \] nlme
+  - \[X\] lme4
+  - \[X\] glmmTMB
+  - \[X\] nlme
+  - \[ \] brms
 
 Just a note, <span class="pack" style="">nlme</span> has pretty much
 been superseded by <span class="pack" style="">glmmTMB</span>,
@@ -124,7 +132,7 @@ Compiling the C++ model
 Start sampling
 ```
 
-### Extract random effects
+### Extract Random Effects
 
 Extract the random effects with their (not necessarily valid) standard
 errors from model objects.
@@ -196,46 +204,66 @@ extract_random_effects(tmb_2, re = 'Subject')
 
 extract_random_effects(brm_1, re = 'Subject')
    group Intercept se_Intercept q_2.5_Intercept q_97.5_Intercept    Days
-1    308     2.942       14.174         -25.308           31.186   9.154
-2    309   -39.672       14.633         -68.648          -11.597  -8.724
-3    310   -38.388       14.513         -67.818          -10.363  -5.493
-4    330    23.526       14.253          -3.316           52.913  -4.737
-5    331    22.132       14.338          -4.495           51.447  -2.971
-6    332     9.074       13.350         -17.324           35.351  -0.260
-7    333    16.509       13.794          -9.753           44.217  -0.116
-8    334    -6.999       13.712         -36.293           19.392   1.072
-9    335    -0.748       14.568         -29.083           28.453 -10.642
-10   337    34.734       14.119           7.258           63.325   8.722
-11   349   -24.188       14.008         -52.171            2.658   1.070
-12   350   -12.284       14.376         -42.039           14.511   6.514
-13   351     4.507       13.681         -21.656           32.234  -2.983
-14   352    20.881       13.644          -5.690           47.834   3.638
-15   369     3.248       13.658         -23.613           30.698   0.909
-16   370   -24.614       14.392         -53.750            2.891   4.717
-17   371     0.761       13.193         -24.813           26.749  -0.928
-18   372    12.228       13.504         -14.323           40.135   1.308
+1    308     3.061       13.716         -24.429           30.602   9.209
+2    309   -39.863       14.674         -69.118          -11.908  -8.571
+3    310   -37.900       14.232         -66.337          -10.654  -5.502
+4    330    23.422       14.402          -3.933           52.172  -4.626
+5    331    22.018       14.245          -4.764           50.498  -2.893
+6    332     9.183       13.393         -18.042           35.300  -0.158
+7    333    16.944       13.737          -8.674           44.648  -0.080
+8    334    -6.882       13.767         -35.093           19.373   1.178
+9    335    -0.481       14.653         -28.050           29.115 -10.623
+10   337    34.995       14.063           8.387           63.349   8.770
+11   349   -24.783       14.121         -52.885            2.342   1.226
+12   350   -12.404       14.339         -42.364           14.660   6.688
+13   351     4.615       13.556         -21.976           31.796  -2.881
+14   352    20.515       13.992          -6.112           48.734   3.751
+15   369     3.579       13.396         -22.173           31.076   0.954
+16   370   -24.739       14.465         -53.577            3.480   4.815
+17   371     0.927       13.390         -25.409           27.157  -0.889
+18   372    12.359       13.631         -13.733           39.867   1.441
    se_Days q_2.5_Days q_97.5_Days
-1    2.885      3.530      15.055
-2    2.920    -14.527      -3.065
-3    2.872    -11.303       0.064
-4    2.916    -10.536       0.885
-5    2.925     -8.943       2.636
-6    2.729     -5.588       5.152
-7    2.794     -5.597       5.327
-8    2.724     -4.275       6.443
-9    2.943    -16.626      -5.246
-10   2.843      3.201      14.402
-11   2.860     -4.481       6.856
-12   2.897      1.112      12.462
-13   2.781     -8.456       2.325
-14   2.816     -1.800       9.146
-15   2.736     -4.683       6.262
-16   2.866     -0.717      10.229
-17   2.754     -6.343       4.432
-18   2.728     -4.018       6.668
+1    2.822      3.890      14.990
+2    2.897    -14.369      -2.945
+3    2.859    -11.178       0.049
+4    2.906    -10.344       0.885
+5    2.886     -8.585       2.665
+6    2.720     -5.570       5.161
+7    2.757     -5.645       5.286
+8    2.790     -4.255       6.758
+9    2.921    -16.532      -5.031
+10   2.872      3.291      14.557
+11   2.844     -4.348       6.877
+12   2.917      1.098      12.536
+13   2.787     -8.374       2.397
+14   2.795     -1.782       9.214
+15   2.729     -4.474       6.192
+16   2.967     -0.851      10.793
+17   2.748     -6.141       4.512
+18   2.747     -3.705       7.066
 ```
 
-### Extract random coefficients
+### Extract Fixed Effects
+
+``` r
+extract_fixed(brm_1, re = 'Subject')
+# A tibble: 2 x 5
+  term      value    se lower_2.5 upper_97.5
+  <chr>     <dbl> <dbl>     <dbl>      <dbl>
+1 Intercept 251.   7.37    236.        265. 
+2 Days       10.4  1.71      7.11       13.8
+
+
+extract_fixed(nlme_1,  re = 'Subject')
+# A tibble: 3 x 7
+  term   value    se     t p_value lower_2.5 upper_97.5
+  <chr>  <dbl> <dbl> <dbl>   <dbl>     <dbl>      <dbl>
+1 Asym  101.   2.46   41.2       0     96.6      106.  
+2 R0     -8.63 0.318 -27.1       0     -9.25      -8.00
+3 lrc    -3.23 0.034 -94.4       0     -3.30      -3.17
+```
+
+### Extract Random Coefficients
 
 Extract the random coefficients with their standard errors (if
 available).
@@ -285,7 +313,7 @@ extract_random_coef(tmb_2,  re = 'Subject')
 18   372   263.524 11.778       14.528   3.002
 ```
 
-### Extract variance components
+### Extract Variance Components
 
 ``` r
 extract_vc(lmer_2)
@@ -319,12 +347,12 @@ extract_vc(nlme_1)
 
 extract_vc(brm_1)
      group coefficient variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject   Intercept  731.400 27.044 15.676  43.123    0.505
-2  Subject        Days   43.354  6.584  4.169  10.080    0.030
-3 Residual              672.758 25.938 23.124  29.158    0.465
+1  Subject   Intercept  722.641 26.882 15.166  42.321    0.503
+2  Subject        Days   43.663  6.608  4.195  10.020    0.030
+3 Residual              670.704 25.898 23.046  29.296    0.467
 ```
 
-### Extract heterogeneous variances
+### Extract Heterogeneous Variances
 
 Extract heterogeneous variances from nlme (and eventually others), which
 only reports the relative standard deviation values by default.
@@ -387,12 +415,16 @@ find_typical(lmer_1)
   <chr>     <chr>     <fct> <dbl> <dbl> <dbl> <dbl>
 1 Subject   Intercept 334   -3.00  9.48 -21.6  15.6
 
-find_typical(tmb_2)
-# A tibble: 2 x 7
-  group_var effect    group  value    sd  lower upper
-  <chr>     <chr>     <fct>  <dbl> <dbl>  <dbl> <dbl>
-1 Subject   Days      333   -0.159  2.62  -5.30  4.99
-2 Subject   Intercept 371    0.723 12.8  -24.4  25.9 
+find_typical(tmb_2, probs = c(.25, .5, .75))
+# A tibble: 6 x 7
+  group_var effect    group   value    sd  lower upper
+  <chr>     <chr>     <fct>   <dbl> <dbl>  <dbl> <dbl>
+1 Subject   Days      351    -2.96   2.62  -8.08  2.17
+2 Subject   Days      333    -0.159  2.62  -5.30  4.99
+3 Subject   Days      352     3.56   2.62  -1.58  8.70
+4 Subject   Intercept 350   -12.3   13.7  -39.3  14.6 
+5 Subject   Intercept 308     2.82  13.7  -23.9  29.6 
+6 Subject   Intercept 333    16.4   13.1   -9.23 42.1 
 ```
 
 ## Other stuff

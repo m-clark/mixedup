@@ -50,6 +50,13 @@ devtools::install_github('m-clark/mixedup')
 - [X] nlme
 - [X] brms
 
+##### Extract Fixed Effects
+
+- [X] lme4
+- [X] glmmTMB
+- [X] nlme
+- [X] brms
+
 ##### Extract Random Coefficients
 
 - [X] lme4
@@ -63,9 +70,10 @@ devtools::install_github('m-clark/mixedup')
 
 ##### Find Typical
 
-- [ ] lme4
-- [ ] glmmTMB
-- [ ] nlme
+- [X] lme4
+- [X] glmmTMB
+- [X] nlme
+- [ ] brms
 
 
 Just a note, <span class="pack" style = "">nlme</span> has pretty much been superseded by <span class="pack" style = "">glmmTMB</span>, <span class="pack" style = "">brms</span>, and others, so support here is pretty minimal.
@@ -108,7 +116,7 @@ brm_1 = brm(
 ```
 
 
-### Extract random effects
+### Extract Random Effects
 
 Extract the random effects with their (not necessarily valid) standard errors from model objects.
 
@@ -123,9 +131,18 @@ extract_random_effects(tmb_2, re = 'Subject')
 
 extract_random_effects(brm_1, re = 'Subject')
 ```
+### Extract Fixed Effects
 
 
-### Extract random coefficients
+```{r fe}
+extract_fixed(brm_1, re = 'Subject')
+
+
+extract_fixed(nlme_1,  re = 'Subject')
+```
+
+
+### Extract Random Coefficients
 
 Extract the random coefficients with their standard errors (if available).
 
@@ -138,7 +155,7 @@ extract_random_coef(tmb_2,  re = 'Subject')
 ```
 
 
-### Extract variance components
+### Extract Variance Components
 
 ```{r vc}
 extract_vc(lmer_2)
@@ -154,11 +171,11 @@ extract_vc(brm_1)
 ```
 
 
-### Extract heterogeneous variances
+### Extract Heterogeneous Variances
 
 Extract heterogeneous variances from nlme (and eventually others), which only reports the relative standard deviation values by default.
 
-```{r nlme}
+```{r hetvar-nlme}
 library(nlme)
 
 model <- lme(
@@ -178,7 +195,7 @@ extract_het_var(model)
 ```{r find-typical}
 find_typical(lmer_1)
 
-find_typical(tmb_2)
+find_typical(tmb_2, probs = c(.25, .5, .75))
 ```
 
 

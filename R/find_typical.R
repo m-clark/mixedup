@@ -63,51 +63,5 @@ find_typical <- function(
       dplyr::ungroup()
   }
 
-
   re
-  # re <- dplyr::select(re, -dplyr::starts_with('se_'))
-  # re_names <- colnames(re)[-1]  # 1 is the 'group' column
-  #
-  # if (is.null(probs)) {
-  #   idx <- sapply(re[, -1, drop = FALSE], function(x) which.min(abs(x)))
-  #   re_typical <- dplyr::slice(re, idx)
-  # }
-  # else {
-  #   p_names <- paste0(probs * 100, "%")
-  #   res = lapply(re[, -1, drop = FALSE], quantile, probs = probs, na.rm = TRUE)
-  #
-  #   # get indices of values nearest quantiles; looked at ecdf, but wasn't really able to simplify
-  #   indices = purrr::map2(
-  #     re[, -1, drop = FALSE],
-  #     res,
-  #     function(x, y)
-  #       purrr::map_int(y, function(z)
-  #         which.min(abs(x - z)))
-  #   )
-  #
-  #   # extract
-  #   re_typical = purrr::map2_df(
-  #     indices,
-  #     re_names,
-  #     function(x, y)
-  #       dplyr::select(dplyr::slice(re, x), group, y)
-  #   )
-  #
-  #   return(
-  #     re_typical %>%
-  #       tidyr::pivot_longer(cols = re_names, names_to = 'effect') %>%
-  #       tidyr::drop_na() %>%
-  #       dplyr::group_by(effect) %>%
-  #       dplyr::mutate(probs = p_names) %>%
-  #       dplyr::ungroup()
-  #   )
-  # }
-  #
-  # re <- dplyr::mutate(
-  #   re_typical,
-  #   effect = re_names,
-  #   value  = diag(as.matrix(dplyr::select(re_typical, re_names)))
-  # )
-  #
-  # dplyr::select(re, group, effect, value)
 }
