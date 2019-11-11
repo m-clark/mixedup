@@ -8,7 +8,9 @@
 #'
 #' @return A data.frame with the fixed effects and associated statistics
 #'
-#' @seealso \code{\link[broom:tidy.merMod]{tidy.merMod}}
+#' @note For nlme, this is just a multiplier based on the estimated standard
+#'   error and critical value for the \code{ci_level}.
+#' @seealso \code{\link[broom:tidy.merMod]{tidy.merMod}},  \code{\link[broom:tidy.glmmTMB]{tidy.glmmTMB}}
 #'
 #' @examples
 #' library(lme4)
@@ -45,14 +47,14 @@ extract_fixed.merMod <-
     ...
   ) {
 
-    fe <- stats::coef(summary(model))
+    fe <- data.frame(stats::coef(summary(model)))
 
     colnames(fe) =  c('value', 'se', 't')
 
     if (ci_level > 0) {
 
       lower = (1 - ci_level)/2
-      upper = ci_level + lower
+      upper = 1 - lower
 
       ci <- do.call(
         confint,
@@ -88,38 +90,63 @@ extract_fixed.glmmTMB <-
   function(
     model,
     ci_level = .95,
-    ci_args = list(method = 'Wald'),
+    ci_args = NULL,
     digits = 3,
     component = 'cond',
     ...
   ) {
 
-    fe <- stats::coef(summary(model))[[component]]
+    if (!component %in% c('cond', 'zi', 'other')) {
+      stop('component must be one of "cond", "zi", "other".')
+    }
+
+    fe <- data.frame(stats::coef(summary(model))[[component]])
 
     colnames(fe) =  c('value', 'se', 'z', 'p_value')
 
     if (ci_level > 0) {
 
       lower = (1 - ci_level)/2
-      upper = ci_level + lower
+      upper = 1 - lower
 
-      ci <- do.call(
-        confint,
-        c(
-          list(
-            object = model,
-            parm = seq(nrow(fe)),  # think there is a glmmTMB bug here if you just do 'beta_'
-            level = ci_level,
-            component = component,
-            estimate = FALSE
-          ),
-          ci_args
-        )
+      # glmmTMB has some issues with confint (see
+      # https://github.com/glmmTMB/glmmTMB/issues/401 for example), and at least
+      # one tested case with 3 group vars and multiple random effects. Also fails with
+      # parm = 'beta_' and probably other places.
+      ci <- tryCatch(
+        do.call(confint,
+                c(
+                  list(
+                    object = model,
+                    parm = seq(nrow(fe)),
+                    # think there is a glmmTMB bug here if you just do 'beta_'
+                    level = ci_level,
+                    component = component,
+                    estimate = FALSE
+                  ),
+                  ci_args
+                )),
+        error = function(c) {
+          msg <- conditionMessage(c)
+          invisible(structure(msg, class = "try-error"))
+        }
       )
+
+      if (inherits(ci, 'try-error')) {
+        warning('Intervals could not be computed. Returning ci based on se.
+                \nIf se is NaN, check random effects for zero variance estimates.')
+        mult <- qnorm(upper)
+
+        ci <- data.frame(
+          lower = fe$value - mult * fe$se,
+          upper = fe$value + mult * fe$se
+        )
+      }
 
       colnames(ci) <- paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
 
       fe <- data.frame(fe, ci)
+
     }
 
     fe <- fe %>%
@@ -151,7 +178,7 @@ extract_fixed.lme <-
     if (ci_level > 0) {
 
       lower = (1 - ci_level)/2
-      upper = ci_level + lower
+      upper = 1 - lower
 
       # nlme does not have a confint method
       mult <- qnorm(upper)
@@ -176,3 +203,42 @@ extract_fixed.lme <-
 
     fe
 }
+
+
+#' @export
+extract_fixed.brmsfit <-
+  function(
+    model,
+    ci_level = .95,
+    ci_args = list(method = 'Wald'),
+    digits = 3,
+    ...
+  ) {
+
+    if (ci_level == 0) {
+      message('ci automatically provided for brms fixed effects. Setting ci_level to .95.')
+      ci_level <- .95
+    }
+
+    lower <- (1 - ci_level)/2
+    upper <- 1 - lower
+    probs <- c(lower, upper)
+
+    fe <- data.frame(brms::fixef(model, probs = probs))
+
+    colnames(fe)[3:4] = paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
+
+    fe <- fe %>%
+      dplyr::rename(
+        value = Estimate,
+        se = Est.Error
+      ) %>%
+      dplyr::mutate_all(round, digits = digits) %>%
+      dplyr::mutate(term = gsub(rownames(fe),
+                                pattern = '[\\(,\\)]',
+                                replacement = '')) %>%
+      dplyr::select(term, dplyr::everything()) %>%
+      dplyr::as_tibble()
+
+    fe
+  }

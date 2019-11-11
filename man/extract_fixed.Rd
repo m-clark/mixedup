@@ -29,6 +29,10 @@ Extract fixed effects
 Essentially duplicates the \code{broom::tidy} approach with minor
   name changes.
 }
+\note{
+For nlme, this is just a multiplier based on the estimated standard
+  error and critical value for the \code{ci_level}.
+}
 \examples{
 library(lme4)
 library(mixedup)
@@ -39,5 +43,5 @@ extract_fixed(lmer_mod)
 
 }
 \seealso{
-\code{\link[broom:tidy.merMod]{tidy.merMod}}
+\code{\link[broom:tidy.merMod]{tidy.merMod}},  \code{\link[broom:tidy.glmmTMB]{tidy.glmmTMB}}
 }
