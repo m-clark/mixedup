@@ -10,7 +10,7 @@
 #'
 #' @note For nlme, this is just a multiplier based on the estimated standard
 #'   error and critical value for the \code{ci_level}.
-#' @seealso \code{\link[broom:tidy.merMod]{tidy.merMod}},  \code{\link[broom:tidy.glmmTMB]{tidy.glmmTMB}}
+#' @seealso \code{\link[broom:tidy.merMod]{tidy.merMod}},  \code{\link[broom.mixed:tidy.glmmTMB]{tidy.glmmTMB}}
 #'
 #' @examples
 #' library(lme4)
@@ -19,7 +19,7 @@
 #' lmer_mod <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #'
 #' extract_fixed(lmer_mod)
-#'
+#' @importFrom stats qnorm
 #' @export
 extract_fixed <- function(
   model,
@@ -135,7 +135,7 @@ extract_fixed.glmmTMB <-
       if (inherits(ci, 'try-error')) {
         warning('Intervals could not be computed. Returning ci based on se.
                 \nIf se is NaN, check random effects for zero variance estimates.')
-        mult <- qnorm(upper)
+        mult <- stats::qnorm(upper)
 
         ci <- data.frame(
           lower = fe$value - mult * fe$se,
@@ -181,7 +181,7 @@ extract_fixed.lme <-
       upper = 1 - lower
 
       # nlme does not have a confint method
-      mult <- qnorm(upper)
+      mult <- stats::qnorm(upper)
 
       ci <- data.frame(
         lower = fe$value - mult * fe$se,

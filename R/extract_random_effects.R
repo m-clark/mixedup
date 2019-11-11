@@ -8,6 +8,7 @@
 #' @param component Which of the three components 'cond', 'zi' or 'other' to
 #'   select for a glmmTMB model. Default is 'cond'. Minimal testing on other
 #'   options.
+#' @param digits  Rounding. Default is 3.
 #'
 #' @details Relative to \code{ranef} for the various packages, this just adds
 #'   the standard errors and cluster ids as columns, and intervals for brmsfit objects.

@@ -40,8 +40,7 @@ library(mixedup)
 lmer_mod <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
 extract_fixed(lmer_mod)
-
 }
 \seealso{
-\code{\link[broom:tidy.merMod]{tidy.merMod}},  \code{\link[broom:tidy.glmmTMB]{tidy.glmmTMB}}
+\code{\link[broom:tidy.merMod]{tidy.merMod}},  \code{\link[broom.mixed:tidy.glmmTMB]{tidy.glmmTMB}}
 }

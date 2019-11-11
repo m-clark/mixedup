@@ -16,6 +16,10 @@ utils::globalVariables(
     'sd',
     'effect',
     'value',
-    'Est.Error'
+    'Est.Error',
+    'term',
+    'DF',
+    'group_var',
+    '.'
   )
 )
