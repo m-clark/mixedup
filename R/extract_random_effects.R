@@ -64,7 +64,7 @@ extract_random_effects.merMod <- function(
 
   if (!is.null(re)) {
     random_effects <- random_effects %>%
-      filter(group_var == re)
+      dplyr::filter(group_var == re)
   }
 
   random_effects %>%
@@ -75,7 +75,6 @@ extract_random_effects.merMod <- function(
                     pattern = '[\\(, \\)]',
                     replacement = '')
     ) %>%
-    dplyr::mutate_at(vars(group_var, effect, group), as.ordered) %>%
     dplyr::mutate_if(is.numeric, round, digits = digits)
 }
 
@@ -100,32 +99,26 @@ extract_random_effects.glmmTMB <- function(
       )
     )
 
-  if (is.null(re)) {
-    warning('No random effect specified, using first.')
-    re <- 1
+  random_effects <- as.data.frame(glmmTMB::ranef(model, condVar = TRUE)) %>%
+    dplyr::filter(component == component) %>%
+    dplyr::select(-component)
+
+  colnames(random_effects) <- c('group_var', 'effect', 'group', 'value', 'sd')
+
+  if (!is.null(re)) {
+    random_effects <- random_effects %>%
+      dplyr::filter(group_var == re)
   }
 
-  random_effects <- glmmTMB::ranef(model, condVar = TRUE)[[component]][[re]]
-
-  re_names <- colnames(random_effects)
-
-  random_effect_covar <- attr(random_effects, "condVar")
-
-  # deal with single random effect
-  if (is.null(dim(random_effect_covar[,,1]))) {
-    random_effect_var <- data.frame(se = random_effect_covar[1,,])
-  }
-  else {
-    random_effect_var <- t(apply(random_effect_covar, 3, diag))
-
-    colnames(random_effect_var) <- paste0(colnames(random_effects), '_se')
-
-    random_effect_var <- data.frame(random_effect_var)
-  }
-
-  re  <- cleanup_coefs(re_names, random_effects, random_effect_var)
-
-  dplyr::mutate_if(re, is.numeric, round, digits = digits)
+  random_effects %>%
+    dplyr::mutate(
+      lower  = value - 1.96 * sd,
+      upper  = value + 1.96 * sd,
+      effect = gsub(effect,
+                    pattern = '[\\(, \\)]',
+                    replacement = '')
+    ) %>%
+    dplyr::mutate_if(is.numeric, round, digits = digits)
 }
 
 
@@ -138,21 +131,16 @@ extract_random_effects.lme <- function(
   digits = 3
 ) {
 
-  # output is inconsistent and inconsistently named, so just get all ranefs and
-  # extract as needed
-
   re0 <- nlme::ranef(model)
 
-  if (is.data.frame(re0)) {
-    n_re <- 1
+  # add check on re name
+  if (inherits(re0, 'data.frame')) {
     all_re_names <- attr(re0, 'grpNames')
   }
   else {
-    n_re <- length(re0)
     all_re_names <- names(re0)
   }
 
-  # add check on re name
   if (!is.null(re) && !re %in% all_re_names)
     stop(
       paste0('re is not among the names of the random effects: ',
@@ -160,21 +148,51 @@ extract_random_effects.lme <- function(
       )
     )
 
-  if (is.null(re)) {
-    warning('No random effect specified, using first.')
-    re <- 1
+  if (inherits(re0, 'data.frame')) {
+    random_effects <- re0 %>%
+      as.data.frame() %>%
+      dplyr::mutate(
+        group = rownames(.)
+      ) %>%
+      tidyr::pivot_longer(
+        cols = -group,
+        names_to = 'effect',
+        values_to = 'value'
+      ) %>%
+      dplyr::mutate(group_var = attr(re0, 'grpNames'))
+  }
+  else {
+    random_effects <-   re0 %>%
+      purrr::map(function(x)
+        dplyr::mutate(
+          x,
+          group = rownames(x))
+      ) %>%
+      purrr::map_df(
+        tidyr::pivot_longer,
+        cols = -group,
+        names_to = 'effect',
+        values_to = 'value',
+        .id = 'group_var'
+      )
   }
 
-  if (n_re > 1)
-    random_effects <- re0[[re]]
-  else
-    random_effects <- re0
+  if (!is.null(re)) {
+    random_effects <- random_effects %>%
+      dplyr::filter(group_var == re)
+  }
 
-  re_names <- colnames(random_effects)
-
-  re <- cleanup_coefs(re_names, random_effects, se = NULL)
-
-  dplyr::mutate_if(re, is.numeric, round, digits = digits)
+  random_effects %>%
+    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+    dplyr::select(group_var, effect, group, value) %>%
+    dplyr::mutate(
+      effect = gsub(
+        effect,
+        pattern = '[\\(, \\)]',
+        replacement = ''
+      )
+    ) %>%
+    dplyr::arrange(group_var, effect, group)
 }
 
 #' @export

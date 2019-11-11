@@ -17,11 +17,11 @@ lmer_3 <- lmer(y ~ service + (1 | s) + (1 | d), data = InstEval[1:1000, ])
 lmer_4 <- lmer(y ~ service + (1 + service | dept) + (1 | s), data = droplevels(InstEval[1:3000, ]))
 
 test_that('find_typical.merMod basic functionality', {
-  expect_s3_class(find_typical(lmer_1, re = 'Subject'), 'data.frame')
+  expect_s3_class(find_typical(lmer_1), 'data.frame')
 })
 
 test_that('find_typical.merMod basic functionality', {
-  expect_s3_class(find_typical(lmer_2, re = 'Subject'), 'data.frame')
+  expect_s3_class(find_typical(lmer_2), 'data.frame')
 })
 
 test_that('find_typical.merMod basic functionality', {

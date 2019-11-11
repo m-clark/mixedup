@@ -78,11 +78,13 @@ Just a note, <span class="pack" style = "">nlme</span> has pretty much been supe
 library(lme4)
 
 lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
+
 lmer_2 <- lmer(Reaction ~ Days + (1 + Days| Subject), data = sleepstudy)
 
 library(glmmTMB)
 
 tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
+
 tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
 library(nlme)
@@ -97,7 +99,12 @@ nlme_1 <-  nlme(
 
 library(brms)
 
-brm_1 = brm(Reaction ~ Days + (1 + Days| Subject), data = sleepstudy, refresh = -1)
+brm_1 = brm(
+  Reaction ~ Days + (1 + Days| Subject), 
+  data = sleepstudy, 
+  refresh = -1,
+  cores = 4
+)
 ```
 
 
@@ -114,13 +121,13 @@ extract_random_effects(lmer_1, re = 'Subject')
 extract_random_effects(tmb_2, re = 'Subject')
 
 
-extract_random_effects(brm_2, re = 'Subject')
+extract_random_effects(brm_1, re = 'Subject')
 ```
 
 
 ### Extract random coefficients
 
-Extract the random coefficients with their standard errors model objects.
+Extract the random coefficients with their standard errors (if available).
 
 
 ```{r coefs}
@@ -163,7 +170,15 @@ model <- lme(
 
 summary(model)
 
-extract_nlme_variances(model)
+extract_het_var(model)
+```
+
+### Find typical values
+
+```{r find-typical}
+find_typical(lmer_1)
+
+find_typical(tmb_2)
 ```
 
 

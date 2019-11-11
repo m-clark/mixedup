@@ -166,21 +166,26 @@ extract_random_coef.lme <- function(
 
   fe <- nlme::fixef(model)
 
-  names(fe) <- gsub(
-    names(fe),
-    pattern = '[\\(, \\)]',
-    replacement = ''
-  )
+  fe <- as.data.frame(fe) %>%
+    dplyr::mutate(
+      effect = rownames(.),
+      effect = gsub(
+        effect,
+        pattern = '[\\(, \\)]',
+        replacement = ''
+      )
+    )
 
   # necessary checks will be done via this
   re <- extract_random_effects(model = model, re = re)
 
-  coefs <- sweep(re[,-1, drop = FALSE], 2, fe[names(fe) %in% names(re)], `+`)
+  coefs <- re %>%
+    dplyr::left_join(fe) %>%
+    dplyr::mutate(value = value + fe)
 
   coefs <- coefs %>%
-    dplyr::mutate_all(round, digits = digits) %>%
-    dplyr::mutate(group = re$group) %>%
-    dplyr::select(group, dplyr::everything())
+    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+    dplyr::select(group_var, group, value, -fe)
 
   coefs
 }

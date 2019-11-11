@@ -18,28 +18,18 @@ context('test extract_random_effects.merMod')
 test_that("lme4 installation is checked", {
   with_mock(
     'mixedup::is_package_installed' = function() FALSE,
-    expect_error(extract_random_effects(lmer_1, re = 'Subject'))
+    expect_error(extract_random_effects(lmer_1))
   )
 })
 
 test_that('extract_random_effects.merMod basic functionality', {
-  expect_s3_class(extract_random_effects(lmer_1, re = 'Subject'), 'data.frame')
+  expect_s3_class(extract_random_effects(lmer_1), 'data.frame')
 })
 
 test_that('extract_random_effects.merMod basic functionality', {
-  expect_s3_class(extract_random_effects(lmer_2, re = 'Subject'), 'data.frame')
+  expect_s3_class(extract_random_effects(lmer_2), 'data.frame')
 })
 
-test_that('extract_random_effects.merMod correct output', {
-  expect_equal(
-    nrow(extract_random_effects(lmer_2, re = 'Subject')),
-    nlevels(sleepstudy$Subject)
-  )
-})
-
-test_that('extract_random_effects.merMod warns with no group input', {
-  expect_warning(extract_random_effects(lmer_1))
-})
 
 test_that('extract_random_effects.merMod works with multiple re', {
   expect_equal(
@@ -73,14 +63,11 @@ test_that('extract_random_effects basic functionality', {
 
 test_that('extract_random_effects correct output', {
   expect_equal(
-    nrow(extract_random_effects(tmb_2, re = 'Subject')),
-    nlevels(sleepstudy$Subject)
+    nrow(extract_random_effects(tmb_4, re = 'dept')),
+    nlevels(tmb_4$frame$dept)
   )
 })
 
-test_that('extract_random_effects warns with no group input', {
-  expect_warning(extract_random_effects(tmb_1))
-})
 
 test_that('extract_random_effects can do zip', {
   expect_s3_class(
@@ -102,23 +89,13 @@ context('test extract_random_effects.lme')
 # no check on package install as it is a base/recommended package
 
 test_that('extract_random_effects.lme basic functionality', {
-  expect_s3_class(extract_random_effects(lme_1, re = 'Subject'), 'data.frame')
+  expect_s3_class(extract_random_effects(lme_1), 'data.frame')
 })
 
 test_that('extract_random_effects.lme basic functionality', {
-  expect_s3_class(extract_random_effects(lme_2, re = 'Subject'), 'data.frame')
+  expect_s3_class(extract_random_effects(lme_2), 'data.frame')
 })
 
-test_that('extract_random_effects.lme correct output', {
-  expect_equal(
-    nrow(extract_random_effects(lme_2, re = 'Subject')),
-    nlevels(sleepstudy$Subject)
-  )
-})
-
-test_that('extract_random_effects.lme warns with no group input', {
-  expect_warning(extract_random_effects(lme_1))
-})
 
 test_that('extract_random_effects.lme works with multiple re', {
   expect_equal(
@@ -128,7 +105,7 @@ test_that('extract_random_effects.lme works with multiple re', {
 })
 
 test_that('extract_random_effects.lme errors with bad re name', {
-  expect_error(extract_random_effects(lme_2, re = 'subject'))
+  expect_error(extract_random_effects(lme_3, re = 'subject'))
 })
 
 

@@ -82,11 +82,7 @@ test_that('extract_random_coef basic functionality', {
 
 test_that('extract_random_coef correct output', {
   expect_equal(
-    nrow(extract_random_coef(lme_2, re = 'Subject')),
-    nlevels(sleepstudy$Subject)
+    nrow(extract_random_coef(lme_3, re = 'd')),
+    nlevels(droplevels(lme_3$data$d))
   )
-})
-
-test_that('extract_random_coef warns with no group input', {
-  expect_warning(extract_random_coef(lme_1))
 })
