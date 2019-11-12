@@ -48,6 +48,11 @@ find_typical <- function(
   ...
 ) {
 
+  if (!is.null(probs) && is.numeric(probs)) {
+    if (range(probs)[1] < 0 | range(probs)[2] > 1)
+      stop('probs must be between 0 and 1.')
+  }
+
   re <- extract_random_effects(model, re = re, ...)
 
   if (is.null(probs)) {
@@ -60,6 +65,7 @@ find_typical <- function(
     re <- re %>%
       dplyr::group_by(effect) %>%
       dplyr::slice(find_quants(value, probs)) %>%
+      dplyr::mutate(probs = paste0(round(probs*100, 1), '%')) %>%
       dplyr::ungroup()
   }
 

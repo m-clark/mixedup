@@ -139,12 +139,8 @@ test_that('extract_random_effects.brmsfit basic functionality', {
 test_that('extract_random_effects.brmsfit correct output', {
   expect_equal(
     nrow(extract_random_effects(brm_2, re = 'Subject')),
-    nlevels(sleepstudy$Subject)
+    nlevels(sleepstudy$Subject)*2
   )
-})
-
-test_that('extract_random_effects.brmsfit warns with no group input', {
-  expect_warning(extract_random_effects(brm_1))
 })
 
 test_that('extract_random_effects.brmsfit works with multiple re', {

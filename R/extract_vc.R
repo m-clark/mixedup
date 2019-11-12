@@ -78,15 +78,15 @@ extract_vc.merMod <- function(
   digits = 3,
   ...
 ) {
-  vc_mat = lme4::VarCorr(model)
+  vc_mat <- lme4::VarCorr(model)
 
   # make dataframe and add names
-  vc = data.frame(vc_mat)
-  colnames(vc) = c('group', 'coefficient', 'coefficient_2', 'variance', 'sd')
+  vc <- data.frame(vc_mat)
+  colnames(vc) <- c('group', 'coefficient', 'coefficient_2', 'variance', 'sd')
 
   # as part of package, create better named and dataframe for ci output to add to results?
   if (ci_level > 0) {
-    ci = do.call(
+    ci <- do.call(
       confint,
       c(
         list(
@@ -100,36 +100,36 @@ extract_vc.merMod <- function(
       )
 
     if (ci_scale == 'var') {
-      ci = ci^2
-      colnames(ci) = paste0('var_', colnames(ci))
+      ci <- ci^2
+      colnames(ci) <- paste0('var_', colnames(ci))
     }
     else {
-      colnames(ci) = paste0('sd_', colnames(ci))
+      colnames(ci) <- paste0('sd_', colnames(ci))
     }
 
-    colnames(ci) = gsub(colnames(ci), pattern = ' %', replacement = '')
+    colnames(ci) <- gsub(colnames(ci), pattern = ' %', replacement = '')
 
-    vc = cbind(vc, ci)
+    vc <- cbind(vc, ci)
   }
 
   # cleanup/add to results
-  vc = dplyr::filter(vc, is.na(coefficient) | is.na(coefficient_2))
+  vc <- dplyr::filter(vc, is.na(coefficient) | is.na(coefficient_2))
 
-  vc = dplyr::mutate(
+  vc <- dplyr::mutate(
     vc,
-    var_prop    = variance / sum(variance),
-    coefficient = gsub(coefficient, pattern = '[\\(,\\)]', replacement = ''),
-    coefficient = ifelse(is.na(coefficient), '', coefficient)
+    var_prop    <- variance / sum(variance),
+    coefficient <- gsub(coefficient, pattern = '[\\(,\\)]', replacement = ''),
+    coefficient <- ifelse(is.na(coefficient), '', coefficient)
   )
 
-  vc = dplyr::select(vc, -coefficient_2)
+  vc <- dplyr::select(vc, -coefficient_2)
 
-  vc = dplyr::mutate_if(vc, is.numeric, round, digits = digits)
+  vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)
 
   # deal with correlations
   if (show_cor) {
 
-    cormats = lapply(vc_mat, attr, 'correlation')
+    cormats <- lapply(vc_mat, attr, 'correlation')
 
 
 
@@ -154,12 +154,12 @@ extract_vc.glmmTMB <- function(
   digits = 3,
   ...
 ) {
-  vc_mat = glmmTMB::VarCorr(model)[[component]]
+  vc_mat <- glmmTMB::VarCorr(model)[[component]]
 
   # make dataframe and add names
-  variance = lapply(vc_mat, diag)
+  variance <- lapply(vc_mat, diag)
 
-  variance = data.frame(
+  variance <- data.frame(
     group = rep(names(variance), sapply(variance, length)),
     coefficient = unlist(lapply(variance, names)),
     variance = unlist(variance)
@@ -172,16 +172,13 @@ extract_vc.glmmTMB <- function(
       variance = attr(vc_mat, 'sc')
     )
 
-    variance = rbind(variance, resvar)
+    variance <- rbind(variance, resvar)
   }
 
-  # sds = unlist(sapply(vc_mat, attr, 'stddev'))  # not really necessary
+  vc <- data.frame(variance, sd = sqrt(variance$variance))
 
-  vc = data.frame(variance, sd = sqrt(variance$variance))
-
-  # as part of package, create better named and dataframe for ci output to add to results?
   if (ci_level > 0) {
-    ci = do.call(
+    ci <- do.call(
       confint,
       c(
         list(
@@ -196,38 +193,38 @@ extract_vc.glmmTMB <- function(
     )
 
     if (ci_scale == 'var') {
-      ci = ci^2
-      colnames(ci) = paste0('var_', colnames(ci))
+      ci <- ci^2
+      colnames(ci) <- paste0('var_', colnames(ci))
     }
     else {
-      colnames(ci) = paste0('sd_', colnames(ci))
+      colnames(ci) <- paste0('sd_', colnames(ci))
     }
 
-    colnames(ci) = gsub(colnames(ci), pattern = ' %', replacement = '')
+    colnames(ci) <- gsub(colnames(ci), pattern = ' %', replacement = '')
 
-    ci = data.frame(ci)
+    ci <- data.frame(ci)
     # to deal with zi/other component issues noted above, paste component to search
-    pat = paste0(component, '.Std.Dev', '|sigma')
-    ci = dplyr::filter(ci, grepl(rownames(ci), pattern = pat))
+    pat <- paste0(component, '.Std.Dev', '|sigma')
+    ci <- dplyr::filter(ci, grepl(rownames(ci), pattern = pat))
 
-    vc = cbind(vc, ci)
+    vc <- cbind(vc, ci)
   }
 
   # cleanup/add to results
 
-  vc = dplyr::mutate(
+  vc <- dplyr::mutate(
     vc,
     var_prop    = variance / sum(variance),
     coefficient = gsub(coefficient, pattern = '[\\(,\\)]', replacement = ''),
     coefficient = ifelse(is.na(coefficient), '', coefficient)
   )
 
-  vc = dplyr::mutate_if(vc, is.numeric, round, digits = digits)
+  vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)
 
   # deal with correlations
   if (show_cor) {
 
-    cormats = lapply(vc_mat, attr, 'correlation')
+    cormats <- lapply(vc_mat, attr, 'correlation')
     cormats <- lapply(cormats, remove_parens)
     cormats <- lapply(cormats, round, digits = digits)
 
@@ -251,10 +248,10 @@ extract_vc.lme <- function(
   ...
 ) {
   re_struct <- model$modelStruct$reStruct
-  re_names <- names(re_struct)
+  re_names  <- names(re_struct)
 
   vc_mat0 <- nlme::VarCorr(model)
-  vc_mat <- suppressWarnings(apply(vc_mat0, 2, as.numeric))
+  vc_mat  <- suppressWarnings(apply(vc_mat0, 2, as.numeric))
 
   # make dataframe and add names
   vc <- data.frame(vc_mat)
@@ -280,8 +277,8 @@ extract_vc.lme <- function(
     )
   }
 
-  vc  <- tidyr::fill(vc, group)
-  vc  <- dplyr::filter(vc, !is.na(Variance))
+  vc <- tidyr::fill(vc, group)
+  vc <- dplyr::filter(vc, !is.na(Variance))
 
   # add trycatch for interval fail
 
@@ -308,18 +305,21 @@ extract_vc.lme <- function(
       ci_residual$group <- 'Residual'
       ci <- rbind(ci_re, data.frame(ci_residual))
 
-      lower_val = (1 - ci_level) / 2
-      upper_val = (ci_level + lower_val)
+      lower_val <- (1 - ci_level) / 2
+      upper_val <- (ci_level + lower_val)
 
       if (ci_scale == 'var') {
         ci <- ci[,1:3]^2
-        colnames(ci)[colnames(ci) %in% c('lower', 'upper')] =
+
+        colnames(ci)[colnames(ci) %in% c('lower', 'upper')] <-
           c(paste0('var_', 100 * lower_val), paste0('var_', 100 * upper_val))
+
         ci <- dplyr::rename(ci, var = est.)
       }
       else {
-        colnames(ci)[colnames(ci) %in% c('lower', 'upper')] =
+        colnames(ci)[colnames(ci) %in% c('lower', 'upper')] <-
           c(paste0('sd_', 100 * lower_val), paste0('sd_', 100 * upper_val))
+
         ci <- dplyr::rename(ci, sd = est.)
       }
 
@@ -380,7 +380,6 @@ extract_vc.brmsfit <- function(
   ...
 ) {
 
-
   # convert ci level; no check on value really needed until later
   lower <-  (1 - ci_level)/2
   vc_0  <- brms::VarCorr(model, probs = c(lower, lower + ci_level))
@@ -395,10 +394,10 @@ extract_vc.brmsfit <- function(
   group_names <- gsub(group_names, pattern = '\\_\\_', replacement = '')
   group_names <- ifelse(group_names == 'residual', 'Residual', group_names)
 
-  vc = do.call(rbind, vc_mat)
+  vc <- do.call(rbind, vc_mat)
 
   # create basic output with correct names
-  vc = vc %>%
+  vc <- vc %>%
     dplyr::mutate(
       coefficient = effect_names,
       group = group_names,
@@ -435,10 +434,10 @@ extract_vc.brmsfit <- function(
       ), `[[`, 'cor')
 
     # remove NULL cor
-    cormats = cormats[!sapply(cormats, is.null)]
+    cormats <- cormats[!sapply(cormats, is.null)]
 
     # get mean matrix
-    cormats = lapply(cormats, function(x) apply(x, 2:3, mean))
+    cormats <- lapply(cormats, function(x) apply(x, 2:3, mean))
 
     return(list(`Variance Components` = vc, Cor = cormats))
   }

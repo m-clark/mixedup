@@ -4,17 +4,14 @@ context('test find_typical')
 
 # Overall -----------------------------------------------------------------
 
+test_that('find_typical fails with nonsensical probs', {
+  expect_error(find_typical(lmer_1, probs = c(1,2)))
+})
 
 # lme4 --------------------------------------------------------------------
 
 context('test find_typical.merMod')
 
-library(lme4)
-
-lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-lmer_2 <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
-lmer_3 <- lmer(y ~ service + (1 | s) + (1 | d), data = InstEval[1:1000, ])
-lmer_4 <- lmer(y ~ service + (1 + service | dept) + (1 | s), data = droplevels(InstEval[1:3000, ]))
 
 test_that('find_typical.merMod basic functionality', {
   expect_s3_class(find_typical(lmer_1), 'data.frame')
@@ -39,13 +36,6 @@ test_that('find_typical.merMod probs', {
 
 context('test find_typical.glmmTMB')
 
-library(glmmTMB)
-
-tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
-tmb_3 <- glmmTMB(y ~ service + (1 | s) + (1 | d), data = InstEval[1:1000, ])
-tmb_4 <- glmmTMB(y ~ service + (1 + service | d) + (1 | s), data = droplevels(InstEval[1:3000, ]))
-
 test_that('find_typical.merMod basic functionality', {
   expect_s3_class(find_typical(tmb_1, re = 'Subject'), 'data.frame')
 })
@@ -66,17 +56,6 @@ test_that('find_typical.merMod probs', {
 # nlme --------------------------------------------------------------------
 
 context('test find_typical.lme')
-
-library(nlme)
-
-lme_1 <- lme(Reaction ~ Days, random = ~ 1 | Subject, data = sleepstudy)
-lme_2 <- lme(Reaction ~ Days, random = ~ 1 + Days | Subject, data = sleepstudy)
-lme_3 <- lme(y ~ service,
-             random = list(d = ~ 1, s = ~ 1),
-             data = droplevels(InstEval[1:1000, ]))
-lme_4 <- lme(y ~ service,
-             random = list(d = ~ 1 + service, s = ~ 1 ),
-             data = droplevels(InstEval[1:3000, ]))
 
 test_that('find_typical.merMod basic functionality', {
   expect_s3_class(find_typical(lme_1, re = 'Subject'), 'data.frame')
@@ -102,3 +81,20 @@ context('test find_typical.brm')
 library(brms)
 
 # brms results are autoloaded
+
+test_that('find_typicalbrmsfit basic functionality', {
+  expect_s3_class(find_typical(brm_1), 'data.frame')
+})
+
+test_that('find_typicalbrmsfit basic functionality', {
+  expect_equal(dplyr::n_distinct(find_typical(brm_2)$effect), 2)
+})
+
+test_that('find_typicalbrmsfit basic functionality', {
+  expect_s3_class(find_typical(brm_3, re = 's'), 'data.frame')
+})
+
+test_that('find_typicalbrmsfit probs', {
+  # should have two results each for intercept and Days
+  expect_equal(nrow(find_typical(brm_2, re = 'Subject', probs = c(.25, .75))), 4)
+})
