@@ -47,9 +47,6 @@ extract_random_effects.merMod <- function(
   digits = 3
 ) {
 
-  # refactor to use current extract_re/fe
-  # left_join(re, fe %>% rename(effect=term, value_fe = value, se_fe = se)) %>% mutate(coef = value + value_fe, se = sd + se_fe)
-
   if (!is_package_installed('lme4'))
     stop('lme4 package required', call. = FALSE)
 

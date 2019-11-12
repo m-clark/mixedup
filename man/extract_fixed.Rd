@@ -2,10 +2,18 @@
 % Please edit documentation in R/extract_fixed.R
 \name{extract_fixed}
 \alias{extract_fixed}
+\alias{extract_fixed.merMod}
+\alias{extract_fixed.glmmTMB}
 \title{Extract fixed effects}
 \usage{
 extract_fixed(model, ci_level = 0.95, ci_args = NULL, digits = 3,
   ...)
+
+\method{extract_fixed}{merMod}(model, ci_level = 0.95,
+  ci_args = list(method = "Wald"), digits = 3, ...)
+
+\method{extract_fixed}{glmmTMB}(model, ci_level = 0.95, ci_args = NULL,
+  digits = 3, component = "cond", ...)
 }
 \arguments{
 \item{model}{an lme4, glmmTMB, nlme, or brms model}
@@ -18,6 +26,10 @@ not report it. Default is .95.}
 \item{digits}{Rounding. Default is 3.}
 
 \item{...}{Other arguments to pass. Nothing at present.}
+
+\item{component}{For glmmTMB objects, which of the three components 'cond',
+'zi' or 'other' to select. Default is cond. Minimal testing on other
+options.}
 }
 \value{
 A data.frame with the fixed effects and associated statistics

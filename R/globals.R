@@ -20,6 +20,9 @@ utils::globalVariables(
     'term',
     'DF',
     'group_var',
-    '.'
+    '.',
+    'se',
+    'se_fe',
+    'value_fe'
   )
 )

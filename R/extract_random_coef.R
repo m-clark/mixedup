@@ -5,7 +5,10 @@
 #' @param component Which of the three components 'cond', 'zi' or 'other' to
 #'   select for a glmmTMB model. Default is 'cond'. Minimal testing on other
 #'   options.
+#' @param ci_level Where possible, confidence level < 1, typically above 0.90. A value of 0 will
+#'   not report it. Default is .95.
 #' @param digits Rounding. Default is 3.
+#' @param ... Other arguments specific to the method. Unused at present.
 #'
 #' @details Returns a data frame with random coefficients, a.k.a. random
 #'   intercepts and random slopes, and their standard errors. Note that the
@@ -26,6 +29,7 @@
 #' @return A data frame of the random coefficients and their standard errors.
 #'
 #' @importFrom stats coef vcov
+#' @importFrom dplyr rename_all
 #'
 #' @examples
 #' library(lme4)
@@ -40,153 +44,142 @@
 extract_random_coef <- function(
   model,
   re = NULL,
-  component = 'cond',
-  digits = 3
+  ci_level = .95,
+  component,
+  digits = 3,
+  ...
 ) {
 
   if (!inherits(model, c('merMod', 'glmmTMB', 'lme')))
     stop('This only works for merMod objects from lme4, glmmTMB, and nlme.')
 
+  if (ci_level < 0 | ci_level >= 1)
+    stop('Nonsensical confidence level for ci_level. Must be between 0 and 1.')
+
   UseMethod('extract_random_coef')
 }
 
+#' @rdname extract_random_coef
 #' @export
 extract_random_coef.merMod <- function(
   model,
   re = NULL,
-  component,
-  digits = 3
+  ci_level = .95,
+  digits = 3,
+  ...
 ) {
 
-  if (!is_package_installed('lme4'))
-    stop('lme4 package required', call. = FALSE)
+  random_effects <- extract_random_effects(model, re = re)
 
-  if (is.null(re)) {
-    warning('No random effect specified, using first.')
-    re <- 1
+  fixed_effects  <- extract_fixed(model) %>%
+    dplyr::rename(effect = term,
+                  se_fe = se,
+                  value_fe = value)
+
+  coefs_init <- random_effects %>%
+    dplyr::left_join(fixed_effects, by = 'effect') %>%
+    dplyr::mutate(
+      coef = value + value_fe,
+      se = sd + se_fe
+    ) %>%
+    dplyr::select(group_var, effect, group, coef, se)
+
+  if (ci_level > 0) {
+
+    lower = (1 - ci_level)/2
+    upper = 1 - lower
+    mult <- stats::qnorm(upper)
+
+    coefs <- coefs_init %>%
+      dplyr::mutate(
+        lower = coef - mult * se,
+        upper = coef + mult * se
+      )
+
+    colnames(coefs)[colnames(coefs) %in% c('lower', 'upper')] <-
+      paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
   }
-
-  random_effects <- lme4::ranef(model, condVar = TRUE)[[re]]
-
-  random_effect_covar <- attr(random_effects, "postVar")
-
-  # deal with single random effect
-  if (is.null(dim(random_effect_covar[, , 1]))) {
-    random_effect_var <- matrix(random_effect_covar[1, , ], ncol = 1)
-  }
-  else {
-    random_effect_var <- t(apply(random_effect_covar, 3, diag))
-  }
-
-  # extract only pertinent fe
-  fe_names <- names(lme4::fixef(model))
-
-  re_names <- colnames(random_effects)
-
-  fixed_effect_var <- diag(as.matrix(vcov(model)))
-
-  fixed_effect_var <- fixed_effect_var[fe_names %in% re_names]
-
-  se <- sqrt(sweep(random_effect_var, 2, fixed_effect_var, "+"))
-
-  se <- as.data.frame(se)
-
-  coefs <- coef(model)[[re]]
 
   coefs <- coefs %>%
-    dplyr::select(re_names)
-
-  # cleanup names, e.g. remove parens from (Intercept)
-  coefs <- cleanup_coefs(re_names, coefs, se)
-
-  coefs %>%
     dplyr::mutate_if(is.numeric, round, digits = digits)
+
+  coefs
 }
 
+#' @rdname extract_random_coef
 #' @export
 extract_random_coef.glmmTMB <- function(
   model,
   re = NULL,
+  ci_level = .95,
   component = 'cond',
-  digits = 3
+  digits = 3,
+  ...
   ) {
 
-  if (!is_package_installed('glmmTMB'))
-    stop('glmmTMB package required', call. = FALSE)
+  random_effects <-
+    extract_random_effects(model, re = re, component = component)
 
-  if (is.null(re)) {
-    warning('No random effect specified, using first.')
-    re <- 1
+  fixed_effects  <- extract_fixed(model, component = component) %>%
+    dplyr::rename(effect = term,
+                  se_fe = se,
+                  value_fe = value)
+
+  coefs_init <- random_effects %>%
+    dplyr::left_join(fixed_effects, by = 'effect') %>%
+    dplyr::mutate(
+      coef = value + value_fe,
+      se = sd + se_fe
+    ) %>%
+    dplyr::select(group_var, effect, group, coef, se)
+
+  if (ci_level > 0) {
+
+    lower = (1 - ci_level)/2
+    upper = 1 - lower
+    mult <- stats::qnorm(upper)
+
+    coefs <- coefs_init %>%
+      dplyr::mutate(
+        lower = coef - mult * se,
+        upper = coef + mult * se
+      )
+
+    colnames(coefs)[colnames(coefs) %in% c('lower', 'upper')] <-
+      paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
   }
-
-  random_effects <- glmmTMB::ranef(model, condVar = TRUE)[[component]][[re]]
-
-  random_effect_covar <- attr(random_effects, "condVar")
-
-  # deal with single random effect
-  if (is.null(dim(random_effect_covar[,,1]))) {
-    random_effect_var <- matrix(random_effect_covar[1, , ], ncol = 1)
-  }
-  else {
-    random_effect_var <- t(apply(random_effect_covar, 3, diag))
-  }
-
-  # extract only pertinent fe
-  fe_names <- names(glmmTMB::fixef(model)[[component]])
-
-  re_names <- colnames(random_effects)
-
-  fixed_effect_var <- diag(vcov(model)[[component]])
-
-  fixed_effect_var <- fixed_effect_var[fe_names %in% re_names]
-
-  se <- sqrt(sweep(random_effect_var, 2, fixed_effect_var, "+"))
-
-  se <- as.data.frame(se)
-
-  coefs <- coef(model)[[component]][[re]]
 
   coefs <- coefs %>%
-    dplyr::select(re_names)
-
-  # cleanup names, e.g. remove parens from (Intercept)
-  coefs <- cleanup_coefs(re_names, coefs, se)
-
-  coefs %>%
     dplyr::mutate_if(is.numeric, round, digits = digits)
+
+  coefs
 }
 
+#' @rdname extract_random_coef
 #' @export
 extract_random_coef.lme <- function(
   model,
   re = NULL,
-  component,
-  digits = 3
+  digits = 3,
+  ...
 ) {
 
-  fe <- nlme::fixef(model)
+  random_effects <- extract_random_effects(model, re = re)
 
-  fe <- as.data.frame(fe) %>%
+  fixed_effects  <- extract_fixed(model) %>%
+    dplyr::rename(effect = term,
+                  se_fe = se,
+                  value_fe = value)
+
+  coefs <- random_effects %>%
+    dplyr::left_join(fixed_effects, by = 'effect') %>%
     dplyr::mutate(
-      effect = rownames(.),
-      effect = gsub(
-        effect,
-        pattern = '[\\(, \\)]',
-        replacement = ''
-      )
-    )
+      coef = value + value_fe,
+    ) %>%
+    dplyr::select(group_var, effect, group, coef)
 
-  # necessary checks will be done via this
-  re <- extract_random_effects(model = model, re = re)
+  coefs %>%
+    dplyr::mutate_if(is.numeric, round, digits = digits)
 
-  coefs <- re %>%
-    dplyr::left_join(fe) %>%
-    dplyr::mutate(value = value + fe)
-
-  coefs <- coefs %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
-    dplyr::select(group_var, group, value, -fe)
-
-  coefs
 }
 

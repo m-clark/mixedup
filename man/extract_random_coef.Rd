@@ -2,20 +2,37 @@
 % Please edit documentation in R/extract_random_coef.R
 \name{extract_random_coef}
 \alias{extract_random_coef}
+\alias{extract_random_coef.merMod}
+\alias{extract_random_coef.glmmTMB}
+\alias{extract_random_coef.lme}
 \title{Extract random coefficients and their variances}
 \usage{
-extract_random_coef(model, re = NULL, component = "cond", digits = 3)
+extract_random_coef(model, re = NULL, ci_level = 0.95, component,
+  digits = 3, ...)
+
+\method{extract_random_coef}{merMod}(model, re = NULL, ci_level = 0.95,
+  digits = 3, ...)
+
+\method{extract_random_coef}{glmmTMB}(model, re = NULL,
+  ci_level = 0.95, component = "cond", digits = 3, ...)
+
+\method{extract_random_coef}{lme}(model, re = NULL, digits = 3, ...)
 }
 \arguments{
 \item{model}{A merMod or glmmTMB object}
 
 \item{re}{The name of the grouping variable for the random effects.}
 
+\item{ci_level}{Where possible, confidence level < 1, typically above 0.90. A value of 0 will
+not report it. Default is .95.}
+
 \item{component}{Which of the three components 'cond', 'zi' or 'other' to
 select for a glmmTMB model. Default is 'cond'. Minimal testing on other
 options.}
 
 \item{digits}{Rounding. Default is 3.}
+
+\item{...}{Other arguments specific to the method. Unused at present.}
 }
 \value{
 A data frame of the random coefficients and their standard errors.

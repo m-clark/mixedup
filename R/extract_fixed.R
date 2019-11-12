@@ -37,6 +37,7 @@ extract_fixed <- function(
   UseMethod('extract_fixed')
 }
 
+#' @rdname extract_fixed
 #' @export
 extract_fixed.merMod <-
   function(
@@ -85,6 +86,7 @@ extract_fixed.merMod <-
     fe
 }
 
+#' @rdname extract_fixed
 #' @export
 extract_fixed.glmmTMB <-
   function(
