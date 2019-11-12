@@ -47,6 +47,9 @@ extract_random_effects.merMod <- function(
   digits = 3
 ) {
 
+  # refactor to use current extract_re/fe
+  # left_join(re, fe %>% rename(effect=term, value_fe = value, se_fe = se)) %>% mutate(coef = value + value_fe, se = sd + se_fe)
+
   if (!is_package_installed('lme4'))
     stop('lme4 package required', call. = FALSE)
 
@@ -163,7 +166,7 @@ extract_random_effects.lme <- function(
       dplyr::mutate(group_var = attr(re0, 'grpNames'))
   }
   else {
-    random_effects <-   re0 %>%
+    random_effects <- re0 %>%
       purrr::map(function(x)
         dplyr::mutate(
           x,
@@ -217,37 +220,37 @@ extract_random_effects.brmsfit <- function(
       )
     )
 
-  if (is.null(re)) {
-    warning('No random effect specified, using first.')
-    re <- 1
+  # more or less following broom
+  re0 <- brms::posterior_samples(model, pars = '^r_')
+
+  if (is.null(re0)) {
+    stop("No parameter name matches the specified pattern.",
+         call. = FALSE)
   }
 
-  random_effects <- brms::ranef(model)[[re]]
+  random_effects <- data.frame(effect = names(re0), stringsAsFactors = FALSE)
 
-  group_names <- dimnames(random_effects)[[1]]
+  random_effects <- random_effects %>%
+    dplyr::mutate(
+      effect = gsub("^r_", "", effect),
+      group_var = gsub("\\[.*", "", effect),
+      group = gsub(".*\\[|,.*", "", effect),
+      effect = gsub(".*,|\\]", "", effect),
+      value = apply(re0, 2, base::mean),
+      se = apply(re0, 2, stats::sd)
+    )
 
-  re_names <- dimnames(random_effects)[[3]]
+  # add_ci may add prob as arg in future
+  probs <- c((1 - .95)/2, 1 - (1 - .95)/2)
 
-  # convert to data frame, cleanup names
-  random_effects <-
-    apply(random_effects, 3, function(x)
-      as.data.frame(x) %>%
-        dplyr::mutate(group = group_names) %>%
-        dplyr::rename(value = Estimate, se = Est.Error) %>%
-        dplyr::rename_at(dplyr::vars(dplyr::starts_with('Q')), function(x)
-          gsub(x, pattern = 'Q', replacement = 'q\\_')))
+  random_effects[, c("lower", "upper")] <-
+    t(apply(re0, 2, stats::quantile, probs = probs))
 
-  # reduce to a single data frame
-  re <- purrr::reduce(
-    random_effects,
-    dplyr::left_join,
-    by = 'group',
-    suffix = paste0('_', re_names)
-  )
+  if (!is.null(re)) {
+    random_effects <- random_effects %>%
+      dplyr::filter(group_var == re)
+  }
 
-  re %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
-    dplyr::rename_at(dplyr::vars(dplyr::starts_with('value_')), function(x)
-      gsub(x, pattern = 'value_', replacement = '')) %>%
-    dplyr::select(group, dplyr::everything())
+  random_effects %>%
+    dplyr::mutate_if(is.numeric, round, digits = digits)
 }
