@@ -2,8 +2,8 @@
 utils::globalVariables(
   c(
     'variance',
-    'coefficient',
-    'coefficient_2',
+    'effect',
+    'effect_2',
     'StdDev',
     'Variance',
     'est.',

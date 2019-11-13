@@ -83,7 +83,7 @@ extract_vc.merMod <- function(
 
   # make dataframe and add names
   vc <- data.frame(vc_mat)
-  colnames(vc) <- c('group', 'coefficient', 'coefficient_2', 'variance', 'sd')
+  colnames(vc) <- c('group', 'effect', 'effect_2', 'variance', 'sd')
 
   # as part of package, create better named and dataframe for ci output to add to results?
   if (ci_level > 0) {
@@ -114,25 +114,25 @@ extract_vc.merMod <- function(
   }
 
   # cleanup/add to results
-  vc <- dplyr::filter(vc, is.na(coefficient) | is.na(coefficient_2))
+  vc <- dplyr::filter(vc, is.na(effect) | is.na(effect_2))
 
   vc <- dplyr::mutate(
     vc,
     var_prop    = variance / sum(variance),
-    coefficient = gsub(coefficient, pattern = '[\\(,\\)]', replacement = ''),
-    coefficient = ifelse(is.na(coefficient), '', coefficient)
+    effect = gsub(effect, pattern = '[\\(,\\)]', replacement = ''),
+    effect = ifelse(is.na(effect), '', effect)
   )
 
-  vc <- dplyr::select(vc, -coefficient_2)
+  vc <- dplyr::select(vc, -effect_2)
 
   vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)
 
   # deal with correlations
   if (show_cor) {
 
-    cormats <- lapply(vc_mat, attr, 'correlation')
-    cormats <- lapply(cormats, remove_parens)
-    cormats <- lapply(cormats, round, digits = digits)
+    cormats <- purrr::map(vc_mat, attr, 'correlation')
+    cormats <- purrr::map(cormats, remove_parens)
+    cormats <- purrr::map(cormats, round, digits = digits)
 
     return(list(`Variance Components` = vc, Cor = cormats))
   }
@@ -155,18 +155,18 @@ extract_vc.glmmTMB <- function(
   vc_mat <- glmmTMB::VarCorr(model)[[component]]
 
   # make dataframe and add names
-  variance <- lapply(vc_mat, diag)
+  variance <- purrr::map(vc_mat, diag)
 
   variance <- data.frame(
-    group = rep(names(variance), sapply(variance, length)),
-    coefficient = unlist(lapply(variance, names)),
+    group = rep(names(variance), purrr::map_int(variance, length)),
+    effect = unlist(purrr::map(variance, names)),
     variance = unlist(variance)
   )
 
   if (model$modelInfo$family$family == 'gaussian') {
     resvar = data.frame(
       group = 'Residual',
-      coefficient = '',
+      effect = '',
       variance = attr(vc_mat, 'sc')
     )
 
@@ -213,8 +213,8 @@ extract_vc.glmmTMB <- function(
   vc <- dplyr::mutate(
     vc,
     var_prop    = variance / sum(variance),
-    coefficient = gsub(coefficient, pattern = '[\\(,\\)]', replacement = ''),
-    coefficient = ifelse(is.na(coefficient), '', coefficient)
+    effect = gsub(effect, pattern = '[\\(,\\)]', replacement = ''),
+    effect = ifelse(is.na(effect), '', effect)
   )
 
   vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)
@@ -222,9 +222,9 @@ extract_vc.glmmTMB <- function(
   # deal with correlations
   if (show_cor) {
 
-    cormats <- lapply(vc_mat, attr, 'correlation')
-    cormats <- lapply(cormats, remove_parens)
-    cormats <- lapply(cormats, round, digits = digits)
+    cormats <- purrr::map(vc_mat, attr, 'correlation')
+    cormats <- purrr::map(cormats, remove_parens)
+    cormats <- purrr::map(cormats, round, digits = digits)
 
     return(list(`Variance Components` = vc, Cor = cormats))
   }
@@ -257,21 +257,20 @@ extract_vc.lme <- function(
   if (length(re_names) == 1) {
     vc <- dplyr::mutate(
       vc,
-      coefficient = rownames(vc_mat0),
-      group = re_names,
-      group = ifelse(coefficient == 'Residual', 'Residual', group),
-      # group = sapply(strsplit(group, ' '), function(x) x[1]),
-      coefficient = ifelse(coefficient == 'Residual', '', coefficient)
+      effect = rownames(vc_mat0),
+      group  = re_names,
+      group  = ifelse(effect == 'Residual', 'Residual', group),
+      effect = ifelse(effect == 'Residual', '', effect)
     )
   }
   else {
     vc <- dplyr::mutate(
       vc,
-      coefficient = rownames(vc_mat0),
-      group = ifelse(is.na(Variance), coefficient, NA),
-      group = ifelse(coefficient == 'Residual', 'Residual', group),
+      effect = rownames(vc_mat0),
+      group = ifelse(is.na(Variance), effect, NA),
+      group = ifelse(effect == 'Residual', 'Residual', group),
       group = sapply(strsplit(group, ' '), function(x) x[1]),
-      coefficient = ifelse(coefficient == 'Residual', '', coefficient)
+      effect = ifelse(effect == 'Residual', '', effect)
     )
   }
 
@@ -331,7 +330,7 @@ extract_vc.lme <- function(
   vc <- dplyr::mutate(
     vc,
     var_prop = Variance / sum(Variance),
-    coefficient = gsub(coefficient, pattern = '[\\(,\\)]', replacement = '')
+    effect = gsub(effect, pattern = '[\\(,\\)]', replacement = '')
   )
 
   vc <- dplyr::rename(vc, sd = StdDev)
@@ -340,22 +339,22 @@ extract_vc.lme <- function(
   # reorder columns, with var_prop at the end
   if (is.null(ci)) {
     vc <- dplyr::select(vc,
-                        group, coefficient, dplyr::everything(), -var_prop, var_prop)
+                        group, effect, dplyr::everything(), -var_prop, var_prop)
   }
   else {
     vc <- cbind(vc, dplyr::select(ci, dplyr::matches('var\\_|sd\\_')))
     vc <- dplyr::select(vc,
-                        group, coefficient, dplyr::everything(), -var_prop, var_prop)
+                        group, effect, dplyr::everything(), -var_prop, var_prop)
   }
 
   vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)
 
   if (show_cor) {
-    cormats <- lapply(re_struct, function(x) stats::cov2cor(as.matrix(x)))
+    cormats <- purrr::map(re_struct, function(x) stats::cov2cor(as.matrix(x)))
 
-    cormats <- lapply(cormats, remove_parens)
+    cormats <- purrr::map(cormats, remove_parens)
 
-    cormats <- lapply(cormats, round, digits = digits)
+    cormats <- purrr::map(cormats, round, digits = digits)
 
     return(list(`Variance Components` = vc, Cor = cormats))
   }
@@ -382,10 +381,10 @@ extract_vc.brmsfit <- function(
   lower <-  (1 - ci_level)/2
   vc_0  <- brms::VarCorr(model, probs = c(lower, lower + ci_level))
 
-  vc_mat  <- lapply(vc_0, function(x) data.frame(x$sd))
+  vc_mat  <- purrr::map(vc_0, function(x) data.frame(x$sd))
 
   # make prettier names
-  effect_names <- unlist(lapply(vc_mat, rownames))
+  effect_names <- unlist(purrr::map(vc_mat, rownames))
   effect_names <- ifelse(effect_names == '1', '', effect_names)
 
   group_names <- rep(names(vc_mat), sapply(vc_mat, nrow))
@@ -397,7 +396,7 @@ extract_vc.brmsfit <- function(
   # create basic output with correct names
   vc <- vc %>%
     dplyr::mutate(
-      coefficient = effect_names,
+      effect = effect_names,
       group = group_names,
       variance = Estimate^2
     ) %>%
@@ -418,24 +417,24 @@ extract_vc.brmsfit <- function(
   }
 
   vc <- vc %>%
-    dplyr::select(group, coefficient, variance, sd, dplyr::matches('\\_')) %>%
+    dplyr::select(group, effect, variance, sd, dplyr::matches('\\_')) %>%
     dplyr::mutate(var_prop = variance / sum(variance)) %>%
     dplyr::mutate_if(is.numeric, round, digits = digits)
 
   if (show_cor) {
     # rerun with VarCorr with summary FALSE and extract array of cor matrices
     cormats <-
-      lapply(brms::VarCorr(
+      purrr::map(brms::VarCorr(
         model,
         probs = c(lower, lower + ci_level),
         summary = FALSE
       ), `[[`, 'cor')
 
     # remove NULL cor
-    cormats <- cormats[!sapply(cormats, is.null)]
+    cormats <- cormats[!purrr::map_lgl(cormats, is.null)]
 
     # get mean matrix
-    cormats <- lapply(cormats, function(x) apply(x, 2:3, mean))
+    cormats <- purrr::map(cormats, function(x) apply(x, 2:3, mean))
 
     return(list(`Variance Components` = vc, Cor = cormats))
   }

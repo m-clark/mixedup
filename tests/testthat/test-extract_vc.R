@@ -194,7 +194,7 @@ test_that('extract_vc.brmsfit basic functionality: multiple grouping factors', {
 
 test_that('extract_vc.brmsfit basic functionality: ints/slopes with multiple grouping factors', {
   expect_equivalent(unique(extract_vc(brm_4)$group), c('continent', 'country', 'Residual'))
-  expect_equivalent(unique(extract_vc(brm_4)$coefficient), c('Intercept', 'year', ''))
+  expect_equivalent(unique(extract_vc(brm_4)$effect), c('Intercept', 'year', ''))
 })
 
 test_that('extract_vc.brmsfit returns correlation', {
