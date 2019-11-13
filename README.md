@@ -131,9 +131,6 @@ brm_1 = brm(
 )
 Compiling the C++ model
 Start sampling
-Warning: There were 1 divergent transitions after warmup. Increasing adapt_delta above 0.8 may help. See
-http://mc-stan.org/misc/warnings.html#divergent-transitions-after-warmup
-Warning: Examine the pairs() plot to diagnose sampling problems
 ```
 
 ### Extract Random Effects
@@ -208,42 +205,42 @@ extract_random_effects(tmb_2, re = 'Subject')
 
 extract_random_effects(brm_1, re = 'Subject')
       effect group_var group   value     se   lower   upper
-1  Intercept   Subject   308   2.695 14.226 -25.112  30.011
-2  Intercept   Subject   309 -39.632 13.961 -67.323 -13.356
-3  Intercept   Subject   310 -38.385 14.024 -67.054 -12.386
-4  Intercept   Subject   330  23.563 14.120  -3.508  52.690
-5  Intercept   Subject   331  22.016 13.843  -3.732  49.825
-6  Intercept   Subject   332   8.868 13.281 -16.473  34.797
-7  Intercept   Subject   333  16.805 13.743  -9.235  44.268
-8  Intercept   Subject   334  -7.020 13.442 -34.286  18.933
-9  Intercept   Subject   335  -0.178 14.049 -26.983  28.125
-10 Intercept   Subject   337  35.005 14.649   6.660  63.348
-11 Intercept   Subject   349 -24.827 14.087 -53.846   1.550
-12 Intercept   Subject   350 -12.433 14.274 -41.080  14.632
-13 Intercept   Subject   351   4.879 13.515 -20.980  32.448
-14 Intercept   Subject   352  20.723 13.611  -5.721  48.082
-15 Intercept   Subject   369   3.093 13.606 -24.134  29.976
-16 Intercept   Subject   370 -24.949 14.623 -54.146   2.816
-17 Intercept   Subject   371   0.908 13.316 -25.426  26.251
-18 Intercept   Subject   372  12.686 13.442 -13.177  39.289
-19      Days   Subject   308   9.248  2.889   3.923  15.379
-20      Days   Subject   309  -8.641  2.823 -14.067  -3.118
-21      Days   Subject   310  -5.464  2.845 -11.297   0.026
-22      Days   Subject   330  -4.659  2.893 -10.424   0.845
-23      Days   Subject   331  -2.893  2.795  -8.548   2.430
-24      Days   Subject   332  -0.136  2.774  -5.547   5.393
-25      Days   Subject   333  -0.097  2.763  -5.560   5.264
-26      Days   Subject   334   1.154  2.792  -4.264   6.800
-27      Days   Subject   335 -10.681  2.918 -16.644  -5.277
-28      Days   Subject   337   8.741  2.924   3.007  14.718
-29      Days   Subject   349   1.194  2.836  -4.188   6.903
-30      Days   Subject   350   6.606  2.871   1.155  12.605
-31      Days   Subject   351  -2.946  2.780  -8.492   2.427
-32      Days   Subject   352   3.667  2.734  -1.836   8.891
-33      Days   Subject   369   1.036  2.707  -4.168   6.303
-34      Days   Subject   370   4.822  2.931  -0.786  10.670
-35      Days   Subject   371  -0.921  2.725  -6.310   4.394
-36      Days   Subject   372   1.332  2.746  -4.127   6.832
+1  Intercept   Subject   308   2.994 14.452 -25.673  30.430
+2  Intercept   Subject   309 -39.986 14.336 -68.384 -12.060
+3  Intercept   Subject   310 -38.310 14.397 -68.408 -11.539
+4  Intercept   Subject   330  23.121 14.556  -4.077  51.483
+5  Intercept   Subject   331  21.819 14.390  -4.613  50.929
+6  Intercept   Subject   332   9.222 13.544 -17.685  36.956
+7  Intercept   Subject   333  16.454 13.716 -10.112  45.365
+8  Intercept   Subject   334  -6.951 13.680 -33.715  19.416
+9  Intercept   Subject   335  -0.576 14.664 -28.763  28.527
+10 Intercept   Subject   337  34.881 14.329   7.672  63.840
+11 Intercept   Subject   349 -24.532 13.894 -52.896   1.642
+12 Intercept   Subject   350 -12.272 14.062 -40.760  13.713
+13 Intercept   Subject   351   4.526 13.941 -22.523  32.782
+14 Intercept   Subject   352  20.505 13.720  -5.698  48.567
+15 Intercept   Subject   369   3.430 13.498 -23.516  30.238
+16 Intercept   Subject   370 -25.013 14.261 -53.459   2.570
+17 Intercept   Subject   371   0.835 13.508 -25.664  27.600
+18 Intercept   Subject   372  12.485 13.734 -14.106  40.298
+19      Days   Subject   308   9.123  2.898   3.475  14.848
+20      Days   Subject   309  -8.750  2.815 -14.387  -3.256
+21      Days   Subject   310  -5.543  2.853 -11.224  -0.007
+22      Days   Subject   330  -4.715  2.935 -10.697   0.774
+23      Days   Subject   331  -2.917  2.898  -8.996   2.474
+24      Days   Subject   332  -0.284  2.728  -5.734   4.991
+25      Days   Subject   333  -0.136  2.802  -5.773   5.264
+26      Days   Subject   334   1.038  2.746  -4.343   6.382
+27      Days   Subject   335 -10.702  2.953 -16.929  -5.118
+28      Days   Subject   337   8.649  2.843   2.942  14.124
+29      Days   Subject   349   1.060  2.792  -4.390   6.615
+30      Days   Subject   350   6.504  2.841   1.093  12.123
+31      Days   Subject   351  -3.007  2.752  -8.582   2.209
+32      Days   Subject   352   3.555  2.739  -1.935   8.924
+33      Days   Subject   369   0.845  2.707  -4.539   6.056
+34      Days   Subject   370   4.686  2.866  -0.792  10.389
+35      Days   Subject   371  -0.974  2.743  -6.454   4.527
+36      Days   Subject   372   1.272  2.784  -4.293   6.727
 ```
 
 ### Extract Fixed Effects
@@ -253,8 +250,8 @@ extract_fixed_effects(brm_1, re = 'Subject')
 # A tibble: 2 x 5
   term      value    se lower_2.5 upper_97.5
   <chr>     <dbl> <dbl>     <dbl>      <dbl>
-1 Intercept 251.   7.40    237.        266. 
-2 Days       10.4  1.69      6.91       13.6
+1 Intercept 251.   7.43    236.        266. 
+2 Days       10.5  1.69      7.24       14.0
 
 
 extract_fixed_effects(nlme_1,  re = 'Subject')
@@ -339,43 +336,19 @@ extract_random_coefs(tmb_2,  re = 'Subject')
 ``` r
 extract_vc(lmer_2)
 Computing profile confidence intervals ...
-     group coefficient variance     sd sd_2.5 sd_97.5
-1  Subject (Intercept)  611.898 24.737 14.382  37.714
-2  Subject        Days   35.081  5.923 -0.481   0.685
-3 Residual        <NA>  654.941 25.592 22.898  28.858
-  var_prop <- variance/sum(variance)
-1                              0.470
-2                              0.027
-3                              0.503
-  coefficient <- gsub(coefficient, pattern = "[\\\\(,\\\\)]", replacement = "")
-1                                                                     Intercept
-2                                                                          Days
-3                                                                          <NA>
-  coefficient <- ifelse(is.na(coefficient), "", coefficient)
-1                                                  Intercept
-2                                                       Days
-3                                                           
+     group coefficient variance     sd sd_2.5 sd_97.5 var_prop
+1  Subject   Intercept  611.898 24.737 14.382  37.714    0.470
+2  Subject        Days   35.081  5.923 -0.481   0.685    0.027
+3 Residual              654.941 25.592 22.898  28.858    0.503
 
 
 extract_vc(lmer_2, ci_scale = 'var', show_cor = TRUE, digits = 2)
 Computing profile confidence intervals ...
 $`Variance Components`
-     group coefficient variance    sd var_2.5 var_97.5
-1  Subject (Intercept)   611.90 24.74  206.84  1422.33
-2  Subject        Days    35.08  5.92    0.23     0.47
-3 Residual        <NA>   654.94 25.59  524.33   832.78
-  var_prop <- variance/sum(variance)
-1                               0.47
-2                               0.03
-3                               0.50
-  coefficient <- gsub(coefficient, pattern = "[\\\\(,\\\\)]", replacement = "")
-1                                                                     Intercept
-2                                                                          Days
-3                                                                          <NA>
-  coefficient <- ifelse(is.na(coefficient), "", coefficient)
-1                                                  Intercept
-2                                                       Days
-3                                                           
+     group coefficient variance    sd var_2.5 var_97.5 var_prop
+1  Subject   Intercept   611.90 24.74  206.84  1422.33     0.47
+2  Subject        Days    35.08  5.92    0.23     0.47     0.03
+3 Residual               654.94 25.59  524.33   832.78     0.50
 
 $Cor
 $Cor$Subject
@@ -392,9 +365,9 @@ extract_vc(nlme_1)
 
 extract_vc(brm_1)
      group coefficient variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject   Intercept  724.028 26.908 15.700  42.458    0.503
-2  Subject        Days   43.906  6.626  4.255  10.346    0.031
-3 Residual              670.536 25.895 23.139  29.130    0.466
+1  Subject   Intercept  732.832 27.071 15.729  42.237    0.506
+2  Subject        Days   42.586  6.526  4.169   9.995    0.029
+3 Residual              671.906 25.921 23.159  29.151    0.464
 ```
 
 ### Extract Heterogeneous Variances

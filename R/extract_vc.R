@@ -118,9 +118,9 @@ extract_vc.merMod <- function(
 
   vc <- dplyr::mutate(
     vc,
-    var_prop    <- variance / sum(variance),
-    coefficient <- gsub(coefficient, pattern = '[\\(,\\)]', replacement = ''),
-    coefficient <- ifelse(is.na(coefficient), '', coefficient)
+    var_prop    = variance / sum(variance),
+    coefficient = gsub(coefficient, pattern = '[\\(,\\)]', replacement = ''),
+    coefficient = ifelse(is.na(coefficient), '', coefficient)
   )
 
   vc <- dplyr::select(vc, -coefficient_2)
