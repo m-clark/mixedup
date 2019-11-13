@@ -1,8 +1,7 @@
 #' Extract fixed effects
 #'
 #' @inheritParams extract_vc
-#' @param ci_args A list of additional arguments to the corresponding confint method. Default (\code{list(method = 'Wald')}) is to change the default CI method for speedier results.
-#' @param ... Other arguments to pass. Nothing at present.
+#'
 #' @details Essentially duplicates the \code{broom::tidy} approach with minor
 #'   name changes.
 #'
@@ -10,7 +9,10 @@
 #'
 #' @note For nlme, this is just a multiplier based on the estimated standard
 #'   error and critical value for the \code{ci_level}.
-#' @seealso \code{\link[broom:tidy.merMod]{tidy.merMod}},  \code{\link[broom.mixed:tidy.glmmTMB]{tidy.glmmTMB}}
+#'
+#' @seealso \code{\link[broom:tidy.merMod]{tidy.merMod}},
+#'   \code{\link[broom.mixed:tidy.glmmTMB]{tidy.glmmTMB}},
+#'   \code{\link[broom.mixed:tidy.brmsfit]{tidy.brmsfit}}
 #'
 #' @examples
 #' library(lme4)
@@ -18,10 +20,10 @@
 #'
 #' lmer_mod <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #'
-#' extract_fixed(lmer_mod)
+#' extract_fixed_effects(lmer_mod)
 #' @importFrom stats qnorm
 #' @export
-extract_fixed <- function(
+extract_fixed_effects <- function(
   model,
   ci_level = .95,
   ci_args = NULL,
@@ -34,12 +36,12 @@ extract_fixed <- function(
   if (ci_level < 0 | ci_level >= 1)
     stop('Nonsensical confidence level for ci_level. Must be between 0 and 1.')
 
-  UseMethod('extract_fixed')
+  UseMethod('extract_fixed_effects')
 }
 
-#' @rdname extract_fixed
+#' @rdname extract_fixed_effects
 #' @export
-extract_fixed.merMod <-
+extract_fixed_effects.merMod <-
   function(
     model,
     ci_level = .95,
@@ -86,9 +88,9 @@ extract_fixed.merMod <-
     fe
 }
 
-#' @rdname extract_fixed
+#' @rdname extract_fixed_effects
 #' @export
-extract_fixed.glmmTMB <-
+extract_fixed_effects.glmmTMB <-
   function(
     model,
     ci_level = .95,
@@ -162,8 +164,9 @@ extract_fixed.glmmTMB <-
     fe
 }
 
+#' @rdname extract_fixed_effects
 #' @export
-extract_fixed.lme <-
+extract_fixed_effects.lme <-
   function(
     model,
     ci_level = .95,
@@ -206,13 +209,13 @@ extract_fixed.lme <-
     fe
 }
 
-
+#' @rdname extract_fixed_effects
 #' @export
-extract_fixed.brmsfit <-
+extract_fixed_effects.brmsfit <-
   function(
     model,
     ci_level = .95,
-    ci_args = list(method = 'Wald'),
+    ci_args = NULL,
     digits = 3,
     ...
   ) {

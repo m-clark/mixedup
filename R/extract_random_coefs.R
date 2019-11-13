@@ -2,12 +2,12 @@
 #'
 #' @param model A merMod or glmmTMB object
 #' @param re The name of the grouping variable for the random effects.
-#' @param component Which of the three components 'cond', 'zi' or 'other' to
-#'   select for a glmmTMB model. Default is 'cond'. Minimal testing on other
-#'   options.
 #' @param ci_level Where possible, confidence level < 1, typically above 0.90. A value of 0 will
-#'   not report it. Default is .95.
+#'   not report it. Default is .95. Not applicable to nlme objects.
 #' @param digits Rounding. Default is 3.
+#' @param component Only applies to \code{glmmTMB} objects. Which of the three
+#'   components 'cond', 'zi' or 'other' to select for a glmmTMB model. Default
+#'   is 'cond'. Minimal testing on other options.
 #' @param ... Other arguments specific to the method. Unused at present.
 #'
 #' @details Returns a data frame with random coefficients, a.k.a. random
@@ -33,20 +33,22 @@
 #'
 #' @examples
 #' library(lme4)
+#' library(mixedup)
+#'
 #' lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-#' extract_random_coef(lmer_1, re = 'Subject')
+#' extract_random_coefs(lmer_1, re = 'Subject')
 
 #' library(glmmTMB)
 #' tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-#' extract_random_coef(tmb_1, re = 'Subject')
+#' extract_random_coefs(tmb_1, re = 'Subject')
 #'
 #' @export
-extract_random_coef <- function(
+extract_random_coefs <- function(
   model,
   re = NULL,
   ci_level = .95,
-  # component,
   digits = 3,
+  component = NULL,
   ...
 ) {
 
@@ -56,22 +58,23 @@ extract_random_coef <- function(
   if (ci_level < 0 | ci_level >= 1)
     stop('Nonsensical confidence level for ci_level. Must be between 0 and 1.')
 
-  UseMethod('extract_random_coef')
+  UseMethod('extract_random_coefs')
 }
 
-#' @rdname extract_random_coef
+#' @rdname extract_random_coefs
 #' @export
-extract_random_coef.merMod <- function(
+extract_random_coefs.merMod <- function(
   model,
   re = NULL,
   ci_level = .95,
   digits = 3,
+  # component = NULL,
   ...
 ) {
 
   random_effects <- extract_random_effects(model, re = re)
 
-  fixed_effects  <- extract_fixed(model) %>%
+  fixed_effects  <- extract_fixed_effects(model) %>%
     dplyr::rename(effect = term,
                   se_fe = se,
                   value_fe = value)
@@ -106,21 +109,23 @@ extract_random_coef.merMod <- function(
   coefs
 }
 
-#' @rdname extract_random_coef
+#' @rdname extract_random_coefs
 #' @export
-extract_random_coef.glmmTMB <- function(
+extract_random_coefs.glmmTMB <- function(
   model,
   re = NULL,
   ci_level = .95,
-  # component = 'cond',
   digits = 3,
+  component = 'cond',
   ...
   ) {
+
+  if (is.null(component)) component <- 'cond'
 
   random_effects <-
     extract_random_effects(model, re = re, component = component)
 
-  fixed_effects  <- extract_fixed(model, component = component) %>%
+  fixed_effects  <- extract_fixed_effects(model, component = component) %>%
     dplyr::rename(effect = term,
                   se_fe = se,
                   value_fe = value)
@@ -155,18 +160,20 @@ extract_random_coef.glmmTMB <- function(
   coefs
 }
 
-#' @rdname extract_random_coef
+#' @rdname extract_random_coefs
 #' @export
-extract_random_coef.lme <- function(
+extract_random_coefs.lme <- function(
   model,
   re = NULL,
+  ci_level = NULL,
   digits = 3,
+  # component = NULL,
   ...
 ) {
 
   random_effects <- extract_random_effects(model, re = re)
 
-  fixed_effects  <- extract_fixed(model) %>%
+  fixed_effects  <- extract_fixed_effects(model) %>%
     dplyr::rename(effect = term,
                   se_fe = se,
                   value_fe = value)
@@ -183,13 +190,14 @@ extract_random_coef.lme <- function(
 
 }
 
-#' @rdname extract_random_coef
+#' @rdname extract_random_coefs
 #' @export
-extract_random_coef.brmsfit <- function(
+extract_random_coefs.brmsfit <- function(
   model,
   re = NULL,
   ci_level = .95,
   digits = 3,
+  # component = NULL,
   ...
 ) {
 

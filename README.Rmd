@@ -62,6 +62,7 @@ devtools::install_github('m-clark/mixedup')
 - [X] lme4
 - [X] glmmTMB
 - [X] nlme
+- [X] brms
 
 ##### Extract Heterogeneous Variances
 
@@ -73,7 +74,7 @@ devtools::install_github('m-clark/mixedup')
 - [X] lme4
 - [X] glmmTMB
 - [X] nlme
-- [ ] brms
+- [X] brms
 
 
 Just a note, <span class="pack" style = "">nlme</span> has pretty much been superseded by <span class="pack" style = "">glmmTMB</span>, <span class="pack" style = "">brms</span>, and others, so support here is pretty minimal.
@@ -135,10 +136,10 @@ extract_random_effects(brm_1, re = 'Subject')
 
 
 ```{r fe}
-extract_fixed(brm_1, re = 'Subject')
+extract_fixed_effects(brm_1, re = 'Subject')
 
 
-extract_fixed(nlme_1,  re = 'Subject')
+extract_fixed_effects(nlme_1,  re = 'Subject')
 ```
 
 
@@ -148,10 +149,10 @@ Extract the random coefficients with their standard errors (if available).
 
 
 ```{r coefs}
-extract_random_coef(lmer_1, re = 'Subject')
+extract_random_coefs(lmer_1, re = 'Subject')
 
 
-extract_random_coef(tmb_2,  re = 'Subject')
+extract_random_coefs(tmb_2,  re = 'Subject')
 ```
 
 

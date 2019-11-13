@@ -16,9 +16,13 @@
 #'
 #' @examples
 #' library(nlme)
+#' library(mixedup)
+#'
 #' model <- lme(distance ~ age + Sex, data = Orthodont, random = ~ 1|Subject,
 #' weights=varIdent(form = ~1|Sex))
+#'
 #' summary(model)
+#'
 #' extract_het_var(model)
 #'
 #' @export

@@ -7,9 +7,10 @@
 find_typical(model, re = NULL, probs = NULL, ...)
 }
 \arguments{
-\item{model}{A supported model, e.g. lme4, glmmTMB, or lme}
+\item{model}{A supported model, e.g. lme4, glmmTMB, brms, or lme}
 
-\item{re}{The name of the grouping variable for the random effects.}
+\item{re}{The name of the grouping variable for the random effects. Default
+is \code{NULL} to return all.}
 
 \item{probs}{Quantile probabilities}
 

@@ -36,6 +36,7 @@
 #'
 #' @examples
 #' library(lme4)
+#' library(mixedup)
 #'
 #' lmer_mod <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #'

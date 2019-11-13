@@ -2,12 +2,12 @@
 #'
 #' @description Extracts the random effects and their standard errors.
 #'
-#' @param model A merMod or glmmTMB object
+#' @param model A merMod, glmmTMB, brms, or nlme object
 #' @param re The name of the grouping variable for the random effects. Default
 #'   is \code{NULL} to return all.
-#' @param component Which of the three components 'cond', 'zi' or 'other' to
-#'   select for a glmmTMB model. Default is 'cond'. Minimal testing on other
-#'   options.
+#' @param component Only applies to glmmTMB objects. Which of the three
+#'   components 'cond', 'zi' or 'other' to select for a glmmTMB model. Default
+#'   is 'cond'. Minimal testing on other options.
 #' @param digits  Rounding. Default is 3.
 #'
 #' @details Relative to \code{ranef} for the various packages, this just adds
@@ -19,8 +19,10 @@
 #'
 #' @examples
 #' library(lme4)
-#' lmer_2 <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
-#' extract_random_effects(lmer_2)
+#' library(mixedup)
+#'
+#' lmer_model <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+#' extract_random_effects(lmer_model)
 #'
 #'@seealso \code{\link[lme4:ranef]{ranef.merMod}}, \code{\link[glmmTMB:ranef]{ranef.glmmTMB}},
 #' \code{\link[nlme:ranef]{ranef.lme}}, \code{\link[brms:ranef]{ranef.brmsfit}}
@@ -46,6 +48,9 @@ extract_random_effects.merMod <- function(
   component = 'cond',
   digits = 3
 ) {
+
+  # refactor to use current extract_re/fe
+  # left_join(re, fe %>% rename(effect=term, value_fe = value, se_fe = se)) %>% mutate(coef = value + value_fe, se = sd + se_fe)
 
   if (!is_package_installed('lme4'))
     stop('lme4 package required', call. = FALSE)
@@ -78,6 +83,7 @@ extract_random_effects.merMod <- function(
     ) %>%
     dplyr::mutate_if(is.numeric, round, digits = digits)
 }
+
 
 #' @export
 extract_random_effects.glmmTMB <- function(
@@ -195,6 +201,7 @@ extract_random_effects.lme <- function(
     ) %>%
     dplyr::arrange(group_var, effect, group)
 }
+
 
 #' @export
 extract_random_effects.brmsfit <- function(

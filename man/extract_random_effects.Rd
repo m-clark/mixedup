@@ -8,14 +8,14 @@ extract_random_effects(model, re = NULL, component = "cond",
   digits = 3)
 }
 \arguments{
-\item{model}{A merMod or glmmTMB object}
+\item{model}{A merMod, glmmTMB, brms, or nlme object}
 
 \item{re}{The name of the grouping variable for the random effects. Default
 is \code{NULL} to return all.}
 
-\item{component}{Which of the three components 'cond', 'zi' or 'other' to
-select for a glmmTMB model. Default is 'cond'. Minimal testing on other
-options.}
+\item{component}{Only applies to glmmTMB objects. Which of the three
+components 'cond', 'zi' or 'other' to select for a glmmTMB model. Default
+is 'cond'. Minimal testing on other options.}
 
 \item{digits}{Rounding. Default is 3.}
 }
@@ -33,8 +33,10 @@ Relative to \code{ranef} for the various packages, this just adds
 }
 \examples{
 library(lme4)
-lmer_2 <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
-extract_random_effects(lmer_2)
+library(mixedup)
+
+lmer_model <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+extract_random_effects(lmer_model)
 
 }
 \seealso{

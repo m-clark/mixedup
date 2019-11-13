@@ -63,6 +63,7 @@ Returns a more usable (my opinion) version of variance components
 }
 \examples{
 library(lme4)
+library(mixedup)
 
 lmer_mod <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 

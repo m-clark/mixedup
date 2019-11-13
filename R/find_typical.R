@@ -2,7 +2,9 @@
 #'
 #' @description Given random effect values find 'typical' instances.
 #'
-#' @param model A supported model, e.g. lme4, glmmTMB, or lme
+#' @param model A supported model, e.g. lme4, glmmTMB, brms, or lme
+#' @param re The name of the grouping variable for the random effects. Default
+#'   is \code{NULL} to return all.
 #' @param probs Quantile probabilities
 #' @param ... Other arguments to pass to \link{extract_random_effects}
 #'
@@ -20,7 +22,7 @@
 #'   results of the model, even differences from the lowest valued estimated
 #'   random effect and the highest may not be statistically notable.
 #'
-#' @inheritParams extract_random_coef
+#' @inheritParams extract_random_effects
 #'
 #' @note Not surprisingly, different estimation procedures may produce different
 #'   random effect estimates. As such, you may get a different result from say,
