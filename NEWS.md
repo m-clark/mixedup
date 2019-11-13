@@ -1,3 +1,7 @@
+# mixedup 0.2.6
+
+* Add brms method for extract_random_coefs
+
 # mixedup 0.2.5
 
 * Add extract_fixed to get fixed effects
