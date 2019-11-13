@@ -105,7 +105,8 @@ extract_random_effects.merMod <- function(
                     pattern = '[\\(, \\)]',
                     replacement = '')
     ) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+    dplyr::as_tibble()
 }
 
 #' @rdname extract_random_effects
@@ -165,7 +166,8 @@ extract_random_effects.glmmTMB <- function(
                     pattern = '[\\(, \\)]',
                     replacement = '')
     ) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+    dplyr::as_tibble()
 }
 
 
@@ -241,7 +243,8 @@ extract_random_effects.lme <- function(
         replacement = ''
       )
     ) %>%
-    dplyr::arrange(group_var, effect, group)
+    dplyr::arrange(group_var, effect, group) %>%
+    dplyr::as_tibble()
 }
 
 
@@ -309,5 +312,7 @@ extract_random_effects.brmsfit <- function(
   }
 
   random_effects %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+    dplyr::select(group_var, dplyr::everything()) %>%
+    dplyr::as_tibble()
 }

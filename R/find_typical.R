@@ -41,6 +41,7 @@
 #' lmer_1 <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #'
 #' find_typical(lmer_1, re = 'Subject')
+#'
 #' @importFrom stats quantile
 #' @export
 find_typical <- function(

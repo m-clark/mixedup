@@ -40,13 +40,19 @@ coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](
 <!-- badges: end -->
 
 This package provides extended functionality for mixed models. The goal
-of mixedup is to solve little problems that slip through the cracks from
-the various packages, broom, and others. Basically the idea is to create
-(tidy) objects that are easy to use and essentially ready for
-presentation, and consistent across packages. I use several of these
+of `mixedup` is to solve little problems that slip through the cracks
+from the various packages, broom, and others in trying to get
+presentable output. Basically the idea is to create (tidy) objects that
+are easy to use and essentially ready for presentation, as well as
+consistent across packages and across functions. I use several of these
 packages (including mgcv) for mixed models, and typically have to some
-notable post processing to get some basic output even with tidy tools.
+notable post processing to get some basic output even with broom\* tidy
+tools, often which isn’t applicable if I switch to another package.
 These functions attempt to fill my specific niche.
+
+An additional perk is minimal dependency. Other than the package that
+created the object, nothing except the tidyverse is needed (presently
+just `dplyr`, `tidyr`, and `purrr`).
 
 ## Installation
 
@@ -191,42 +197,42 @@ extract_random_effects(lmer_1)
 
 extract_random_effects(brm_1, ci_level = .8)
       effect group_var group   value     se lower_10 upper_90
-1  Intercept   Subject   308   2.555 14.451  -16.492   20.338
-2  Intercept   Subject   309 -39.656 14.399  -58.709  -21.644
-3  Intercept   Subject   310 -38.217 14.127  -56.584  -20.336
-4  Intercept   Subject   330  23.636 14.463    5.466   42.568
-5  Intercept   Subject   331  22.235 14.226    4.476   40.796
-6  Intercept   Subject   332   8.900 13.493   -8.443   25.975
-7  Intercept   Subject   333  16.990 13.636    0.212   35.087
-8  Intercept   Subject   334  -6.498 13.017  -22.890    9.676
-9  Intercept   Subject   335  -0.393 14.026  -18.437   17.478
-10 Intercept   Subject   337  34.885 14.349   17.071   53.258
-11 Intercept   Subject   349 -24.591 14.023  -43.172   -6.790
-12 Intercept   Subject   350 -12.158 14.468  -31.059    5.674
-13 Intercept   Subject   351   4.719 13.566  -12.323   22.109
-14 Intercept   Subject   352  20.932 13.175    4.204   37.510
-15 Intercept   Subject   369   3.278 13.394  -13.724   20.386
-16 Intercept   Subject   370 -24.953 14.413  -43.538   -7.036
-17 Intercept   Subject   371   1.036 13.081  -15.737   17.729
-18 Intercept   Subject   372  12.444 12.884   -4.178   28.710
-19      Days   Subject   308   9.181  2.906    5.408   12.986
-20      Days   Subject   309  -8.648  2.867  -12.253   -4.987
-21      Days   Subject   310  -5.514  2.905   -9.229   -1.826
-22      Days   Subject   330  -4.726  2.907   -8.486   -1.051
-23      Days   Subject   331  -3.018  2.846   -6.767    0.436
-24      Days   Subject   332  -0.140  2.788   -3.614    3.429
-25      Days   Subject   333  -0.133  2.795   -3.686    3.498
-26      Days   Subject   334   1.015  2.746   -2.412    4.535
-27      Days   Subject   335 -10.652  2.940  -14.396   -6.890
-28      Days   Subject   337   8.699  2.911    5.078   12.465
-29      Days   Subject   349   1.151  2.856   -2.376    4.888
-30      Days   Subject   350   6.559  2.913    2.961   10.316
-31      Days   Subject   351  -2.961  2.795   -6.537    0.581
-32      Days   Subject   352   3.601  2.701    0.104    7.002
-33      Days   Subject   369   0.948  2.777   -2.586    4.476
-34      Days   Subject   370   4.797  2.951    1.109    8.674
-35      Days   Subject   371  -1.009  2.749   -4.632    2.477
-36      Days   Subject   372   1.379  2.757   -2.033    4.926
+1  Intercept   Subject   308   2.791 14.030  -15.476   20.637
+2  Intercept   Subject   309 -40.035 14.387  -58.663  -21.944
+3  Intercept   Subject   310 -38.257 14.579  -56.638  -19.915
+4  Intercept   Subject   330  23.177 14.634    4.910   41.803
+5  Intercept   Subject   331  21.752 14.431    3.666   40.406
+6  Intercept   Subject   332   9.112 13.467   -7.974   26.533
+7  Intercept   Subject   333  16.896 14.045   -0.700   35.296
+8  Intercept   Subject   334  -6.693 13.740  -23.867   10.444
+9  Intercept   Subject   335  -0.609 14.431  -18.491   18.101
+10 Intercept   Subject   337  34.708 14.562   16.407   53.096
+11 Intercept   Subject   349 -24.672 14.163  -43.462   -6.943
+12 Intercept   Subject   350 -12.100 14.074  -30.727    5.606
+13 Intercept   Subject   351   4.683 13.454  -12.434   21.991
+14 Intercept   Subject   352  20.897 13.614    3.780   38.361
+15 Intercept   Subject   369   3.480 13.293  -13.402   20.108
+16 Intercept   Subject   370 -24.581 14.502  -44.714   -6.399
+17 Intercept   Subject   371   0.804 13.511  -16.569   18.059
+18 Intercept   Subject   372  12.559 13.387   -4.332   30.182
+19      Days   Subject   308   9.184  2.941    5.505   13.103
+20      Days   Subject   309  -8.584  2.946  -12.302   -4.798
+21      Days   Subject   310  -5.456  2.833   -8.972   -1.877
+22      Days   Subject   330  -4.598  2.946   -8.354   -0.880
+23      Days   Subject   331  -2.947  2.923   -6.724    0.772
+24      Days   Subject   332  -0.214  2.745   -3.757    3.220
+25      Days   Subject   333  -0.111  2.859   -3.761    3.449
+26      Days   Subject   334   1.089  2.812   -2.456    4.763
+27      Days   Subject   335 -10.626  2.927  -14.434   -6.938
+28      Days   Subject   337   8.767  2.897    5.135   12.431
+29      Days   Subject   349   1.162  2.843   -2.390    4.816
+30      Days   Subject   350   6.541  2.884    2.917   10.258
+31      Days   Subject   351  -2.969  2.766   -6.443    0.453
+32      Days   Subject   352   3.611  2.726    0.179    7.043
+33      Days   Subject   369   0.925  2.749   -2.563    4.441
+34      Days   Subject   370   4.790  2.967    1.128    8.643
+35      Days   Subject   371  -0.885  2.746   -4.370    2.567
+36      Days   Subject   372   1.351  2.698   -2.034    4.900
 ```
 
 ### Extract Fixed Effects
@@ -236,8 +242,8 @@ extract_fixed_effects(brm_1)
 # A tibble: 2 x 5
   term      value    se lower_2.5 upper_97.5
   <chr>     <dbl> <dbl>     <dbl>      <dbl>
-1 Intercept 251.   7.34    236.        266. 
-2 Days       10.4  1.76      6.92       14.0
+1 Intercept 251.   7.60    236.        266. 
+2 Days       10.4  1.74      6.79       13.7
 
 
 extract_fixed_effects(nlme_1)
@@ -351,9 +357,9 @@ extract_vc(nlme_1)
 
 extract_vc(brm_1)
      group coefficient variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject   Intercept  722.256 26.875 15.589  41.396    0.503
-2  Subject        Days   43.193  6.572  4.194  10.059    0.030
-3 Residual              670.909 25.902 22.968  29.297    0.467
+1  Subject   Intercept  721.821 26.867 15.640  42.015    0.502
+2  Subject        Days   42.974  6.555  4.140  10.049    0.030
+3 Residual              673.624 25.954 23.081  29.269    0.468
 ```
 
 ### Extract Heterogeneous Variances

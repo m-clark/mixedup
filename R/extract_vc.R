@@ -131,9 +131,6 @@ extract_vc.merMod <- function(
   if (show_cor) {
 
     cormats <- lapply(vc_mat, attr, 'correlation')
-
-
-
     cormats <- lapply(cormats, remove_parens)
     cormats <- lapply(cormats, round, digits = digits)
 
