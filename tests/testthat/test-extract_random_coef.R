@@ -131,3 +131,45 @@ test_that('extract_random_coef correct output', {
     nlevels(droplevels(lme_3$data$d))
   )
 })
+
+
+# brms --------------------------------------------------------------------
+
+context('test extract_random_coefbrmsfit')
+
+test_that('extract_random_coefbrmsfit basic functionality', {
+  expect_s3_class(extract_random_coef(brm_1), 'data.frame')
+})
+
+test_that('extract_random_coefbrmsfit basic functionality', {
+  expect_s3_class(extract_random_coef(brm_2), 'data.frame')
+})
+
+test_that('extract_random_coefbrmsfit basic functionality', {
+  expect_s3_class(extract_random_coef(brm_4), 'data.frame')
+})
+
+test_that('extract_random_coefbrmsfit basic functionality', {
+  expect_s3_class(extract_random_coef(brm_1), 'data.frame')
+})
+
+test_that('extract_random_coefbrmsfit correct output', {
+  expect_equal(
+    nrow(extract_random_coef(brm_2)),
+    nlevels(sleepstudy$Subject)*2
+  )
+})
+
+test_that('extract_random_coefbrmsfit takes re', {
+  expect_equal(
+    nrow(extract_random_coef(brm_4, re = 'continent')),
+    nlevels(factor(brm_4$data$continent))*2
+  )
+})
+
+test_that('extract_random_coefbrmsfit takes ci_level', {
+  cn = colnames(extract_random_coef(brm_1, ci_level = .8))
+  expect_identical(
+    c("lower_10", "upper_90"),
+    grep(cn, pattern = '[0-9]+', value =T))
+})

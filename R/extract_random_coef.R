@@ -45,13 +45,13 @@ extract_random_coef <- function(
   model,
   re = NULL,
   ci_level = .95,
-  component,
+  # component,
   digits = 3,
   ...
 ) {
 
-  if (!inherits(model, c('merMod', 'glmmTMB', 'lme')))
-    stop('This only works for merMod objects from lme4, glmmTMB, and nlme.')
+  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit')))
+    stop('This only works for model objects from lme4, glmmTMB, brms, and nlme.')
 
   if (ci_level < 0 | ci_level >= 1)
     stop('Nonsensical confidence level for ci_level. Must be between 0 and 1.')
@@ -112,7 +112,7 @@ extract_random_coef.glmmTMB <- function(
   model,
   re = NULL,
   ci_level = .95,
-  component = 'cond',
+  # component = 'cond',
   digits = 3,
   ...
   ) {
@@ -183,3 +183,92 @@ extract_random_coef.lme <- function(
 
 }
 
+#' @rdname extract_random_coef
+#' @export
+extract_random_coef.brmsfit <- function(
+  model,
+  re = NULL,
+  ci_level = .95,
+  digits = 3,
+  ...
+) {
+
+  if (!is_package_installed('brms'))
+    stop('brms package required', call. = FALSE)
+
+  # we don't call the extract* functions directly as they already summarize the
+  # results
+
+  # do re
+  re0 <- brms::posterior_samples(model, pars = '^r_')
+
+  random_effects <- data.frame(effect = names(re0), stringsAsFactors = FALSE)
+
+  random_effects <- random_effects %>%
+    dplyr::mutate(
+      effect = gsub("^r_", "", effect),
+      group_var = gsub("\\[.*", "", effect),
+      group = gsub(".*\\[|,.*", "", effect),
+      effect = gsub(".*,|\\]", "", effect)) %>%
+    cbind(t(re0))
+
+  # do fe
+  fe0 <- brms::posterior_samples(model, pars = '^b_')
+
+  fixed_effects <- data.frame(effect = names(fe0), stringsAsFactors = FALSE)
+
+  fixed_effects <- fixed_effects %>%
+    dplyr::mutate(
+      effect = gsub("^b_", "", effect),
+      group_var = gsub("\\[.*", "", effect),
+      group = gsub(".*\\[|,.*", "", effect),
+      effect = gsub(".*,|\\]", "", effect)) %>%
+    cbind(t(fe0))
+
+  # previous is done to ensure samples are accurately matched, now combine
+  coefs_init <- random_effects %>%
+    dplyr::left_join(
+      fixed_effects,
+      by = 'effect',
+      suffix = c('_re', '_fe')
+      )
+
+  fe_samples <- coefs_init %>%
+    dplyr::select(dplyr::matches('^[0-9]+_fe'))
+
+  re_samples <- coefs_init %>%
+    dplyr::select(dplyr::matches('^[0-9]+_re'))
+
+  coef_samples <- fe_samples + re_samples
+
+  coefs <- random_effects %>%
+    dplyr::select(group_var, group, effect) %>%
+    dplyr::mutate(value = rowMeans(coef_samples),
+                  sd = apply(coef_samples, 1, sd))
+
+  if (ci_level > 0) {
+
+    lower <- (1 - ci_level)/2
+    upper <- 1 - lower
+
+    ci <- data.frame(
+      lower = apply(coef_samples, 1, quantile, prob = lower),
+      upper = apply(coef_samples, 1, quantile, prob = upper)
+    )
+
+    colnames(ci) <- paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
+
+    coefs <- dplyr::bind_cols(coefs, ci)
+
+  }
+
+  if (!is.null(re)) {
+    coefs <- coefs %>%
+      dplyr::filter(group_var == re)
+  }
+
+  coefs %>%
+    dplyr::select(group_var, effect, dplyr::everything()) %>%
+    dplyr::mutate_if(is.numeric, round, digits = digits)
+
+}
