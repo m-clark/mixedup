@@ -2,10 +2,22 @@
 % Please edit documentation in R/extract_random_effects.R
 \name{extract_random_effects}
 \alias{extract_random_effects}
+\alias{extract_random_effects.merMod}
+\alias{extract_random_effects.glmmTMB}
+\alias{extract_random_effects.lme}
 \title{Extract random effects}
 \usage{
-extract_random_effects(model, re = NULL, component = "cond",
-  digits = 3)
+extract_random_effects(model, re = NULL, ci_level = 0.95, digits = 3,
+  component = NULL, ...)
+
+\method{extract_random_effects}{merMod}(model, re = NULL,
+  ci_level = 0.95, digits = 3, ...)
+
+\method{extract_random_effects}{glmmTMB}(model, re = NULL,
+  ci_level = 0.95, digits = 3, component = "cond", ...)
+
+\method{extract_random_effects}{lme}(model, re = NULL, ci_level = NULL,
+  digits = 3, ...)
 }
 \arguments{
 \item{model}{A merMod, glmmTMB, brms, or nlme object}
@@ -13,11 +25,16 @@ extract_random_effects(model, re = NULL, component = "cond",
 \item{re}{The name of the grouping variable for the random effects. Default
 is \code{NULL} to return all.}
 
+\item{ci_level}{Where possible, confidence level < 1, typically above 0.90. A value of 0 will
+not report it. Default is .95. Not applicable to nlme objects.}
+
+\item{digits}{Rounding. Default is 3.}
+
 \item{component}{Only applies to glmmTMB objects. Which of the three
 components 'cond', 'zi' or 'other' to select for a glmmTMB model. Default
 is 'cond'. Minimal testing on other options.}
 
-\item{digits}{Rounding. Default is 3.}
+\item{...}{Other arguments specific to the method. Unused at present.}
 }
 \value{
 data frame of the random effects
@@ -27,9 +44,12 @@ Extracts the random effects and their standard errors.
 }
 \details{
 Relative to \code{ranef} for the various packages, this just adds
-  the standard errors and cluster ids as columns, and intervals for brmsfit objects.
-
+  the standard errors and cluster ids as columns, and intervals.
+}
+\note{
 \code{nlme} only provides the estimated random effect parameters, not their uncertainty, so it isn't provided.
+
+\code{merMod} and \code{glmmTMB} results are based on the estimated conditional variances, i.e. \code{condvar = TRUE}.  This is likely an underestimate relative to brms results.
 }
 \examples{
 library(lme4)
@@ -40,6 +60,6 @@ extract_random_effects(lmer_model)
 
 }
 \seealso{
-\code{\link[lme4:ranef]{ranef.merMod}}, \code{\link[glmmTMB:ranef]{ranef.glmmTMB}},
-\code{\link[nlme:ranef]{ranef.lme}}, \code{\link[brms:ranef]{ranef.brmsfit}}
+\code{\link[lme4:ranef.merMod]{ranef.merMod}}, \code{\link[glmmTMB:ranef.glmmTMB]{ranef.glmmTMB}},
+\code{\link[nlme:ranef.lme]{ranef.lme}}, \code{\link[brms:ranef.brmsfit]{ranef.brmsfit}}
 }

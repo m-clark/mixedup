@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](https://codecov.io/gh/m-clark/mixedup?branch=master)
 <!-- badges: end -->
 
-Provides extended functionality for mixed models. The goal of mixedup is to solve little problems that slip through the cracks from the various packages, broom, and others.  Basically the idea is to create (tidy) objects that are easy to use and mostly ready for presentation, and consistent across packages.
+This package provides extended functionality for mixed models. The goal of mixedup is to solve little problems that slip through the cracks from the various packages, broom, and others.  Basically the idea is to create (tidy) objects that are easy to use and essentially ready for presentation, and consistent across packages.  I use several of these packages (including mgcv) for mixed models, and typically have to some notable post processing to get some basic output even with tidy tools.  These functions attempt to fill my specific niche.
 
 ## Installation
 
@@ -124,22 +124,18 @@ Extract the random effects with their (not necessarily valid) standard errors fr
 ```{r extract-re}
 library(mixedup)
 
-extract_random_effects(lmer_1, re = 'Subject')
+extract_random_effects(lmer_1)
 
-
-extract_random_effects(tmb_2, re = 'Subject')
-
-
-extract_random_effects(brm_1, re = 'Subject')
+extract_random_effects(brm_1, ci_level = .8)
 ```
 ### Extract Fixed Effects
 
 
 ```{r fe}
-extract_fixed_effects(brm_1, re = 'Subject')
+extract_fixed_effects(brm_1)
 
 
-extract_fixed_effects(nlme_1,  re = 'Subject')
+extract_fixed_effects(nlme_1)
 ```
 
 
@@ -149,10 +145,10 @@ Extract the random coefficients with their standard errors (if available).
 
 
 ```{r coefs}
-extract_random_coefs(lmer_1, re = 'Subject')
+extract_random_coefs(lmer_1)
 
 
-extract_random_coefs(tmb_2,  re = 'Subject')
+extract_random_coefs(tmb_2)
 ```
 
 

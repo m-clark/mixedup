@@ -5,15 +5,21 @@
 #' @param model A merMod, glmmTMB, brms, or nlme object
 #' @param re The name of the grouping variable for the random effects. Default
 #'   is \code{NULL} to return all.
+#' @param ci_level Where possible, confidence level < 1, typically above 0.90. A value of 0 will
+#'   not report it. Default is .95. Not applicable to nlme objects.
 #' @param component Only applies to glmmTMB objects. Which of the three
 #'   components 'cond', 'zi' or 'other' to select for a glmmTMB model. Default
 #'   is 'cond'. Minimal testing on other options.
 #' @param digits  Rounding. Default is 3.
+#' @param ... Other arguments specific to the method. Unused at present.
 #'
 #' @details Relative to \code{ranef} for the various packages, this just adds
-#'   the standard errors and cluster ids as columns, and intervals for brmsfit objects.
+#'   the standard errors and cluster ids as columns, and intervals.
 #'
+#' @note
 #' \code{nlme} only provides the estimated random effect parameters, not their uncertainty, so it isn't provided.
+#'
+#' \code{merMod} and \code{glmmTMB} results are based on the estimated conditional variances, i.e. \code{condvar = TRUE}.  This is likely an underestimate relative to brms results.
 #'
 #' @return data frame of the random effects
 #'
@@ -24,15 +30,17 @@
 #' lmer_model <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #' extract_random_effects(lmer_model)
 #'
-#'@seealso \code{\link[lme4:ranef]{ranef.merMod}}, \code{\link[glmmTMB:ranef]{ranef.glmmTMB}},
-#' \code{\link[nlme:ranef]{ranef.lme}}, \code{\link[brms:ranef]{ranef.brmsfit}}
+#'@seealso \code{\link[lme4:ranef.merMod]{ranef.merMod}}, \code{\link[glmmTMB:ranef.glmmTMB]{ranef.glmmTMB}},
+#' \code{\link[nlme:ranef.lme]{ranef.lme}}, \code{\link[brms:ranef.brmsfit]{ranef.brmsfit}}
 #'
 #' @export
 extract_random_effects <- function(
   model,
   re = NULL,
-  component = 'cond',
-  digits = 3
+  ci_level = .95,
+  digits = 3,
+  component = NULL,
+  ...
 ) {
   if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit')))
     stop('This only works for model objects from lme4, glmmTMB, brms, and nlme.')
@@ -41,16 +49,17 @@ extract_random_effects <- function(
 }
 
 
+#' @rdname extract_random_effects
 #' @export
 extract_random_effects.merMod <- function(
   model,
   re = NULL,
-  component = 'cond',
-  digits = 3
+  ci_level = .95,
+  digits = 3,
+  ...
+  # component = 'cond',
 ) {
 
-  # refactor to use current extract_re/fe
-  # left_join(re, fe %>% rename(effect=term, value_fe = value, se_fe = se)) %>% mutate(coef = value + value_fe, se = sd + se_fe)
 
   if (!is_package_installed('lme4'))
     stop('lme4 package required', call. = FALSE)
@@ -66,17 +75,32 @@ extract_random_effects.merMod <- function(
     )
 
   random_effects <- as.data.frame(lme4::ranef(model, condVar = TRUE))
-  colnames(random_effects) <- c('group_var', 'effect', 'group', 'value', 'sd')
+  colnames(random_effects) <- c('group_var', 'effect', 'group', 'value', 'se')
+
+  if (ci_level > 0) {
+
+    lower = (1 - ci_level)/2
+    upper = 1 - lower
+    mult <- stats::qnorm(upper)
+
+    random_effects <- random_effects %>%
+      dplyr::mutate(
+        lower = value - mult * se,
+        upper = value + mult * se
+      )
+
+    colnames(random_effects)[colnames(random_effects) %in% c('lower', 'upper')] <-
+      paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
+  }
 
   if (!is.null(re)) {
     random_effects <- random_effects %>%
       dplyr::filter(group_var == re)
   }
 
+
   random_effects %>%
     dplyr::mutate(
-      lower  = value - 1.96 * sd,
-      upper  = value + 1.96 * sd,
       effect = gsub(effect,
                     pattern = '[\\(, \\)]',
                     replacement = '')
@@ -84,13 +108,15 @@ extract_random_effects.merMod <- function(
     dplyr::mutate_if(is.numeric, round, digits = digits)
 }
 
-
+#' @rdname extract_random_effects
 #' @export
 extract_random_effects.glmmTMB <- function(
   model,
   re = NULL,
+  ci_level = .95,
+  digits = 3,
   component = 'cond',
-  digits = 3
+  ...
 ) {
 
   if (!is_package_installed('glmmTMB'))
@@ -110,7 +136,23 @@ extract_random_effects.glmmTMB <- function(
     dplyr::filter(component == component) %>%
     dplyr::select(-component)
 
-  colnames(random_effects) <- c('group_var', 'effect', 'group', 'value', 'sd')
+  colnames(random_effects) <- c('group_var', 'effect', 'group', 'value', 'se')
+
+  if (ci_level > 0) {
+
+    lower = (1 - ci_level)/2
+    upper = 1 - lower
+    mult <- stats::qnorm(upper)
+
+    random_effects <- random_effects %>%
+      dplyr::mutate(
+        lower = value - mult * se,
+        upper = value + mult * se
+      )
+
+    colnames(random_effects)[colnames(random_effects) %in% c('lower', 'upper')] <-
+      paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
+  }
 
   if (!is.null(re)) {
     random_effects <- random_effects %>%
@@ -119,8 +161,6 @@ extract_random_effects.glmmTMB <- function(
 
   random_effects %>%
     dplyr::mutate(
-      lower  = value - 1.96 * sd,
-      upper  = value + 1.96 * sd,
       effect = gsub(effect,
                     pattern = '[\\(, \\)]',
                     replacement = '')
@@ -129,13 +169,15 @@ extract_random_effects.glmmTMB <- function(
 }
 
 
-
+#' @rdname extract_random_effects
 #' @export
 extract_random_effects.lme <- function(
   model,
   re = NULL,
-  component,
-  digits = 3
+  ci_level = NULL,
+  digits = 3,
+  # component,
+  ...
 ) {
 
   re0 <- nlme::ranef(model)
@@ -207,8 +249,10 @@ extract_random_effects.lme <- function(
 extract_random_effects.brmsfit <- function(
   model,
   re = NULL,
-  component,
-  digits = 3
+  # component,
+  ci_level = .95,
+  digits = 3,
+  ...
 ) {
 
   if (!is_package_installed('brms'))
@@ -245,10 +289,19 @@ extract_random_effects.brmsfit <- function(
     )
 
   # add_ci may add prob as arg in future
-  probs <- c((1 - .95)/2, 1 - (1 - .95)/2)
+  if (ci_level > 0) {
 
-  random_effects[, c("lower", "upper")] <-
-    t(apply(re0, 2, stats::quantile, probs = probs))
+    lower <- (1 - ci_level)/2
+    upper <- 1 - lower
+
+    ci <- t(apply(re0, 2, stats::quantile, probs = c(lower, upper)))
+
+    colnames(ci) <- paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
+
+    random_effects <- dplyr::bind_cols(random_effects, data.frame(ci))
+
+  }
+
 
   if (!is.null(re)) {
     random_effects <- random_effects %>%

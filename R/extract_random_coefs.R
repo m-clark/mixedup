@@ -1,6 +1,6 @@
 #' Extract random coefficients and their variances
 #'
-#' @param model A merMod or glmmTMB object
+#' @param model A merMod, nlme, brms, or glmmTMB object
 #' @param re The name of the grouping variable for the random effects.
 #' @param ci_level Where possible, confidence level < 1, typically above 0.90. A value of 0 will
 #'   not report it. Default is .95. Not applicable to nlme objects.
@@ -83,7 +83,7 @@ extract_random_coefs.merMod <- function(
     dplyr::left_join(fixed_effects, by = 'effect') %>%
     dplyr::mutate(
       coef = value + value_fe,
-      se = sd + se_fe
+      se = se + se_fe
     ) %>%
     dplyr::select(group_var, effect, group, coef, se)
 
@@ -134,7 +134,7 @@ extract_random_coefs.glmmTMB <- function(
     dplyr::left_join(fixed_effects, by = 'effect') %>%
     dplyr::mutate(
       coef = value + value_fe,
-      se = sd + se_fe
+      se = se + se_fe
     ) %>%
     dplyr::select(group_var, effect, group, coef, se)
 

@@ -24,7 +24,7 @@ extract_random_coefs(model, re = NULL, ci_level = 0.95, digits = 3,
   ci_level = 0.95, digits = 3, ...)
 }
 \arguments{
-\item{model}{A merMod or glmmTMB object}
+\item{model}{A merMod, nlme, brms, or glmmTMB object}
 
 \item{re}{The name of the grouping variable for the random effects.}
 
