@@ -59,13 +59,13 @@ find_typical <- function(
 
   if (is.null(probs)) {
     re <- re %>%
-      dplyr::group_by(effect) %>%
+      dplyr::group_by(group_var, effect) %>%
       dplyr::slice(which.min(abs(value))) %>%
       dplyr::ungroup()
   }
   else {
     re <- re %>%
-      dplyr::group_by(effect) %>%
+      dplyr::group_by(group_var, effect) %>%
       dplyr::slice(find_quants(value, probs)) %>%
       dplyr::mutate(probs = paste0(round(probs*100, 1), '%')) %>%
       dplyr::ungroup()
