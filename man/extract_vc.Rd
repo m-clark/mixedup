@@ -36,8 +36,8 @@ not report it. Default is .95.}
 interval estimate.  Default is 'sd'.
 at present.}
 
-\item{show_cor}{Return the intercept/slope correlations. Default is
-\code{FALSE}.}
+\item{show_cor}{Return the intercept/slope correlations as a separate list
+element. Default is \code{FALSE}.}
 
 \item{digits}{Rounding. Default is 3.}
 

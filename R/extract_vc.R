@@ -12,8 +12,8 @@
 #' @param component For glmmTMB objects, which of the three components 'cond',
 #'   'zi' or 'other' to select. Default is cond. Minimal testing on other
 #'   options.
-#' @param show_cor Return the intercept/slope correlations. Default is
-#'   \code{FALSE}.
+#' @param show_cor Return the intercept/slope correlations as a separate list
+#'   element. Default is \code{FALSE}.
 #' @param digits Rounding. Default is 3.
 #' @param ... Other stuff to pass to the corresponding function. Unused/tested
 #'
@@ -85,9 +85,8 @@ extract_vc.merMod <- function(
   vc <- data.frame(vc_mat)
   colnames(vc) <- c('group', 'effect', 'effect_2', 'variance', 'sd')
 
-  # as part of package, create better named and dataframe for ci output to add to results?
   if (ci_level > 0) {
-    ci <- do.call(
+    ci <- tryCatch(do.call(
       confint,
       c(
         list(
@@ -98,19 +97,29 @@ extract_vc.merMod <- function(
           ),
           ci_args
         )
-      )
+      ),
+      error = function(c) {
+        msg <- conditionMessage(c)
+        invisible(structure(msg, class = "try-error"))
+      })
 
-    if (ci_scale == 'var') {
-      ci <- ci^2
-      colnames(ci) <- paste0('var_', colnames(ci))
+    if (inherits(ci, 'try-error')) {
+      warning('Intervals could not be computed')
     }
     else {
-      colnames(ci) <- paste0('sd_', colnames(ci))
+      if (ci_scale == 'var') {
+        ci <- ci^2
+        colnames(ci) <- paste0('var_', colnames(ci))
+      }
+      else {
+        colnames(ci) <- paste0('sd_', colnames(ci))
+      }
+
+      colnames(ci) <- gsub(colnames(ci), pattern = ' %', replacement = '')
+
+      vc <- cbind(vc, ci)
     }
 
-    colnames(ci) <- gsub(colnames(ci), pattern = ' %', replacement = '')
-
-    vc <- cbind(vc, ci)
   }
 
   # cleanup/add to results
