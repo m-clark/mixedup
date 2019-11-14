@@ -9,21 +9,20 @@
 \title{Extract variance components}
 \usage{
 extract_vc(model, ci_level = 0.95, ci_args = NULL, ci_scale = "sd",
-  component = "cond", show_cor = FALSE, digits = 3, ...)
+  show_cor = FALSE, digits = 3, component = "cond", ...)
 
 \method{extract_vc}{merMod}(model, ci_level = 0.95, ci_args = NULL,
-  ci_scale = "sd", component, show_cor = FALSE, digits = 3, ...)
+  ci_scale = "sd", show_cor = FALSE, digits = 3, ...)
 
 \method{extract_vc}{glmmTMB}(model, ci_level = 0.95, ci_args = NULL,
-  ci_scale = "sd", component = "cond", show_cor = FALSE,
-  digits = 3, ...)
+  ci_scale = "sd", show_cor = FALSE, digits = 3,
+  component = "cond", ...)
 
 \method{extract_vc}{lme}(model, ci_level = 0.95, ci_args = NULL,
-  ci_scale = "sd", component, show_cor = FALSE, digits = 3, ...)
+  ci_scale = "sd", show_cor = FALSE, digits = 3, ...)
 
 \method{extract_vc}{brmsfit}(model, ci_level = 0.95, ci_args = NULL,
-  ci_scale = "sd", component = "cond", show_cor = FALSE,
-  digits = 3, ...)
+  ci_scale = "sd", show_cor = FALSE, digits = 3, ...)
 }
 \arguments{
 \item{model}{an lme4, glmmTMB, nlme, or brms model}
@@ -37,14 +36,14 @@ not report it. Default is .95.}
 interval estimate.  Default is 'sd'.
 at present.}
 
-\item{component}{For glmmTMB objects, which of the three components 'cond',
-'zi' or 'other' to select. Default is cond. Minimal testing on other
-options.}
-
 \item{show_cor}{Return the intercept/slope correlations. Default is
 \code{FALSE}.}
 
 \item{digits}{Rounding. Default is 3.}
+
+\item{component}{For glmmTMB objects, which of the three components 'cond',
+'zi' or 'other' to select. Default is cond. Minimal testing on other
+options.}
 
 \item{...}{Other stuff to pass to the corresponding function. Unused/tested}
 }

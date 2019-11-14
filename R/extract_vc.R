@@ -50,9 +50,9 @@ extract_vc <- function(
   ci_level = .95,
   ci_args = NULL,
   ci_scale = 'sd',
-  component = 'cond',
   show_cor = FALSE,
   digits = 3,
+  component = 'cond',
   ...
 ) {
   if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit')))
@@ -74,9 +74,9 @@ extract_vc.merMod <- function(
   ci_level = .95,
   ci_args = NULL,
   ci_scale = 'sd',
-  component,
   show_cor = FALSE,
   digits = 3,
+  # component,
   ...
 ) {
   vc_mat <- lme4::VarCorr(model)
@@ -147,9 +147,9 @@ extract_vc.glmmTMB <- function(
   ci_level = .95,
   ci_args = NULL,
   ci_scale = 'sd',
-  component = 'cond',
   show_cor = FALSE,
   digits = 3,
+  component = 'cond',
   ...
 ) {
   vc_mat <- glmmTMB::VarCorr(model)[[component]]
@@ -167,7 +167,7 @@ extract_vc.glmmTMB <- function(
     resvar = data.frame(
       group    = 'Residual',
       effect   = '',
-      variance = attr(vc_mat, 'sc')
+      variance = attr(vc_mat, 'sc')^2
     )
 
     variance <- rbind(variance, resvar)
@@ -241,9 +241,9 @@ extract_vc.lme <- function(
   ci_level = .95,
   ci_args = NULL,
   ci_scale = 'sd',
-  component,
   show_cor = FALSE,
   digits = 3,
+  # component,
   ...
 ) {
   re_struct <- model$modelStruct$reStruct
@@ -346,10 +346,17 @@ extract_vc.lme <- function(
   }
   else {
     vc <- cbind(vc, dplyr::select(ci, dplyr::matches('var\\_|sd\\_'))) %>%
-      dplyr::select(group, effect, dplyr::everything(), -var_prop, var_prop)
+      dplyr::select(
+        group,
+        effect,
+        dplyr::everything(),
+        -var_prop,
+        var_prop,
+      )
   }
 
   vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)
+  vc$corr = NULL # leave to show_cor if it exists
 
   if (show_cor) {
     cormats <- re_struct %>%
@@ -372,9 +379,9 @@ extract_vc.brmsfit <- function(
   ci_level = .95,
   ci_args = NULL,
   ci_scale = 'sd',
-  component = 'cond',
   show_cor = FALSE,
   digits = 3,
+  # component = 'cond',
   ...
 ) {
 
