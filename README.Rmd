@@ -24,7 +24,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](https://codecov.io/gh/m-clark/mixedup?branch=master)
 <!-- badges: end -->
 
-This package provides extended functionality for mixed models. The goal of `mixedup` is to solve little problems that slip through the cracks from the various packages, broom, and others in trying to get presentable output.  Basically the idea is to create (tidy) objects that are easy to use and essentially ready for presentation, as well as consistent across packages and across functions.  I use several of these packages (including mgcv) for mixed models, and typically have to some notable post processing to get some basic output even with broom* tidy tools, often which isn't applicable if I switch to another package.  These functions attempt to fill my specific niche.
+This package provides extended functionality for mixed models. The goal of `mixedup` is to solve little problems that slip through the cracks from the various packages, broom, and others in trying to get presentable output.  Basically the idea is to create (tidy) objects that are easy to use and essentially ready for presentation, as well as consistent across packages and across functions.  I use several of these packages (including mgcv) for mixed models, and typically have to some notable post processing to get some basic output even with `broom::tidy` options, and this effort often isn't applicable if I switch to another package for the same model.  These functions attempt to fill my specific niche.
 
 An additional perk is minimal dependency.  Other than the package that created the object, nothing except the tidyverse is needed (presently just `dplyr`, `tidyr`, and `purrr`).
 

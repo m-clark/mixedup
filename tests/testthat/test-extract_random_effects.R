@@ -9,6 +9,9 @@ test_that('extract_random_effects errors with wrong type of model', {
   expect_error(extract_random_effects(mod))
 })
 
+test_that('extract_random_effects errors with silly ci level', {
+  expect_error(extract_random_effects(lmer_1, ci_level = 2))
+})
 
 # lme4 --------------------------------------------------------------------
 
@@ -148,6 +151,10 @@ test_that('extract_random_effects.brmsfit works with multiple re', {
     nrow(extract_random_effects(brm_3, re = 's')),
     nlevels(brm_3$data$s)
   )
+})
+
+test_that('extract_random_effects.brmsfit errors with bad re name', {
+  expect_error(extract_random_effects(brm_2, re = 'subject'))
 })
 
 test_that('extract_random_effects.brmsfit errors with bad re name', {

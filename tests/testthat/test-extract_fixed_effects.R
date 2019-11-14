@@ -158,5 +158,8 @@ test_that('extract_fixed_effects.brmsfit handles digits', {
   expect_s3_class(extract_fixed_effects(brm_3, digits = 2), 'data.frame')
 })
 
+test_that('extract_fixed_effects.brmsfit will always provide ci', {
+  expect_message(extract_fixed_effects(brm_3, ci_level = 0))
+})
 
 # TODO: test distributional models

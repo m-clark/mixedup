@@ -8,6 +8,10 @@ test_that('extract_random_coefs errors with wrong type of model', {
   expect_error(extract_random_coefs(mod))
 })
 
+test_that('extract_random_effects errors with silly ci level', {
+  expect_error(extract_random_coefs(lmer_1, ci_level = 2))
+})
+
 
 # lme4 --------------------------------------------------------------------
 
@@ -65,6 +69,10 @@ test_that('extract_random_coefs.glmmTMB basic functionality', {
 
 test_that('extract_random_coefs.glmmTMB basic functionality', {
   expect_s3_class(extract_random_coefs(tmb_3), 'data.frame')
+})
+
+test_that('extract_random_coefs.glmmTMB will handle NULL component', {
+  expect_s3_class(extract_random_coefs(tmb_3, component = NULL), 'data.frame')
 })
 
 

@@ -45,6 +45,9 @@ extract_random_effects <- function(
   if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit')))
     stop('This only works for model objects from lme4, glmmTMB, brms, and nlme.')
 
+  if (ci_level < 0 | ci_level >= 1)
+    stop('Nonsensical confidence level for ci_level.  Must be between 0 and 1.')
+
   UseMethod('extract_random_effects')
 }
 
@@ -274,9 +277,10 @@ extract_random_effects.brmsfit <- function(
   # more or less following broom
   re0 <- brms::posterior_samples(model, pars = '^r_')
 
+  # not sure this is necessary, would only happen if something very wrong with
+  # model or no random effects.
   if (is.null(re0)) {
-    stop("No parameter name matches the specified pattern.",
-         call. = FALSE)
+    stop("No parameter name matches the specified pattern.", call. = FALSE)
   }
 
   random_effects <- data.frame(effect = names(re0), stringsAsFactors = FALSE)
