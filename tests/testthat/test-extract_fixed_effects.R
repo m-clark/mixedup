@@ -49,7 +49,7 @@ test_that('extract_fixed_effects.merMod handles digits', {
 })
 
 test_that('extract_fixed_effects.merMod handles glmer', {
-  expect_s3_class(extract_fixed_effects(glmer_1), 'data.frame')
+  expect_equal(ncol(extract_fixed_effects(glmer_1, ci_level = 0)),  5)  # has z and p-value
 })
 
 

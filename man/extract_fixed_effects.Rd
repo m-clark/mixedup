@@ -40,14 +40,14 @@ not report it. Default is .95.}
 options.}
 }
 \value{
-A data.frame with the fixed effects and associated statistics
+A data.frame with the fixed effects and associated statistics.
 }
 \description{
 Extract fixed effects
 }
 \details{
 Essentially duplicates the \code{broom::tidy} approach with minor
-  name changes.
+  name changes.  The package may or may not provide p-values by default.
 }
 \note{
 For nlme, this is just a multiplier based on the estimated standard
