@@ -25,10 +25,11 @@ extract_vc(model, ci_level = 0.95, ci_args = NULL, ci_scale = "sd",
   ci_scale = "sd", show_cor = FALSE, digits = 3, ...)
 }
 \arguments{
-\item{model}{an lme4, glmmTMB, nlme, or brms model}
+\item{model}{an lme4, glmmTMB, nlme, mgcv, or brms model}
 
 \item{ci_level}{confidence level < 1, typically above 0.90. A value of 0 will
-not report it. Default is .95.}
+not report it (except for gam objects, which will revert to .95 due to
+\code{gam.vcomp}). Default is .95.}
 
 \item{ci_args}{Additional arguments to the corresponding confint method.}
 

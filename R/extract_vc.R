@@ -2,9 +2,10 @@
 #'
 #' @description This has functionality for simpler models from \code{lme4}, \code{glmmTMB}, \code{nlme}, and \code{brms}.
 #'
-#' @param model an lme4, glmmTMB, nlme, or brms model
+#' @param model an lme4, glmmTMB, nlme, mgcv, or brms model
 #' @param ci_level confidence level < 1, typically above 0.90. A value of 0 will
-#'   not report it. Default is .95.
+#'   not report it (except for gam objects, which will revert to .95 due to
+#'   \code{gam.vcomp}). Default is .95.
 #' @param ci_args Additional arguments to the corresponding confint method.
 #' @param ci_scale A character string of 'sd' or 'var' to note the scale of the
 #'   interval estimate.  Default is 'sd'.
@@ -55,8 +56,9 @@ extract_vc <- function(
   component = 'cond',
   ...
 ) {
-  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit')))
-    stop('This only works for model objects from lme4, glmmTMB, brms, and nlme.')
+  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'brmsfit')))
+    stop('This only works for model objects from lme4, glmmTMB, brms,
+         mgcv, and nlme.')
 
   if (ci_level < 0 | ci_level >= 1)
     stop('Nonsensical confidence level for ci_level.  Must be between 0 and 1.')
@@ -84,6 +86,9 @@ extract_vc.merMod <- function(
   # make dataframe and add names
   vc <- data.frame(vc_mat)
   colnames(vc) <- c('group', 'effect', 'effect_2', 'variance', 'sd')
+  vc <- vc %>%
+    data.frame() %>%
+    dplyr::filter(is.na(effect) | is.na(effect_2))
 
   if (ci_level > 0) {
     ci <- tryCatch(do.call(
@@ -117,14 +122,14 @@ extract_vc.merMod <- function(
 
       colnames(ci) <- gsub(colnames(ci), pattern = ' %', replacement = '')
 
-      vc <- cbind(vc, ci)
+      vc <- cbind(vc, ci[!grepl(rownames(ci), pattern = 'cor'),])
     }
 
   }
 
   # cleanup/add to results
   vc <- vc %>%
-    dplyr::filter(is.na(effect) | is.na(effect_2)) %>%
+    # dplyr::filter(is.na(effect) | is.na(effect_2)) %>%
     dplyr::mutate(
       var_prop = variance / sum(variance),
       effect   = gsub(effect, pattern = '[\\(,\\)]', replacement = ''),
@@ -463,9 +468,88 @@ extract_vc.brmsfit <- function(
 }
 
 
+#' @export
+extract_vc.gam <- function(
+  model,
+  ci_level = .95,
+  ci_args = NULL,
+  ci_scale = 'sd',
+  show_cor = FALSE,
+  digits = 3,
+  # component = 'cond',
+  ...
+  ) {
+
+  if (!inherits(model, "gam")) stop("Need a gam object.")
+
+  if (!grepl(model$method, pattern = "REML")) {
+    stop("REML required. Rerun model with method = 'REML' for appropriate results.")
+  }
+
+  # keep from printing result
+  invisible(
+    utils::capture.output(
+      vc <- mgcv::gam.vcomp(model, conf.lev = ci_level)
+    )
+  )
+
+  vc <- data.frame(vc)
+
+  # clean up names
+  vc <- vc %>%
+    dplyr::mutate(
+      effect  = rownames(vc),
+      effect  = gsub(effect, pattern = "s\\(|ti\\(|te\\(|\\)", replacement = '')
+    )
+
+  # if more two after split, suggests random slope
+  split_group_effect  = function(x, which = 1) {
+    init = strsplit(x, split = ",")
+    purrr::map_chr(init, function(x) x[min(which, length(x))])
+  }
+
+  vc <- vc %>%
+    mutate(
+      group = split_group_effect(effect, which = 2),
+      group = if_else(group == 'scale', 'Residual', group),
+      effect = split_group_effect(effect, which = 1),
+      effect = if_else(effect == 'scale', '', effect),
+      effect = if_else(effect ==  group, 'Intercept', effect)
+      )
+
+  # calc variance and scale
+  vc <- vc %>%
+    dplyr::mutate(
+      variance   = std.dev^2,
+      var_prop   = variance / sum(variance)
+    ) %>%
+    dplyr::rename(sd = std.dev)
+
+  lower <- (1 - ci_level) / 2
+  upper <- 1 - lower
+
+  if (ci_scale == 'var') {
+    vc <- vc %>%
+      dplyr::mutate(lower = lower^2, upper = upper^2)
+
+    colnames(vc)[colnames(vc) %in% c('lower', 'upper')] <-
+      c(paste0('var_', 100 * lower), paste0('var_', 100 * upper))
+  }
+  else {
+    colnames(vc)[colnames(vc) %in% c('lower', 'upper')] <-
+      c(paste0('sd_', 100 * lower), paste0('sd_', 100 * upper))
+  }
+
+  vc %>%
+    dplyr::select(group, effect, variance, dplyr::everything())  %>%
+    dplyr::mutate_if(is.numeric, round, digits = digits)
+}
+
 
 remove_parens <- function(x) {
   colnames(x) <- gsub(colnames(x), pattern = '[\\(,\\)]', replacement = '')
   rownames(x) <- colnames(x)
   x
 }
+
+
