@@ -467,7 +467,7 @@ extract_vc.brmsfit <- function(
   vc
 }
 
-
+#' @rdname extract_vc
 #' @export
 extract_vc.gam <- function(
   model,
@@ -503,11 +503,6 @@ extract_vc.gam <- function(
     )
 
   # if more two after split, suggests random slope
-  split_group_effect  = function(x, which = 1) {
-    init = strsplit(x, split = ",")
-    purrr::map_chr(init, function(x) x[min(which, length(x))])
-  }
-
   vc <- vc %>%
     mutate(
       group = split_group_effect(effect, which = 2),
@@ -553,3 +548,7 @@ remove_parens <- function(x) {
 }
 
 
+split_group_effect <- function(x, which = 1) {
+  init = strsplit(x, split = ",")
+  purrr::map_chr(init, function(x) x[min(which, length(x))])
+}
