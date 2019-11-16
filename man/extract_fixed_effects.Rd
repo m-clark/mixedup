@@ -6,6 +6,7 @@
 \alias{extract_fixed_effects.glmmTMB}
 \alias{extract_fixed_effects.lme}
 \alias{extract_fixed_effects.brmsfit}
+\alias{extract_fixed_effects.gam}
 \title{Extract fixed effects}
 \usage{
 extract_fixed_effects(model, ci_level = 0.95, ci_args = NULL,
@@ -22,6 +23,9 @@ extract_fixed_effects(model, ci_level = 0.95, ci_args = NULL,
 
 \method{extract_fixed_effects}{brmsfit}(model, ci_level = 0.95,
   ci_args = NULL, digits = 3, ...)
+
+\method{extract_fixed_effects}{gam}(model, ci_level = 0.95,
+  ci_args = list(method = "Wald"), digits = 3, ...)
 }
 \arguments{
 \item{model}{an lme4, glmmTMB, nlme, mgcv, or brms model}

@@ -174,6 +174,9 @@ test_that('extract_random_effects.gam basic functionality', {
   expect_s3_class(extract_random_effects(gam_2), 'data.frame')
 })
 
+test_that('extract_vc.gam basic functionality: bam', {
+  expect_s3_class(extract_vc(bam_1), 'data.frame')
+})
 
 test_that('extract_random_effects.gam works with multiple re', {
   expect_equal(

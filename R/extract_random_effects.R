@@ -365,6 +365,7 @@ extract_random_effects.gam <- function(
 
   non_factors <- purrr::map_lgl(re_levels, is.null)
 
+  # this test is covered but covr ignores for some reason
   if (any(non_factors)) {
     re_terms[non_factors] <- FALSE
   }
