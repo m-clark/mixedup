@@ -163,3 +163,41 @@ test_that('extract_fixed_effects.brmsfit will always provide ci', {
 })
 
 # TODO: test distributional models
+
+
+# Test mgcv ---------------------------------------------------------------
+
+context('test extract_fixed_effects.gam')
+
+
+
+test_that('extract_fixed_effects.gam basic functionality: random intercept only', {
+  expect_s3_class(extract_fixed_effects(gam_1), 'data.frame')
+})
+
+test_that('extract_fixed_effects.gam basic functionality: random slopes', {
+  expect_s3_class(extract_fixed_effects(gam_2), 'data.frame')
+})
+
+test_that('extract_fixed_effects.gam basic functionality: multiple grouping factors', {
+  expect_s3_class(extract_fixed_effects(gam_3), 'data.frame')
+})
+
+
+test_that('extract_vc.gam basic functionality: bam', {
+  expect_s3_class(extract_vc(bam_1), 'data.frame')
+})
+
+
+test_that('extract_fixed_effects.gam handles no ci', {
+  expect_s3_class(extract_fixed_effects(gam_2, ci_level = 0), 'data.frame')
+})
+
+test_that('extract_fixed_effects.gam handles ci args', {
+  expect_s3_class(extract_fixed_effects(gam_2, ci_args = list(method = 'profile')), 'data.frame')
+})
+
+test_that('extract_fixed_effects.gam handles digits', {
+  expect_s3_class(extract_fixed_effects(gam_2, digits = 2), 'data.frame')
+})
+
