@@ -6,6 +6,7 @@
 \alias{extract_vc.glmmTMB}
 \alias{extract_vc.lme}
 \alias{extract_vc.brmsfit}
+\alias{extract_vc.gam}
 \title{Extract variance components}
 \usage{
 extract_vc(model, ci_level = 0.95, ci_args = NULL, ci_scale = "sd",
@@ -22,6 +23,9 @@ extract_vc(model, ci_level = 0.95, ci_args = NULL, ci_scale = "sd",
   ci_scale = "sd", show_cor = FALSE, digits = 3, ...)
 
 \method{extract_vc}{brmsfit}(model, ci_level = 0.95, ci_args = NULL,
+  ci_scale = "sd", show_cor = FALSE, digits = 3, ...)
+
+\method{extract_vc}{gam}(model, ci_level = 0.95, ci_args = NULL,
   ci_scale = "sd", show_cor = FALSE, digits = 3, ...)
 }
 \arguments{

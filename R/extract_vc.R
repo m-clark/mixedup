@@ -504,19 +504,19 @@ extract_vc.gam <- function(
 
   # if more two after split, suggests random slope
   vc <- vc %>%
-    mutate(
+    dplyr::mutate(
       group = split_group_effect(effect, which = 2),
-      group = if_else(group == 'scale', 'Residual', group),
+      group = ifelse(group == 'scale', 'Residual', group),
       effect = split_group_effect(effect, which = 1),
-      effect = if_else(effect == 'scale', '', effect),
-      effect = if_else(effect ==  group, 'Intercept', effect)
+      effect = ifelse(effect == 'scale', '', effect),
+      effect = ifelse(effect ==  group, 'Intercept', effect)
       )
 
   # calc variance and scale
   vc <- vc %>%
     dplyr::mutate(
-      variance   = std.dev^2,
-      var_prop   = variance / sum(variance)
+      variance = std.dev^2,
+      var_prop = variance / sum(variance)
     ) %>%
     dplyr::rename(sd = std.dev)
 

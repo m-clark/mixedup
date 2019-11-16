@@ -23,6 +23,7 @@ utils::globalVariables(
     '.',
     'se',
     'se_fe',
-    'value_fe'
+    'value_fe',
+    'std.dev'
   )
 )

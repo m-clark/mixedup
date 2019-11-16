@@ -22,6 +22,7 @@ Suggests:
   testthat (>= 2.1.0),
   lme4,
   glmmTMB,
+  mgcv,
   nlme,
   brms,
   covr,

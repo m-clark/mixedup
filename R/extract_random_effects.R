@@ -42,8 +42,9 @@ extract_random_effects <- function(
   component = NULL,
   ...
 ) {
-  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit')))
-    stop('This only works for model objects from lme4, glmmTMB, brms, and nlme.')
+  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'brmsfit')))
+    stop('This only works for model objects from lme4, glmmTMB, brms,
+         mgcv, and nlme.')
 
   if (ci_level < 0 | ci_level >= 1)
     stop('Nonsensical confidence level for ci_level.  Must be between 0 and 1.')
@@ -319,4 +320,104 @@ extract_random_effects.brmsfit <- function(
     dplyr::mutate_if(is.numeric, round, digits = digits) %>%
     dplyr::select(group_var, dplyr::everything()) %>%
     dplyr::as_tibble()
+}
+
+#' @export
+extract_random_effects.gam <- function(
+  model,
+  re = NULL,
+  # component,
+  ci_level = .95,
+  digits = 3,
+  ...
+) {
+  # get the re variables and their levels
+  re_terms <- purrr::map_lgl(model$smooth,
+                             function(x)
+                               inherits(x, "random.effect"))
+
+  re_names <- purrr::map_chr(model$smooth[re_terms],
+                             function(x)
+                               ifelse(length(x$vn) == 1,
+                                      x$vn,
+                                      x$vn[length(x$vn)]))
+
+  # add check on re name
+
+  if (!is.null(re) && !re %in% re_names)
+    stop(
+      paste0('re is not among the names of the random effects: ',
+             paste0(re_names, collapse = ' ')
+      )
+    )
+
+  re_labels <- purrr::map(model$smooth[re_terms], function(x) x$label)
+
+  re_levels <- vector("list", length(re_names))
+
+  # to do: check that re is factor; tried unique but won't hold ordering as mgcv
+  # uses levels to order coefficients
+  for (i in seq_along(re_names)) {
+    if (!inherits(model$model[, re_names[i]], "factor")) {
+      stop("Specified random effect is not a factor, aborting.
+           You are on your own.")
+    }
+    re_levels[[i]] <- levels(model$model[, re_names[i]])
+  }
+
+  gam_coef <- stats::coef(model)
+
+  # issue, parenthesis in the names means problematic regex matching so remove
+  # all but key part of pattern
+  re_label_base <- gsub(re_labels, pattern = "s\\(", replacement = '') # remove first s
+  re_label_base <- gsub(re_label_base, pattern = "\\(|\\)", replacement = '') # remove parenthesis
+
+  re_coef <- grepl(names(gam_coef), pattern = paste0('^s\\(', re_label_base, collapse = "|"))
+
+  re0 <- gam_coef[re_coef]
+
+  gam_se <- sqrt(diag(model$Vp)) # no names
+  gam_se <- gam_se[names(gam_coef) %in% names(re0)]
+
+  # clean up names
+  names(re0) <- gsub(names(re0), pattern = "s\\(|\\)", replacement = '')
+  names(re0) <- gsub(names(re0), pattern = "\\.[0-9]+", replacement = '')
+
+  re_n <- dplyr::n_distinct(names(re0)) # possible use later
+  re_names <- names(re0)
+
+  random_effects <- dplyr::tibble(effect = re_names) %>%
+    dplyr::mutate(
+      group_var = split_group_effect(effect, which = 2),
+      effect = split_group_effect(effect, which = 1),
+      effect = ifelse(effect ==  group_var, 'Intercept', effect),
+      group = unlist(re_levels),
+      value = re0,
+      se = gam_se
+    )
+
+  if (ci_level > 0) {
+
+    lower = (1 - ci_level)/2
+    upper = 1 - lower
+    mult <- stats::qnorm(upper)
+
+    random_effects <- random_effects %>%
+      dplyr::mutate(
+        lower = value - mult * se,
+        upper = value + mult * se
+      )
+
+    colnames(random_effects)[colnames(random_effects) %in% c('lower', 'upper')] <-
+      paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
+  }
+
+  if (!is.null(re)) {
+    random_effects <- random_effects %>%
+      dplyr::filter(group_var == re)
+  }
+
+  random_effects %>%
+    dplyr::select(group_var, effect, dplyr::everything()) %>%
+    dplyr::mutate_if(is.numeric, round, digits = digits)
 }
