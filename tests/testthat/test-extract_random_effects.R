@@ -157,7 +157,58 @@ test_that('extract_random_effects.brmsfit errors with bad re name', {
   expect_error(extract_random_effects(brm_2, re = 'subject'))
 })
 
-test_that('extract_random_effects.brmsfit errors with bad re name', {
-  expect_error(extract_random_effects(brm_2, re = 'subject'))
+
+
+
+# mgcv --------------------------------------------------------------------
+
+
+context('test extract_random_effects.gam')
+
+
+test_that('extract_random_effects.gam basic functionality', {
+  expect_s3_class(extract_random_effects(gam_1), 'data.frame')
 })
 
+test_that('extract_random_effects.gam basic functionality', {
+  expect_s3_class(extract_random_effects(gam_2), 'data.frame')
+})
+
+
+test_that('extract_random_effects.gam works with multiple re', {
+  expect_equal(
+    nrow(extract_random_effects(gam_3, re = 's')),
+    nlevels(lmer_3@frame$s)
+  )
+})
+
+test_that('extract_random_effects.gam errors with bad re name', {
+  expect_error(extract_random_effects(gam_2, re = 'subject'))
+})
+
+test_that('extract_random_effects.gam errors with only non-factor random effects',
+          {
+            d = mgcv::gamSim(n = 100, verbose = FALSE)
+            m = mgcv::gam(y ~ s(x1, bs = 're'), data = d)
+            expect_error(suppressWarnings(extract_random_effects(m)))
+          })
+
+test_that('extract_random_effects.gam warns with non-factor random effects', {
+  set.seed(4)
+  nb <- 10; n <- 100
+  b <- rnorm(nb) * 2 ## random effect
+  r <- sample(1:nb, n, replace = TRUE) ## r.e. levels
+  y <- 2 + b[r] + rnorm(n)
+  r <- factor(r)
+  m = mgcv::gam(y ~ s(x1, bs = 're') + s(r, bs = 're'),
+                data = cbind(d, r),
+                method = 'REML')
+  expect_warning(extract_random_effects(m))
+})
+
+test_that('extract_random_effects.brmsfit correct output', {
+  expect_equal(
+    nrow(extract_random_effects(gam_2, re = 'Subject')),
+    nlevels(sleepstudy$Subject)*2
+  )
+})

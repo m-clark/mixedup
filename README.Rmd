@@ -52,6 +52,7 @@ devtools::install_github('m-clark/mixedup')
 - [X] glmmTMB
 - [X] nlme
 - [X] brms
+- [X] mgcv
 
 ##### Extract Fixed Effects
 

@@ -342,7 +342,32 @@ extract_random_effects.gam <- function(
                                       x$vn,
                                       x$vn[length(x$vn)]))
 
-  # add check on re name
+  re_levels <- vector("list", length(re_names))
+
+  # add check on re name/type
+  # check that re is factor as re smooth can be applied to continuous
+  for (i in seq_along(re_names)) {
+    if (!inherits(model$model[, re_names[i]], "factor")) {
+      warning(
+        paste0(re_names[i], ' is not a factor. No results provided for it.')
+      )
+      re_levels[[i]] <- NULL
+    }
+    else {
+      re_levels[[i]] <- levels(model$model[, re_names[i]])
+    }
+  }
+
+
+  if (purrr::is_empty(re_levels)) {
+    stop('No factor random effects.')
+  }
+
+  non_factors <- purrr::map_lgl(re_levels, is.null)
+
+  if (any(non_factors)) {
+    re_terms[non_factors] <- FALSE
+  }
 
   if (!is.null(re) && !re %in% re_names)
     stop(
@@ -352,18 +377,6 @@ extract_random_effects.gam <- function(
     )
 
   re_labels <- purrr::map(model$smooth[re_terms], function(x) x$label)
-
-  re_levels <- vector("list", length(re_names))
-
-  # to do: check that re is factor; tried unique but won't hold ordering as mgcv
-  # uses levels to order coefficients
-  for (i in seq_along(re_names)) {
-    if (!inherits(model$model[, re_names[i]], "factor")) {
-      stop("Specified random effect is not a factor, aborting.
-           You are on your own.")
-    }
-    re_levels[[i]] <- levels(model$model[, re_names[i]])
-  }
 
   gam_coef <- stats::coef(model)
 
