@@ -6,6 +6,7 @@
 \alias{extract_random_coefs.glmmTMB}
 \alias{extract_random_coefs.lme}
 \alias{extract_random_coefs.brmsfit}
+\alias{extract_random_coefs.gam}
 \title{Extract random coefficients and their variances}
 \usage{
 extract_random_coefs(model, re = NULL, ci_level = 0.95, digits = 3,
@@ -22,6 +23,9 @@ extract_random_coefs(model, re = NULL, ci_level = 0.95, digits = 3,
 
 \method{extract_random_coefs}{brmsfit}(model, re = NULL,
   ci_level = 0.95, digits = 3, ...)
+
+\method{extract_random_coefs}{gam}(model, re = NULL, ci_level = 0.95,
+  digits = 3, ...)
 }
 \arguments{
 \item{model}{A merMod, nlme, brms, or glmmTMB object}
@@ -54,13 +58,18 @@ Returns a data frame with random coefficients, a.k.a. random
   \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}
   and additional discussion at the
   \href{https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#confidence-intervals-on-conditional-meansblupsrandom-effects}{GLMM
-  FAQ}. This assumption may not be appropriate.
+  FAQ}. This assumption may not be appropriate, and if you are really
+  interested in this value you should probably use brms.
 
 
 \code{nlme} only provides the coefficients no estimated variance, so this
 doesn't add to what you get from basic functionality for those models.  In
 addition, nlme adds all random effects to the fixed effects, whereas
 \code{lme4} and others only add the effects requested.
+
+For \code{mgcv} objects, the variance returned is the same as that of the
+random effects themselves, as these are all estimated simultaneously as part
+of the model. They are similar to brms estimates.
 }
 \examples{
 library(lme4)
@@ -72,4 +81,8 @@ library(glmmTMB)
 tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
 extract_random_coefs(tmb_1, re = 'Subject')
 
+}
+\seealso{
+\code{\link[mixedup]{extract_random_effects}},
+\code{\link[mixedup]{extract_fixed_effects}}
 }

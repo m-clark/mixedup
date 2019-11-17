@@ -18,7 +18,8 @@
 #'   \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}
 #'   and additional discussion at the
 #'   \href{https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#confidence-intervals-on-conditional-meansblupsrandom-effects}{GLMM
-#'   FAQ}. This assumption may not be appropriate.
+#'   FAQ}. This assumption may not be appropriate, and if you are really
+#'   interested in this value you should probably use brms.
 #'
 #'
 #' \code{nlme} only provides the coefficients no estimated variance, so this
@@ -26,7 +27,14 @@
 #' addition, nlme adds all random effects to the fixed effects, whereas
 #' \code{lme4} and others only add the effects requested.
 #'
+#' For \code{mgcv} objects, the variance returned is the same as that of the
+#' random effects themselves, as these are all estimated simultaneously as part
+#' of the model. They are similar to brms estimates.
+#'
 #' @return A data frame of the random coefficients and their standard errors.
+#'
+#' @seealso \code{\link[mixedup]{extract_random_effects}},
+#' \code{\link[mixedup]{extract_fixed_effects}}
 #'
 #' @importFrom stats coef vcov
 #' @importFrom dplyr rename_all
@@ -52,8 +60,9 @@ extract_random_coefs <- function(
   ...
 ) {
 
-  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit')))
-    stop('This only works for model objects from lme4, glmmTMB, brms, and nlme.')
+  if (!inherits(model, c('merMod', 'glmmTMB', 'gam', 'lme', 'brmsfit')))
+    stop('This only works for model objects from lme4, glmmTMB, brms,
+         mgcv and nlme.')
 
   if (ci_level < 0 | ci_level >= 1)
     stop('Nonsensical confidence level for ci_level. Must be between 0 and 1.')
@@ -82,21 +91,21 @@ extract_random_coefs.merMod <- function(
   coefs_init <- random_effects %>%
     dplyr::left_join(fixed_effects, by = 'effect') %>%
     dplyr::mutate(
-      coef = value + value_fe,
+      value = value + value_fe,
       se = se + se_fe
     ) %>%
-    dplyr::select(group_var, effect, group, coef, se)
+    dplyr::select(group_var, effect, group, value, se)
 
   if (ci_level > 0) {
 
-    lower = (1 - ci_level)/2
-    upper = 1 - lower
-    mult <- stats::qnorm(upper)
+    lower <- (1 - ci_level)/2
+    upper <- 1 - lower
+    mult  <- stats::qnorm(upper)
 
     coefs <- coefs_init %>%
       dplyr::mutate(
-        lower = coef - mult * se,
-        upper = coef + mult * se
+        lower = value - mult * se,
+        upper = value + mult * se
       )
 
     colnames(coefs)[colnames(coefs) %in% c('lower', 'upper')] <-
@@ -125,7 +134,8 @@ extract_random_coefs.glmmTMB <- function(
   random_effects <-
     extract_random_effects(model, re = re, component = component)
 
-  fixed_effects  <- extract_fixed_effects(model, component = component) %>%
+  fixed_effects <-
+    extract_fixed_effects(model, component = component) %>%
     dplyr::rename(effect = term,
                   se_fe = se,
                   value_fe = value)
@@ -133,21 +143,21 @@ extract_random_coefs.glmmTMB <- function(
   coefs_init <- random_effects %>%
     dplyr::left_join(fixed_effects, by = 'effect') %>%
     dplyr::mutate(
-      coef = value + value_fe,
+      value = value + value_fe,
       se = se + se_fe
     ) %>%
-    dplyr::select(group_var, effect, group, coef, se)
+    dplyr::select(group_var, effect, group, value, se)
 
   if (ci_level > 0) {
 
-    lower = (1 - ci_level)/2
-    upper = 1 - lower
-    mult <- stats::qnorm(upper)
+    lower <- (1 - ci_level)/2
+    upper <- 1 - lower
+    mult  <- stats::qnorm(upper)
 
     coefs <- coefs_init %>%
       dplyr::mutate(
-        lower = coef - mult * se,
-        upper = coef + mult * se
+        lower = value - mult * se,
+        upper = value + mult * se
       )
 
     colnames(coefs)[colnames(coefs) %in% c('lower', 'upper')] <-
@@ -181,9 +191,9 @@ extract_random_coefs.lme <- function(
   coefs <- random_effects %>%
     dplyr::left_join(fixed_effects, by = 'effect') %>%
     dplyr::mutate(
-      coef = value + value_fe,
+      value = value + value_fe,
     ) %>%
-    dplyr::select(group_var, effect, group, coef)
+    dplyr::select(group_var, effect, group, value)
 
   coefs %>%
     dplyr::mutate_if(is.numeric, round, digits = digits)
@@ -204,8 +214,8 @@ extract_random_coefs.brmsfit <- function(
   if (!is_package_installed('brms'))
     stop('brms package required', call. = FALSE)
 
-  # we don't call the extract* functions directly as they already summarize the
-  # results
+  # we don't call the extract* functions here as they already summarize the
+  # results, and we need the draws to estimate the variance
 
   # do re
   re0 <- brms::posterior_samples(model, pars = '^r_')
@@ -252,7 +262,7 @@ extract_random_coefs.brmsfit <- function(
   coefs <- random_effects %>%
     dplyr::select(group_var, group, effect) %>%
     dplyr::mutate(value = rowMeans(coef_samples),
-                  sd = apply(coef_samples, 1, sd))
+                  se = apply(coef_samples, 1, sd))  # check this, doesn't jive with ci interval range
 
   if (ci_level > 0) {
 
@@ -276,7 +286,58 @@ extract_random_coefs.brmsfit <- function(
   }
 
   coefs %>%
+    dplyr::as_tibble() %>%
     dplyr::select(group_var, effect, dplyr::everything()) %>%
     dplyr::mutate_if(is.numeric, round, digits = digits)
 
+}
+
+
+#' @rdname extract_random_coefs
+#' @export
+extract_random_coefs.gam <- function(
+  model,
+  re = NULL,
+  ci_level = .95,
+  digits = 3,
+  # component = NULL,
+  ...
+) {
+  random_effects <- extract_random_effects(model, re = re)
+
+  fixed_effects  <- extract_fixed_effects(model) %>%
+    dplyr::rename(effect = term,
+                  se_fe = se,
+                  value_fe = value)
+
+  # given that these aren't blups, seems the estimated se for the smooth
+  # coefficients should be fine for the random coefficients, and they are close
+  # to brms estimates.
+  coefs_init <- random_effects %>%
+    dplyr::left_join(fixed_effects, by = 'effect') %>%
+    dplyr::mutate(
+      value = value + value_fe
+    ) %>%
+    dplyr::select(group_var, effect, group, value, se)
+
+  if (ci_level > 0) {
+
+    lower <- (1 - ci_level)/2
+    upper <- 1 - lower
+    mult  <- stats::qnorm(upper)
+
+    coefs <- coefs_init %>%
+      dplyr::mutate(
+        lower = value - mult * se,
+        upper = value + mult * se
+      )
+
+    colnames(coefs)[colnames(coefs) %in% c('lower', 'upper')] <-
+      paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
+  }
+
+  coefs <- coefs %>%
+    dplyr::mutate_if(is.numeric, round, digits = digits)
+
+  coefs
 }
