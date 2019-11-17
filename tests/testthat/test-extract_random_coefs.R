@@ -168,6 +168,15 @@ test_that('extract_random_coefbrmsfit correct output', {
   )
 })
 
+test_that('extract_random_coefbrmsfit correct output', {
+  vals = round(coefficients(brm_2)$Subject[1:10,'Estimate',1], 1)
+  ses = round(coefficients(brm_2)$Subject[1:10,,1][,'Est.Error'], 1)
+  names(vals) <- names(ses) <- NULL
+
+  expect_equal(vals, round(extract_random_coefs(brm_2)$value[1:10], 1))
+  expect_equal(ses, round(extract_random_coefs(brm_2)$se[1:10], 1))
+})
+
 test_that('extract_random_coefbrmsfit takes re', {
   expect_equal(
     nrow(extract_random_coefs(brm_4, re = 'continent')),
@@ -177,6 +186,56 @@ test_that('extract_random_coefbrmsfit takes re', {
 
 test_that('extract_random_coefbrmsfit takes ci_level', {
   cn = colnames(extract_random_coefs(brm_1, ci_level = .8))
+  expect_identical(
+    c("lower_10", "upper_90"),
+    grep(cn, pattern = '[0-9]+', value =T))
+})
+
+
+# mgcv --------------------------------------------------------------------
+
+context('test extract_random_coefs.gam')
+
+test_that('extract_random_coefs.gam basic functionality', {
+  expect_s3_class(extract_random_coefs(gam_1), 'data.frame')
+})
+
+test_that('extract_random_coefs.gam basic functionality', {
+  expect_s3_class(extract_random_coefs(gam_2), 'data.frame')
+})
+
+test_that('extract_random_coefs.gam basic functionality', {
+  expect_s3_class(extract_random_coefs(gam_3), 'data.frame')
+})
+
+test_that('extract_random_coefs.gam correct output', {
+  expect_equal(
+    nrow(extract_random_coefs(gam_2)),
+    nlevels(sleepstudy$Subject)*2
+  )
+})
+
+test_that('extract_random_coefs.gam correct output', {
+  expect_equal(
+     max(
+       abs(
+         round(extract_random_coefs(gam_2)$value[1:10])-
+         round(extract_random_coefs(lmer_2)$value[1:10])
+      )
+     ),
+     1
+  )
+})
+
+test_that('extract_random_coefs.gam takes re', {
+  expect_equal(
+    nrow(extract_random_coefs(gam_3, re = 'dept')),
+    nlevels(gam_3$model$dept)
+  )
+})
+
+test_that('extract_random_coefs.gam takes ci_level', {
+  cn = colnames(extract_random_coefs(gam_1, ci_level = .8))
   expect_identical(
     c("lower_10", "upper_90"),
     grep(cn, pattern = '[0-9]+', value =T))

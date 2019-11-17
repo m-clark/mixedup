@@ -198,6 +198,7 @@ test_that('extract_random_effects.gam errors with only non-factor random effects
 
 test_that('extract_random_effects.gam warns with non-factor random effects', {
   set.seed(4)
+  d = mgcv::gamSim(n = 100, verbose = FALSE)
   nb <- 10; n <- 100
   b <- rnorm(nb) * 2 ## random effect
   r <- sample(1:nb, n, replace = TRUE) ## r.e. levels

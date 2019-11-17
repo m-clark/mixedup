@@ -34,6 +34,7 @@
 #'   \code{\link[nlme:intervals]{intervals}},
 #'   \code{\link[nlme:VarCorr]{VarCorr.lme}},
 #'   \code{\link[brms:VarCorr]{VarCorr.brmsfit}}
+#'   \code{\link[mgcv:gam.vcomp]{gam.vcomp}}
 #'
 #' @examples
 #' library(lme4)

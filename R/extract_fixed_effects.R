@@ -21,7 +21,7 @@
 #' lmer_mod <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #'
 #' extract_fixed_effects(lmer_mod)
-#' @importFrom stats qnorm
+#' @importFrom stats qnorm qt
 #' @export
 extract_fixed_effects <- function(
   model,
@@ -59,7 +59,6 @@ extract_fixed_effects.merMod <-
     else {
       colnames(fe) <- c('value', 'se', 't')
     }
-
 
     if (ci_level > 0) {
 
@@ -279,7 +278,7 @@ extract_fixed_effects.gam <-
       lower <- (1 - ci_level)/2
       upper <- 1 - lower
       nu <- model$df.residual
-      mult <- qt(upper, nu)
+      mult <- stats::qt(upper, nu)
 
       ci <- data.frame(
         lower = fe$value - mult * fe$se,

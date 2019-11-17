@@ -5,6 +5,8 @@
 \alias{extract_random_effects.merMod}
 \alias{extract_random_effects.glmmTMB}
 \alias{extract_random_effects.lme}
+\alias{extract_random_effects.brmsfit}
+\alias{extract_random_effects.gam}
 \title{Extract random effects}
 \usage{
 extract_random_effects(model, re = NULL, ci_level = 0.95, digits = 3,
@@ -17,6 +19,12 @@ extract_random_effects(model, re = NULL, ci_level = 0.95, digits = 3,
   ci_level = 0.95, digits = 3, component = "cond", ...)
 
 \method{extract_random_effects}{lme}(model, re = NULL, ci_level = NULL,
+  digits = 3, ...)
+
+\method{extract_random_effects}{brmsfit}(model, re = NULL,
+  ci_level = 0.95, digits = 3, ...)
+
+\method{extract_random_effects}{gam}(model, re = NULL, ci_level = 0.95,
   digits = 3, ...)
 }
 \arguments{
@@ -50,6 +58,8 @@ Relative to \code{ranef} for the various packages, this just adds
 \code{nlme} only provides the estimated random effect parameters, not their uncertainty, so it isn't provided.
 
 \code{merMod} and \code{glmmTMB} results are based on the estimated conditional variances, i.e. \code{condvar = TRUE}.  This is likely an underestimate relative to brms results.
+
+For \code{mgcv}, the `Vp` (Bayesian) estimated variance covariance matrix is used.
 }
 \examples{
 library(lme4)
@@ -60,6 +70,13 @@ extract_random_effects(lmer_model)
 
 }
 \seealso{
+\code{\link[lme4:ranef.merMod]{ranef.merMod}},
+\code{\link[glmmTMB:ranef.glmmTMB]{ranef.glmmTMB}},
+\code{\link[nlme:ranef.lme]{ranef.lme}},
+\code{\link[brms:ranef.brmsfit]{ranef.brmsfit}},
+\code{\link[mgcv:gamObject]{gamObject}},
+\code{\link[mgcv:smooth.construct.re.smooth.spec]{smooth.construct.re.smooth.spec}}
+
 \code{\link[lme4:ranef.merMod]{ranef.merMod}}, \code{\link[glmmTMB:ranef.glmmTMB]{ranef.glmmTMB}},
 \code{\link[nlme:ranef.lme]{ranef.lme}}, \code{\link[brms:ranef.brmsfit]{ranef.brmsfit}}
 }

@@ -21,7 +21,16 @@
 #'
 #' \code{merMod} and \code{glmmTMB} results are based on the estimated conditional variances, i.e. \code{condvar = TRUE}.  This is likely an underestimate relative to brms results.
 #'
+#' For \code{mgcv}, the `Vp` (Bayesian) estimated variance covariance matrix is used.
+
 #' @return data frame of the random effects
+#' @seealso
+#' \code{\link[lme4:ranef.merMod]{ranef.merMod}},
+#' \code{\link[glmmTMB:ranef.glmmTMB]{ranef.glmmTMB}},
+#' \code{\link[nlme:ranef.lme]{ranef.lme}},
+#' \code{\link[brms:ranef.brmsfit]{ranef.brmsfit}},
+#' \code{\link[mgcv:gamObject]{gamObject}},
+#' \code{\link[mgcv:smooth.construct.re.smooth.spec]{smooth.construct.re.smooth.spec}}
 #'
 #' @examples
 #' library(lme4)
@@ -251,7 +260,7 @@ extract_random_effects.lme <- function(
     dplyr::as_tibble()
 }
 
-
+#' @rdname extract_random_effects
 #' @export
 extract_random_effects.brmsfit <- function(
   model,
@@ -322,6 +331,7 @@ extract_random_effects.brmsfit <- function(
     dplyr::as_tibble()
 }
 
+#' @rdname extract_random_effects
 #' @export
 extract_random_effects.gam <- function(
   model,
