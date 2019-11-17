@@ -1,3 +1,7 @@
+# mixedup 0.2.7
+
+* Add gam method for extract* functions
+
 # mixedup 0.2.6
 
 * Add brms method for extract_random_coefs

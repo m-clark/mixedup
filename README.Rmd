@@ -60,6 +60,7 @@ devtools::install_github('m-clark/mixedup')
 - [X] glmmTMB
 - [X] nlme
 - [X] brms
+- [X] mgcv
 
 ##### Extract Random Coefficients
 
@@ -67,6 +68,7 @@ devtools::install_github('m-clark/mixedup')
 - [X] glmmTMB
 - [X] nlme
 - [X] brms
+- [X] mgcv
 
 ##### Extract Heterogeneous Variances
 

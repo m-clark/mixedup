@@ -98,3 +98,26 @@ test_that('find_typicalbrmsfit probs', {
   # should have two results each for intercept and Days
   expect_equal(nrow(find_typical(brm_2, re = 'Subject', probs = c(.25, .75))), 4)
 })
+
+# mgcv --------------------------------------------------------------------
+
+context('test find_typical.gam')
+
+library(mgcv)
+
+test_that('find_typicalgamsfit basic functionality', {
+  expect_s3_class(find_typical(gam_1), 'data.frame')
+})
+
+test_that('find_typicalgamsfit basic functionality', {
+  expect_equal(dplyr::n_distinct(find_typical(gam_2)$effect), 2)
+})
+
+test_that('find_typicalgamsfit basic functionality', {
+  expect_s3_class(find_typical(gam_3, re = 's'), 'data.frame')
+})
+
+test_that('find_typicalgamsfit probs', {
+  # should have two results each for intercept and Days
+  expect_equal(nrow(find_typical(gam_2, re = 'Subject', probs = c(.25, .75))), 4)
+})
