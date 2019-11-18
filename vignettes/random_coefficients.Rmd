@@ -1,0 +1,40 @@
+---
+title: "Extracting Random Coefficients"
+author: "Michael Clark"
+date: <span style="font-style:normal;font-family:'Open Sans'">`r Sys.Date()`</span>
+output:
+  html_vignette:
+    toc: true
+    toc_depth: 3
+    df_print: kable
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = T,
+  message = F,
+  warning = F,
+  error = F,
+  collapse = TRUE,
+  comment = NA,
+  R.options = list(width = 220),
+  dev.args = list(bg = 'transparent'),
+  dev = 'png',
+  fig.align = 'center',
+  out.width = '75%',
+  fig.asp = .75,
+  cache.rebuild = F,
+  cache = F
+)
+```
+
+
+
+
+## Intro
+
+## Examples

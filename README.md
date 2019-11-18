@@ -47,6 +47,7 @@ devtools::install_github('m-clark/mixedup')
   - \[X\] glmmTMB
   - \[X\] nlme
   - \[X\] brms
+  - \[X\] mgcv
 
 ##### Extract Random Effects
 
@@ -54,6 +55,7 @@ devtools::install_github('m-clark/mixedup')
   - \[X\] glmmTMB
   - \[X\] nlme
   - \[X\] brms
+  - \[X\] mgcv
 
 ##### Extract Fixed Effects
 
@@ -61,6 +63,7 @@ devtools::install_github('m-clark/mixedup')
   - \[X\] glmmTMB
   - \[X\] nlme
   - \[X\] brms
+  - \[X\] mgcv
 
 ##### Extract Random Coefficients
 
@@ -68,6 +71,7 @@ devtools::install_github('m-clark/mixedup')
   - \[X\] glmmTMB
   - \[X\] nlme
   - \[X\] brms
+  - \[X\] mgcv
 
 ##### Extract Heterogeneous Variances
 
@@ -80,11 +84,7 @@ devtools::install_github('m-clark/mixedup')
   - \[X\] glmmTMB
   - \[X\] nlme
   - \[X\] brms
-
-Just a note, <span class="pack" style="">nlme</span> has pretty much
-been superseded by <span class="pack" style="">glmmTMB</span>,
-<span class="pack" style="">brms</span>, and others, so support here is
-pretty minimal.
+  - \[X\] mgcv
 
 ## Examples
 
@@ -94,15 +94,11 @@ pretty minimal.
 library(lme4)
 Loading required package: Matrix
 
-lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-
-lmer_2 <- lmer(Reaction ~ Days + (1 + Days| Subject), data = sleepstudy)
+lmer_model <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
 library(glmmTMB)
 
-tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-
-tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+tmb_model <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
 library(nlme)
 
@@ -111,7 +107,7 @@ The following object is masked from 'package:lme4':
 
     lmList
 
-nlme_1 <-  nlme(
+nlme_model <-  nlme(
   height ~ SSasymp(age, Asym, R0, lrc),
   data = Loblolly,
   fixed = Asym + R0 + lrc ~ 1,
@@ -133,246 +129,133 @@ The following object is masked from 'package:lme4':
 
     ngrps
 
-brm_1 = brm(
-  Reaction ~ Days + (1 + Days| Subject), 
+brm_model = brm(
+  Reaction ~ Days + (1 + Days | Subject), 
   data = sleepstudy, 
   refresh = -1,
+  verbose = FALSE,
   cores = 4
 )
 Compiling the C++ model
 Start sampling
+
+library(mgcv)
+This is mgcv 1.8-29. For overview type 'help("mgcv-package")'.
+
+Attaching package: 'mgcv'
+The following objects are masked from 'package:brms':
+
+    s, t2
+
+gam_model = gam(
+  Reaction ~  Days +
+    s(Subject, bs = 're') +
+    s(Days, Subject, bs = 're'),
+  data = lme4::sleepstudy,
+  method = 'REML'
+)
 ```
 
-### Extract Random Effects
-
-Extract the random effects with their (not necessarily valid) standard
-errors from model objects.
+### Extract Output from a Mixed Model
 
 ``` r
 library(mixedup)
 
-extract_random_effects(lmer_1)
-# A tibble: 18 x 7
+extract_random_effects(tmb_model)
+# A tibble: 36 x 7
    group_var effect    group  value    se lower_2.5 upper_97.5
    <chr>     <chr>     <fct>  <dbl> <dbl>     <dbl>      <dbl>
- 1 Subject   Intercept 308    40.8   9.48    22.2        59.4 
- 2 Subject   Intercept 309   -77.8   9.48   -96.4       -59.3 
- 3 Subject   Intercept 310   -63.1   9.48   -81.7       -44.5 
- 4 Subject   Intercept 330     4.41  9.48   -14.2        23.0 
- 5 Subject   Intercept 331    10.2   9.48    -8.36       28.8 
- 6 Subject   Intercept 332     8.22  9.48   -10.4        26.8 
- 7 Subject   Intercept 333    16.5   9.48    -2.07       35.1 
- 8 Subject   Intercept 334    -3.00  9.48   -21.6        15.6 
- 9 Subject   Intercept 335   -45.3   9.48   -63.9       -26.7 
-10 Subject   Intercept 337    72.2   9.48    53.6        90.8 
-11 Subject   Intercept 349   -21.2   9.48   -39.8        -2.62
-12 Subject   Intercept 350    14.1   9.48    -4.46       32.7 
-13 Subject   Intercept 351    -7.86  9.48   -26.4        10.7 
-14 Subject   Intercept 352    36.4   9.48    17.8        55.0 
-15 Subject   Intercept 369     7.04  9.48   -11.5        25.6 
-16 Subject   Intercept 370    -6.36  9.48   -24.9        12.2 
-17 Subject   Intercept 371    -3.29  9.48   -21.9        15.3 
-18 Subject   Intercept 372    18.1   9.48    -0.456      36.7 
-
-extract_random_effects(brm_1, ci_level = .8)
-# A tibble: 36 x 7
-   group_var effect    group   value    se lower_10 upper_90
-   <chr>     <chr>     <chr>   <dbl> <dbl>    <dbl>    <dbl>
- 1 Subject   Intercept 308     3.54   13.9  -14.1       21.2
- 2 Subject   Intercept 309   -39.6    14.0  -57.6      -22.1
- 3 Subject   Intercept 310   -38.0    14.4  -56.8      -19.9
- 4 Subject   Intercept 330    23.2    14.0    5.63      41.3
- 5 Subject   Intercept 331    21.7    13.9    3.94      39.7
- 6 Subject   Intercept 332     9.29   13.1   -6.96      26.0
- 7 Subject   Intercept 333    16.7    13.2    0.208     34.0
- 8 Subject   Intercept 334    -6.70   13.9  -24.7       10.6
- 9 Subject   Intercept 335    -0.682  14.1  -19.0       17.1
-10 Subject   Intercept 337    35.2    14.1   17.2       53.5
+ 1 Subject   Intercept 308     2.82  13.7    -23.9        29.6
+ 2 Subject   Intercept 309   -40.0   13.8    -67.2       -12.9
+ 3 Subject   Intercept 310   -38.4   13.7    -65.4       -11.5
+ 4 Subject   Intercept 330    22.8   13.9     -4.51       50.2
+ 5 Subject   Intercept 331    21.6   13.6     -5.11       48.2
+ 6 Subject   Intercept 332     8.82  12.9    -16.5        34.1
+ 7 Subject   Intercept 333    16.4   13.1     -9.23       42.1
+ 8 Subject   Intercept 334    -7.00  12.9    -32.3        18.3
+ 9 Subject   Intercept 335    -1.04  14.0    -28.5        26.4
+10 Subject   Intercept 337    34.7   13.6      7.94       61.4
 # … with 26 more rows
-```
 
-### Extract Fixed Effects
-
-``` r
-extract_fixed_effects(brm_1)
-# A tibble: 2 x 5
-  term      value    se lower_2.5 upper_97.5
-  <chr>     <dbl> <dbl>     <dbl>      <dbl>
-1 Intercept 251.   7.06    237.        266. 
-2 Days       10.4  1.73      6.99       13.7
-
-
-extract_fixed_effects(nlme_1)
+extract_fixed_effects(nlme_model)
 # A tibble: 3 x 7
   term   value    se     t p_value lower_2.5 upper_97.5
   <chr>  <dbl> <dbl> <dbl>   <dbl>     <dbl>      <dbl>
-1 Asym  101.   2.46   41.2       0     96.6      106.  
-2 R0     -8.63 0.318 -27.1       0     -9.25      -8.00
-3 lrc    -3.23 0.034 -94.4       0     -3.30      -3.17
-```
+1 Asym  101.   2.46   41.2       0     96.5      106.  
+2 R0     -8.63 0.318 -27.1       0     -9.26      -7.99
+3 lrc    -3.23 0.034 -94.4       0     -3.30      -3.16
 
-### Extract Random Coefficients
-
-Extract the random coefficients with their standard errors (if
-available).
-
-``` r
-extract_random_coefs(lmer_1)
-# A tibble: 18 x 7
-   group_var effect    group  coef    se lower_2.5 upper_97.5
-   <chr>     <chr>     <fct> <dbl> <dbl>     <dbl>      <dbl>
- 1 Subject   Intercept 308    292.  19.2      255.       330.
- 2 Subject   Intercept 309    174.  19.2      136.       211.
- 3 Subject   Intercept 310    188.  19.2      151.       226.
- 4 Subject   Intercept 330    256.  19.2      218.       293.
- 5 Subject   Intercept 331    262.  19.2      224.       299.
- 6 Subject   Intercept 332    260.  19.2      222.       297.
- 7 Subject   Intercept 333    268.  19.2      230.       306.
- 8 Subject   Intercept 334    248.  19.2      211.       286.
- 9 Subject   Intercept 335    206.  19.2      168.       244.
-10 Subject   Intercept 337    324.  19.2      286.       361.
-11 Subject   Intercept 349    230.  19.2      193.       268.
-12 Subject   Intercept 350    266.  19.2      228.       303.
-13 Subject   Intercept 351    244.  19.2      206.       281.
-14 Subject   Intercept 352    288.  19.2      250.       325.
-15 Subject   Intercept 369    258.  19.2      221.       296.
-16 Subject   Intercept 370    245.  19.2      207.       283.
-17 Subject   Intercept 371    248.  19.2      210.       286.
-18 Subject   Intercept 372    270.  19.2      232.       307.
-
-
-extract_random_coefs(tmb_2)
+extract_random_coefs(lmer_model)
 # A tibble: 36 x 7
-   group_var effect    group  coef    se lower_2.5 upper_97.5
+   group_var effect    group value    se lower_2.5 upper_97.5
    <chr>     <chr>     <fct> <dbl> <dbl>     <dbl>      <dbl>
- 1 Subject   Intercept 308    254.  20.3      214.       294.
- 2 Subject   Intercept 309    211.  20.5      171.       251.
- 3 Subject   Intercept 310    213.  20.4      173.       253.
- 4 Subject   Intercept 330    274.  20.6      234.       315.
- 5 Subject   Intercept 331    273.  20.2      233.       313.
- 6 Subject   Intercept 332    260.  19.5      222.       299.
- 7 Subject   Intercept 333    268.  19.7      229.       307.
- 8 Subject   Intercept 334    244.  19.5      206.       283.
- 9 Subject   Intercept 335    250.  20.7      210.       291.
-10 Subject   Intercept 337    286.  20.3      246.       326.
+ 1 Subject   Intercept 308    254.  18.9      217.       291.
+ 2 Subject   Intercept 309    211.  18.9      174.       248.
+ 3 Subject   Intercept 310    212.  18.9      175.       249.
+ 4 Subject   Intercept 330    275.  18.9      238.       312.
+ 5 Subject   Intercept 331    274.  18.9      237.       311.
+ 6 Subject   Intercept 332    260.  18.9      223.       297.
+ 7 Subject   Intercept 333    268.  18.9      231.       305.
+ 8 Subject   Intercept 334    244.  18.9      207.       281.
+ 9 Subject   Intercept 335    251.  18.9      214.       288.
+10 Subject   Intercept 337    286.  18.9      249.       323.
 # … with 26 more rows
+
+extract_vc(brm_model, ci_level = .8)
+     group    effect variance     sd  sd_10  sd_90 var_prop
+1  Subject Intercept  716.876 26.775 18.605 35.788    0.501
+2  Subject      Days   42.170  6.494  4.787  8.353    0.029
+3 Residual            672.616 25.935 23.967 28.021    0.470
+
+find_typical(gam_model, probs = c(.25, .50, .75))
+# A tibble: 6 x 8
+  group_var effect    group   value    se lower_2.5 upper_97.5 probs
+  <chr>     <chr>     <chr>   <dbl> <dbl>     <dbl>      <dbl> <chr>
+1 Subject   Days      331    -3.19   2.67     -8.43       2.04 25%  
+2 Subject   Days      369     0.873  2.67     -4.36       6.11 50%  
+3 Subject   Days      352     3.51   2.67     -1.73       8.75 75%  
+4 Subject   Intercept 350   -13.9   13.3     -39.9       12.2  25%  
+5 Subject   Intercept 369     3.26  13.3     -22.8       29.3  50%  
+6 Subject   Intercept 333    17.2   13.3      -8.87      43.2  75%  
 ```
 
-### Extract Variance Components
+## Consistent output
 
 ``` r
-extract_vc(lmer_2)
-Computing profile confidence intervals ...
+extract_vc(tmb_model)
      group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  611.898 24.737 14.382  37.714    0.470
-2  Subject      Days   35.081  5.923 -0.481   0.685    0.027
-3 Residual            654.941 25.592 22.898  28.858    0.503
+1  Subject Intercept  565.516 23.781 15.017  37.658    0.451
+2  Subject      Days   32.682  5.717  3.805   8.588    0.026
+3 Residual            654.941 25.592 22.800  28.725    0.523
 
 
-extract_vc(lmer_2, ci_scale = 'var', show_cor = TRUE, digits = 2)
-Computing profile confidence intervals ...
-$`Variance Components`
-     group    effect variance    sd var_2.5 var_97.5 var_prop
-1  Subject Intercept   611.90 24.74  206.84  1422.33     0.47
-2  Subject      Days    35.08  5.92    0.23     0.47     0.03
-3 Residual             654.94 25.59  524.33   832.78     0.50
-
-$Cor
-$Cor$Subject
-          Intercept Days
-Intercept      1.00 0.07
-Days           0.07 1.00
-
-
-extract_vc(nlme_1)
+extract_vc(nlme_model)
      group effect variance    sd sd_2.5 sd_97.5 var_prop
 1     Seed   Asym   13.327 3.651  2.479   5.375    0.963
 2 Residual           0.517 0.719  0.609   0.849    0.037
 
 
-extract_vc(brm_1)
+extract_vc(lmer_model)
+Computing profile confidence intervals ...
      group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  711.310 26.670 15.428  42.031    0.499
-2  Subject      Days   42.656  6.531  4.088  10.012    0.030
-3 Residual            672.297 25.929 23.075  29.175    0.471
+1  Subject Intercept  611.898 24.737 14.382  37.714    0.470
+2  Subject      Days   35.081  5.923  3.801   8.754    0.027
+3 Residual            654.941 25.592 22.898  28.858    0.503
+
+
+extract_vc(brm_model)
+     group    effect variance     sd sd_2.5 sd_97.5 var_prop
+1  Subject Intercept  716.876 26.775 15.478  42.653    0.501
+2  Subject      Days   42.170  6.494  4.138   9.854    0.029
+3 Residual            672.616 25.935 23.066  29.206    0.470
+
+
+extract_vc(gam_model)
+     group    effect variance     sd sd_2.5 sd_97.5 var_prop
+1  Subject Intercept  627.571 25.051 16.085  39.015    0.477
+2  Subject      Days   35.858  5.988  4.025   8.908    0.027
+3 Residual            653.582 25.565 22.792  28.676    0.496
 ```
-
-### Extract Heterogeneous Variances
-
-Extract heterogeneous variances from nlme (and eventually others), which
-only reports the relative standard deviation values by default.
-
-``` r
-library(nlme)
-
-model <- lme(
-  distance ~ age + Sex, 
-  data = Orthodont, 
-  random = ~ 1|Subject,
-  weights = varIdent(form = ~ 1 | Sex)
-)
-
-summary(model)
-Linear mixed-effects model fit by REML
- Data: Orthodont 
-       AIC      BIC    logLik
-  432.3567 448.2805 -210.1784
-
-Random effects:
- Formula: ~1 | Subject
-        (Intercept) Residual
-StdDev:    1.839463 1.761758
-
-Variance function:
- Structure: Different standard deviations per stratum
- Formula: ~1 | Sex 
- Parameter estimates:
-     Male    Female 
-1.0000000 0.4541324 
-Fixed effects: distance ~ age + Sex 
-                Value Std.Error DF   t-value p-value
-(Intercept) 18.919992 0.7285568 80 25.969138  0.0000
-age          0.549887 0.0473096 80 11.623168  0.0000
-SexFemale   -2.321023 0.7629703 25 -3.042088  0.0055
- Correlation: 
-          (Intr) age   
-age       -0.714       
-SexFemale -0.468  0.000
-
-Standardized Within-Group Residuals:
-        Min          Q1         Med          Q3         Max 
--3.25494115 -0.53013324 -0.02554914  0.51114273  3.03915818 
-
-Number of Observations: 108
-Number of Groups: 27 
-
-extract_het_var(model)
-     Male    Female
-1 3.10379 0.6401141
-```
-
-### Find typical values
-
-``` r
-find_typical(lmer_1)
-# A tibble: 1 x 7
-  group_var effect    group value    se lower_2.5 upper_97.5
-  <chr>     <chr>     <fct> <dbl> <dbl>     <dbl>      <dbl>
-1 Subject   Intercept 334   -3.00  9.48     -21.6       15.6
-
-find_typical(tmb_2, probs = c(.25, .5, .75))
-# A tibble: 6 x 8
-  group_var effect    group   value    se lower_2.5 upper_97.5 probs
-  <chr>     <chr>     <fct>   <dbl> <dbl>     <dbl>      <dbl> <chr>
-1 Subject   Days      351    -2.96   2.62     -8.08       2.17 25%  
-2 Subject   Days      333    -0.159  2.62     -5.30       4.99 50%  
-3 Subject   Days      352     3.56   2.62     -1.58       8.70 75%  
-4 Subject   Intercept 350   -12.3   13.7     -39.3       14.6  25%  
-5 Subject   Intercept 308     2.82  13.7     -23.9       29.6  50%  
-6 Subject   Intercept 333    16.4   13.1      -9.23      42.1  75%  
-```
-
-## Other stuff
 
 ### Code of Conduct
 

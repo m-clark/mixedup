@@ -10,5 +10,4 @@ find_quants <- function(value, probs) {
 
   purrr::map_int(qs, function(q)
     which.min(abs(value - q)))
-
 }

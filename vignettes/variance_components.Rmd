@@ -1,0 +1,112 @@
+---
+title: "Extracting Variance Components"
+author: "Michael Clark"
+date: <span style="font-style:normal;font-family:'Open Sans'">`r Sys.Date()`</span>
+output:
+  html_vignette:
+    toc: true
+    toc_depth: 3
+    df_print: kable
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = T,
+  message = F,
+  warning = F,
+  error = F,
+  collapse = TRUE,
+  comment = NA,
+  R.options = list(width = 220),
+  dev.args = list(bg = 'transparent'),
+  dev = 'png',
+  fig.align = 'center',
+  out.width = '75%',
+  fig.asp = .75,
+  cache.rebuild = F,
+  cache = F
+)
+```
+
+
+
+
+## Intro
+
+This creates a standard table of variance components. Includes the estimated variance and standard deviation of the random effects, a confidence interval for either, and the relative proportion of variance for each component.
+
+## Examples
+
+```{r mods}
+library(lme4)
+library(glmmTMB)
+library(nlme)
+library(brms)
+library(mgcv)
+
+
+lmer_model <-
+  lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+
+lme_model  <-
+  lme(Reaction ~ Days, random = ~ 1 + Days | Subject, data = sleepstudy)
+
+tmb_model  <-
+  glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+
+brms_model <-
+  brm(Reaction ~ Days + (1 + Days | Subject), 
+      data = sleepstudy,
+      cores = 4,
+      refresh = -1,
+      verbose = FALSE
+  )
+
+# this is akin to (1 | Subject) + (0 + Days | Subject) in lme4
+mgcv_model <-
+  gam(
+    Reaction ~  Days +
+      s(Subject, bs = 're') +
+      s(Days, Subject, bs = 're'),
+    data = lme4::sleepstudy,
+    method = 'REML'
+  )
+```
+
+
+```{r results}
+library(mixedup)
+
+extract_vc(lmer_model)
+
+
+extract_vc(lme_model)
+
+
+extract_vc(tmb_model)
+
+
+extract_vc(brms_model)
+
+
+extract_vc(mgcv_model)
+```
+
+## Options
+
+```{r options}
+tmb_model <-
+  glmmTMB(y ~ service + (1 | d) + (1 | s), data = InstEval[1:5000,])
+
+extract_vc(
+  tmb_model,
+  ci_level = .9,
+  ci_scale = 'var',
+  digits = 2
+)
+```
+

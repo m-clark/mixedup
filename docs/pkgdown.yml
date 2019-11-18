@@ -1,0 +1,10 @@
+pandoc: 2.3.1
+pkgdown: 1.4.1
+pkgdown_sha: ~
+articles:
+  fixed_effects: fixed_effects.html
+  misc: misc.html
+  random_coefficients: random_coefficients.html
+  random_effects: random_effects.html
+  variance_components: variance_components.html
+

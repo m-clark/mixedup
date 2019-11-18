@@ -1,0 +1,108 @@
+title: 'mixedup'
+title-img: logo.png
+
+authors:
+  Michael Clark:
+    href: https://m-clark.github.io
+    html: <img src="man/figures/mc_logo.png" width=10% style='display:inline'/>
+
+template:
+  params:
+    highlight: pygments
+    #bootswatch: sandstone
+    templates_path: inst/pkgdown
+
+highlight: pygments
+
+
+home:
+  #strip_header: true
+  links:
+  - text: Docs on Stats, R, and more
+    href: http://m-clark.github.io
+
+reference:
+  - title: "Variance Components"
+    desc: >
+      Create a variance components table.
+    contents:
+      - extract_vc.merMod
+      - extract_vc.glmmTMB
+      - extract_vc.lme
+      - extract_vc.brmsfit
+      - extract_vc.gam
+
+  - title: "Random Effects"
+    desc: >
+      Extract random effects to a tidy dataframe.
+    contents:
+      - extract_random_effects.merMod
+      - extract_random_effects.glmmTMB
+      - extract_random_effects.lme
+      - extract_random_effects.brmsfit
+      - extract_random_effects.gam
+
+  - title: "Fixed Effects"
+    desc: >
+      Extract fixed effects to a tidy dataframe.
+    contents:
+      - extract_fixed_effects.merMod
+      - extract_fixed_effects.glmmTMB
+      - extract_fixed_effects.lme
+      - extract_fixed_effects.brmsfit
+      - extract_fixed_effects.gam
+
+  - title: "Random Coefficients"
+    desc: >
+      Extract random coefficients to a tidy dataframe.
+    contents:
+      - extract_random_coefs.merMod
+      - extract_random_coefs.glmmTMB
+      - extract_random_coefs.lme
+      - extract_random_coefs.brmsfit
+      - extract_random_coefs.gam
+
+  - title: "Miscellaneous Functions"
+    desc: >
+      Other stuff to play with.
+    contents:
+      - find_typical
+      - extract_het_var
+
+figures:
+  dev: png
+  dpi: 96
+  dev.args: []
+  fig.ext: png
+  fig.width: 7.2916667
+  fig.height: ~
+  fig.retina: 2
+  fig.asp: 1.618
+
+navbar:
+  title: "whatever bc pkgdown will ignore it"
+  type: ~
+  left:
+    - text: "Reference"
+      href: "reference/index.html"
+    - text: "News"
+      href: "news/index.html"
+    - text: Articles
+      menu:
+      - text: Variance Components
+        href: articles/variance_components.html
+      - text: Random Effects
+        href: articles/random_effects.html
+      - text: Fixed Effects
+        href: articles/variance_components.html
+      - text: Random Coefficients
+        href: articles/variance_components.html
+      - text: Find Typical Values
+        href: articles/variance_components.html
+
+  right:
+    - icon: fa-github-alt
+      href: https://github.com/m-clark
+    - icon: fa-empire
+      href: https://m-clark.github.io
+

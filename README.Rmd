@@ -81,9 +81,8 @@ devtools::install_github('m-clark/mixedup')
 - [X] glmmTMB
 - [X] nlme
 - [X] brms
+- [X] mgcv
 
-
-Just a note, <span class="pack" style = "">nlme</span> has pretty much been superseded by <span class="pack" style = "">glmmTMB</span>, <span class="pack" style = "">brms</span>, and others, so support here is pretty minimal.
 
 ## Examples
 
@@ -92,19 +91,15 @@ Just a note, <span class="pack" style = "">nlme</span> has pretty much been supe
 ```{r mods}
 library(lme4)
 
-lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-
-lmer_2 <- lmer(Reaction ~ Days + (1 + Days| Subject), data = sleepstudy)
+lmer_model <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
 library(glmmTMB)
 
-tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
-
-tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+tmb_model <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
 library(nlme)
 
-nlme_1 <-  nlme(
+nlme_model <-  nlme(
   height ~ SSasymp(age, Asym, R0, lrc),
   data = Loblolly,
   fixed = Asym + R0 + lrc ~ 1,
@@ -114,95 +109,61 @@ nlme_1 <-  nlme(
 
 library(brms)
 
-brm_1 = brm(
-  Reaction ~ Days + (1 + Days| Subject), 
+brm_model = brm(
+  Reaction ~ Days + (1 + Days | Subject), 
   data = sleepstudy, 
   refresh = -1,
+  verbose = FALSE,
   cores = 4
+)
+
+library(mgcv)
+
+gam_model = gam(
+  Reaction ~  Days +
+    s(Subject, bs = 're') +
+    s(Days, Subject, bs = 're'),
+  data = lme4::sleepstudy,
+  method = 'REML'
 )
 ```
 
 
-### Extract Random Effects
-
-Extract the random effects with their (not necessarily valid) standard errors from model objects.
+### Extract Output from a Mixed Model
 
 ```{r extract-re}
 library(mixedup)
 
-extract_random_effects(lmer_1)
+extract_random_effects(tmb_model)
 
-extract_random_effects(brm_1, ci_level = .8)
-```
-### Extract Fixed Effects
+extract_fixed_effects(nlme_model)
 
+extract_random_coefs(lmer_model)
 
-```{r fe}
-extract_fixed_effects(brm_1)
+extract_vc(brm_model, ci_level = .8)
 
-
-extract_fixed_effects(nlme_1)
+find_typical(gam_model, probs = c(.25, .50, .75))
 ```
 
+## Consistent output
 
-### Extract Random Coefficients
-
-Extract the random coefficients with their standard errors (if available).
-
-
-```{r coefs}
-extract_random_coefs(lmer_1)
+```{r samestuff}
+extract_vc(tmb_model)
 
 
-extract_random_coefs(tmb_2)
-```
+extract_vc(nlme_model)
 
 
-### Extract Variance Components
-
-```{r vc}
-extract_vc(lmer_2)
+extract_vc(lmer_model)
 
 
-extract_vc(lmer_2, ci_scale = 'var', show_cor = TRUE, digits = 2)
+extract_vc(brm_model)
 
 
-extract_vc(nlme_1)
-
-
-extract_vc(brm_1)
+extract_vc(gam_model)
 ```
 
 
-### Extract Heterogeneous Variances
-
-Extract heterogeneous variances from nlme (and eventually others), which only reports the relative standard deviation values by default.
-
-```{r hetvar-nlme}
-library(nlme)
-
-model <- lme(
-  distance ~ age + Sex, 
-  data = Orthodont, 
-  random = ~ 1|Subject,
-  weights = varIdent(form = ~ 1 | Sex)
-)
-
-summary(model)
-
-extract_het_var(model)
-```
-
-### Find typical values
-
-```{r find-typical}
-find_typical(lmer_1)
-
-find_typical(tmb_2, probs = c(.25, .5, .75))
-```
-
-
-## Other stuff
 
 ### Code of Conduct
 
