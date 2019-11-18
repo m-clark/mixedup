@@ -145,7 +145,7 @@ load('brm_results.RData')
 # brm_3 <-
 #   brm(
 #     y ~ service + (1 | s) + (1 | dept),
-#     data = lme4::InstEval[1:500,],
+#     data = lme4::InstEval[1:1000,],
 #     prior = pr,
 #     cores = 4,
 #     thin  = 40

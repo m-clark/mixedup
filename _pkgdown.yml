@@ -94,11 +94,11 @@ navbar:
       - text: Random Effects
         href: articles/random_effects.html
       - text: Fixed Effects
-        href: articles/variance_components.html
+        href: articles/fixed_effects.html
       - text: Random Coefficients
-        href: articles/variance_components.html
-      - text: Find Typical Values
-        href: articles/variance_components.html
+        href: articles/random_coefficients.html
+      - text: Miscellaneous
+        href: articles/misc.html
 
   right:
     - icon: fa-github-alt

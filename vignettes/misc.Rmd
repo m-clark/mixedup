@@ -37,4 +37,41 @@ knitr::opts_chunk$set(
 
 ## Intro
 
+Miscellaneous functions are included to fill a need.
+
 ## Examples
+
+
+### Find typical values
+
+In many cases, predictions are made by holding the random effects to zero, which can be seen as the typical case. When the clusters carry substantive meaning, for example, school, country, or hospital, it might be of interest to note which are most 'typical', or at any other value relative to their peers.
+
+```{r typical}
+library(lme4)
+
+lmer_model <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+
+library(mixedup)
+
+find_typical(lmer_model)  # closest RE to zero
+find_typical(lmer_model, probs = c(.1, .9))
+```
+
+
+### Extract heterogeneous variances
+
+For this form of model only.  May include glmmTMB and/or brms at some point, and possibly extend to extract the AR coefficient for AR1 models.
+
+```{r het-var}
+library(nlme)
+
+lme_1 <- lme(
+  distance ~ scale(age) + Sex,
+  data = Orthodont,
+  random = ~ 1 | Subject,
+  weights = varIdent(form = ~ 1 | Sex)
+)
+
+extract_het_var(lme_1)
+```
+

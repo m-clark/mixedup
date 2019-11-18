@@ -38,7 +38,7 @@ knitr::opts_chunk$set(
 
 ## Intro
 
-This creates a standard table of random effects, including the uncertainty in the estimate where applicable. 
+This creates a table of random effects, including the uncertainty in the estimate where applicable. 
 
 ## Examples
 
@@ -109,3 +109,18 @@ extract_random_effects(
   digits = 2
 )
 ```
+
+```{r tmb_zip}
+tmb_zip <- glmmTMB(
+  count ~ spp + mined + (1 | site),
+  zi =  ~ spp + mined + (1 | site),
+  family = truncated_poisson,
+  data = Salamanders
+)
+
+extract_random_effects(
+  tmb_zip,
+  cond = 'zi'
+)
+```
+
