@@ -1,6 +1,6 @@
 Package: mixedup
 Title: Miscellaneous functions for mixed models
-Version: 0.2.7
+Version: 0.3.0
 Authors@R: 
     person(given = "Michael",
            family = "Clark",

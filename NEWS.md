@@ -1,3 +1,7 @@
+# mixedup 0.3.0
+
+* Create package website
+
 # mixedup 0.2.7
 
 * Add gam method for extract* functions
