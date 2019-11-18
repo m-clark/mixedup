@@ -1,7 +1,7 @@
 ---
 output: 
   github_document:
-    toc: true
+    # toc: true
 ---
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
@@ -26,7 +26,7 @@ knitr::opts_chunk$set(
 
 This package provides extended functionality for mixed models. The goal of `mixedup` is to solve little problems that slip through the cracks from the various packages, broom, and others in trying to get presentable output.  Basically the idea is to create (tidy) objects that are easy to use and essentially ready for presentation, as well as consistent across packages and across functions.  I use several of these packages (including mgcv) for mixed models, and typically have to some notable post processing to get some basic output even with `broom::tidy` options, and this effort often isn't applicable if I switch to another package for the same model.  These functions attempt to fill my specific niche.
 
-An additional perk is minimal dependency.  Other than the package that created the object, nothing except the tidyverse is needed (presently just `dplyr`, `tidyr`, and `purrr`).
+An additional perk is minimal dependency.  Other than the package that created the object, nothing except the tidyverse is needed (presently just `dplyr`, `tidyr`, and `purrr`).  For more details and examples see https://m-clark.github.io/mixedup/.
 
 ## Installation
 
@@ -51,8 +51,9 @@ devtools::install_github('m-clark/mixedup')
 - [X] lme4
 - [X] glmmTMB
 - [X] nlme
-- [X] brms
 - [X] mgcv
+- [X] rstanarm
+- [X] brms
 
 ##### Extract Fixed Effects
 

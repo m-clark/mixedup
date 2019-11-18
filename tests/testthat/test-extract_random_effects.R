@@ -169,7 +169,7 @@ context('test extract_random_effects.stanreg')
 test_that("rstanarm installation is checked", {
   with_mock(
     'mixedup::is_package_installed' = function() FALSE,
-    expect_error(extract_random_effects(stan_glmer_1))
+    expect_error(extract_random_effects('rstanarm'))
   )
 })
 
@@ -241,6 +241,16 @@ test_that('extract_random_effects.gam warns with non-factor random effects', {
                 data = cbind(d, r),
                 method = 'REML')
   expect_warning(extract_random_effects(m))
+})
+
+test_that('Fails if no factors', {
+
+  ga_model_num_re = mgcv::gam(Reaction ~  s(Days) + s(Subject, bs='re') + s(Days, Subject, bs='re'),
+                              data = within(lme4::sleepstudy, {Subject = as.integer(Subject)}),
+                              method = 'REML')
+
+  expect_error(suppressWarnings(extract_ranef(ga_model_num_re)))
+
 })
 
 test_that('extract_random_effects.brmsfit correct output', {

@@ -254,7 +254,7 @@ load('rstanarm_results.RData')
 #   stan_glmer_3,
 #   stan_glmer_4,
 #   stan_glmer_5,
-#   file = 'tests/testthat/stan_glmer_results.RData'
+#   file = 'tests/testthat/rstanarm_results.RData'
 # )
 
 # Run mgcv models ---------------------------------------------------------

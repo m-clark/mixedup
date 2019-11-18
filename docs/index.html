@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -94,13 +94,46 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="mixedup" class="section level1">
+
+<ul>
+<li>
+<a href="#mixedup">mixedup</a>
+<ul>
+<li><a href="#installation">Installation</a></li>
+<li>
+<a href="#feature-list">Feature list</a>
+<ul>
+<li><a href="#extract-variance-components">Extract Variance Components</a></li>
+<li><a href="#extract-random-effects">Extract Random Effects</a></li>
+<li><a href="#extract-fixed-effects">Extract Fixed Effects</a></li>
+<li><a href="#extract-random-coefficients">Extract Random Coefficients</a></li>
+<li><a href="#extract-heterogeneous-variances">Extract Heterogeneous Variances</a></li>
+<li><a href="#find-typical">Find Typical</a></li>
+</ul>
+</li>
+<li>
+<a href="#examples">Examples</a>
+<ul>
+<li><a href="#setup">Setup</a></li>
+<li><a href="#extract-output-from-a-mixed-model">Extract Output from a Mixed Model</a></li>
+</ul>
+</li>
+<li>
+<a href="#consistent-output">Consistent output</a>
+<ul>
+<li><a href="#code-of-conduct">Code of Conduct</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<!-- README.md is generated from README.Rmd. Please edit that file --><div id="mixedup" class="section level1">
 <div class="page-header"><h1 class="hasAnchor">
 <a href="#mixedup" class="anchor"></a>mixedup</h1></div>
 <!-- badges: start -->
 
 <p>This package provides extended functionality for mixed models. The goal of <code>mixedup</code> is to solve little problems that slip through the cracks from the various packages, broom, and others in trying to get presentable output. Basically the idea is to create (tidy) objects that are easy to use and essentially ready for presentation, as well as consistent across packages and across functions. I use several of these packages (including mgcv) for mixed models, and typically have to some notable post processing to get some basic output even with <code><a href="https://rdrr.io/pkg/broom/man/reexports.html">broom::tidy</a></code> options, and this effort often isn’t applicable if I switch to another package for the same model. These functions attempt to fill my specific niche.</p>
-<p>An additional perk is minimal dependency. Other than the package that created the object, nothing except the tidyverse is needed (presently just <code>dplyr</code>, <code>tidyr</code>, and <code>purrr</code>).</p>
+<p>An additional perk is minimal dependency. Other than the package that created the object, nothing except the tidyverse is needed (presently just <code>dplyr</code>, <code>tidyr</code>, and <code>purrr</code>). For more details and examples see <a href="https://m-clark.github.io/mixedup/" class="uri">https://m-clark.github.io/mixedup/</a>.</p>
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
@@ -146,10 +179,13 @@ glmmTMB</li>
 nlme</li>
 <li>
 <input type="checkbox" disabled checked>
-brms</li>
+mgcv</li>
 <li>
 <input type="checkbox" disabled checked>
-mgcv</li>
+rstanarm</li>
+<li>
+<input type="checkbox" disabled checked>
+brms</li>
 </ul>
 </div>
 <div id="extract-fixed-effects" class="section level5">
@@ -283,7 +319,7 @@ mgcv</li>
 <a class="sourceLine" id="cb2-47" title="47">Start sampling</a>
 <a class="sourceLine" id="cb2-48" title="48"></a>
 <a class="sourceLine" id="cb2-49" title="49"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(mgcv)</a>
-<a class="sourceLine" id="cb2-50" title="50">This is mgcv <span class="fl">1.8-29.</span> For overview type <span class="st">'help("mgcv-package")'</span>.</a>
+<a class="sourceLine" id="cb2-50" title="50">This is mgcv <span class="fl">1.8-30.</span> For overview type <span class="st">'help("mgcv-package")'</span>.</a>
 <a class="sourceLine" id="cb2-51" title="51"></a>
 <a class="sourceLine" id="cb2-52" title="52">Attaching package<span class="op">:</span><span class="st"> 'mgcv'</span></a>
 <a class="sourceLine" id="cb2-53" title="53">The following objects are masked from <span class="st">'package:brms'</span><span class="op">:</span></a>
@@ -317,7 +353,7 @@ mgcv</li>
 <a class="sourceLine" id="cb3-14" title="14"> <span class="dv">8</span> Subject   Intercept <span class="dv">334</span>    <span class="fl">-7.00</span>  <span class="fl">12.9</span>    <span class="fl">-32.3</span>        <span class="fl">18.3</span></a>
 <a class="sourceLine" id="cb3-15" title="15"> <span class="dv">9</span> Subject   Intercept <span class="dv">335</span>    <span class="fl">-1.04</span>  <span class="fl">14.0</span>    <span class="fl">-28.5</span>        <span class="fl">26.4</span></a>
 <a class="sourceLine" id="cb3-16" title="16"><span class="dv">10</span> Subject   Intercept <span class="dv">337</span>    <span class="fl">34.7</span>   <span class="fl">13.6</span>      <span class="fl">7.94</span>       <span class="fl">61.4</span></a>
-<a class="sourceLine" id="cb3-17" title="17"><span class="co"># … with 26 more rows</span></a>
+<a class="sourceLine" id="cb3-17" title="17"><span class="co"># ... with 26 more rows</span></a>
 <a class="sourceLine" id="cb3-18" title="18"></a>
 <a class="sourceLine" id="cb3-19" title="19"><span class="kw"><a href="reference/extract_fixed_effects.html">extract_fixed_effects</a></span>(nlme_model)</a>
 <a class="sourceLine" id="cb3-20" title="20"><span class="co"># A tibble: 3 x 7</span></a>
@@ -331,23 +367,23 @@ mgcv</li>
 <a class="sourceLine" id="cb3-28" title="28"><span class="co"># A tibble: 36 x 7</span></a>
 <a class="sourceLine" id="cb3-29" title="29">   group_var effect    group value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></a>
 <a class="sourceLine" id="cb3-30" title="30">   <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb3-31" title="31"><span class="st"> </span><span class="dv">1</span> Subject   Intercept <span class="dv">308</span>    <span class="fl">254.</span>  <span class="fl">18.9</span>      <span class="fl">217.</span>       <span class="fl">291.</span></a>
-<a class="sourceLine" id="cb3-32" title="32"> <span class="dv">2</span> Subject   Intercept <span class="dv">309</span>    <span class="fl">211.</span>  <span class="fl">18.9</span>      <span class="fl">174.</span>       <span class="fl">248.</span></a>
-<a class="sourceLine" id="cb3-33" title="33"> <span class="dv">3</span> Subject   Intercept <span class="dv">310</span>    <span class="fl">212.</span>  <span class="fl">18.9</span>      <span class="fl">175.</span>       <span class="fl">249.</span></a>
-<a class="sourceLine" id="cb3-34" title="34"> <span class="dv">4</span> Subject   Intercept <span class="dv">330</span>    <span class="fl">275.</span>  <span class="fl">18.9</span>      <span class="fl">238.</span>       <span class="fl">312.</span></a>
-<a class="sourceLine" id="cb3-35" title="35"> <span class="dv">5</span> Subject   Intercept <span class="dv">331</span>    <span class="fl">274.</span>  <span class="fl">18.9</span>      <span class="fl">237.</span>       <span class="fl">311.</span></a>
-<a class="sourceLine" id="cb3-36" title="36"> <span class="dv">6</span> Subject   Intercept <span class="dv">332</span>    <span class="fl">260.</span>  <span class="fl">18.9</span>      <span class="fl">223.</span>       <span class="fl">297.</span></a>
-<a class="sourceLine" id="cb3-37" title="37"> <span class="dv">7</span> Subject   Intercept <span class="dv">333</span>    <span class="fl">268.</span>  <span class="fl">18.9</span>      <span class="fl">231.</span>       <span class="fl">305.</span></a>
-<a class="sourceLine" id="cb3-38" title="38"> <span class="dv">8</span> Subject   Intercept <span class="dv">334</span>    <span class="fl">244.</span>  <span class="fl">18.9</span>      <span class="fl">207.</span>       <span class="fl">281.</span></a>
-<a class="sourceLine" id="cb3-39" title="39"> <span class="dv">9</span> Subject   Intercept <span class="dv">335</span>    <span class="fl">251.</span>  <span class="fl">18.9</span>      <span class="fl">214.</span>       <span class="fl">288.</span></a>
-<a class="sourceLine" id="cb3-40" title="40"><span class="dv">10</span> Subject   Intercept <span class="dv">337</span>    <span class="fl">286.</span>  <span class="fl">18.9</span>      <span class="fl">249.</span>       <span class="fl">323.</span></a>
-<a class="sourceLine" id="cb3-41" title="41"><span class="co"># … with 26 more rows</span></a>
+<a class="sourceLine" id="cb3-31" title="31"><span class="st"> </span><span class="dv">1</span> Subject   Intercept <span class="dv">308</span>    <span class="fl">254.</span>  <span class="fl">13.9</span>      <span class="fl">226.</span>       <span class="fl">281.</span></a>
+<a class="sourceLine" id="cb3-32" title="32"> <span class="dv">2</span> Subject   Intercept <span class="dv">309</span>    <span class="fl">211.</span>  <span class="fl">13.9</span>      <span class="fl">184.</span>       <span class="fl">238.</span></a>
+<a class="sourceLine" id="cb3-33" title="33"> <span class="dv">3</span> Subject   Intercept <span class="dv">310</span>    <span class="fl">212.</span>  <span class="fl">13.9</span>      <span class="fl">185.</span>       <span class="fl">240.</span></a>
+<a class="sourceLine" id="cb3-34" title="34"> <span class="dv">4</span> Subject   Intercept <span class="dv">330</span>    <span class="fl">275.</span>  <span class="fl">13.9</span>      <span class="fl">248.</span>       <span class="fl">302.</span></a>
+<a class="sourceLine" id="cb3-35" title="35"> <span class="dv">5</span> Subject   Intercept <span class="dv">331</span>    <span class="fl">274.</span>  <span class="fl">13.9</span>      <span class="fl">246.</span>       <span class="fl">301.</span></a>
+<a class="sourceLine" id="cb3-36" title="36"> <span class="dv">6</span> Subject   Intercept <span class="dv">332</span>    <span class="fl">260.</span>  <span class="fl">13.9</span>      <span class="fl">233.</span>       <span class="fl">288.</span></a>
+<a class="sourceLine" id="cb3-37" title="37"> <span class="dv">7</span> Subject   Intercept <span class="dv">333</span>    <span class="fl">268.</span>  <span class="fl">13.9</span>      <span class="fl">241.</span>       <span class="fl">295.</span></a>
+<a class="sourceLine" id="cb3-38" title="38"> <span class="dv">8</span> Subject   Intercept <span class="dv">334</span>    <span class="fl">244.</span>  <span class="fl">13.9</span>      <span class="fl">217.</span>       <span class="fl">271.</span></a>
+<a class="sourceLine" id="cb3-39" title="39"> <span class="dv">9</span> Subject   Intercept <span class="dv">335</span>    <span class="fl">251.</span>  <span class="fl">13.9</span>      <span class="fl">224.</span>       <span class="fl">278.</span></a>
+<a class="sourceLine" id="cb3-40" title="40"><span class="dv">10</span> Subject   Intercept <span class="dv">337</span>    <span class="fl">286.</span>  <span class="fl">13.9</span>      <span class="fl">259.</span>       <span class="fl">313.</span></a>
+<a class="sourceLine" id="cb3-41" title="41"><span class="co"># ... with 26 more rows</span></a>
 <a class="sourceLine" id="cb3-42" title="42"></a>
 <a class="sourceLine" id="cb3-43" title="43"><span class="kw"><a href="reference/extract_vc.html">extract_vc</a></span>(brm_model, <span class="dt">ci_level =</span> <span class="fl">.8</span>)</a>
 <a class="sourceLine" id="cb3-44" title="44">     group    effect variance     sd  sd_<span class="dv">10</span>  sd_<span class="dv">90</span> var_prop</a>
-<a class="sourceLine" id="cb3-45" title="45"><span class="dv">1</span>  Subject Intercept  <span class="fl">716.876</span> <span class="fl">26.775</span> <span class="fl">18.605</span> <span class="fl">35.788</span>    <span class="fl">0.501</span></a>
-<a class="sourceLine" id="cb3-46" title="46"><span class="dv">2</span>  Subject      Days   <span class="fl">42.170</span>  <span class="fl">6.494</span>  <span class="fl">4.787</span>  <span class="fl">8.353</span>    <span class="fl">0.029</span></a>
-<a class="sourceLine" id="cb3-47" title="47"><span class="dv">3</span> Residual            <span class="fl">672.616</span> <span class="fl">25.935</span> <span class="fl">23.967</span> <span class="fl">28.021</span>    <span class="fl">0.470</span></a>
+<a class="sourceLine" id="cb3-45" title="45"><span class="dv">1</span>  Subject Intercept  <span class="fl">722.377</span> <span class="fl">26.877</span> <span class="fl">19.025</span> <span class="fl">35.642</span>    <span class="fl">0.502</span></a>
+<a class="sourceLine" id="cb3-46" title="46"><span class="dv">2</span>  Subject      Days   <span class="fl">43.201</span>  <span class="fl">6.573</span>  <span class="fl">4.794</span>  <span class="fl">8.590</span>    <span class="fl">0.030</span></a>
+<a class="sourceLine" id="cb3-47" title="47"><span class="dv">3</span> Residual            <span class="fl">672.315</span> <span class="fl">25.929</span> <span class="fl">23.957</span> <span class="fl">28.004</span>    <span class="fl">0.468</span></a>
 <a class="sourceLine" id="cb3-48" title="48"></a>
 <a class="sourceLine" id="cb3-49" title="49"><span class="kw"><a href="reference/find_typical.html">find_typical</a></span>(gam_model, <span class="dt">probs =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">25</span>, <span class="fl">.50</span>, <span class="fl">.75</span>))</a>
 <a class="sourceLine" id="cb3-50" title="50"><span class="co"># A tibble: 6 x 8</span></a>
@@ -366,7 +402,7 @@ mgcv</li>
 <a href="#consistent-output" class="anchor"></a>Consistent output</h2>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1"><span class="kw"><a href="reference/extract_vc.html">extract_vc</a></span>(tmb_model)</a>
 <a class="sourceLine" id="cb4-2" title="2">     group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="dv">1</span>  Subject Intercept  <span class="fl">565.516</span> <span class="fl">23.781</span> <span class="fl">15.017</span>  <span class="fl">37.658</span>    <span class="fl">0.451</span></a>
+<a class="sourceLine" id="cb4-3" title="3"><span class="dv">1</span>  Subject Intercept  <span class="fl">565.515</span> <span class="fl">23.781</span> <span class="fl">15.017</span>  <span class="fl">37.658</span>    <span class="fl">0.451</span></a>
 <a class="sourceLine" id="cb4-4" title="4"><span class="dv">2</span>  Subject      Days   <span class="fl">32.682</span>  <span class="fl">5.717</span>  <span class="fl">3.805</span>   <span class="fl">8.588</span>    <span class="fl">0.026</span></a>
 <a class="sourceLine" id="cb4-5" title="5"><span class="dv">3</span> Residual            <span class="fl">654.941</span> <span class="fl">25.592</span> <span class="fl">22.800</span>  <span class="fl">28.725</span>    <span class="fl">0.523</span></a>
 <a class="sourceLine" id="cb4-6" title="6"></a>
@@ -380,16 +416,16 @@ mgcv</li>
 <a class="sourceLine" id="cb4-14" title="14"><span class="kw"><a href="reference/extract_vc.html">extract_vc</a></span>(lmer_model)</a>
 <a class="sourceLine" id="cb4-15" title="15">Computing profile confidence intervals ...</a>
 <a class="sourceLine" id="cb4-16" title="16">     group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</a>
-<a class="sourceLine" id="cb4-17" title="17"><span class="dv">1</span>  Subject Intercept  <span class="fl">611.898</span> <span class="fl">24.737</span> <span class="fl">14.382</span>  <span class="fl">37.714</span>    <span class="fl">0.470</span></a>
-<a class="sourceLine" id="cb4-18" title="18"><span class="dv">2</span>  Subject      Days   <span class="fl">35.081</span>  <span class="fl">5.923</span>  <span class="fl">3.801</span>   <span class="fl">8.754</span>    <span class="fl">0.027</span></a>
+<a class="sourceLine" id="cb4-17" title="17"><span class="dv">1</span>  Subject Intercept  <span class="fl">611.898</span> <span class="fl">24.737</span> <span class="fl">14.382</span>  <span class="fl">37.716</span>    <span class="fl">0.470</span></a>
+<a class="sourceLine" id="cb4-18" title="18"><span class="dv">2</span>  Subject      Days   <span class="fl">35.081</span>  <span class="fl">5.923</span>  <span class="fl">3.801</span>   <span class="fl">8.753</span>    <span class="fl">0.027</span></a>
 <a class="sourceLine" id="cb4-19" title="19"><span class="dv">3</span> Residual            <span class="fl">654.941</span> <span class="fl">25.592</span> <span class="fl">22.898</span>  <span class="fl">28.858</span>    <span class="fl">0.503</span></a>
 <a class="sourceLine" id="cb4-20" title="20"></a>
 <a class="sourceLine" id="cb4-21" title="21"></a>
 <a class="sourceLine" id="cb4-22" title="22"><span class="kw"><a href="reference/extract_vc.html">extract_vc</a></span>(brm_model)</a>
 <a class="sourceLine" id="cb4-23" title="23">     group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</a>
-<a class="sourceLine" id="cb4-24" title="24"><span class="dv">1</span>  Subject Intercept  <span class="fl">716.876</span> <span class="fl">26.775</span> <span class="fl">15.478</span>  <span class="fl">42.653</span>    <span class="fl">0.501</span></a>
-<a class="sourceLine" id="cb4-25" title="25"><span class="dv">2</span>  Subject      Days   <span class="fl">42.170</span>  <span class="fl">6.494</span>  <span class="fl">4.138</span>   <span class="fl">9.854</span>    <span class="fl">0.029</span></a>
-<a class="sourceLine" id="cb4-26" title="26"><span class="dv">3</span> Residual            <span class="fl">672.616</span> <span class="fl">25.935</span> <span class="fl">23.066</span>  <span class="fl">29.206</span>    <span class="fl">0.470</span></a>
+<a class="sourceLine" id="cb4-24" title="24"><span class="dv">1</span>  Subject Intercept  <span class="fl">722.377</span> <span class="fl">26.877</span> <span class="fl">15.513</span>  <span class="fl">43.322</span>    <span class="fl">0.502</span></a>
+<a class="sourceLine" id="cb4-25" title="25"><span class="dv">2</span>  Subject      Days   <span class="fl">43.201</span>  <span class="fl">6.573</span>  <span class="fl">4.129</span>  <span class="fl">10.270</span>    <span class="fl">0.030</span></a>
+<a class="sourceLine" id="cb4-26" title="26"><span class="dv">3</span> Residual            <span class="fl">672.315</span> <span class="fl">25.929</span> <span class="fl">23.064</span>  <span class="fl">29.285</span>    <span class="fl">0.468</span></a>
 <a class="sourceLine" id="cb4-27" title="27"></a>
 <a class="sourceLine" id="cb4-28" title="28"></a>
 <a class="sourceLine" id="cb4-29" title="29"><span class="kw"><a href="reference/extract_vc.html">extract_vc</a></span>(gam_model)</a>
@@ -405,6 +441,7 @@ mgcv</li>
 </div>
 </div>
 </div>
+
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

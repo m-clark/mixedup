@@ -29,7 +29,8 @@ niche.
 
 An additional perk is minimal dependency. Other than the package that
 created the object, nothing except the tidyverse is needed (presently
-just `dplyr`, `tidyr`, and `purrr`).
+just `dplyr`, `tidyr`, and `purrr`). For more details and examples see
+<https://m-clark.github.io/mixedup/>.
 
 ## Installation
 
@@ -43,48 +44,49 @@ devtools::install_github('m-clark/mixedup')
 
 ##### Extract Variance Components
 
-  - \[X\] lme4
-  - \[X\] glmmTMB
-  - \[X\] nlme
-  - \[X\] brms
-  - \[X\] mgcv
+  - [x] lme4
+  - [x] glmmTMB
+  - [x] nlme
+  - [x] brms
+  - [x] mgcv
 
 ##### Extract Random Effects
 
-  - \[X\] lme4
-  - \[X\] glmmTMB
-  - \[X\] nlme
-  - \[X\] brms
-  - \[X\] mgcv
+  - [x] lme4
+  - [x] glmmTMB
+  - [x] nlme
+  - [x] mgcv
+  - [x] rstanarm
+  - [x] brms
 
 ##### Extract Fixed Effects
 
-  - \[X\] lme4
-  - \[X\] glmmTMB
-  - \[X\] nlme
-  - \[X\] brms
-  - \[X\] mgcv
+  - [x] lme4
+  - [x] glmmTMB
+  - [x] nlme
+  - [x] brms
+  - [x] mgcv
 
 ##### Extract Random Coefficients
 
-  - \[X\] lme4
-  - \[X\] glmmTMB
-  - \[X\] nlme
-  - \[X\] brms
-  - \[X\] mgcv
+  - [x] lme4
+  - [x] glmmTMB
+  - [x] nlme
+  - [x] brms
+  - [x] mgcv
 
 ##### Extract Heterogeneous Variances
 
-  - \[ \] glmmTMB
-  - \[X\] nlme
+  - [ ] glmmTMB
+  - [x] nlme
 
 ##### Find Typical
 
-  - \[X\] lme4
-  - \[X\] glmmTMB
-  - \[X\] nlme
-  - \[X\] brms
-  - \[X\] mgcv
+  - [x] lme4
+  - [x] glmmTMB
+  - [x] nlme
+  - [x] brms
+  - [x] mgcv
 
 ## Examples
 
@@ -140,7 +142,7 @@ Compiling the C++ model
 Start sampling
 
 library(mgcv)
-This is mgcv 1.8-29. For overview type 'help("mgcv-package")'.
+This is mgcv 1.8-30. For overview type 'help("mgcv-package")'.
 
 Attaching package: 'mgcv'
 The following objects are masked from 'package:brms':
@@ -175,7 +177,7 @@ extract_random_effects(tmb_model)
  8 Subject   Intercept 334    -7.00  12.9    -32.3        18.3
  9 Subject   Intercept 335    -1.04  14.0    -28.5        26.4
 10 Subject   Intercept 337    34.7   13.6      7.94       61.4
-# … with 26 more rows
+# ... with 26 more rows
 
 extract_fixed_effects(nlme_model)
 # A tibble: 3 x 7
@@ -189,23 +191,23 @@ extract_random_coefs(lmer_model)
 # A tibble: 36 x 7
    group_var effect    group value    se lower_2.5 upper_97.5
    <chr>     <chr>     <fct> <dbl> <dbl>     <dbl>      <dbl>
- 1 Subject   Intercept 308    254.  18.9      217.       291.
- 2 Subject   Intercept 309    211.  18.9      174.       248.
- 3 Subject   Intercept 310    212.  18.9      175.       249.
- 4 Subject   Intercept 330    275.  18.9      238.       312.
- 5 Subject   Intercept 331    274.  18.9      237.       311.
- 6 Subject   Intercept 332    260.  18.9      223.       297.
- 7 Subject   Intercept 333    268.  18.9      231.       305.
- 8 Subject   Intercept 334    244.  18.9      207.       281.
- 9 Subject   Intercept 335    251.  18.9      214.       288.
-10 Subject   Intercept 337    286.  18.9      249.       323.
-# … with 26 more rows
+ 1 Subject   Intercept 308    254.  13.9      226.       281.
+ 2 Subject   Intercept 309    211.  13.9      184.       238.
+ 3 Subject   Intercept 310    212.  13.9      185.       240.
+ 4 Subject   Intercept 330    275.  13.9      248.       302.
+ 5 Subject   Intercept 331    274.  13.9      246.       301.
+ 6 Subject   Intercept 332    260.  13.9      233.       288.
+ 7 Subject   Intercept 333    268.  13.9      241.       295.
+ 8 Subject   Intercept 334    244.  13.9      217.       271.
+ 9 Subject   Intercept 335    251.  13.9      224.       278.
+10 Subject   Intercept 337    286.  13.9      259.       313.
+# ... with 26 more rows
 
 extract_vc(brm_model, ci_level = .8)
      group    effect variance     sd  sd_10  sd_90 var_prop
-1  Subject Intercept  716.876 26.775 18.605 35.788    0.501
-2  Subject      Days   42.170  6.494  4.787  8.353    0.029
-3 Residual            672.616 25.935 23.967 28.021    0.470
+1  Subject Intercept  720.239 26.837 18.852 35.709    0.501
+2  Subject      Days   42.981  6.556  4.825  8.456    0.030
+3 Residual            672.962 25.942 24.014 27.929    0.469
 
 find_typical(gam_model, probs = c(.25, .50, .75))
 # A tibble: 6 x 8
@@ -224,7 +226,7 @@ find_typical(gam_model, probs = c(.25, .50, .75))
 ``` r
 extract_vc(tmb_model)
      group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  565.516 23.781 15.017  37.658    0.451
+1  Subject Intercept  565.515 23.781 15.017  37.658    0.451
 2  Subject      Days   32.682  5.717  3.805   8.588    0.026
 3 Residual            654.941 25.592 22.800  28.725    0.523
 
@@ -238,16 +240,16 @@ extract_vc(nlme_model)
 extract_vc(lmer_model)
 Computing profile confidence intervals ...
      group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  611.898 24.737 14.382  37.714    0.470
-2  Subject      Days   35.081  5.923  3.801   8.754    0.027
+1  Subject Intercept  611.898 24.737 14.382  37.716    0.470
+2  Subject      Days   35.081  5.923  3.801   8.753    0.027
 3 Residual            654.941 25.592 22.898  28.858    0.503
 
 
 extract_vc(brm_model)
      group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  716.876 26.775 15.478  42.653    0.501
-2  Subject      Days   42.170  6.494  4.138   9.854    0.029
-3 Residual            672.616 25.935 23.066  29.206    0.470
+1  Subject Intercept  720.239 26.837 15.412  42.137    0.501
+2  Subject      Days   42.981  6.556  4.152   9.978    0.030
+3 Residual            672.962 25.942 23.105  29.275    0.469
 
 
 extract_vc(gam_model)

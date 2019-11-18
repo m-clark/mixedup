@@ -336,6 +336,7 @@ extract_random_effects.brmsfit <- function(
 #' @rdname extract_random_effects
 #' @export
 extract_random_effects.stanreg <- function(...) {
+te
   if (!is_package_installed('rstanarm'))
     stop('rstanarm package required', call. = FALSE)
 
@@ -383,7 +384,7 @@ extract_random_effects.gam <- function(
   }
 
 
-  if (purrr::is_empty(re_levels)) {
+  if (purrr::is_empty(re_levels) | all(purrr::map_lgl(re_levels, is.null))) {
     stop('No factor random effects.')
   }
 
