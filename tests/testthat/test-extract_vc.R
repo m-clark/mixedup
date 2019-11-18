@@ -302,7 +302,7 @@ test_that('extract_vc.gam basic functionality: multiple grouping factors', {
 
 test_that('extract_vc.gam basic functionality: bam', {
   expect_s3_class(extract_vc(bam_1), 'data.frame')
-test})
+})
 
 
 test_that('extract_vc.gam fails with non-REML', {
