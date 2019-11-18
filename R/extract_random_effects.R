@@ -51,8 +51,10 @@ extract_random_effects <- function(
   component = NULL,
   ...
 ) {
-  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'brmsfit')))
-    stop('This only works for model objects from lme4, glmmTMB, brms,
+  if (!inherits(model,
+                c('merMod', 'glmmTMB', 'lme', 'gam', 'stanreg', 'brmsfit'))
+  )
+    stop('This only works for model objects from lme4, glmmTMB, rstanarm, brms,
          mgcv, and nlme.')
 
   if (ci_level < 0 | ci_level >= 1)
@@ -330,6 +332,18 @@ extract_random_effects.brmsfit <- function(
     dplyr::select(group_var, dplyr::everything()) %>%
     dplyr::as_tibble()
 }
+
+#' @rdname extract_random_effects
+#' @export
+extract_random_effects.stanreg <- function(...) {
+  if (!is_package_installed('rstanarm'))
+    stop('rstanarm package required', call. = FALSE)
+
+  # Structure is the same as lme4
+  extract_random_effects.merMod(...)
+}
+
+
 
 #' @rdname extract_random_effects
 #' @export

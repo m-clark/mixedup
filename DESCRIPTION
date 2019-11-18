@@ -24,6 +24,7 @@ Suggests:
   glmmTMB,
   mgcv,
   nlme,
+  rstanarm,
   brms,
   covr,
   knitr

@@ -160,6 +160,39 @@ test_that('extract_random_effects.brmsfit errors with bad re name', {
 
 
 
+
+
+# rstanarm ----------------------------------------------------------------
+
+context('test extract_random_effects.stanreg')
+
+test_that("rstanarm installation is checked", {
+  with_mock(
+    'mixedup::is_package_installed' = function() FALSE,
+    expect_error(extract_random_effects(stan_glmer_1))
+  )
+})
+
+test_that('extract_random_effects.merMod basic functionality', {
+  expect_s3_class(extract_random_effects(stan_glmer_1), 'data.frame')
+})
+
+test_that('extract_random_effects.merMod basic functionality', {
+  expect_s3_class(extract_random_effects(stan_glmer_2), 'data.frame')
+})
+
+
+test_that('extract_random_effects.merMod works with multiple re', {
+  expect_equal(
+    nrow(extract_random_effects(stan_glmer_3, re = 's')),
+    length(unique(stan_glmer_3$data$s))
+  )
+})
+
+test_that('extract_random_effects.merMod errors with bad re name', {
+  expect_error(extract_random_effects(stan_glmer_2, re = 'subject'))
+})
+
 # mgcv --------------------------------------------------------------------
 
 

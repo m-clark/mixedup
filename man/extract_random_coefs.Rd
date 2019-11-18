@@ -54,22 +54,19 @@ Returns a data frame with random coefficients, a.k.a. random
   intercepts and random slopes, and their standard errors. Note that the
   standard errors assume independence of the conditional variance and the
   fixed-effects variance, thus the standard errors are the sum of variances
-  for the fixed and random effects. See Bolker's demo
+  for the respective fixed and random effects. See Bolker's demo
   \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}
   and additional discussion at the
   \href{https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#confidence-intervals-on-conditional-meansblupsrandom-effects}{GLMM
-  FAQ}. This assumption may not be appropriate, and if you are really
-  interested in this value you should probably use brms.
+  FAQ}. As noted there, this assumption may not be appropriate, and if you
+  are really interested in an accurate uncertainty estimate you should
+  probably use brms.
 
 
 \code{nlme} only provides the coefficients no estimated variance, so this
-doesn't add to what you get from basic functionality for those models.  In
-addition, nlme adds all random effects to the fixed effects, whereas
-\code{lme4} and others only add the effects requested.
-
-For \code{mgcv} objects, the variance returned is the same as that of the
-random effects themselves, as these are all estimated simultaneously as part
-of the model. They are similar to brms estimates.
+function doesn't add to what you get from basic functionality for those
+models.  In addition, nlme adds all random effects to the fixed effects,
+whereas \code{lme4} and others only add the effects requested.
 }
 \examples{
 library(lme4)

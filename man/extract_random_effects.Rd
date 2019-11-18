@@ -6,6 +6,7 @@
 \alias{extract_random_effects.glmmTMB}
 \alias{extract_random_effects.lme}
 \alias{extract_random_effects.brmsfit}
+\alias{extract_random_effects.stanreg}
 \alias{extract_random_effects.gam}
 \title{Extract random effects}
 \usage{
@@ -23,6 +24,8 @@ extract_random_effects(model, re = NULL, ci_level = 0.95, digits = 3,
 
 \method{extract_random_effects}{brmsfit}(model, re = NULL,
   ci_level = 0.95, digits = 3, ...)
+
+\method{extract_random_effects}{stanreg}(...)
 
 \method{extract_random_effects}{gam}(model, re = NULL, ci_level = 0.95,
   digits = 3, ...)

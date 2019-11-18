@@ -180,6 +180,82 @@ load('brm_results.RData')
 #   file = 'tests/testthat/brm_results.RData'
 # )
 
+# Run rstanarm models ---------------------------------------------------------
+
+
+load('rstanarm_results.RData')
+
+# library(rstanarm)
+#
+#
+#
+# stan_glmer_glm <- stan_glmer(
+#   count ~ zAge + zBase * Trt + (1 | patient),
+#   data = epilepsy,
+#   family = poisson(),
+#   prior = student_t(5,0,10),
+#   cores = 4,
+#   thin  = 40
+# )
+#
+# stan_glmer_1 <-
+#   stan_glmer(
+#     Reaction ~ Days + (1 | Subject),
+#     data = lme4::sleepstudy,
+#     prior = normal(0, 10),
+#     cores = 4,
+#     thin  = 40
+#   )
+#
+# stan_glmer_2 <-
+#   stan_glmer(
+#     Reaction ~ Days + (1 + Days | Subject),
+#     data = lme4::sleepstudy,
+#     prior = normal(0, 10),
+#     cores = 4,
+#     thin  = 40
+#   )
+#
+#
+#
+# # more complex models just for testing (changed from others to minimize nparameters/object size)
+# stan_glmer_3 <-
+#   stan_glmer(
+#     y ~ service + (1 | s) + (1 | dept),
+#     data = lme4::InstEval[1:1000,],
+#     prior = normal(0, 10),
+#     cores = 4,
+#     thin  = 40
+#   )
+#
+# stan_glmer_4 <-
+#   stan_glmer(
+#     giniPercap ~ math + year + (1 + year | country) + (1 + year | continent),
+#     data = dplyr::mutate(noiris::pisa, year = year-min(year), math = scale(math)[,1]),
+#     prior = normal(0, 10),
+#     cores = 4,
+#     thin  = 40
+#   )
+#
+# stan_glmer_5 <-
+#   stan_glmer(
+#     giniPercap ~ math + year + (1 + year + math | country) ,
+#     data = dplyr::mutate(noiris::pisa, year = year-min(year), math = scale(math)[,1]),
+#     prior = normal(0, 10),
+#     cores = 4,
+#     thin  = 40
+#   )
+#
+#
+# save(
+#   stan_glmer_glm,
+#   stan_glmer_1,
+#   stan_glmer_2,
+#   stan_glmer_3,
+#   stan_glmer_4,
+#   stan_glmer_5,
+#   file = 'tests/testthat/stan_glmer_results.RData'
+# )
 
 # Run mgcv models ---------------------------------------------------------
 
