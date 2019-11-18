@@ -208,7 +208,7 @@ test_that('extract_random_effects.gam basic functionality', {
 })
 
 test_that('extract_vc.gam basic functionality: bam', {
-  expect_s3_class(extract_vc(bam_1), 'data.frame')
+  expect_s3_class(extract_random_effects(bam_1), 'data.frame')
 })
 
 test_that('extract_random_effects.gam works with multiple re', {
@@ -249,7 +249,7 @@ test_that('Fails if no factors', {
                               data = within(lme4::sleepstudy, {Subject = as.integer(Subject)}),
                               method = 'REML')
 
-  expect_error(suppressWarnings(extract_ranef(ga_model_num_re)))
+  expect_error(suppressWarnings(extract_random_effects(ga_model_num_re)))
 
 })
 

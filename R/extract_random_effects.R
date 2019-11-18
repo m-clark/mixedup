@@ -336,7 +336,7 @@ extract_random_effects.brmsfit <- function(
 #' @rdname extract_random_effects
 #' @export
 extract_random_effects.stanreg <- function(...) {
-te
+
   if (!is_package_installed('rstanarm'))
     stop('rstanarm package required', call. = FALSE)
 
