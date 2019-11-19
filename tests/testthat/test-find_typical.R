@@ -99,6 +99,31 @@ test_that('find_typicalbrmsfit probs', {
   expect_equal(nrow(find_typical(brm_2, re = 'Subject', probs = c(.25, .75))), 4)
 })
 
+
+# rstanarm ----------------------------------------------------------------
+
+
+context('test find_typical.stanreg')
+
+
+test_that('find_typical.stanreg basic functionality', {
+  expect_s3_class(find_typical(stan_glmer_1), 'data.frame')
+})
+
+test_that('find_typical.stanreg basic functionality', {
+  expect_s3_class(find_typical(stan_glmer_2), 'data.frame')
+})
+
+test_that('find_typical.stanreg basic functionality', {
+  expect_s3_class(find_typical(stan_glmer_3, re = 's'), 'data.frame')
+})
+
+test_that('find_typical.stanreg probs', {
+  # should have two results each for intercept and Days
+  expect_equal(nrow(find_typical(stan_glmer_2, re = 'Subject', probs = c(.25, .75))), 4)
+})
+
+
 # mgcv --------------------------------------------------------------------
 
 context('test find_typical.gam')

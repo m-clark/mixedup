@@ -31,7 +31,7 @@ extract_random_effects(model, re = NULL, ci_level = 0.95, digits = 3,
   digits = 3, ...)
 }
 \arguments{
-\item{model}{A merMod, glmmTMB, brms, or nlme object}
+\item{model}{An appropriate model. See details.}
 
 \item{re}{The name of the grouping variable for the random effects. Default
 is \code{NULL} to return all.}
@@ -56,6 +56,16 @@ Extracts the random effects and their standard errors.
 \details{
 Relative to \code{ranef} for the various packages, this just adds
   the standard errors and cluster ids as columns, and intervals.
+
+\describe{
+ \item{merMod}
+ \item{glmmTMB}
+ \item{brms}
+ \item{nlme}
+ \item{brms}
+ \item{rstanarm}
+ \item{mgcv}
+}
 }
 \note{
 \code{nlme} only provides the estimated random effect parameters, not their uncertainty, so it isn't provided.

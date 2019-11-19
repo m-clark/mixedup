@@ -86,6 +86,7 @@ devtools::install_github('m-clark/mixedup')
   - [x] glmmTMB
   - [x] nlme
   - [x] brms
+  - [x] rstanarm
   - [x] mgcv
 
 ## Examples
@@ -205,9 +206,9 @@ extract_random_coefs(lmer_model)
 
 extract_vc(brm_model, ci_level = .8)
      group    effect variance     sd  sd_10  sd_90 var_prop
-1  Subject Intercept  720.239 26.837 18.852 35.709    0.501
-2  Subject      Days   42.981  6.556  4.825  8.456    0.030
-3 Residual            672.962 25.942 24.014 27.929    0.469
+1  Subject Intercept  731.970 27.055 19.104 36.215    0.506
+2  Subject      Days   43.369  6.586  4.863  8.576    0.030
+3 Residual            671.014 25.904 23.966 27.976    0.464
 
 find_typical(gam_model, probs = c(.25, .50, .75))
 # A tibble: 6 x 8
@@ -247,9 +248,9 @@ Computing profile confidence intervals ...
 
 extract_vc(brm_model)
      group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  720.239 26.837 15.412  42.137    0.501
-2  Subject      Days   42.981  6.556  4.152   9.978    0.030
-3 Residual            672.962 25.942 23.105  29.275    0.469
+1  Subject Intercept  731.970 27.055 15.698  42.530    0.506
+2  Subject      Days   43.369  6.586  4.169  10.301    0.030
+3 Residual            671.014 25.904 23.187  29.166    0.464
 
 
 extract_vc(gam_model)

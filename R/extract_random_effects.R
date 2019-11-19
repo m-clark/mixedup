@@ -2,7 +2,7 @@
 #'
 #' @description Extracts the random effects and their standard errors.
 #'
-#' @param model A merMod, glmmTMB, brms, or nlme object
+#' @param model An appropriate model. See details.
 #' @param re The name of the grouping variable for the random effects. Default
 #'   is \code{NULL} to return all.
 #' @param ci_level Where possible, confidence level < 1, typically above 0.90. A value of 0 will
@@ -15,6 +15,18 @@
 #'
 #' @details Relative to \code{ranef} for the various packages, this just adds
 #'   the standard errors and cluster ids as columns, and intervals.
+#'
+#' Current models supported:
+#'
+#' \describe{
+#'  \item{merMod}
+#'  \item{glmmTMB}
+#'  \item{brms}
+#'  \item{nlme}
+#'  \item{brms}
+#'  \item{rstanarm}
+#'  \item{mgcv}
+#' }
 #'
 #' @note
 #' \code{nlme} only provides the estimated random effect parameters, not their uncertainty, so it isn't provided.

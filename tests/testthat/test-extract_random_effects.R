@@ -214,7 +214,7 @@ test_that('extract_vc.gam basic functionality: bam', {
 test_that('extract_random_effects.gam works with multiple re', {
   expect_equal(
     nrow(extract_random_effects(gam_3, re = 's')),
-    nlevels(lmer_3@frame$s)
+    nlevels(gam_3$model$s)
   )
 })
 
@@ -243,7 +243,7 @@ test_that('extract_random_effects.gam warns with non-factor random effects', {
   expect_warning(extract_random_effects(m))
 })
 
-test_that('Fails if no factors', {
+test_that('extract_random_effects.gam fails if no factors', {
 
   ga_model_num_re = mgcv::gam(Reaction ~  s(Days) + s(Subject, bs='re') + s(Days, Subject, bs='re'),
                               data = within(lme4::sleepstudy, {Subject = as.integer(Subject)}),
@@ -253,7 +253,7 @@ test_that('Fails if no factors', {
 
 })
 
-test_that('extract_random_effects.brmsfit correct output', {
+test_that('extract_random_effects.gam correct output', {
   expect_equal(
     nrow(extract_random_effects(gam_2, re = 'Subject')),
     nlevels(sleepstudy$Subject)*2
