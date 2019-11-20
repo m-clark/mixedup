@@ -283,6 +283,13 @@ load('mgcv_results.RData')
 #   data = lme4::InstEval[1:1000, ]
 # )
 #
+# gam_glm = gam(
+#   count ~ spp + mined + (1 | site),
+#   family = poisson,
+#   data = glmmTMB::Salamanders
+# )
+#
+#
 # bam objects are very large to save even for small models
 # bam_1 = bam(
 #   y ~ service +
@@ -292,12 +299,12 @@ load('mgcv_results.RData')
 #   nthreads = 10
 #   )
 #
-# ## TODO: glm
 #
 # save(
 #   gam_1,
 #   gam_2,
 #   gam_3,
+#   gam_glm,
 #   bam_1,
 #   file = 'tests/testthat/mgcv_results.RData'
 # )

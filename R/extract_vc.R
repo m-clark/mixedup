@@ -123,7 +123,11 @@ extract_vc.merMod <- function(
 
       colnames(ci) <- gsub(colnames(ci), pattern = ' %', replacement = '')
 
-      vc <- cbind(vc, ci[!grepl(rownames(ci), pattern = 'cor'),])
+      # drop = F in case no residual, otherwise will lose structure for single
+      # random effect
+      ci <- ci[!grepl(rownames(ci), pattern = 'cor'), , drop = FALSE]
+
+      vc <- cbind(vc, ci)
     }
 
   }
@@ -219,6 +223,7 @@ extract_vc.glmmTMB <- function(
 
     # to deal with zi/other component issues noted above, paste component to search
     pat <- paste0(component, '.Std.Dev', '|sigma')
+
     ci <- dplyr::filter(ci, grepl(rownames(ci), pattern = pat))
 
     vc <- cbind(vc, ci)

@@ -28,6 +28,14 @@ test_that('extract_vc.merMod basic functionality: random intercept only', {
   expect_s3_class(extract_vc(lmer_1, ci_level = 0), 'data.frame')
 })
 
+test_that('extract_vc.merMod basic functionality: random intercept only with no residual', {
+  init = extract_vc(glmer_1, ci_args = list(method = 'Wald'))
+  expect_equal(nrow(init), 1)
+
+  # check that ci columns are appropriately attached
+  expect_true(any(grepl(colnames(init), pattern = 'sd\\_2\\.5')))
+})
+
 test_that('extract_vc.merMod basic functionality: random slopes', {
   expect_s3_class(extract_vc(lmer_2, ci_level = 0), 'data.frame')
 })
@@ -298,6 +306,10 @@ test_that('extract_vc.gam basic functionality: random slopes', {
 
 test_that('extract_vc.gam basic functionality: multiple grouping factors', {
   expect_s3_class(extract_vc(gam_3), 'data.frame')
+})
+
+test_that('extract_vc.gam basic functionality: glmm', {
+  expect_true(any(grepl(colnames(extract_vc(gam_glm)), pattern = 'sd\\_2\\.5')))
 })
 
 test_that('extract_vc.gam basic functionality: bam', {
