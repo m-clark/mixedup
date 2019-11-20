@@ -10,25 +10,33 @@
 \alias{extract_random_effects.gam}
 \title{Extract random effects}
 \usage{
-extract_random_effects(model, re = NULL, ci_level = 0.95, digits = 3,
-  component = NULL, ...)
+extract_random_effects(
+  model,
+  re = NULL,
+  ci_level = 0.95,
+  digits = 3,
+  component = NULL,
+  ...
+)
 
-\method{extract_random_effects}{merMod}(model, re = NULL,
-  ci_level = 0.95, digits = 3, ...)
+\method{extract_random_effects}{merMod}(model, re = NULL, ci_level = 0.95, digits = 3, ...)
 
-\method{extract_random_effects}{glmmTMB}(model, re = NULL,
-  ci_level = 0.95, digits = 3, component = "cond", ...)
+\method{extract_random_effects}{glmmTMB}(
+  model,
+  re = NULL,
+  ci_level = 0.95,
+  digits = 3,
+  component = "cond",
+  ...
+)
 
-\method{extract_random_effects}{lme}(model, re = NULL, ci_level = NULL,
-  digits = 3, ...)
+\method{extract_random_effects}{lme}(model, re = NULL, ci_level = NULL, digits = 3, ...)
 
-\method{extract_random_effects}{brmsfit}(model, re = NULL,
-  ci_level = 0.95, digits = 3, ...)
+\method{extract_random_effects}{brmsfit}(model, re = NULL, ci_level = 0.95, digits = 3, ...)
 
 \method{extract_random_effects}{stanreg}(...)
 
-\method{extract_random_effects}{gam}(model, re = NULL, ci_level = 0.95,
-  digits = 3, ...)
+\method{extract_random_effects}{gam}(model, re = NULL, ci_level = 0.95, digits = 3, ...)
 }
 \arguments{
 \item{model}{An appropriate model. See details.}
@@ -55,16 +63,18 @@ Extracts the random effects and their standard errors.
 }
 \details{
 Relative to \code{ranef} for the various packages, this just adds
-  the standard errors and cluster ids as columns, and intervals.
+the standard errors and cluster ids as columns, and intervals.
+
+Current models supported:
 
 \describe{
- \item{merMod}
- \item{glmmTMB}
- \item{brms}
- \item{nlme}
- \item{brms}
- \item{rstanarm}
- \item{mgcv}
+\item{merMod}{}
+\item{glmmTMB}{}
+\item{brms}{}
+\item{nlme}{}
+\item{brms}{}
+\item{rstanarm}{}
+\item{mgcv}{}
 }
 }
 \note{
@@ -72,7 +82,7 @@ Relative to \code{ranef} for the various packages, this just adds
 
 \code{merMod} and \code{glmmTMB} results are based on the estimated conditional variances, i.e. \code{condvar = TRUE}.  This is likely an underestimate relative to brms results.
 
-For \code{mgcv}, the `Vp` (Bayesian) estimated variance covariance matrix is used.
+For \code{mgcv}, the \code{Vp} (Bayesian) estimated variance covariance matrix is used.
 }
 \examples{
 library(lme4)

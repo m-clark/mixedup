@@ -7,14 +7,14 @@
 find_typical(model, re = NULL, probs = NULL, ...)
 }
 \arguments{
-\item{model}{A supported model, e.g. lme4, glmmTMB, brms, or lme}
+\item{model}{A supported model, see \link{extract_random_effects}.}
 
 \item{re}{The name of the grouping variable for the random effects. Default
 is \code{NULL} to return all.}
 
-\item{probs}{Quantile probabilities}
+\item{probs}{Quantile probabilities.}
 
-\item{...}{Other arguments to pass to \link{extract_random_effects}}
+\item{...}{Other arguments to pass to \link{extract_random_effects}.}
 }
 \value{
 A data frame of group label(s) and their random effect values.
@@ -24,27 +24,27 @@ Given random effect values find 'typical' instances.
 }
 \details{
 In many cases, predictions are made by holding the random effects to
-  zero, which can be seen as the typical case. When the clusters carry
-  substantive meaning, for example, school, country, or hospital, it might be
-  of interest to note which are most 'typical', or at any other value
-  relative to their peers.
+zero, which can be seen as the typical case. When the clusters carry
+substantive meaning, for example, school, country, or hospital, it might be
+of interest to note which are most 'typical', or at any other value
+relative to their peers.
 
-  By default, this finds the labels associated with random effects that are
-  closest to zero.  Alternatively, one can specify quantile probabilities
-  rather than the 'typical' value.
+By default, this finds the labels associated with random effects that are
+closest to zero.  Alternatively, one can specify quantile probabilities
+rather than the 'typical' value.
 
-  One should see the results as examples, not definitive.  Depending on the
-  results of the model, even differences from the lowest valued estimated
-  random effect and the highest may not be statistically notable.
+One should see the results as examples, not definitive.  Depending on the
+results of the model, even differences from the lowest valued estimated
+random effect and the highest may not be statistically notable.
 }
 \note{
 Not surprisingly, different estimation procedures may produce different
-  random effect estimates. As such, you may get a different result from say,
-  \code{lme4} vs. \code{glmmTMB}.  In addition, because \code{nlme} doesn't
-  automatically handle crossed random effects, you will potentially get a
-  label that is not actually seen in the data, but reflects the nesting of
-  multiple grouping factors.  I don't care enough about \code{nlme} usage to
-  do anything about this at present.
+random effect estimates. As such, you may get a different result from say,
+\code{lme4} vs. \code{glmmTMB}.  In addition, because \code{nlme} doesn't
+automatically handle crossed random effects, you will potentially get a
+label that is not actually seen in the data, but reflects the nesting of
+multiple grouping factors.  I don't care enough about \code{nlme} usage to
+do anything about this at present.
 }
 \examples{
 library(mixedup)

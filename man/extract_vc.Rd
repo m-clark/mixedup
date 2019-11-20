@@ -9,24 +9,67 @@
 \alias{extract_vc.gam}
 \title{Extract variance components}
 \usage{
-extract_vc(model, ci_level = 0.95, ci_args = NULL, ci_scale = "sd",
-  show_cor = FALSE, digits = 3, component = "cond", ...)
+extract_vc(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  ci_scale = "sd",
+  show_cor = FALSE,
+  digits = 3,
+  component = "cond",
+  ...
+)
 
-\method{extract_vc}{merMod}(model, ci_level = 0.95, ci_args = NULL,
-  ci_scale = "sd", show_cor = FALSE, digits = 3, ...)
+\method{extract_vc}{merMod}(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  ci_scale = "sd",
+  show_cor = FALSE,
+  digits = 3,
+  ...
+)
 
-\method{extract_vc}{glmmTMB}(model, ci_level = 0.95, ci_args = NULL,
-  ci_scale = "sd", show_cor = FALSE, digits = 3,
-  component = "cond", ...)
+\method{extract_vc}{glmmTMB}(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  ci_scale = "sd",
+  show_cor = FALSE,
+  digits = 3,
+  component = "cond",
+  ...
+)
 
-\method{extract_vc}{lme}(model, ci_level = 0.95, ci_args = NULL,
-  ci_scale = "sd", show_cor = FALSE, digits = 3, ...)
+\method{extract_vc}{lme}(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  ci_scale = "sd",
+  show_cor = FALSE,
+  digits = 3,
+  ...
+)
 
-\method{extract_vc}{brmsfit}(model, ci_level = 0.95, ci_args = NULL,
-  ci_scale = "sd", show_cor = FALSE, digits = 3, ...)
+\method{extract_vc}{brmsfit}(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  ci_scale = "sd",
+  show_cor = FALSE,
+  digits = 3,
+  ...
+)
 
-\method{extract_vc}{gam}(model, ci_level = 0.95, ci_args = NULL,
-  ci_scale = "sd", show_cor = FALSE, digits = 3, ...)
+\method{extract_vc}{gam}(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  ci_scale = "sd",
+  show_cor = FALSE,
+  digits = 3,
+  ...
+)
 }
 \arguments{
 \item{model}{an lme4, glmmTMB, nlme, mgcv, or brms model}
@@ -61,9 +104,9 @@ This has functionality for simpler models from \code{lme4}, \code{glmmTMB}, \cod
 }
 \details{
 Returns a more usable (my opinion) version of variance components
-  estimates including variance, standard deviation, the confidence interval
-  for either, the relative proportion of variance, and all in a data frame
-  with names that are clean and easy to use.
+estimates including variance, standard deviation, the confidence interval
+for either, the relative proportion of variance, and all in a data frame
+with names that are clean and easy to use.
 }
 \examples{
 library(lme4)
@@ -77,11 +120,11 @@ extract_vc(lmer_mod, ci_scale = 'var')
 }
 \seealso{
 \code{\link[lme4]{confint.merMod}},
-  \code{\link[lme4:VarCorr]{VarCorr.merMod}},
-  \code{\link[glmmTMB]{confint.glmmTMB}},
-  \code{\link[glmmTMB:VarCorr]{VarCorr.glmmTMB}},
-  \code{\link[nlme:intervals]{intervals}},
-  \code{\link[nlme:VarCorr]{VarCorr.lme}},
-  \code{\link[brms:VarCorr]{VarCorr.brmsfit}}
-  \code{\link[mgcv:gam.vcomp]{gam.vcomp}}
+\code{\link[lme4:VarCorr]{VarCorr.merMod}},
+\code{\link[glmmTMB]{confint.glmmTMB}},
+\code{\link[glmmTMB:VarCorr]{VarCorr.glmmTMB}},
+\code{\link[nlme:intervals]{intervals}},
+\code{\link[nlme:VarCorr]{VarCorr.lme}},
+\code{\link[brms:VarCorr]{VarCorr.brmsfit}}
+\code{\link[mgcv:gam.vcomp]{gam.vcomp}}
 }

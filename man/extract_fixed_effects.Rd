@@ -9,23 +9,42 @@
 \alias{extract_fixed_effects.gam}
 \title{Extract fixed effects}
 \usage{
-extract_fixed_effects(model, ci_level = 0.95, ci_args = NULL,
-  digits = 3, ...)
+extract_fixed_effects(model, ci_level = 0.95, ci_args = NULL, digits = 3, ...)
 
-\method{extract_fixed_effects}{merMod}(model, ci_level = 0.95,
-  ci_args = list(method = "Wald"), digits = 3, ...)
+\method{extract_fixed_effects}{merMod}(
+  model,
+  ci_level = 0.95,
+  ci_args = list(method = "Wald"),
+  digits = 3,
+  ...
+)
 
-\method{extract_fixed_effects}{glmmTMB}(model, ci_level = 0.95,
-  ci_args = NULL, digits = 3, component = "cond", ...)
+\method{extract_fixed_effects}{glmmTMB}(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  digits = 3,
+  component = "cond",
+  ...
+)
 
-\method{extract_fixed_effects}{lme}(model, ci_level = 0.95,
-  ci_args = list(method = "Wald"), digits = 3, ...)
+\method{extract_fixed_effects}{lme}(
+  model,
+  ci_level = 0.95,
+  ci_args = list(method = "Wald"),
+  digits = 3,
+  ...
+)
 
-\method{extract_fixed_effects}{brmsfit}(model, ci_level = 0.95,
-  ci_args = NULL, digits = 3, ...)
+\method{extract_fixed_effects}{brmsfit}(model, ci_level = 0.95, ci_args = NULL, digits = 3, ...)
 
-\method{extract_fixed_effects}{gam}(model, ci_level = 0.95,
-  ci_args = list(method = "Wald"), digits = 3, ...)
+\method{extract_fixed_effects}{gam}(
+  model,
+  ci_level = 0.95,
+  ci_args = list(method = "Wald"),
+  digits = 3,
+  ...
+)
 }
 \arguments{
 \item{model}{an lme4, glmmTMB, nlme, mgcv, or brms model}
@@ -52,11 +71,11 @@ Extract fixed effects
 }
 \details{
 Essentially duplicates the \code{broom::tidy} approach with minor
-  name changes.  The package may or may not provide p-values by default.
+name changes.  The package may or may not provide p-values by default.
 }
 \note{
 For nlme, this is just a multiplier based on the estimated standard
-  error and critical value for the \code{ci_level}.
+error and critical value for the \code{ci_level}.
 }
 \examples{
 library(lme4)
@@ -68,6 +87,6 @@ extract_fixed_effects(lmer_mod)
 }
 \seealso{
 \code{\link[broom:tidy.merMod]{tidy.merMod}},
-  \code{\link[broom.mixed:tidy.glmmTMB]{tidy.glmmTMB}},
-  \code{\link[broom.mixed:tidy.brmsfit]{tidy.brmsfit}}
+\code{\link[broom.mixed:tidy.glmmTMB]{tidy.glmmTMB}},
+\code{\link[broom.mixed:tidy.brmsfit]{tidy.brmsfit}}
 }

@@ -19,13 +19,13 @@
 #' Current models supported:
 #'
 #' \describe{
-#'  \item{merMod}
-#'  \item{glmmTMB}
-#'  \item{brms}
-#'  \item{nlme}
-#'  \item{brms}
-#'  \item{rstanarm}
-#'  \item{mgcv}
+#'  \item{merMod}{}
+#'  \item{glmmTMB}{}
+#'  \item{brms}{}
+#'  \item{nlme}{}
+#'  \item{brms}{}
+#'  \item{rstanarm}{}
+#'  \item{mgcv}{}
 #' }
 #'
 #' @note
@@ -34,7 +34,6 @@
 #' \code{merMod} and \code{glmmTMB} results are based on the estimated conditional variances, i.e. \code{condvar = TRUE}.  This is likely an underestimate relative to brms results.
 #'
 #' For \code{mgcv}, the `Vp` (Bayesian) estimated variance covariance matrix is used.
-
 #' @return data frame of the random effects
 #' @seealso
 #' \code{\link[lme4:ranef.merMod]{ranef.merMod}},

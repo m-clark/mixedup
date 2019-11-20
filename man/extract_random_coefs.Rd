@@ -9,23 +9,31 @@
 \alias{extract_random_coefs.gam}
 \title{Extract random coefficients and their variances}
 \usage{
-extract_random_coefs(model, re = NULL, ci_level = 0.95, digits = 3,
-  component = NULL, ...)
+extract_random_coefs(
+  model,
+  re = NULL,
+  ci_level = 0.95,
+  digits = 3,
+  component = NULL,
+  ...
+)
 
-\method{extract_random_coefs}{merMod}(model, re = NULL,
-  ci_level = 0.95, digits = 3, ...)
+\method{extract_random_coefs}{merMod}(model, re = NULL, ci_level = 0.95, digits = 3, ...)
 
-\method{extract_random_coefs}{glmmTMB}(model, re = NULL,
-  ci_level = 0.95, digits = 3, component = "cond", ...)
+\method{extract_random_coefs}{glmmTMB}(
+  model,
+  re = NULL,
+  ci_level = 0.95,
+  digits = 3,
+  component = "cond",
+  ...
+)
 
-\method{extract_random_coefs}{lme}(model, re = NULL, ci_level = NULL,
-  digits = 3, ...)
+\method{extract_random_coefs}{lme}(model, re = NULL, ci_level = NULL, digits = 3, ...)
 
-\method{extract_random_coefs}{brmsfit}(model, re = NULL,
-  ci_level = 0.95, digits = 3, ...)
+\method{extract_random_coefs}{brmsfit}(model, re = NULL, ci_level = 0.95, digits = 3, ...)
 
-\method{extract_random_coefs}{gam}(model, re = NULL, ci_level = 0.95,
-  digits = 3, ...)
+\method{extract_random_coefs}{gam}(model, re = NULL, ci_level = 0.95, digits = 3, ...)
 }
 \arguments{
 \item{model}{A merMod, nlme, brms, or glmmTMB object}
@@ -51,17 +59,16 @@ Extract random coefficients and their variances
 }
 \details{
 Returns a data frame with random coefficients, a.k.a. random
-  intercepts and random slopes, and their standard errors. Note that the
-  standard errors assume independence of the conditional variance and the
-  fixed-effects variance, thus the standard errors are the sum of variances
-  for the respective fixed and random effects. See Bolker's demo
-  \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}
-  and additional discussion at the
-  \href{https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#confidence-intervals-on-conditional-meansblupsrandom-effects}{GLMM
-  FAQ}. As noted there, this assumption may not be appropriate, and if you
-  are really interested in an accurate uncertainty estimate you should
-  probably use brms.
-
+intercepts and random slopes, and their standard errors. Note that the
+standard errors assume independence of the conditional variance and the
+fixed-effects variance, thus the standard errors are the sum of variances
+for the respective fixed and random effects. See Bolker's demo
+\href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}
+and additional discussion at the
+\href{https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#confidence-intervals-on-conditional-meansblupsrandom-effects}{GLMM
+FAQ}. As noted there, this assumption may not be appropriate, and if you
+are really interested in an accurate uncertainty estimate you should
+probably use brms.
 
 \code{nlme} only provides the coefficients no estimated variance, so this
 function doesn't add to what you get from basic functionality for those

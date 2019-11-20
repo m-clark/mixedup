@@ -19,12 +19,12 @@ Because nlme won't do it for you.
 }
 \details{
 For models with heterogeneous variance, i.e. that contain something
-  like varIdent(form = ~1|Group), nlme returns a result in the summary
-  regarding the variances that many do not know what to do with, nor likely
-  would be what they would want to report. I rarely do these models with
-  nlme, and have only played around with the varIdent case.   This function '
-  will save me a little trouble in demos I do, but I have no plans to do any
-  more with it.
+like varIdent(form = ~1|Group), nlme returns a result in the summary
+regarding the variances that many do not know what to do with, nor likely
+would be what they would want to report. I rarely do these models with
+nlme, and have only played around with the varIdent case.   This function '
+will save me a little trouble in demos I do, but I have no plans to do any
+more with it.
 }
 \examples{
 library(nlme)
