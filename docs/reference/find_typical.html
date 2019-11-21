@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -150,7 +150,7 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model</th>
-      <td><p>A supported model, e.g. lme4, glmmTMB, brms, or lme</p></td>
+      <td><p>A supported model, see <a href='extract_random_effects.html'>extract_random_effects</a>.</p></td>
     </tr>
     <tr>
       <th>re</th>
@@ -159,11 +159,11 @@ is <code>NULL</code> to return all.</p></td>
     </tr>
     <tr>
       <th>probs</th>
-      <td><p>Quantile probabilities</p></td>
+      <td><p>Quantile probabilities.</p></td>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Other arguments to pass to <a href='extract_random_effects.html'>extract_random_effects</a></p></td>
+      <td><p>Other arguments to pass to <a href='extract_random_effects.html'>extract_random_effects</a>.</p></td>
     </tr>
     </table>
 
@@ -173,25 +173,25 @@ is <code>NULL</code> to return all.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>In many cases, predictions are made by holding the random effects to
-  zero, which can be seen as the typical case. When the clusters carry
-  substantive meaning, for example, school, country, or hospital, it might be
-  of interest to note which are most 'typical', or at any other value
-  relative to their peers.</p>
+zero, which can be seen as the typical case. When the clusters carry
+substantive meaning, for example, school, country, or hospital, it might be
+of interest to note which are most 'typical', or at any other value
+relative to their peers.</p>
 <p>By default, this finds the labels associated with random effects that are
-  closest to zero.  Alternatively, one can specify quantile probabilities
-  rather than the 'typical' value.</p>
+closest to zero.  Alternatively, one can specify quantile probabilities
+rather than the 'typical' value.</p>
 <p>One should see the results as examples, not definitive.  Depending on the
-  results of the model, even differences from the lowest valued estimated
-  random effect and the highest may not be statistically notable.</p>
+results of the model, even differences from the lowest valued estimated
+random effect and the highest may not be statistically notable.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>Not surprisingly, different estimation procedures may produce different
-  random effect estimates. As such, you may get a different result from say,
-  <code>lme4</code> vs. <code>glmmTMB</code>.  In addition, because <code>nlme</code> doesn't
-  automatically handle crossed random effects, you will potentially get a
-  label that is not actually seen in the data, but reflects the nesting of
-  multiple grouping factors.  I don't care enough about <code>nlme</code> usage to
-  do anything about this at present.</p>
+random effect estimates. As such, you may get a different result from say,
+<code>lme4</code> vs. <code>glmmTMB</code>.  In addition, because <code>nlme</code> doesn't
+automatically handle crossed random effects, you will potentially get a
+label that is not actually seen in the data, but reflects the nesting of
+multiple grouping factors.  I don't care enough about <code>nlme</code> usage to
+do anything about this at present.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)

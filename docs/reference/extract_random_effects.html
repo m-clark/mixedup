@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -143,38 +143,46 @@
     <p>Extracts the random effects and their standard errors.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>extract_random_effects</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S3 method for merMod</span>
-<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for glmmTMB</span>
-<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>, <span class='no'>...</span>)
+<span class='fu'>extract_random_effects</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S3 method for lme</span>
-<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for brmsfit</span>
-<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for stanreg</span>
 <span class='fu'>extract_random_effects</span>(<span class='no'>...</span>)
 
 <span class='co'># S3 method for gam</span>
-<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model</th>
-      <td><p>A merMod, glmmTMB, brms, or nlme object</p></td>
+      <td><p>An appropriate model. See details.</p></td>
     </tr>
     <tr>
       <th>re</th>
@@ -208,12 +216,24 @@ is 'cond'. Minimal testing on other options.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Relative to <code>ranef</code> for the various packages, this just adds
-  the standard errors and cluster ids as columns, and intervals.</p>
+the standard errors and cluster ids as columns, and intervals.</p>
+<p>Current models supported:</p>
+<dl class='dl-horizontal'>
+<dt>merMod</dt><dd><p></p></dd>
+<dt>glmmTMB</dt><dd><p></p></dd>
+<dt>brms</dt><dd><p></p></dd>
+<dt>nlme</dt><dd><p></p></dd>
+<dt>brms</dt><dd><p></p></dd>
+<dt>rstanarm</dt><dd><p></p></dd>
+<dt>mgcv</dt><dd><p></p></dd>
+
+</dl>
+
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p><code>nlme</code> only provides the estimated random effect parameters, not their uncertainty, so it isn't provided.</p>
 <p><code>merMod</code> and <code>glmmTMB</code> results are based on the estimated conditional variances, i.e. <code>condvar = TRUE</code>.  This is likely an underestimate relative to brms results.</p>
-<p>For <code>mgcv</code>, the `Vp` (Bayesian) estimated variance covariance matrix is used.</p>
+<p>For <code>mgcv</code>, the <code>Vp</code> (Bayesian) estimated variance covariance matrix is used.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/lme4/man/ranef.html'>ranef.merMod</a></code>,

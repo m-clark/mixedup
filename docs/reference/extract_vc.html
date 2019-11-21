@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -143,29 +143,72 @@
     <p>This has functionality for simpler models from <code>lme4</code>, <code>glmmTMB</code>, <code>nlme</code>, and <code>brms</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_vc</span>(<span class='no'>model</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
-  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>extract_vc</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
+  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S3 method for merMod</span>
-<span class='fu'>extract_vc</span>(<span class='no'>model</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>, <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+<span class='fu'>extract_vc</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
+  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S3 method for glmmTMB</span>
-<span class='fu'>extract_vc</span>(<span class='no'>model</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>, <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>, <span class='no'>...</span>)
+<span class='fu'>extract_vc</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
+  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S3 method for lme</span>
-<span class='fu'>extract_vc</span>(<span class='no'>model</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>, <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+<span class='fu'>extract_vc</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
+  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S3 method for brmsfit</span>
-<span class='fu'>extract_vc</span>(<span class='no'>model</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>, <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+<span class='fu'>extract_vc</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
+  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S3 method for gam</span>
-<span class='fu'>extract_vc</span>(<span class='no'>model</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>, <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>extract_vc</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
+  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -218,19 +261,19 @@ contains the correlations of the random effects.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Returns a more usable (my opinion) version of variance components
-  estimates including variance, standard deviation, the confidence interval
-  for either, the relative proportion of variance, and all in a data frame
-  with names that are clean and easy to use.</p>
+estimates including variance, standard deviation, the confidence interval
+for either, the relative proportion of variance, and all in a data frame
+with names that are clean and easy to use.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/lme4/man/confint.merMod.html'>confint.merMod</a></code>,
-  <code><a href='https://rdrr.io/pkg/lme4/man/VarCorr.html'>VarCorr.merMod</a></code>,
-  <code><a href='https://rdrr.io/pkg/glmmTMB/man/confint.glmmTMB.html'>confint.glmmTMB</a></code>,
-  <code><a href='https://rdrr.io/pkg/glmmTMB/man/VarCorr.glmmTMB.html'>VarCorr.glmmTMB</a></code>,
-  <code><a href='https://rdrr.io/pkg/nlme/man/intervals.html'>intervals</a></code>,
-  <code><a href='https://rdrr.io/pkg/nlme/man/VarCorr.html'>VarCorr.lme</a></code>,
-  <code><a href='https://rdrr.io/pkg/brms/man/VarCorr.brmsfit.html'>VarCorr.brmsfit</a></code>
-  <code><a href='https://rdrr.io/pkg/mgcv/man/gam.vcomp.html'>gam.vcomp</a></code></p></div>
+<code><a href='https://rdrr.io/pkg/lme4/man/VarCorr.html'>VarCorr.merMod</a></code>,
+<code><a href='https://rdrr.io/pkg/glmmTMB/man/confint.glmmTMB.html'>confint.glmmTMB</a></code>,
+<code><a href='https://rdrr.io/pkg/glmmTMB/man/VarCorr.glmmTMB.html'>VarCorr.glmmTMB</a></code>,
+<code><a href='https://rdrr.io/pkg/nlme/man/intervals.html'>intervals</a></code>,
+<code><a href='https://rdrr.io/pkg/nlme/man/VarCorr.html'>VarCorr.lme</a></code>,
+<code><a href='https://rdrr.io/pkg/brms/man/VarCorr.brmsfit.html'>VarCorr.brmsfit</a></code>
+<code><a href='https://rdrr.io/pkg/mgcv/man/gam.vcomp.html'>gam.vcomp</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)

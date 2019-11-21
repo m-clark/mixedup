@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Find typical values of a random effect — find_quants • mixedup</title>
+<title>Extract model data — extract_model_data • mixedup</title>
 
 
 <!-- jquery -->
@@ -37,8 +37,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Find typical values of a random effect — find_quants" />
-<meta property="og:description" content="Find typical values of a random effect" />
+<meta property="og:title" content="Extract model data — extract_model_data" />
+<meta property="og:description" content="This is mostly just a wrapper for model.frame." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -134,40 +134,61 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Find typical values of a random effect</h1>
-    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/find_quants.R'><code>R/find_quants.R</code></a></small>
-    <div class="hidden name"><code>find_quants.Rd</code></div>
+    <h1>Extract model data</h1>
+    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/extract_model_data.R'><code>R/extract_model_data.R</code></a></small>
+    <div class="hidden name"><code>extract_model_data.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Find typical values of a random effect</p>
+    <p>This is mostly just a wrapper for <code>model.frame</code>.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>find_quants</span>(<span class='no'>value</span>, <span class='no'>probs</span>)</pre>
+    <pre class="usage"><span class='fu'>extract_model_data</span>(<span class='no'>model</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>value</th>
-      <td><p>The random effect values</p></td>
-    </tr>
-    <tr>
-      <th>probs</th>
-      <td><p>Desired probabilities passed to <code>quantile</code></p></td>
+      <th>model</th>
+      <td><p>The mixed model</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Finds indices of random effect values closest to a specific quantile</p>
+    <p>a tibble/dataframe</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
+    <div class='dont-index'><p><a href='https://rdrr.io/r/stats/model.frame.html'>model.frame</a></p></div>
+
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
+
+<span class='no'>lmer_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
+<span class='fu'>extract_model_data</span>(<span class='no'>lmer_1</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 180 x 3</span><span>
+#&gt;    Reaction  Days Subject
+#&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>  
+#&gt; </span><span style='color: #555555;'> 1</span><span>     250.     0 308    
+#&gt; </span><span style='color: #555555;'> 2</span><span>     259.     1 308    
+#&gt; </span><span style='color: #555555;'> 3</span><span>     251.     2 308    
+#&gt; </span><span style='color: #555555;'> 4</span><span>     321.     3 308    
+#&gt; </span><span style='color: #555555;'> 5</span><span>     357.     4 308    
+#&gt; </span><span style='color: #555555;'> 6</span><span>     415.     5 308    
+#&gt; </span><span style='color: #555555;'> 7</span><span>     382.     6 308    
+#&gt; </span><span style='color: #555555;'> 8</span><span>     290.     7 308    
+#&gt; </span><span style='color: #555555;'> 9</span><span>     431.     8 308    
+#&gt; </span><span style='color: #555555;'>10</span><span>     466.     9 308    
+#&gt; </span><span style='color: #555555;'># … with 170 more rows</span><span></div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#details">Details</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#see-also">See also</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

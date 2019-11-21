@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -98,7 +98,7 @@
       <h1>Miscellaneous Functions</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2019-11-18</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2019-11-21</span></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/misc.Rmd"><code>vignettes/misc.Rmd</code></a></small>
       <div class="hidden name"><code>misc.Rmd</code></div>
@@ -156,6 +156,26 @@
 <a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw"><a href="../reference/extract_het_var.html">extract_het_var</a></span>(lme_<span class="dv">1</span>)</a>
 <a class="sourceLine" id="cb2-11" data-line-number="11">     Male    Female</a>
 <a class="sourceLine" id="cb2-12" data-line-number="12"><span class="dv">1</span> <span class="fl">3.10379</span> <span class="fl">0.6401141</span></a></code></pre></div>
+</div>
+<div id="extract-model-data" class="section level3">
+<h3 class="hasAnchor">
+<a href="#extract-model-data" class="anchor"></a>Extract model data</h3>
+<p>Just a wrapper for <code>model.frame</code>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/extract_model_data.html">extract_model_data</a></span>(lmer_model)</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># A tibble: 180 x 3</span></a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">   Reaction  Days Subject</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">      <span class="op">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st"> </span><span class="dv">1</span>     <span class="fl">250.</span>     <span class="dv">0</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-6" data-line-number="6"> <span class="dv">2</span>     <span class="fl">259.</span>     <span class="dv">1</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-7" data-line-number="7"> <span class="dv">3</span>     <span class="fl">251.</span>     <span class="dv">2</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"> <span class="dv">4</span>     <span class="fl">321.</span>     <span class="dv">3</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"> <span class="dv">5</span>     <span class="fl">357.</span>     <span class="dv">4</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"> <span class="dv">6</span>     <span class="fl">415.</span>     <span class="dv">5</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"> <span class="dv">7</span>     <span class="fl">382.</span>     <span class="dv">6</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"> <span class="dv">8</span>     <span class="fl">290.</span>     <span class="dv">7</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"> <span class="dv">9</span>     <span class="fl">431.</span>     <span class="dv">8</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="dv">10</span>     <span class="fl">466.</span>     <span class="dv">9</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co"># … with 170 more rows</span></a></code></pre></div>
 </div>
 </div>
   </div>
