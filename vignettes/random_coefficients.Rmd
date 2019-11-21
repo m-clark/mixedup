@@ -32,7 +32,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-
+```{r loadbrms, echo=FALSE}
+brms_model <- mixedup:::brms_model
+```
 
 
 ## Intro
@@ -59,13 +61,13 @@ lme_model  <-
 tmb_model  <-
   glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
-brms_model <-
-  brm(Reaction ~ Days + (1 + Days | Subject), 
-      data = sleepstudy,
-      cores = 4,
-      refresh = -1,
-      verbose = FALSE
-  )
+# brms_model <-
+#   brm(Reaction ~ Days + (1 + Days | Subject), 
+#       data = sleepstudy,
+#       cores = 4,
+#       refresh = -1,
+#       verbose = FALSE
+#   )
 
 # this is akin to (1 | Subject) + (0 + Days | Subject) in lme4
 mgcv_model <-

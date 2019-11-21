@@ -486,8 +486,6 @@ extract_vc.gam <- function(
   ...
   ) {
 
-  if (!inherits(model, "gam")) stop("Need a gam object.")
-
   if (!grepl(model$method, pattern = "REML")) {
     stop("REML required. Rerun model with method = 'REML' for appropriate results.")
   }

@@ -13,7 +13,7 @@ extract_model_data(model)
 a tibble/dataframe
 }
 \description{
-This is just a wrapper for \code{model.frame}.
+This is mostly just a wrapper for \code{model.frame}.
 }
 \examples{
 library(lme4)

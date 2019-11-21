@@ -68,6 +68,7 @@ reference:
     contents:
       - find_typical
       - extract_het_var
+      - extract_model_data
 
 figures:
   dev: png
