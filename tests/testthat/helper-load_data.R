@@ -1,4 +1,8 @@
 
+# for testing
+# all_mods = list.files('tests/testthat/', pattern = 'RData', full.names = T)
+# sapply(all_mods, load, envir = .GlobalEnv)
+
 # Run lme4 models ---------------------------------------------------------
 
 load('lme4_results.RData')

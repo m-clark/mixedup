@@ -75,3 +75,11 @@ lme_1 <- lme(
 extract_het_var(lme_1)
 ```
 
+### Extract model data
+
+Just a wrapper for `model.frame`.
+
+```{r model-data}
+extract_model_data(lmer_model)
+```
+
