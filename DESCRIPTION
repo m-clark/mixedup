@@ -30,3 +30,4 @@ Suggests:
   knitr
 Roxygen: list(markdown = TRUE, roclets = c("rd", "namespace", "collate"))
 RoxygenNote: 7.0.0
+VignetteBuilder: knitr
