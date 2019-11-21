@@ -1,3 +1,7 @@
+# mixedup 0.3.1
+
+* Add extract_model_data
+
 # mixedup 0.3.0
 
 * Create package website
