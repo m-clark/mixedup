@@ -9,13 +9,21 @@
 \alias{extract_fixed_effects.gam}
 \title{Extract fixed effects}
 \usage{
-extract_fixed_effects(model, ci_level = 0.95, ci_args = NULL, digits = 3, ...)
+extract_fixed_effects(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  digits = 3,
+  exponentiate = FALSE,
+  ...
+)
 
 \method{extract_fixed_effects}{merMod}(
   model,
   ci_level = 0.95,
   ci_args = list(method = "Wald"),
   digits = 3,
+  exponentiate = FALSE,
   ...
 )
 
@@ -24,6 +32,7 @@ extract_fixed_effects(model, ci_level = 0.95, ci_args = NULL, digits = 3, ...)
   ci_level = 0.95,
   ci_args = NULL,
   digits = 3,
+  exponentiate = FALSE,
   component = "cond",
   ...
 )
@@ -33,16 +42,25 @@ extract_fixed_effects(model, ci_level = 0.95, ci_args = NULL, digits = 3, ...)
   ci_level = 0.95,
   ci_args = list(method = "Wald"),
   digits = 3,
+  exponentiate = FALSE,
   ...
 )
 
-\method{extract_fixed_effects}{brmsfit}(model, ci_level = 0.95, ci_args = NULL, digits = 3, ...)
+\method{extract_fixed_effects}{brmsfit}(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  digits = 3,
+  exponentiate = FALSE,
+  ...
+)
 
 \method{extract_fixed_effects}{gam}(
   model,
   ci_level = 0.95,
   ci_args = list(method = "Wald"),
   digits = 3,
+  exponentiate = FALSE,
   ...
 )
 }
@@ -56,6 +74,11 @@ not report it (except for gam objects, which will revert to .95 due to
 \item{ci_args}{Additional arguments to the corresponding confint method.}
 
 \item{digits}{Rounding. Default is 3.}
+
+\item{exponentiate}{Exponentiate the fixed-effect coefficient estimates and
+confidence intervals (common for logistic regression). If TRUE, also scales
+the standard errors by the exponentiated coefficient, transforming them to
+the new scale.}
 
 \item{...}{Other stuff to pass to the corresponding function. Unused/tested}
 

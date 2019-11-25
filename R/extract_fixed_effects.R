@@ -1,6 +1,10 @@
 #' Extract fixed effects
 #'
 #' @inheritParams extract_vc
+#' @param exponentiate Exponentiate the fixed-effect coefficient estimates and
+#'   confidence intervals (common for logistic regression). If TRUE, also scales
+#'   the standard errors by the exponentiated coefficient, transforming them to
+#'   the new scale.
 #'
 #' @details Essentially duplicates the \code{broom::tidy} approach with minor
 #'   name changes.  The package may or may not provide p-values by default.
@@ -28,6 +32,7 @@ extract_fixed_effects <- function(
   ci_level = .95,
   ci_args = NULL,
   digits = 3,
+  exponentiate = FALSE,
   ...
 ) {
   if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'brmsfit')))
@@ -48,6 +53,7 @@ extract_fixed_effects.merMod <-
     ci_level = .95,
     ci_args = list(method = 'Wald'),
     digits = 3,
+    exponentiate = FALSE,
     ...
   ) {
 
@@ -91,6 +97,15 @@ extract_fixed_effects.merMod <-
       dplyr::select(term, dplyr::everything()) %>%
       dplyr::as_tibble()
 
+    if (exponentiate) {
+      fe <- fe %>%
+        dplyr::mutate_at(
+          dplyr::vars(dplyr::matches('^value|^low|^upp')),
+          exp
+        ) %>%
+        dplyr::mutate(se = se * value)
+    }
+
     fe
 }
 
@@ -102,6 +117,7 @@ extract_fixed_effects.glmmTMB <-
     ci_level = .95,
     ci_args = NULL,
     digits = 3,
+    exponentiate = FALSE,
     component = 'cond',
     ...
   ) {
@@ -167,6 +183,15 @@ extract_fixed_effects.glmmTMB <-
       dplyr::select(term, dplyr::everything()) %>%
       dplyr::as_tibble()
 
+    if (exponentiate) {
+      fe <- fe %>%
+        dplyr::mutate_at(
+          dplyr::vars(dplyr::matches('^value|^low|^upp')),
+          exp
+        ) %>%
+        dplyr::mutate(se = se * value)
+    }
+
     fe
 }
 
@@ -178,6 +203,7 @@ extract_fixed_effects.lme <-
     ci_level = .95,
     ci_args = list(method = 'Wald'),
     digits = 3,
+    exponentiate = FALSE,
     ...
   ) {
 
@@ -214,6 +240,15 @@ extract_fixed_effects.lme <-
       dplyr::select(term, dplyr::everything()) %>%
       dplyr::as_tibble()
 
+    if (exponentiate) {
+      fe <- fe %>%
+        dplyr::mutate_at(
+          dplyr::vars(dplyr::matches('^value|^low|^upp')),
+          exp
+        ) %>%
+        dplyr::mutate(se = se * value)
+    }
+
     fe
 }
 
@@ -225,6 +260,7 @@ extract_fixed_effects.brmsfit <-
     ci_level = .95,
     ci_args = NULL,
     digits = 3,
+    exponentiate = FALSE,
     ...
   ) {
 
@@ -253,6 +289,15 @@ extract_fixed_effects.brmsfit <-
       dplyr::select(term, dplyr::everything()) %>%
       dplyr::as_tibble()
 
+    if (exponentiate) {
+      fe <- fe %>%
+        dplyr::mutate_at(
+          dplyr::vars(dplyr::matches('^value|^low|^upp')),
+          exp
+        ) %>%
+        dplyr::mutate(se = se * value)
+    }
+
     fe
   }
 
@@ -265,6 +310,7 @@ extract_fixed_effects.gam <-
     ci_level = .95,
     ci_args = list(method = 'Wald'),
     digits = 3,
+    exponentiate = FALSE,
     ...
   ) {
 
@@ -297,6 +343,15 @@ extract_fixed_effects.gam <-
                                 replacement = '')) %>%
       dplyr::select(term, dplyr::everything()) %>%
       dplyr::as_tibble()
+
+    if (exponentiate) {
+      fe <- fe %>%
+        dplyr::mutate_at(
+          dplyr::vars(dplyr::matches('^value|^low|^upp')),
+          exp
+        ) %>%
+        dplyr::mutate(se = se * value)
+    }
 
     fe
   }

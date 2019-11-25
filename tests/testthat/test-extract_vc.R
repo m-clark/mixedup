@@ -92,7 +92,7 @@ test_that('extract_vc.merMod works with ci_scale = var', {
   expect_type(extract_vc(lmer_1, ci_scale = 'sd')$sd_2.5, 'double')
 })
 
-test_that('extract_vc.merMod works with ci fail', {
+# test_that('extract_vc.merMod works with ci fail', {
   # find some model that will fail
   # d = data.frame(y = rnorm(50), g1 = sample(1:5, 50, replace = T), g2 = sample(1:2, 50, replace = T))
   #
@@ -100,7 +100,7 @@ test_that('extract_vc.merMod works with ci fail', {
   # mod = lmer(y ~ (1|s) + (1|d) + (1|dept), data = InstEval[1:500,])
   #
   # expect_(extract_vc(mod))
-})
+# })
 
 
 
