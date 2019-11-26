@@ -119,7 +119,8 @@ tmb_zip <- glmmTMB(
 
 extract_fixed_effects(
   tmb_zip,
-  cond = 'zi'
+  cond = 'zi',
+  exponentiate = TRUE
 )
 ```
 
