@@ -16,16 +16,16 @@ coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](
 <!-- badges: end -->
 
 This package provides extended functionality for mixed models. The goal
-of `mixedup` is to solve little problems that slip through the cracks
-from the various packages, broom, and others in trying to get
+of `mixedup` is to solve little problems I have that slip through the
+cracks from the various modeling packages and others in trying to get
 presentable output. Basically the idea is to create (tidy) objects that
 are easy to use and essentially ready for presentation, as well as
 consistent across packages and across functions. I use several of these
 packages (including mgcv) for mixed models, and typically have to some
-notable post processing to get some basic output even with `broom::tidy`
-options, and this effort often isn’t applicable if I switch to another
-package for the same model. These functions attempt to fill my specific
-niche.
+notable post processing to get some basic output even with
+`broom::tidy`, and this effort often isn’t applicable if I switch to
+another package for the same model. These functions attempt to fill my
+specific niche.
 
 An additional perk is minimal dependency. Other than the package that
 created the object, nothing except the tidyverse is needed (presently
@@ -40,54 +40,27 @@ You can install mixedup from GitHub with `devtools`:
 devtools::install_github('m-clark/mixedup')
 ```
 
+## Supported models
+
+  - lme4
+  - glmmTMB
+  - nlme
+  - mgcv
+  - rstanarm \*
+  - brms
+
+\* preliminary
+
 ## Feature list
 
-##### Extract Variance Components
-
-  - [x] lme4
-  - [x] glmmTMB
-  - [x] nlme
-  - [x] brms
-  - [x] mgcv
-
-##### Extract Random Effects
-
-  - [x] lme4
-  - [x] glmmTMB
-  - [x] nlme
-  - [x] mgcv
-  - [x] rstanarm
-  - [x] brms
-
-##### Extract Fixed Effects
-
-  - [x] lme4
-  - [x] glmmTMB
-  - [x] nlme
-  - [x] brms
-  - [x] mgcv
-
-##### Extract Random Coefficients
-
-  - [x] lme4
-  - [x] glmmTMB
-  - [x] nlme
-  - [x] brms
-  - [x] mgcv
-
-##### Extract Heterogeneous Variances
-
-  - [ ] glmmTMB
-  - [x] nlme
-
-##### Find Typical
-
-  - [x] lme4
-  - [x] glmmTMB
-  - [x] nlme
-  - [x] brms
-  - [x] rstanarm
-  - [x] mgcv
+  - Extract Variance Components
+  - Extract Random Effects
+  - Extract Fixed Effects
+  - Extract Random Coefficients
+  - Extract Heterogeneous Variances
+  - Extract Model Data
+  - Summarize Model
+  - Find Typical
 
 ## Examples
 
@@ -143,7 +116,7 @@ Compiling the C++ model
 Start sampling
 
 library(mgcv)
-This is mgcv 1.8-30. For overview type 'help("mgcv-package")'.
+This is mgcv 1.8-31. For overview type 'help("mgcv-package")'.
 
 Attaching package: 'mgcv'
 The following objects are masked from 'package:brms':
@@ -206,9 +179,29 @@ extract_random_coefs(lmer_model)
 
 extract_vc(brm_model, ci_level = .8)
      group    effect variance     sd  sd_10  sd_90 var_prop
-1  Subject Intercept  731.970 27.055 19.104 36.215    0.506
-2  Subject      Days   43.369  6.586  4.863  8.576    0.030
-3 Residual            671.014 25.904 23.966 27.976    0.464
+1  Subject Intercept  724.008 26.907 19.012 35.537    0.503
+2  Subject      Days   43.864  6.623  4.905  8.622    0.030
+3 Residual            672.438 25.931 24.008 27.979    0.467
+
+summarize_model(lmer_model, cor_re = TRUE, digits = 1)
+Computing profile confidence intervals ...
+
+Variance Components:
+    Group    Effect Variance   SD SD_2.5 SD_97.5 Var_prop
+  Subject Intercept    611.9 24.7   14.4    37.7      0.5
+  Subject      Days     35.1  5.9    3.8     8.8      0.0
+ Residual              654.9 25.6   22.9    28.9      0.5
+
+Correlation of Random Effects:
+          Intercept Days
+Intercept       1.0  0.1
+Days            0.1  1.0
+
+
+Fixed Effects:
+      Term Value  SE    t Lower_2.5 Upper_97.5
+ Intercept 251.4 6.8 36.8     238.0      264.8
+      Days  10.5 1.5  6.8       7.4       13.5
 
 find_typical(gam_model, probs = c(.25, .50, .75))
 # A tibble: 6 x 8
@@ -222,7 +215,7 @@ find_typical(gam_model, probs = c(.25, .50, .75))
 6 Subject   Intercept 333    17.2   13.3      -8.87      43.2  75%  
 ```
 
-## Consistent output
+### Consistent output
 
 ``` r
 extract_vc(tmb_model)
@@ -248,9 +241,9 @@ Computing profile confidence intervals ...
 
 extract_vc(brm_model)
      group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  731.970 27.055 15.698  42.530    0.506
-2  Subject      Days   43.369  6.586  4.169  10.301    0.030
-3 Residual            671.014 25.904 23.187  29.166    0.464
+1  Subject Intercept  724.008 26.907 15.819  41.637    0.503
+2  Subject      Days   43.864  6.623  4.227  10.225    0.030
+3 Residual            672.438 25.931 23.082  29.047    0.467
 
 
 extract_vc(gam_model)
@@ -260,7 +253,7 @@ extract_vc(gam_model)
 3 Residual            653.582 25.565 22.792  28.676    0.496
 ```
 
-### Code of Conduct
+## Code of Conduct
 
 Please note that the ‘mixedup’ project is released with a [Contributor
 Code of Conduct](.github/CODE_OF_CONDUCT.md).

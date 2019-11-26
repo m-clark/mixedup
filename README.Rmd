@@ -36,55 +36,27 @@ You can install mixedup from GitHub with `devtools`:
 devtools::install_github('m-clark/mixedup')
 ```
 
+## Supported models
+
+- lme4
+- glmmTMB
+- nlme
+- mgcv
+- rstanarm *
+- brms
+
+\* preliminary
+
 ## Feature list
 
-##### Extract Variance Components
-
-- [X] lme4
-- [X] glmmTMB
-- [X] nlme
-- [X] brms
-- [X] mgcv
-
-##### Extract Random Effects
-
-- [X] lme4
-- [X] glmmTMB
-- [X] nlme
-- [X] mgcv
-- [X] rstanarm
-- [X] brms
-
-##### Extract Fixed Effects
-
-- [X] lme4
-- [X] glmmTMB
-- [X] nlme
-- [X] brms
-- [X] mgcv
-
-##### Extract Random Coefficients
-
-- [X] lme4
-- [X] glmmTMB
-- [X] nlme
-- [X] brms
-- [X] mgcv
-
-##### Extract Heterogeneous Variances
-
-- [ ] glmmTMB
-- [X] nlme
-
-##### Find Typical
-
-- [X] lme4
-- [X] glmmTMB
-- [X] nlme
-- [X] brms
-- [X] rstanarm
-- [X] mgcv
-
+- Extract Variance Components
+- Extract Random Effects
+- Extract Fixed Effects
+- Extract Random Coefficients
+- Extract Heterogeneous Variances
+- Extract Model Data
+- Summarize Model
+- Find Typical
 
 ## Examples
 
@@ -144,10 +116,12 @@ extract_random_coefs(lmer_model)
 
 extract_vc(brm_model, ci_level = .8)
 
+summarize_model(lmer_model, cor_re = TRUE, digits = 1)
+
 find_typical(gam_model, probs = c(.25, .50, .75))
 ```
 
-## Consistent output
+### Consistent output
 
 ```{r samestuff}
 extract_vc(tmb_model)
@@ -167,7 +141,7 @@ extract_vc(gam_model)
 
 
 
-### Code of Conduct
+## Code of Conduct
 
 Please note that the 'mixedup' project is released with a [Contributor Code of Conduct](.github/CODE_OF_CONDUCT.md).
 

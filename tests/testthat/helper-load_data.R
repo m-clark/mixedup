@@ -11,6 +11,7 @@ data("sleepstudy", package = 'lme4')
 
 # library(lme4)
 #
+# lmer_0 <- lmer(Reaction ~ (1|Subject), data = sleepstudy)
 # lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
 # lmer_2 <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 # lmer_3 <- lmer(y ~ service + (1 | s) + (1 | d), data = InstEval[1:1000, ])
@@ -29,6 +30,7 @@ data("sleepstudy", package = 'lme4')
 #
 #
 # save(
+#   lmer_0,
 #   lmer_1,
 #   lmer_2,
 #   lmer_3,
@@ -44,6 +46,7 @@ load('tmb_results.RData')
 
 # library(glmmTMB)
 #
+# tmb_0 <- glmmTMB(Reaction ~ (1 | Subject), data = sleepstudy)
 # tmb_1 <- glmmTMB(Reaction ~ Days + (1 | Subject), data = sleepstudy)
 # tmb_2 <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 # tmb_3 <- glmmTMB(y ~ service + (1 | s) + (1 | d), data = InstEval[1:1000, ])
@@ -61,6 +64,7 @@ load('tmb_results.RData')
 # )
 #
 # save(
+#   tmb_0,
 #   tmb_1,
 #   tmb_2,
 #   tmb_3,
@@ -75,6 +79,7 @@ load('nlme_results.RData')
 #
 # library(nlme)
 #
+# lme_0 <- lme(Reaction ~ 1, random = ~ 1 | Subject, data = sleepstudy)
 # lme_1 <- lme(Reaction ~ Days, random = ~ 1 | Subject, data = sleepstudy)
 # lme_2 <- lme(Reaction ~ Days, random = ~ 1 + Days | Subject, data = sleepstudy)
 # lme_3 <- lme(y ~ service,
@@ -96,6 +101,7 @@ load('nlme_results.RData')
 #                 start = c(Asym = 103, R0 = -8.5, lrc = -3.3))
 #
 # save(
+#   lme_0,
 #   lme_1,
 #   lme_2,
 #   lme_3,
@@ -124,6 +130,15 @@ load('brm_results.RData')
 # )
 #
 # pr = prior(normal(0, 10), class = b)
+#
+# brm_0 <-
+#   brm(
+#     Reaction ~ Days + (1 | Subject),
+#     data = lme4::sleepstudy,
+#     prior = pr,
+#     cores = 4,
+#     thin  = 40
+#   )
 #
 # brm_1 <-
 #   brm(
@@ -176,6 +191,7 @@ load('brm_results.RData')
 #
 # save(
 #   brm_glm,
+#   brm_0,
 #   brm_1,
 #   brm_2,
 #   brm_3,
@@ -201,6 +217,15 @@ load('rstanarm_results.RData')
 #   cores = 4,
 #   thin  = 40
 # )
+#
+# stan_glmer_0 <-
+#   stan_glmer(
+#     Reaction ~ (1 | Subject),
+#     data = lme4::sleepstudy,
+#     prior = normal(0, 10),
+#     cores = 4,
+#     thin  = 40
+#   )
 #
 # stan_glmer_1 <-
 #   stan_glmer(
@@ -253,6 +278,7 @@ load('rstanarm_results.RData')
 #
 # save(
 #   stan_glmer_glm,
+#   stan_glmer_0,
 #   stan_glmer_1,
 #   stan_glmer_2,
 #   stan_glmer_3,
@@ -266,6 +292,10 @@ load('rstanarm_results.RData')
 load('mgcv_results.RData')
 
 # library(mgcv)
+#
+# gam_0 = gam(Reaction ~  s(Subject, bs = 're'),
+#                   data = lme4::sleepstudy,
+#                   method = 'REML')
 #
 # gam_1 = gam(Reaction ~  Days + s(Subject, bs = 're'),
 #                   data = lme4::sleepstudy,
@@ -305,6 +335,7 @@ load('mgcv_results.RData')
 #
 #
 # save(
+#   gam_0,
 #   gam_1,
 #   gam_2,
 #   gam_3,
