@@ -1,4 +1,4 @@
-pandoc: 2.3.1
+pandoc: 2.7.2
 pkgdown: 1.4.1
 pkgdown_sha: ~
 articles:
@@ -6,5 +6,6 @@ articles:
   misc: misc.html
   random_coefficients: random_coefficients.html
   random_effects: random_effects.html
+  summarize_model: summarize_model.html
   variance_components: variance_components.html
 

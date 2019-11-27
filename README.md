@@ -179,9 +179,9 @@ extract_random_coefs(lmer_model)
 
 extract_vc(brm_model, ci_level = .8)
      group    effect variance     sd  sd_10  sd_90 var_prop
-1  Subject Intercept  724.008 26.907 19.012 35.537    0.503
-2  Subject      Days   43.864  6.623  4.905  8.622    0.030
-3 Residual            672.438 25.931 24.008 27.979    0.467
+1  Subject Intercept  701.505 26.486 18.627 35.224    0.494
+2  Subject      Days   41.993  6.480  4.793  8.388    0.030
+3 Residual            675.159 25.984 24.027 28.054    0.476
 
 summarize_model(lmer_model, cor_re = TRUE, digits = 1)
 Computing profile confidence intervals ...
@@ -218,39 +218,28 @@ find_typical(gam_model, probs = c(.25, .50, .75))
 ### Consistent output
 
 ``` r
-extract_vc(tmb_model)
-     group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  565.515 23.781 15.017  37.658    0.451
-2  Subject      Days   32.682  5.717  3.805   8.588    0.026
-3 Residual            654.941 25.592 22.800  28.725    0.523
-
-
-extract_vc(nlme_model)
-     group effect variance    sd sd_2.5 sd_97.5 var_prop
-1     Seed   Asym   13.327 3.651  2.479   5.375    0.963
-2 Residual           0.517 0.719  0.609   0.849    0.037
-
-
-extract_vc(lmer_model)
+vc = list(
+  tmb  = extract_vc(tmb_model),
+  lmer = extract_vc(lmer_model), 
+  brm  = extract_vc(brm_model),
+  gam  = extract_vc(gam_model)
+)
 Computing profile confidence intervals ...
-     group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  611.898 24.737 14.382  37.716    0.470
-2  Subject      Days   35.081  5.923  3.801   8.753    0.027
-3 Residual            654.941 25.592 22.898  28.858    0.503
 
-
-extract_vc(brm_model)
-     group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  724.008 26.907 15.819  41.637    0.503
-2  Subject      Days   43.864  6.623  4.227  10.225    0.030
-3 Residual            672.438 25.931 23.082  29.047    0.467
-
-
-extract_vc(gam_model)
-     group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  627.571 25.051 16.085  39.015    0.477
-2  Subject      Days   35.858  5.988  4.025   8.908    0.027
-3 Residual            653.582 25.565 22.792  28.676    0.496
+dplyr::bind_rows(vc, .id = 'model')
+   model    group    effect variance     sd sd_2.5 sd_97.5 var_prop
+1    tmb  Subject Intercept  565.515 23.781 15.017  37.658    0.451
+2    tmb  Subject      Days   32.682  5.717  3.805   8.588    0.026
+3    tmb Residual            654.941 25.592 22.800  28.725    0.523
+4   lmer  Subject Intercept  611.898 24.737 14.382  37.716    0.470
+5   lmer  Subject      Days   35.081  5.923  3.801   8.753    0.027
+6   lmer Residual            654.941 25.592 22.898  28.858    0.503
+7    brm  Subject Intercept  701.505 26.486 15.151  41.646    0.494
+8    brm  Subject      Days   41.993  6.480  4.198   9.854    0.030
+9    brm Residual            675.159 25.984 23.132  29.317    0.476
+10   gam  Subject Intercept  627.571 25.051 16.085  39.015    0.477
+11   gam  Subject      Days   35.858  5.988  4.025   8.908    0.027
+12   gam Residual            653.582 25.565 22.792  28.676    0.496
 ```
 
 ## Code of Conduct

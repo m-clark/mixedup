@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract model data — extract_model_data • mixedup</title>
+<title>Summarize a mixed model — summarize_model • mixedup</title>
 
 
 <!-- jquery -->
@@ -37,8 +37,8 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Extract model data — extract_model_data" />
-<meta property="og:description" content="This is mostly just a wrapper for model.frame." />
+<meta property="og:title" content="Summarize a mixed model — summarize_model" />
+<meta property="og:description" content="Summarize a mixed model" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -137,60 +137,94 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract model data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/extract_model_data.R'><code>R/extract_model_data.R</code></a></small>
-    <div class="hidden name"><code>extract_model_data.Rd</code></div>
+    <h1>Summarize a mixed model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/summarize_model.R'><code>R/summarize_model.R</code></a></small>
+    <div class="hidden name"><code>summarize_model.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This is mostly just a wrapper for <code>model.frame</code>.</p>
+    <p>Summarize a mixed model</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_model_data</span>(<span class='no'>model</span>)</pre>
+    <pre class="usage"><span class='fu'>summarize_model</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>cor_re</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>cor_fe</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>,
+  <span class='no'>...</span>
+)
+
+<span class='fu'>summarise_model</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>cor_re</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>cor_fe</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>,
+  <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model</th>
-      <td><p>The mixed model</p></td>
+      <td><p>A supported model.</p></td>
+    </tr>
+    <tr>
+      <th>ci</th>
+      <td><p>Whether to include a 95% uncertainty interval. Default is TRUE.</p></td>
+    </tr>
+    <tr>
+      <th>cor_re</th>
+      <td><p>Whether to include the correlations of the random effects.
+Default is FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>cor_fe</th>
+      <td><p>Whether to include the correlations of the fixed effects.
+Default is FALSE.</p></td>
+    </tr>
+    <tr>
+      <th>digits</th>
+      <td><p>Digits to display.</p></td>
+    </tr>
+    <tr>
+      <th>component</th>
+      <td><p>For glmmTMB objects, which of the three components 'cond',
+'zi' or 'other' to select. Default is cond. Minimal testing on other
+options.</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Not used at present. May allow models specific functionality.</p></td>
     </tr>
     </table>
 
-    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
-
-    <p>a tibble/dataframe</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><a href='https://rdrr.io/r/stats/model.frame.html'>model.frame</a></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
 
-<span class='no'>lmer_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
-<span class='fu'>extract_model_data</span>(<span class='no'>lmer_1</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 180 x 3</span><span>
-#&gt;    Reaction  Days Subject
-#&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>  
-#&gt; </span><span style='color: #555555;'> 1</span><span>     250.     0 308    
-#&gt; </span><span style='color: #555555;'> 2</span><span>     259.     1 308    
-#&gt; </span><span style='color: #555555;'> 3</span><span>     251.     2 308    
-#&gt; </span><span style='color: #555555;'> 4</span><span>     321.     3 308    
-#&gt; </span><span style='color: #555555;'> 5</span><span>     357.     4 308    
-#&gt; </span><span style='color: #555555;'> 6</span><span>     415.     5 308    
-#&gt; </span><span style='color: #555555;'> 7</span><span>     382.     6 308    
-#&gt; </span><span style='color: #555555;'> 8</span><span>     290.     7 308    
-#&gt; </span><span style='color: #555555;'> 9</span><span>     431.     8 308    
-#&gt; </span><span style='color: #555555;'>10</span><span>     466.     9 308    
-#&gt; </span><span style='color: #555555;'># ... with 170 more rows</span><span></div><div class='input'>
-</div></span></pre>
+<span class='no'>lmer_mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> + <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
+<span class='fu'>summarize_model</span>(<span class='no'>lmer_mod</span>)</div><div class='output co'>#&gt; <span class='message'>Computing profile confidence intervals ...</span></div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'>Variance Components:</span></div><div class='output co'>#&gt;     Group    Effect Variance    SD SD_2.5 SD_97.5 Var_prop
+#&gt;   Subject Intercept   611.90 24.74  14.38   37.72     0.47
+#&gt;   Subject      Days    35.08  5.92   3.80    8.75     0.03
+#&gt;  Residual             654.94 25.59  22.90   28.86     0.50</div><div class='output co'>#&gt; <span class='message'></span>
+#&gt; <span class='message'></span>
+#&gt; <span class='message'>Fixed Effects:</span></div><div class='output co'>#&gt;       Term  Value   SE     t Lower_2.5 Upper_97.5
+#&gt;  Intercept 251.41 6.82 36.84    238.03     264.78
+#&gt;       Days  10.47 1.55  6.77      7.44      13.50</div><div class='input'>
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      <li><a href="#value">Value</a></li>
-      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

@@ -238,7 +238,10 @@ extract_vc.glmmTMB <- function(
     effect   = ifelse(is.na(effect), '', effect)
   )
 
-  vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)
+  vc <- vc %>%
+    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+    dplyr::mutate_if(is.factor, as.character)
+
 
   # deal with correlations
   if (show_cor) {

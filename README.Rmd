@@ -105,7 +105,7 @@ gam_model = gam(
 
 ### Extract Output from a Mixed Model
 
-```{r extract-re}
+```{r extract-re, message=TRUE}
 library(mixedup)
 
 extract_random_effects(tmb_model)
@@ -124,19 +124,14 @@ find_typical(gam_model, probs = c(.25, .50, .75))
 ### Consistent output
 
 ```{r samestuff}
-extract_vc(tmb_model)
+vc = list(
+  tmb  = extract_vc(tmb_model),
+  lmer = extract_vc(lmer_model), 
+  brm  = extract_vc(brm_model),
+  gam  = extract_vc(gam_model)
+)
 
-
-extract_vc(nlme_model)
-
-
-extract_vc(lmer_model)
-
-
-extract_vc(brm_model)
-
-
-extract_vc(gam_model)
+dplyr::bind_rows(vc, .id = 'model')
 ```
 
 

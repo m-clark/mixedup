@@ -62,6 +62,12 @@ reference:
       - extract_random_coefs.brmsfit
       - extract_random_coefs.gam
 
+  - title: "Summarize a Mixed Model"
+    desc: >
+      Clean printing of results.
+    contents:
+      - summarize_model
+
   - title: "Miscellaneous Functions"
     desc: >
       Other stuff to play with.
@@ -98,6 +104,8 @@ navbar:
         href: articles/fixed_effects.html
       - text: Random Coefficients
         href: articles/random_coefficients.html
+      - text: Summarize Model
+        href: articles/summarize_model.html
       - text: Miscellaneous
         href: articles/misc.html
 

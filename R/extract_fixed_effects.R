@@ -316,7 +316,7 @@ extract_fixed_effects.gam <-
 
     fe <- data.frame(summary(model)$p.table)
 
-    colnames(fe) =  c('value', 'se', 't', 'p')
+    colnames(fe) =  c('value', 'se', 't', 'p_value')
 
     # no confint.gam
     if (ci_level > 0) {

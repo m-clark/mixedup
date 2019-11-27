@@ -10,7 +10,7 @@ summarize_model(
   ci = TRUE,
   cor_re = FALSE,
   cor_fe = FALSE,
-  digits = 3,
+  digits = 2,
   component = "cond",
   ...
 )
@@ -20,7 +20,7 @@ summarise_model(
   ci = TRUE,
   cor_re = FALSE,
   cor_fe = FALSE,
-  digits = 3,
+  digits = 2,
   component = "cond",
   ...
 )

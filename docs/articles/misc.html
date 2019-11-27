@@ -64,6 +64,9 @@
       <a href="../articles/random_coefficients.html">Random Coefficients</a>
     </li>
     <li>
+      <a href="../articles/summarize_model.html">Summarize Model</a>
+    </li>
+    <li>
       <a href="../articles/misc.html">Miscellaneous</a>
     </li>
   </ul>
@@ -98,7 +101,7 @@
       <h1>Miscellaneous Functions</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2019-11-25</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2019-11-27</span></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/misc.Rmd"><code>vignettes/misc.Rmd</code></a></small>
       <div class="hidden name"><code>misc.Rmd</code></div>
@@ -119,63 +122,63 @@
 <h3 class="hasAnchor">
 <a href="#find-typical-values" class="anchor"></a>Find typical values</h3>
 <p>In many cases, predictions are made by holding the random effects to zero, which can be seen as the typical case. When the clusters carry substantive meaning, for example, school, country, or hospital, it might be of interest to note which are most ‘typical’, or at any other value relative to their peers.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(lme4)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">lmer_model &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data =</span> sleepstudy)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(mixedup)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="../reference/find_typical.html">find_typical</a></span>(lmer_model)  <span class="co"># closest RE to zero</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co"># A tibble: 2 x 7</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">  group_var effect    group  value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="dv">1</span> Subject   Days      <span class="dv">333</span>   <span class="fl">-0.223</span>  <span class="fl">2.31</span>     <span class="fl">-4.74</span>       <span class="fl">4.29</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="dv">2</span> Subject   Intercept <span class="dv">335</span>   <span class="fl">-0.333</span> <span class="fl">12.1</span>     <span class="fl">-24.0</span>       <span class="fl">23.3</span> </a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"><span class="kw"><a href="../reference/find_typical.html">find_typical</a></span>(lmer_model, <span class="dt">probs =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">1</span>, <span class="fl">.9</span>))</a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"><span class="co"># A tibble: 4 x 8</span></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15">  group_var effect    group  value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span> probs</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17"><span class="dv">1</span> Subject   Days      <span class="dv">310</span>    <span class="fl">-5.45</span>  <span class="fl">2.31</span>     <span class="fl">-9.97</span>     <span class="fl">-0.932</span> <span class="dv">10</span>%  </a>
-<a class="sourceLine" id="cb1-18" data-line-number="18"><span class="dv">2</span> Subject   Days      <span class="dv">350</span>     <span class="fl">6.61</span>  <span class="fl">2.31</span>      <span class="fl">2.10</span>     <span class="fl">11.1</span>   <span class="dv">90</span>%  </a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="dv">3</span> Subject   Intercept <span class="dv">370</span>   <span class="fl">-25.6</span>  <span class="fl">12.1</span>     <span class="fl">-49.3</span>      <span class="fl">-1.95</span>  <span class="dv">10</span>%  </a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="dv">4</span> Subject   Intercept <span class="dv">331</span>    <span class="fl">22.3</span>  <span class="fl">12.1</span>      <span class="fl">-1.40</span>     <span class="fl">45.9</span>   <span class="dv">90</span>%  </a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(lme4)</a>
+<a class="sourceLine" id="cb1-2" title="2"></a>
+<a class="sourceLine" id="cb1-3" title="3">lmer_model &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data =</span> sleepstudy)</a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(mixedup)</a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="kw"><a href="../reference/find_typical.html">find_typical</a></span>(lmer_model)  <span class="co"># closest RE to zero</span></a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="co"># A tibble: 2 x 7</span></a>
+<a class="sourceLine" id="cb1-9" title="9">  group_var effect    group  value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></a>
+<a class="sourceLine" id="cb1-10" title="10">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="dv">1</span> Subject   Days      <span class="dv">333</span>   <span class="fl">-0.223</span>  <span class="fl">2.31</span>     <span class="fl">-4.74</span>       <span class="fl">4.29</span></a>
+<a class="sourceLine" id="cb1-12" title="12"><span class="dv">2</span> Subject   Intercept <span class="dv">335</span>   <span class="fl">-0.333</span> <span class="fl">12.1</span>     <span class="fl">-24.0</span>       <span class="fl">23.3</span> </a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="kw"><a href="../reference/find_typical.html">find_typical</a></span>(lmer_model, <span class="dt">probs =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">1</span>, <span class="fl">.9</span>))</a>
+<a class="sourceLine" id="cb1-14" title="14"><span class="co"># A tibble: 4 x 8</span></a>
+<a class="sourceLine" id="cb1-15" title="15">  group_var effect    group  value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span> probs</a>
+<a class="sourceLine" id="cb1-16" title="16">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb1-17" title="17"><span class="dv">1</span> Subject   Days      <span class="dv">310</span>    <span class="fl">-5.45</span>  <span class="fl">2.31</span>     <span class="fl">-9.97</span>     <span class="fl">-0.932</span> <span class="dv">10</span>%  </a>
+<a class="sourceLine" id="cb1-18" title="18"><span class="dv">2</span> Subject   Days      <span class="dv">350</span>     <span class="fl">6.61</span>  <span class="fl">2.31</span>      <span class="fl">2.10</span>     <span class="fl">11.1</span>   <span class="dv">90</span>%  </a>
+<a class="sourceLine" id="cb1-19" title="19"><span class="dv">3</span> Subject   Intercept <span class="dv">370</span>   <span class="fl">-25.6</span>  <span class="fl">12.1</span>     <span class="fl">-49.3</span>      <span class="fl">-1.95</span>  <span class="dv">10</span>%  </a>
+<a class="sourceLine" id="cb1-20" title="20"><span class="dv">4</span> Subject   Intercept <span class="dv">331</span>    <span class="fl">22.3</span>  <span class="fl">12.1</span>      <span class="fl">-1.40</span>     <span class="fl">45.9</span>   <span class="dv">90</span>%  </a></code></pre></div>
 </div>
 <div id="extract-heterogeneous-variances" class="section level3">
 <h3 class="hasAnchor">
 <a href="#extract-heterogeneous-variances" class="anchor"></a>Extract heterogeneous variances</h3>
 <p>For this form of model only. May include glmmTMB and/or brms at some point, and possibly extend to extract the AR coefficient for AR1 models.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nlme)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">lme_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">lme</span>(</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">  distance <span class="op">~</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/scale.html">scale</a></span>(age) <span class="op">+</span><span class="st"> </span>Sex,</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="dt">data =</span> Orthodont,</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="dt">random =</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Subject,</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="dt">weights =</span> <span class="kw">varIdent</span>(<span class="dt">form =</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Sex)</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">)</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw"><a href="../reference/extract_het_var.html">extract_het_var</a></span>(lme_<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">     Male    Female</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="dv">1</span> <span class="fl">3.10379</span> <span class="fl">0.6401141</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nlme)</a>
+<a class="sourceLine" id="cb2-2" title="2"></a>
+<a class="sourceLine" id="cb2-3" title="3">lme_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">lme</span>(</a>
+<a class="sourceLine" id="cb2-4" title="4">  distance <span class="op">~</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/scale.html">scale</a></span>(age) <span class="op">+</span><span class="st"> </span>Sex,</a>
+<a class="sourceLine" id="cb2-5" title="5">  <span class="dt">data =</span> Orthodont,</a>
+<a class="sourceLine" id="cb2-6" title="6">  <span class="dt">random =</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Subject,</a>
+<a class="sourceLine" id="cb2-7" title="7">  <span class="dt">weights =</span> <span class="kw">varIdent</span>(<span class="dt">form =</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Sex)</a>
+<a class="sourceLine" id="cb2-8" title="8">)</a>
+<a class="sourceLine" id="cb2-9" title="9"></a>
+<a class="sourceLine" id="cb2-10" title="10"><span class="kw"><a href="../reference/extract_het_var.html">extract_het_var</a></span>(lme_<span class="dv">1</span>)</a>
+<a class="sourceLine" id="cb2-11" title="11">     Male    Female</a>
+<a class="sourceLine" id="cb2-12" title="12"><span class="dv">1</span> <span class="fl">3.10379</span> <span class="fl">0.6401141</span></a></code></pre></div>
 </div>
 <div id="extract-model-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#extract-model-data" class="anchor"></a>Extract model data</h3>
 <p>Just a wrapper for <code>model.frame</code>.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="../reference/extract_model_data.html">extract_model_data</a></span>(lmer_model)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="co"># A tibble: 180 x 3</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">   Reaction  Days Subject</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">      <span class="op">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="st"> </span><span class="dv">1</span>     <span class="fl">250.</span>     <span class="dv">0</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"> <span class="dv">2</span>     <span class="fl">259.</span>     <span class="dv">1</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"> <span class="dv">3</span>     <span class="fl">251.</span>     <span class="dv">2</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"> <span class="dv">4</span>     <span class="fl">321.</span>     <span class="dv">3</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"> <span class="dv">5</span>     <span class="fl">357.</span>     <span class="dv">4</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"> <span class="dv">6</span>     <span class="fl">415.</span>     <span class="dv">5</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"> <span class="dv">7</span>     <span class="fl">382.</span>     <span class="dv">6</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"> <span class="dv">8</span>     <span class="fl">290.</span>     <span class="dv">7</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb3-13" data-line-number="13"> <span class="dv">9</span>     <span class="fl">431.</span>     <span class="dv">8</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="dv">10</span>     <span class="fl">466.</span>     <span class="dv">9</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="co"># … with 170 more rows</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1"><span class="kw"><a href="../reference/extract_model_data.html">extract_model_data</a></span>(lmer_model)</a>
+<a class="sourceLine" id="cb3-2" title="2"><span class="co"># A tibble: 180 x 3</span></a>
+<a class="sourceLine" id="cb3-3" title="3">   Reaction  Days Subject</a>
+<a class="sourceLine" id="cb3-4" title="4">      <span class="op">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span></a>
+<a class="sourceLine" id="cb3-5" title="5"><span class="st"> </span><span class="dv">1</span>     <span class="fl">250.</span>     <span class="dv">0</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-6" title="6"> <span class="dv">2</span>     <span class="fl">259.</span>     <span class="dv">1</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-7" title="7"> <span class="dv">3</span>     <span class="fl">251.</span>     <span class="dv">2</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-8" title="8"> <span class="dv">4</span>     <span class="fl">321.</span>     <span class="dv">3</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-9" title="9"> <span class="dv">5</span>     <span class="fl">357.</span>     <span class="dv">4</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-10" title="10"> <span class="dv">6</span>     <span class="fl">415.</span>     <span class="dv">5</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-11" title="11"> <span class="dv">7</span>     <span class="fl">382.</span>     <span class="dv">6</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-12" title="12"> <span class="dv">8</span>     <span class="fl">290.</span>     <span class="dv">7</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-13" title="13"> <span class="dv">9</span>     <span class="fl">431.</span>     <span class="dv">8</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-14" title="14"><span class="dv">10</span>     <span class="fl">466.</span>     <span class="dv">9</span> <span class="dv">308</span>    </a>
+<a class="sourceLine" id="cb3-15" title="15"><span class="co"># ... with 170 more rows</span></a></code></pre></div>
 </div>
 </div>
   </div>

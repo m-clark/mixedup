@@ -1,0 +1,115 @@
+---
+title: "Summarize a Mixed Model"
+author: "Michael Clark"
+date: <span style="font-style:normal;font-family:'Open Sans'">`r Sys.Date()`</span>
+output:
+  html_vignette:
+    toc: true
+    toc_depth: 3
+    df_print: kable
+vignette: >
+  %\VignetteIndexEntry{Summarize a Mixed Model}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=FALSE, cache=FALSE}
+knitr::opts_chunk$set(
+  echo = T,
+  message = T,
+  warning = F,
+  error = F,
+  collapse = TRUE,
+  comment = NA,
+  R.options = list(width = 220),
+  dev.args = list(bg = 'transparent'),
+  dev = 'png',
+  fig.align = 'center',
+  out.width = '75%',
+  fig.asp = .75,
+  cache.rebuild = F,
+  cache = F
+)
+```
+
+```{r loadbrms, echo=FALSE}
+brms_model <- mixedup:::brms_model
+```
+
+
+## Intro
+
+This is pretty printing of results of a mixed model.  Correlations of random and fixed effects are turned off by default, as the focus of interest is usually the variance components and fixed effects themselves. 95% confidence intervals are provided by default.
+
+
+## Examples
+
+```{r mods}
+library(lme4)
+library(glmmTMB)
+library(nlme)
+library(brms)
+library(mgcv)
+
+
+lmer_model <-
+  lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+
+lme_model  <-
+  lme(Reaction ~ Days, random = ~ 1 + Days | Subject, data = sleepstudy)
+
+tmb_model  <-
+  glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
+
+# brms_model <-
+#   brm(Reaction ~ Days + (1 + Days | Subject), 
+#       data = sleepstudy,
+#       cores = 4,
+#       refresh = -1,
+#       verbose = FALSE
+#   )
+
+# this is akin to (1 | Subject) + (0 + Days | Subject) in lme4
+mgcv_model <-
+  gam(
+    Reaction ~  Days +
+      s(Subject, bs = 're') +
+      s(Days, Subject, bs = 're'),
+    data = lme4::sleepstudy,
+    method = 'REML'
+  )
+```
+
+
+```{r results}
+library(mixedup)
+
+summarize_model(lmer_model)
+
+
+summarize_model(lme_model)
+
+
+summarize_model(tmb_model)
+
+
+summarize_model(brms_model)
+
+
+summarize_model(mgcv_model)
+```
+
+## Options
+
+```{r options}
+summarize_model(
+  lmer_model,
+  ci = FALSE,
+  cor_re = TRUE,
+  cor_fe = TRUE,
+  digits = 3
+)
+
+
+summarise_model(lmer_model, ci = FALSE)
+```
