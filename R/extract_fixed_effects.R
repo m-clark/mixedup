@@ -126,6 +126,9 @@ extract_fixed_effects.glmmTMB <-
       stop('component must be one of "cond", "zi", "other".')
     }
 
+    # if don't use summary.glmmTMB, will fail if glmmTMB not loaded, but it's
+    # not exported, requiring ::: which isn't good.  will work around at some
+    # point.
     fe <- data.frame(stats::coef(summary(model))[[component]])
 
     colnames(fe) <- c('value', 'se', 'z', 'p_value')
