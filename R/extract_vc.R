@@ -194,6 +194,7 @@ extract_vc.glmmTMB <- function(
 
   vc <- data.frame(variance, sd = sqrt(variance$variance))
 
+  # TODO: confint will not work for some tmb objects, e.g. with ar, so need a trycatch
   if (ci_level > 0) {
     ci <- do.call(
       confint,
