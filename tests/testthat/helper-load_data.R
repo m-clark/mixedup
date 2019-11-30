@@ -100,6 +100,21 @@ load('nlme_results.RData')
 #                 random = Asym ~ 1,
 #                 start = c(Asym = 103, R0 = -8.5, lrc = -3.3))
 #
+# Just run these at test time?
+# lme_corAR <-
+#   update(
+#     lme_2,
+#     corr = corAR1(form = ~ Days),
+#     data = sleepstudy %>% dplyr::filter(Days < 5)
+#   )
+#
+# lme_corARMA <-
+#   update(
+#     lme_2,
+#     corr = corARMA(form = ~ Days, p = 1, q = 1),
+#     data = sleepstudy %>% dplyr::filter(Days < 5)
+#   )
+#
 # save(
 #   lme_0,
 #   lme_1,
@@ -107,6 +122,8 @@ load('nlme_results.RData')
 #   lme_3,
 #   lme_4,
 #   nlme_1,
+#   lme_corAR,
+#   lme_corARMA,
 #   file = 'tests/testthat/nlme_results.RData'
 # )
 

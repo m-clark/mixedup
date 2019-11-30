@@ -30,5 +30,5 @@ Suggests:
   knitr,
   rmarkdown
 Roxygen: list(markdown = TRUE, roclets = c("rd", "namespace", "collate"))
-RoxygenNote: 7.0.0
+RoxygenNote: 7.0.1
 VignetteBuilder: knitr

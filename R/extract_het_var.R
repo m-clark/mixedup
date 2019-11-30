@@ -1,6 +1,7 @@
-#' extract_nlme_variances
+#' Extract heterogeneous variances
 #'
-#' @description Because nlme won't do it for you.
+#' @description Extract heterogeneous variances for nlme, and potentially other models.
+#'
 #' @param model An appropriate mixed model
 #' @param ... Other arguments appropriate to the method
 #'
@@ -8,9 +9,7 @@
 #'   like varIdent(form = ~1|Group), nlme returns a result in the summary
 #'   regarding the variances that many do not know what to do with, nor likely
 #'   would be what they would want to report. I rarely do these models with
-#'   nlme, and have only played around with the varIdent case.   This function '
-#'   will save me a little trouble in demos I do, but I have no plans to do any
-#'   more with it.
+#'   nlme, and have only played around with the \code{varIdent} case.
 #' @return A vector of the estimates on the variance scale.
 #' @importFrom stats coef
 #'
@@ -19,7 +18,7 @@
 #' library(mixedup)
 #'
 #' model <- lme(distance ~ age + Sex, data = Orthodont, random = ~ 1|Subject,
-#' weights=varIdent(form = ~1|Sex))
+#' weights = varIdent(form = ~ 1 | Sex))
 #'
 #' summary(model)
 #'
