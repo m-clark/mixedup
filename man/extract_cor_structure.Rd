@@ -5,9 +5,9 @@
 \alias{extract_cor_structure.lme}
 \title{Extract correlation structure}
 \usage{
-extract_cor_structure(model, ...)
+extract_cor_structure(model, digits = 3, ...)
 
-\method{extract_cor_structure}{lme}(model, ...)
+\method{extract_cor_structure}{lme}(model, digits = 3, ...)
 }
 \arguments{
 \item{model}{An appropriate mixed model}

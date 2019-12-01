@@ -1,12 +1,12 @@
 Package: mixedup
 Title: Miscellaneous functions for mixed models
-Version: 0.3.1
+Version: 0.3.2
 Authors@R: 
     person(given = "Michael",
            family = "Clark",
            role = c("aut", "cre"),
            email = "micl@umich.edu")
-Description: This provides tools for extracting various parts of mixed model output from commonly used packages. Results are produced in a usable form for visualization and table presentation.
+Description: This provides tools for extracting various parts of mixed model output from commonly used packages in a consistent fashion. Results are produced in a usable form for visualization and table presentation.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

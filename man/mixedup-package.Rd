@@ -6,7 +6,7 @@
 \alias{mixedup-package}
 \title{mixedup: Miscellaneous functions for mixed models}
 \description{
-This provides tools for extracting various parts of mixed model output from commonly used packages. Results are produced in a usable form for visualization and table presentation.
+This provides tools for extracting various parts of mixed model output from commonly used packages in a consistent fashion. Results are produced in a usable form for visualization and table presentation.
 }
 \seealso{
 Useful links:

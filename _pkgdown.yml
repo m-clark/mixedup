@@ -73,6 +73,7 @@ reference:
       Other stuff to play with.
     contents:
       - find_typical
+      - extract_cor_structure
       - extract_het_var
       - extract_model_data
 

@@ -35,5 +35,5 @@ test_that('extract_cor_structure returns a proper result', {
 })
 
 test_that('extract_cor_structure returns a proper result', {
-  expect_s3_class( extract_cor_structure(lme_corSymm), 'data.frame')
+  expect_s3_class(extract_cor_structure(lme_corSymm), 'data.frame')
 })

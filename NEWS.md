@@ -1,3 +1,7 @@
+# mixedup 0.3.2
+
+* Add summarize_model, extract_cor_structure
+
 # mixedup 0.3.1
 
 * Add extract_model_data

@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Articles • mixedup</title>
+<title>Extract correlation structure — extract_cor_structure • mixedup</title>
 
 
 <!-- jquery -->
@@ -37,7 +37,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Articles" />
+<meta property="og:title" content="Extract correlation structure — extract_cor_structure" />
+<meta property="og:description" content="Extract residual correlation structure for nlme, and potentially other models." />
+<meta name="twitter:card" content="summary" />
 
 
 
@@ -56,7 +58,7 @@
   </head>
 
   <body>
-    <div class="container template-article-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -135,22 +137,52 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Articles</h1>
+    <h1>Extract correlation structure</h1>
+    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/extract_cor_structure.R'><code>R/extract_cor_structure.R</code></a></small>
+    <div class="hidden name"><code>extract_cor_structure.Rd</code></div>
     </div>
 
-    <div class="section ">
-      <h3>All vignettes</h3>
-      <p class="section-desc"></p>
-
-      <ul>
-        <li><a href="fixed_effects.html">Extracting Fixed Effects</a></li>
-        <li><a href="misc.html">Miscellaneous Functions</a></li>
-        <li><a href="random_coefficients.html">Extracting Random Coefficients</a></li>
-        <li><a href="random_effects.html">Extracting Random Effects</a></li>
-        <li><a href="summarize_model.html">Summarize a Mixed Model</a></li>
-        <li><a href="variance_components.html">Extracting Variance Components</a></li>
-      </ul>
+    <div class="ref-description">
+    <p>Extract residual correlation structure for nlme, and potentially other models.</p>
     </div>
+
+    <pre class="usage"><span class='fu'>extract_cor_structure</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for lme</span>
+<span class='fu'>extract_cor_structure</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)</pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>model</th>
+      <td><p>An appropriate mixed model</p></td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td><p>Other arguments appropriate to the method</p></td>
+    </tr>
+    </table>
+
+    <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
+
+    <p>A vector of the estimates.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>For models with correlation, i.e. that contain something like
+corAR1(form = ~time).  For more see this
+<a href='https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html'>'braindump'
+from Ben Bolker</a>.</p>
+
+  </div>
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <h2>Contents</h2>
+    <ul class="nav nav-pills nav-stacked">
+      <li><a href="#arguments">Arguments</a></li>
+      <li><a href="#value">Value</a></li>
+      <li><a href="#details">Details</a></li>
+    </ul>
+
   </div>
 </div>
 

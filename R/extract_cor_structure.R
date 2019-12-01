@@ -11,6 +11,7 @@
 #' @export
 extract_cor_structure <- function(
   model,
+  digits = 3,
   ...
 ) {
   if (!inherits(model, c('lme')))
@@ -23,6 +24,7 @@ extract_cor_structure <- function(
 #' @export
 extract_cor_structure.lme <- function(
   model,
+  digits = 3,
   ...
 ) {
 
@@ -41,7 +43,7 @@ extract_cor_structure.lme <- function(
                  'corGaus'
                ))) {
 
-    data.frame(t(coef(cs, unconstrained = FALSE)))
+    data.frame(t(round(coef(cs, unconstrained = FALSE), digits = digits)))
 
   } else if (inherits(cs, c('corSymm'))) {
 
@@ -49,11 +51,11 @@ extract_cor_structure.lme <- function(
     cor_matrices <- as.matrix(cs)
     res <- as.data.frame(cor_matrices[[which.max(attr(cs, 'Dim')$len)[1]]])
     rownames(res) <- colnames(res)
-    res
+    round(res, digits = digits)
 
   } else {
     message('This correlation structure may not be supported')
-    data.frame(t(coef(cs, unconstrained = FALSE)))
+    data.frame(t(round(coef(cs, unconstrained = FALSE), digits = digits)))
   }
 
 }

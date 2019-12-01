@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
       </span>
     </div>
 
@@ -211,7 +211,7 @@ options.</p></td>
 <span class='no'>lmer_mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> + <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
 <span class='fu'>summarize_model</span>(<span class='no'>lmer_mod</span>)</div><div class='output co'>#&gt; <span class='message'>Computing profile confidence intervals ...</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Variance Components:</span></div><div class='output co'>#&gt;     Group    Effect Variance    SD SD_2.5 SD_97.5 Var_prop
-#&gt;   Subject Intercept   611.90 24.74  14.38   37.72     0.47
+#&gt;   Subject Intercept   611.90 24.74  14.38   37.71     0.47
 #&gt;   Subject      Days    35.08  5.92   3.80    8.75     0.03
 #&gt;  Residual             654.94 25.59  22.90   28.86     0.50</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'></span>
