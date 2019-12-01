@@ -101,6 +101,28 @@ load('nlme_results.RData')
 #                 start = c(Asym = 103, R0 = -8.5, lrc = -3.3))
 #
 # Just run these at test time?
+#
+# lme_het_var <- lme(
+#   distance ~ scale(age) + Sex,
+#   data = Orthodont,
+#   random = ~ 1 | Subject,
+#   weights = varIdent(form = ~ 1 | Sex)
+# )
+#
+# lme_corCompSymm <-
+#   update(
+#     lme_2,
+#     corr = corCompSymm(form = ~ Days),
+#     data = sleepstudy %>% dplyr::filter(Days < 5)
+#   )
+#
+# lme_corSymm <-
+#   update(
+#     lme_2,
+#     corr = corSymm(form = ~ 1 | Subject),
+#     data = sleepstudy %>% dplyr::filter(Days < 5)
+#   )
+#
 # lme_corAR <-
 #   update(
 #     lme_2,
@@ -115,6 +137,13 @@ load('nlme_results.RData')
 #     data = sleepstudy %>% dplyr::filter(Days < 5)
 #   )
 #
+# lme_corCAR <-
+#   update(
+#     lme_2,
+#     corr = corCAR1(form = ~ Days),
+#     data = sleepstudy %>% dplyr::filter(Days < 5)
+#   )
+#
 # save(
 #   lme_0,
 #   lme_1,
@@ -122,8 +151,12 @@ load('nlme_results.RData')
 #   lme_3,
 #   lme_4,
 #   nlme_1,
+#   lme_het_var,
+#   lme_corCompSymm,
+#   lme_corSymm,
 #   lme_corAR,
 #   lme_corARMA,
+#   lme_corCAR,
 #   file = 'tests/testthat/nlme_results.RData'
 # )
 

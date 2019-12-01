@@ -37,7 +37,7 @@ extract_het_var <- function(
 
 #' @export
 extract_het_var.lme <- function(model, ...) {
-  init = coef(model$modelStruct$varStruct, unconstrained = F)
+  init = coef(model$modelStruct$varStruct, unconstrained = FALSE)
 
   out = (c(1.0, init) * model$sigma) ^ 2
 
