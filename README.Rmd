@@ -54,6 +54,7 @@ devtools::install_github('m-clark/mixedup')
 - Extract Fixed Effects
 - Extract Random Coefficients
 - Extract Heterogeneous Variances
+- Extract Correlation Structure
 - Extract Model Data
 - Summarize Model
 - Find Typical

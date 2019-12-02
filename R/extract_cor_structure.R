@@ -43,7 +43,8 @@ extract_cor_structure.lme <- function(
                  'corGaus'
                ))) {
 
-    data.frame(t(round(coef(cs, unconstrained = FALSE), digits = digits)))
+    cs <- t(round(coef(cs, unconstrained = FALSE), digits = digits))
+    dplyr::as_tibble(cs)
 
   } else if (inherits(cs, c('corSymm'))) {
 
@@ -55,7 +56,30 @@ extract_cor_structure.lme <- function(
 
   } else {
     message('This correlation structure may not be supported')
-    data.frame(t(round(coef(cs, unconstrained = FALSE), digits = digits)))
+    cs <- t(round(coef(cs, unconstrained = FALSE), digits = digits))
+    dplyr::as_tibble(cs)
   }
+
+}
+
+
+#' @rdname extract_cor_structure
+#' @export
+extract_cor_structure.brms <- function(
+  model,
+  ci_level = .95,
+  digits = 3,
+  ...
+) {
+
+  init <- summary(model, prob = ci_level)$cor_par
+
+  lower = (1 - ci_level)/2
+  upper = 1 - lower
+
+  dplyr::as_tibble(init, rownames = 'Parameter') %>%
+    dplyr::rename_at(matches('l-'), function(x) paste0('lower_', lower)) %>%
+    dplyr::rename_at(matches('u-'), function(x) paste0('upper_', upper)) %>%
+    dplyr::select(Parameter, Estimate, Est.Error, matches('lower|upper'))
 
 }

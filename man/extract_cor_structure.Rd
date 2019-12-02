@@ -3,11 +3,14 @@
 \name{extract_cor_structure}
 \alias{extract_cor_structure}
 \alias{extract_cor_structure.lme}
+\alias{extract_cor_structure.brms}
 \title{Extract correlation structure}
 \usage{
 extract_cor_structure(model, digits = 3, ...)
 
 \method{extract_cor_structure}{lme}(model, digits = 3, ...)
+
+\method{extract_cor_structure}{brms}(model, ci_level = 0.95, digits = 3, ...)
 }
 \arguments{
 \item{model}{An appropriate mixed model}
