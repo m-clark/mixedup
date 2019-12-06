@@ -24,6 +24,7 @@ utils::globalVariables(
     'se',
     'se_fe',
     'value_fe',
-    'std.dev'
+    'std.dev',
+    'parameter'
   )
 )

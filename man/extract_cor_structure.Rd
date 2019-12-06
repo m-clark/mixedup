@@ -3,29 +3,40 @@
 \name{extract_cor_structure}
 \alias{extract_cor_structure}
 \alias{extract_cor_structure.lme}
-\alias{extract_cor_structure.brms}
+\alias{extract_cor_structure.brmsfit}
 \title{Extract correlation structure}
 \usage{
 extract_cor_structure(model, digits = 3, ...)
 
 \method{extract_cor_structure}{lme}(model, digits = 3, ...)
 
-\method{extract_cor_structure}{brms}(model, ci_level = 0.95, digits = 3, ...)
+\method{extract_cor_structure}{brmsfit}(model, digits = 3, ..., ci_level = 0.95)
 }
 \arguments{
 \item{model}{An appropriate mixed model}
 
+\item{digits}{Rounding. Default is 3.}
+
 \item{...}{Other arguments appropriate to the method}
+
+\item{ci_level}{confidence level < 1, typically above 0.90. A value of 0 will
+not report it. Default is .95.}
 }
 \value{
-A vector of the estimates.
+For nlme models, a data frame of the estimates. For brms, the
+parameters and related uncertainty, similar to
+\link{extract_fixed_effects}.
 }
 \description{
-Extract residual correlation structure for nlme, and potentially other models.
+Extract residual correlation structure for nlme, brms, and
+potentially other models.
 }
 \details{
 For models with correlation, i.e. that contain something like
-corAR1(form = ~time).  For more see this
+corAR1(form = ~time) for \code{nlme} or \code{brms} models with an
+\code{autocor} argument.  For more see this
 \href{https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html}{'braindump'
 from Ben Bolker}.
+
+Spatial models have been tested for brms, so should work as well.
 }

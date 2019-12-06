@@ -164,6 +164,8 @@ load('nlme_results.RData')
 
 
 load('brm_results.RData')
+load('brm_cor_struct_results.RData')
+brm_corCAR <- readRDS('brm_car_results.rds')
 
 # library(brms)
 #
@@ -183,9 +185,8 @@ load('brm_results.RData')
 #
 # brm_0 <-
 #   brm(
-#     Reaction ~ Days + (1 | Subject),
+#     Reaction ~ 1 + (1 | Subject),
 #     data = lme4::sleepstudy,
-#     prior = pr,
 #     cores = 4,
 #     thin  = 40
 #   )
@@ -238,6 +239,92 @@ load('brm_results.RData')
 #     thin  = 40
 #   )
 #
+# probably problematic models but fine for testing
+
+### standard autocor
+
+# brm_corAR <- update(
+#   brm_2,
+#   autocor = cor_ar( ~ Days | Subject),
+#   save_ranef = FALSE,
+#   cores = 4,
+#   thin = 40
+# )
+#
+# brm_corARMA <-
+#   update(
+#     brm_2,
+#     autocor = cor_arma(~ Days | Subject, p = 1, q = 2),
+#     save_ranef = FALSE,
+#     cores = 4,
+#     thin = 40
+#   )
+#
+# brm_corCompSymm <-
+#   update(
+#     brm_2,
+#     autocor = cor_cosy(~ Days | Subject),
+#     save_ranef = FALSE,
+#     cores = 4,
+#     thin = 40
+#   )
+#
+
+### spatial
+# generate some spatial data
+# east <- north <- 1:10
+# Grid <- expand.grid(east, north)
+# K <- nrow(Grid)
+#
+# # set up distance and neighbourhood matrices
+# distance <- as.matrix(dist(Grid))
+# W <- array(0, c(K, K))
+# W[distance == 1] <- 1
+#
+# # generate the covariates and response data
+# x1 <- rnorm(K)
+# x2 <- rnorm(K)
+# theta <- rnorm(K, sd = 0.05)
+# phi <- rmulti_normal(
+#   1, mu = rep(0, K), Sigma = 0.4 * exp(-0.1 * distance)
+# )
+# eta <- x1 + x2 + phi
+# prob <- exp(eta) / (1 + exp(eta))
+# size <- rep(50, K)
+# y <- rbinom(n = K, size = size, prob = prob)
+# dat <- data.frame(y, size, x1, x2)
+
+# fit a CAR model
+#
+# brm_corCAR <- brm(
+#   y | trials(size) ~ x1 + x2,
+#   data = dat,
+#   family = binomial(),
+#   autocor = cor_car(W),
+#   cores = 2,  # very large file
+#   chains = 2,
+#   file = 'tests/testthat/brm_car_results',
+#   thin = 40
+# )
+#
+# data(oldcol, package = "spdep")
+# brm_corSarLag <- brm(
+#   CRIME ~ INC + HOVAL,
+#   data = COL.OLD,
+#   autocor = cor_lagsar(COL.nb),
+#   cores = 4,
+#   thin = 40
+# )
+#
+# brm_corSarError <- brm(
+#   CRIME ~ INC + HOVAL,
+#   data = COL.OLD,
+#   autocor = cor_errorsar(COL.nb),
+#   cores = 4,
+#   thin = 40
+# )
+#
+#
 #
 # save(
 #   brm_glm,
@@ -249,6 +336,18 @@ load('brm_results.RData')
 #   brm_5,
 #   file = 'tests/testthat/brm_results.RData'
 # )
+#
+#
+# save(
+#   brm_corAR,
+#   brm_corARMA,
+#   brm_corCompSymm,
+#   brm_corSarLag,
+#   brm_corSarError,
+#   file = 'tests/testthat/brm_cor_struct_results.RData'
+# )
+
+
 
 # Run rstanarm models ---------------------------------------------------------
 
