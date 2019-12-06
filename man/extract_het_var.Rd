@@ -4,10 +4,12 @@
 \alias{extract_het_var}
 \title{Extract heterogeneous variances}
 \usage{
-extract_het_var(model, ...)
+extract_het_var(model, digits = 3, ...)
 }
 \arguments{
 \item{model}{An appropriate mixed model}
+
+\item{digits}{Rounding. Default is 3.}
 
 \item{...}{Other arguments appropriate to the method}
 }
