@@ -16,16 +16,16 @@ coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](
 <!-- badges: end -->
 
 This package provides extended functionality for mixed models. The goal
-of `mixedup` is to solve little problems I have that slip through the
-cracks from the various modeling packages and others in trying to get
-presentable output. Basically the idea is to create (tidy) objects that
-are easy to use and essentially ready for presentation, as well as
-consistent across packages and across functions. I use several of these
-packages (including mgcv) for mixed models, and typically have to some
-notable post processing to get some basic output even with
+of `mixedup` is to solve little problems I have had that slip through
+the cracks from the various modeling packages and others in trying to
+get presentable output. Basically the idea is to create (tidy) objects
+that are easy to use and essentially ready for presentation, as well as
+*consistent* across packages and across functions. I use several of
+these packages (including mgcv) for mixed models, and typically have to
+do some notable post processing to get some basic output even with
 `broom::tidy`, and this effort often isn’t applicable if I switch to
-another package for the same model. These functions attempt to fill my
-specific niche.
+another package for the same type of model. These functions attempt to
+fill my specific niche.
 
 An additional perk is minimal dependency. Other than the package that
 created the object, nothing except the tidyverse is needed (presently
@@ -58,6 +58,7 @@ devtools::install_github('m-clark/mixedup')
   - Extract Fixed Effects
   - Extract Random Coefficients
   - Extract Heterogeneous Variances
+  - Extract Correlation Structure
   - Extract Model Data
   - Summarize Model
   - Find Typical
@@ -73,6 +74,10 @@ Loading required package: Matrix
 lmer_model <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
 library(glmmTMB)
+Warning in checkMatrixPackageVersion(): Package version inconsistency detected.
+TMB was built with Matrix version 1.2.17
+Current Matrix version is 1.2.18
+Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
 
 tmb_model <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
@@ -179,9 +184,9 @@ extract_random_coefs(lmer_model)
 
 extract_vc(brm_model, ci_level = .8)
      group    effect variance     sd  sd_10  sd_90 var_prop
-1  Subject Intercept  701.505 26.486 18.627 35.224    0.494
-2  Subject      Days   41.993  6.480  4.793  8.388    0.030
-3 Residual            675.159 25.984 24.027 28.054    0.476
+1  Subject Intercept  716.666 26.771 18.732 35.664     0.50
+2  Subject      Days   43.433  6.590  4.852  8.604     0.03
+3 Residual            672.799 25.938 23.974 27.956     0.47
 
 summarize_model(lmer_model, cor_re = TRUE, digits = 1)
 Computing profile confidence intervals ...
@@ -234,9 +239,9 @@ dplyr::bind_rows(vc, .id = 'model')
 4   lmer  Subject Intercept  611.898 24.737 14.382  37.716    0.470
 5   lmer  Subject      Days   35.081  5.923  3.801   8.753    0.027
 6   lmer Residual            654.941 25.592 22.898  28.858    0.503
-7    brm  Subject Intercept  701.505 26.486 15.151  41.646    0.494
-8    brm  Subject      Days   41.993  6.480  4.198   9.854    0.030
-9    brm Residual            675.159 25.984 23.132  29.317    0.476
+7    brm  Subject Intercept  716.666 26.771 15.088  42.006    0.500
+8    brm  Subject      Days   43.433  6.590  4.182  10.102    0.030
+9    brm Residual            672.799 25.938 23.046  29.157    0.470
 10   gam  Subject Intercept  627.571 25.051 16.085  39.015    0.477
 11   gam  Subject      Days   35.858  5.988  4.025   8.908    0.027
 12   gam Residual            653.582 25.565 22.792  28.676    0.496
