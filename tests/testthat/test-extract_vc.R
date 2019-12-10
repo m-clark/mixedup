@@ -298,6 +298,22 @@ test_that('extract_vc.brmsfit basic functionality: non-gaussian', {
   expect_equal(nrow(extract_vc(brm_glm)), 1)  # no residual var
 })
 
+test_that('extract_vc.brmsfit basic functionality: multivariate model', {
+  init = extract_vc(brm_mv, component = 'back', ci_level = .8, digits = 2)
+  expect_match(init$effect, 'back')
+})
+
+test_that('extract_vc.brmsfit basic functionality: autocor model', {
+  expect_s3_class(extract_vc(brm_corAR, ci_level = .8, digits = 2), 'data.frame')
+})
+
+test_that('extract_vc.brmsfit basic functionality: zi model', {
+  init = extract_vc(brm_zi, component = 'zi', ci_level = .8, digits = 2)
+  expect_match(init$effect, 'zi')
+})
+
+
+
 
 # Test mgcv ---------------------------------------------------------------
 

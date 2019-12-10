@@ -1,6 +1,7 @@
 #' Extract variance components
 #'
-#' @description This has functionality for simpler models from \code{lme4}, \code{glmmTMB}, \code{nlme}, and \code{brms}.
+#' @description This has functionality for simpler models from \code{lme4},
+#'   \code{glmmTMB}, \code{nlme}, and \code{brms}.
 #'
 #' @param model an lme4, glmmTMB, nlme, mgcv, or brms model
 #' @param ci_level confidence level < 1, typically above 0.90. A value of 0 will
@@ -8,11 +9,12 @@
 #'   \code{gam.vcomp}). Default is .95.
 #' @param ci_args Additional arguments to the corresponding confint method.
 #' @param ci_scale A character string of 'sd' or 'var' to note the scale of the
-#'   interval estimate.  Default is 'sd'.
-#'   at present.
+#'   interval estimate.  Default is 'sd'. at present.
 #' @param component For glmmTMB objects, which of the three components 'cond',
 #'   'zi' or 'other' to select. Default is cond. Minimal testing on other
-#'   options.
+#'   options. For brmsfit objects, this can filter results to a certain part of
+#'   the output, e.g. 'sigma' or 'zi' of distributional models, or a specific
+#'   outcome of a multivariate model.
 #' @param show_cor Return the intercept/slope correlations as a separate list
 #'   element. Default is \code{FALSE}.
 #' @param digits Rounding. Default is 3.
@@ -405,7 +407,7 @@ extract_vc.brmsfit <- function(
   ci_scale = 'sd',
   show_cor = FALSE,
   digits = 3,
-  # component = 'cond',
+  component = NULL,
   ...
 ) {
 
@@ -452,6 +454,11 @@ extract_vc.brmsfit <- function(
     dplyr::mutate(var_prop = variance / sum(variance)) %>%
     dplyr::mutate_if(is.numeric, round, digits = digits)
 
+  if (!is.null(component)) {
+    vc <- vc %>%
+      filter(grepl(effect, pattern = paste0('^', component)))
+  }
+
   if (show_cor) {
     # rerun with VarCorr with summary FALSE and extract array of cor matrices
     cormats <-
@@ -469,7 +476,10 @@ extract_vc.brmsfit <- function(
     cormats <- cormats[!purrr::map_lgl(cormats, is.null)]
 
     # get mean matrix
-    cormats <- purrr::map(cormats, function(x) apply(x, 2:3, mean))
+    cormats <-
+      purrr::map(cormats, function(x)
+        round(apply(x, 2:3, mean), digits = digits))
+
 
     return(list(`Variance Components` = vc, Cor = cormats))
   }

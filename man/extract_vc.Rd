@@ -58,6 +58,7 @@ extract_vc(
   ci_scale = "sd",
   show_cor = FALSE,
   digits = 3,
+  component = NULL,
   ...
 )
 
@@ -81,8 +82,7 @@ not report it (except for gam objects, which will revert to .95 due to
 \item{ci_args}{Additional arguments to the corresponding confint method.}
 
 \item{ci_scale}{A character string of 'sd' or 'var' to note the scale of the
-interval estimate.  Default is 'sd'.
-at present.}
+interval estimate.  Default is 'sd'. at present.}
 
 \item{show_cor}{Return the intercept/slope correlations as a separate list
 element. Default is \code{FALSE}.}
@@ -91,7 +91,9 @@ element. Default is \code{FALSE}.}
 
 \item{component}{For glmmTMB objects, which of the three components 'cond',
 'zi' or 'other' to select. Default is cond. Minimal testing on other
-options.}
+options. For brmsfit objects, this can filter results to a certain part of
+the output, e.g. 'sigma' or 'zi' of distributional models, or a specific
+outcome of a multivariate model.}
 
 \item{...}{Other stuff to pass to the corresponding function. Unused/tested}
 }
@@ -100,7 +102,8 @@ A data frame with output for variance components or list that also
 contains the correlations of the random effects.
 }
 \description{
-This has functionality for simpler models from \code{lme4}, \code{glmmTMB}, \code{nlme}, and \code{brms}.
+This has functionality for simpler models from \code{lme4},
+\code{glmmTMB}, \code{nlme}, and \code{brms}.
 }
 \details{
 Returns a more usable (my opinion) version of variance components

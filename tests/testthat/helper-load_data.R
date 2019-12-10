@@ -165,6 +165,7 @@ load('nlme_results.RData')
 
 load('brm_results.RData')
 load('brm_cor_struct_results.RData')
+load('brm_extended_results.RData')
 brm_corCAR <- readRDS('brm_car_results.rds')
 
 # library(brms)
@@ -346,8 +347,44 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #   brm_corSarError,
 #   file = 'tests/testthat/brm_cor_struct_results.RData'
 # )
+#
 
-
+### misc other models
+#
+# brm_sigma <-
+#   update(
+#     brm_2,
+#     bf(. ~ ., sigma ~ Days + (1 | Subject)),
+#     cores = 4,
+#     thin = 40,
+#     newdata = lme4::sleepstudy
+#   )
+#
+# brm_zi <- brm(
+#   bf(count ~ persons + child + camper + (1|group), zi ~ child + (1|group)),
+#   data = noiris::fish %>% mutate(group = rep(1:25, e=10)),
+#   family = zero_inflated_poisson(),
+#   cores = 4,
+#   thin = 40
+# )
+#
+# # # data("BTdata", package = "MCMCglmm")
+#
+# brm_mv <- brm(
+#   mvbind(tarsus, back) ~ sex + hatchdate + (1 | p | fosternest) + (1 | q | dam),
+#   rescor = TRUE,
+#   data = BTdata,
+#   cores = 4,
+#   thin = 40,
+# )
+#
+# save(
+#   brm_sigma,
+#   brm_zi,
+#   brm_mv,
+#   BTdata,
+#   file = 'tests/testthat/brm_extended_results.RData'
+# )
 
 # Run rstanarm models ---------------------------------------------------------
 
