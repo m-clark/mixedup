@@ -51,14 +51,19 @@ extract_random_effects(
 \item{re}{The name of the grouping variable for the random effects. Default
 is \code{NULL} to return all.}
 
-\item{ci_level}{Where possible, confidence level < 1, typically above 0.90. A value of 0 will
-not report it. Default is .95. Not applicable to nlme objects.}
+\item{ci_level}{Where possible, confidence level < 1, typically above 0.90. A
+value of 0 will not report it. Default is .95. Not applicable to nlme
+objects.}
 
 \item{digits}{Rounding. Default is 3.}
 
-\item{component}{Only applies to glmmTMB objects. Which of the three
+\item{component}{For glmmTMB objects, which of the three
 components 'cond', 'zi' or 'other' to select for a glmmTMB model. Default
-is 'cond'. Minimal testing on other options.}
+is 'cond'. Minimal testing on other options. For brmsfit objects, this can
+filter results to a certain part of the output, e.g. 'sigma' or 'zi' of
+distributional models, or a specific outcome of a multivariate model.  In
+this case \code{component} is a regular expression that ends the name of
+the parameters of the output (e.g. '__component').}
 
 \item{...}{Other arguments specific to the method. Unused at present.}
 }

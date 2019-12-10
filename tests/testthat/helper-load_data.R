@@ -1,7 +1,10 @@
 
 # for testing
-# all_mods = list.files('tests/testthat/', pattern = 'RData', full.names = T)
+# all_mods  <- list.files('tests/testthat/', pattern = 'RData', full.names = T)
 # sapply(all_mods, load, envir = .GlobalEnv)
+#
+# some_mods <- list.files('tests/testthat/', pattern = '^tmb(.)*RData', full.names = T)
+# sapply(some_mods, load, envir = .GlobalEnv)
 
 # Run lme4 models ---------------------------------------------------------
 
@@ -43,6 +46,7 @@ data("sleepstudy", package = 'lme4')
 # Run TMB models ----------------------------------------------------------
 
 load('tmb_results.RData')
+load('tmb_cor_struct_results.RData')
 
 # library(glmmTMB)
 #
@@ -72,6 +76,36 @@ load('tmb_results.RData')
 #   tmb_zip,
 #   file = 'tests/testthat/tmb_results.RData'
 # )
+
+
+# couldn't get corresponding brms model to run. This follows the vignette
+# example.
+# simGroup <- function(g, n = 6) {
+#   set.seed(1234)
+#   x <- MASS::mvrnorm(mu = rep(0, n),
+#                      Sigma = .7 ^ as.matrix(dist(1:n)))    ## Simulate the process
+#   y <- x + rnorm(n)                               ## Add measurement noise
+#   times <- factor(1:n)
+#   group <- factor(rep(g, n))
+#   data.frame(y, times, group)
+# }
+#
+# dat1 <- do.call("rbind", lapply(1:100, simGroup))
+#
+#
+# tmb_ar <- glmmTMB(y ~ ar1(times + 0 | group), data = dat1)
+# tmb_us <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + us(times + 0 | group))
+# tmb_toep <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + toep(times + 0 | group))
+# tmb_cs <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + cs(times + 0 | group))
+#
+# save(
+#   tmb_ar,
+#   tmb_us,
+#   tmb_toep,
+#   tmb_cs,
+#   file = 'tests/testthat/tmb_cor_struct_results.RData'
+# )
+
 
 # Run nlme models ---------------------------------------------------------
 

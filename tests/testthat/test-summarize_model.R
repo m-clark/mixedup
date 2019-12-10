@@ -52,6 +52,9 @@ test_that('summarize_model.merMod does cor_re', {
   expect_output(suppressMessages(summarize_model(
     lmer_2, ci = FALSE, cor_re = TRUE
   )))
+  expect_output(suppressMessages(summarize_model(
+    lmer_4, ci = FALSE, cor_re = TRUE
+  )))
 })
 
 test_that('summarize_model.merMod does cor_fe', {

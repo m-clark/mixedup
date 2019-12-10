@@ -25,12 +25,9 @@ these packages (including mgcv) for mixed models, and typically have to
 do some notable post processing to get some basic output even with
 `broom::tidy`, and this effort often isn’t applicable if I switch to
 another package for the same type of model. These functions attempt to
-fill my specific niche.
+address this issue.
 
-An additional perk is minimal dependency. Other than the package that
-created the object, nothing except the tidyverse is needed (presently
-just `dplyr`, `tidyr`, and `purrr`). For more details and examples see
-<https://m-clark.github.io/mixedup/>.
+For more details and examples see <https://m-clark.github.io/mixedup/>.
 
 ## Installation
 
@@ -49,7 +46,7 @@ devtools::install_github('m-clark/mixedup')
   - rstanarm \*
   - brms
 
-\* preliminary
+\* preliminary support for some functions
 
 ## Feature list
 
@@ -156,7 +153,7 @@ extract_random_effects(tmb_model)
  8 Subject   Intercept 334    -7.00  12.9    -32.3        18.3
  9 Subject   Intercept 335    -1.04  14.0    -28.5        26.4
 10 Subject   Intercept 337    34.7   13.6      7.94       61.4
-# ... with 26 more rows
+# … with 26 more rows
 
 extract_fixed_effects(nlme_model)
 # A tibble: 3 x 7
@@ -180,13 +177,13 @@ extract_random_coefs(lmer_model)
  8 Subject   Intercept 334    244.  13.9      217.       271.
  9 Subject   Intercept 335    251.  13.9      224.       278.
 10 Subject   Intercept 337    286.  13.9      259.       313.
-# ... with 26 more rows
+# … with 26 more rows
 
 extract_vc(brm_model, ci_level = .8)
      group    effect variance     sd  sd_10  sd_90 var_prop
-1  Subject Intercept  716.666 26.771 18.732 35.664     0.50
-2  Subject      Days   43.433  6.590  4.852  8.604     0.03
-3 Residual            672.799 25.938 23.974 27.956     0.47
+1  Subject Intercept  716.496 26.767 18.757 35.717     0.50
+2  Subject      Days   43.301  6.580  4.816  8.554     0.03
+3 Residual            672.946 25.941 23.982 27.936     0.47
 
 summarize_model(lmer_model, cor_re = TRUE, digits = 1)
 Computing profile confidence intervals ...
@@ -239,9 +236,9 @@ dplyr::bind_rows(vc, .id = 'model')
 4   lmer  Subject Intercept  611.898 24.737 14.382  37.716    0.470
 5   lmer  Subject      Days   35.081  5.923  3.801   8.753    0.027
 6   lmer Residual            654.941 25.592 22.898  28.858    0.503
-7    brm  Subject Intercept  716.666 26.771 15.088  42.006    0.500
-8    brm  Subject      Days   43.433  6.590  4.182  10.102    0.030
-9    brm Residual            672.799 25.938 23.046  29.157    0.470
+7    brm  Subject Intercept  716.496 26.767 15.268  42.905    0.500
+8    brm  Subject      Days   43.301  6.580  4.148  10.042    0.030
+9    brm Residual            672.946 25.941 23.079  29.232    0.470
 10   gam  Subject Intercept  627.571 25.051 16.085  39.015    0.477
 11   gam  Subject      Days   35.858  5.988  4.025   8.908    0.027
 12   gam Residual            653.582 25.565 22.792  28.676    0.496

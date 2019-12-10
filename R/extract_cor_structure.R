@@ -1,22 +1,45 @@
 #' Extract correlation structure
+#'
 #' @description Extract residual correlation structure for nlme, brms, and
 #' potentially other models.
+#'
 #' @inheritParams extract_het_var
+#'
 #' @param ci_level confidence level < 1, typically above 0.90. A value of 0 will
 #'   not report it. Default is .95.
 #'
-#' @details For models with correlation, i.e. that contain something like
-#'   corAR1(form = ~time) for \code{nlme} or \code{brms} models with an
-#'   \code{autocor} argument.  For more see this
-#'   \href{https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html}{'braindump'
-#'    from Ben Bolker}.
+#' @details This function applies to models with residual correlation, i.e. that
+#'   contain something like corAR1(form = ~time) for \code{nlme} or \code{brms}
+#'   models with an \code{autocor} argument.  This functions extracts the
+#'   associated parameters (e.g. `Phi` in nlme, `ar[1]` in brms, etc.)
 #'
-#'    Spatial models have been tested for brms, so should work as well.
+#' For more detail, see this
+#' \href{https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html}{'braindump'
+#' from Ben Bolker}, and
+#' \href{https://cran.r-project.org/web/packages/glmmTMB/vignettes/covstruct.html}
+#' the glmmTMB vignette.
+#'
+#' Most types of spatial models should work as well.
 #'
 #' @return For nlme models, a data frame of the estimates. For brms, the
 #'   parameters and related uncertainty, similar to
 #'   \link{extract_fixed_effects}.
 #'
+#' @examples
+#' \dontrun{
+#' library(brms)
+#' library(mixedup)
+#'
+#' brm_corAR <- brm(
+#'   Reaction ~ Days + (Days | Subject),
+#'   autocor = cor_ar( ~ Days | Subject),
+#'   save_ranef = FALSE,
+#'   cores = 4,
+#'   thin = 40
+#' )
+#'
+#' extract_cor_structure(brm_corAR)
+#' }
 #' @export
 extract_cor_structure <- function(
   model,
