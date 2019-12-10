@@ -131,3 +131,36 @@ extract_cor_structure.brmsfit <- function(
     dplyr::mutate_if(is.numeric, round, digits = digits)
 
 }
+
+
+#' #' @importFrom
+#' extract_cor_structure.glmmTMB <- function(
+#'   model,
+#'   digits = 3,
+#'   ...,
+#'   component = 'cond',
+#'   which_cor = NULL
+#' ) {
+#'
+#'   if (is.null(which_cor))
+#'     stop('Specify which_cor: ar1, cs, toep, or us.')
+#'
+#'   cor_init  <- summary(model)[['varcor']][[component]]
+#'
+#'   if (which_cor == 'diag')
+#'     cor_mats  <- purrr::map(cor_init, function(x) diag(attr(x, 'stddev')))
+#'   else
+#'     cor_mats  <- purrr::map(cor_init, function(x) attr(x, 'correlation'))
+#'
+#'   cor_types <- purrr::map(cor_init, function(x) names(attr(x, 'blockCode')))
+#'   extract <- which(unlist(cor_types) == which_cor)
+#'
+#'   if(purrr::is_empty(extract)) {
+#'     stop('No match between which_cor and model output.')
+#'   } else {
+#'     cor_par <- cor_mats[[extract]]
+#'   }
+#'
+#'   cor_par
+#'
+#' }

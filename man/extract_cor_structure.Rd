@@ -32,11 +32,28 @@ Extract residual correlation structure for nlme, brms, and
 potentially other models.
 }
 \details{
-For models with correlation, i.e. that contain something like
-corAR1(form = ~time) for \code{nlme} or \code{brms} models with an
-\code{autocor} argument.  For more see this
+This function applies to models with residual correlation, i.e. that
+contain something like corAR1(form = ~time) for \code{nlme} or \code{brms}
+models with an \code{autocor} argument.  This functions extracts the
+associated parameters (e.g. \code{Phi} in nlme, \code{ar[1]} in brms, etc.)
+
+For more detail, see this
 \href{https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html}{'braindump'
 from Ben Bolker}.
 
-Spatial models have been tested for brms, so should work as well.
+Most types of spatial models should work as well.
+}
+\examples{
+\dontrun{
+library(brms)
+library(mixedup)
+
+brm_corAR <- brm(
+  Reaction ~ Days + (Days | Subject),
+  autocor = cor_ar( ~ Days | Subject),
+  save_ranef = FALSE,
+  cores = 4,
+  thin = 40
+)
+}
 }
