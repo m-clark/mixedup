@@ -264,6 +264,7 @@ extract_fixed_effects.brmsfit <-
     ci_args = NULL,
     digits = 3,
     exponentiate = FALSE,
+    component = NULL,
     ...
   ) {
 
@@ -299,6 +300,11 @@ extract_fixed_effects.brmsfit <-
           exp
         ) %>%
         dplyr::mutate(se = se * value)
+    }
+
+    if (!is.null(component)) {
+      fe <- fe %>%
+        dplyr::filter(grepl(term, pattern = paste0('^', component)))
     }
 
     fe

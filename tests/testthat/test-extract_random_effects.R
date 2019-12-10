@@ -159,7 +159,21 @@ test_that('extract_random_effects.brmsfit errors with bad re name', {
 
 
 
+test_that('extract_random_effects.brmsfit basic functionality: multivariate model', {
+  init = extract_random_effects(brm_mv, component = 'back', ci_level = .8, digits = 2)
+  expect_match(init$group_var, 'back')
+})
 
+# currently fails due to potential brms bug
+# test_that('extract_random_effects.brmsfit basic functionality: autocor model', {
+#   expect_s3_class(extract_random_effects(brm_corAR, ci_level = .8, digits = 2),
+#                   'data.frame')
+# })
+
+test_that('extract_random_effects.brmsfit basic functionality: zi model', {
+  init = extract_random_effects(brm_zi, component = 'zi', ci_level = .8, digits = 2)
+  expect_match(init$group_var, 'zi')
+})
 
 
 # rstanarm ----------------------------------------------------------------

@@ -80,7 +80,7 @@ extract_het_var(lme_1)
 
 With some packages one can estimate the residual correlation structure.  Right now this only works for nlme objects.
 
-```{r}
+```{r cor-struct}
 base_model <-
   lme(Reaction ~ Days,
       random = ~ 1 + Days | Subject,

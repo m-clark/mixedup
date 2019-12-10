@@ -11,7 +11,7 @@ summarize_model(
   cor_re = FALSE,
   cor_fe = FALSE,
   digits = 2,
-  component = "cond",
+  component = NULL,
   ...
 )
 
@@ -21,7 +21,7 @@ summarise_model(
   cor_re = FALSE,
   cor_fe = FALSE,
   digits = 2,
-  component = "cond",
+  component = NULL,
   ...
 )
 }

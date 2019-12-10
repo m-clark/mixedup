@@ -191,7 +191,22 @@ test_that('extract_random_coefbrmsfit takes ci_level', {
     grep(cn, pattern = '[0-9]+', value =T))
 })
 
+# NA due to different naming conventions for re and fe. will try to fix later.
+# test_that('extract_random_coefs.brmsfit basic functionality: multivariate model', {
+#   init = extract_random_coefs(brm_mv, component = 'back', ci_level = .8, digits = 2)
+#   expect_match(init$group_var, 'back')
+# })
 
+# currently fails due to potential brms bug
+# test_that('extract_random_coefs.brmsfit basic functionality: autocor model', {
+#   expect_s3_class(extract_random_coefs(brm_corAR, ci_level = .8, digits = 2),
+#                   'data.frame')
+# })
+
+test_that('extract_random_coefs.brmsfit basic functionality: zi model', {
+  init = extract_random_coefs(brm_zi, component = 'zi', ci_level = .8, digits = 2)
+  expect_match(init$group_var, 'zi')
+})
 # mgcv --------------------------------------------------------------------
 
 context('test extract_random_coefs.gam')

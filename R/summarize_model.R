@@ -28,9 +28,12 @@ summarize_model <- function(
   cor_re = FALSE,
   cor_fe = FALSE,
   digits = 2,
-  component = 'cond',
+  component = NULL,
   ...
 ) {
+
+  if (inherits(model, 'glmmTMB') & is.null(component))
+    component = 'cond'
 
   vc <-
     extract_vc(

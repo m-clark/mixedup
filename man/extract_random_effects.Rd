@@ -32,7 +32,14 @@ extract_random_effects(
 
 \method{extract_random_effects}{lme}(model, re = NULL, ci_level = NULL, digits = 3, ...)
 
-\method{extract_random_effects}{brmsfit}(model, re = NULL, ci_level = 0.95, digits = 3, ...)
+\method{extract_random_effects}{brmsfit}(
+  model,
+  re = NULL,
+  ci_level = 0.95,
+  digits = 3,
+  component = NULL,
+  ...
+)
 
 \method{extract_random_effects}{stanreg}(...)
 

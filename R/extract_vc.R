@@ -14,7 +14,8 @@
 #'   'zi' or 'other' to select. Default is cond. Minimal testing on other
 #'   options. For brmsfit objects, this can filter results to a certain part of
 #'   the output, e.g. 'sigma' or 'zi' of distributional models, or a specific
-#'   outcome of a multivariate model.
+#'   outcome of a multivariate model.  In this case \code{component} is a
+#'   regular expression that begins parameters of the output.
 #' @param show_cor Return the intercept/slope correlations as a separate list
 #'   element. Default is \code{FALSE}.
 #' @param digits Rounding. Default is 3.
@@ -456,7 +457,7 @@ extract_vc.brmsfit <- function(
 
   if (!is.null(component)) {
     vc <- vc %>%
-      filter(grepl(effect, pattern = paste0('^', component)))
+      dplyr::filter(grepl(effect, pattern = paste0('^', component)))
   }
 
   if (show_cor) {

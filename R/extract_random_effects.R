@@ -278,9 +278,9 @@ extract_random_effects.lme <- function(
 extract_random_effects.brmsfit <- function(
   model,
   re = NULL,
-  # component,
   ci_level = .95,
   digits = 3,
+  component = NULL,
   ...
 ) {
 
@@ -297,7 +297,8 @@ extract_random_effects.brmsfit <- function(
       )
     )
 
-  # more or less following broom
+  # more or less following broom, but note that brms offers both pars and groups
+  # args that might be better to use, if not less computation
   re0 <- brms::posterior_samples(model, pars = '^r_')
 
   # not sure this is necessary, would only happen if something very wrong with
@@ -314,8 +315,8 @@ extract_random_effects.brmsfit <- function(
       group_var = gsub("\\[.*", "", effect),
       group = gsub(".*\\[|,.*", "", effect),
       effect = gsub(".*,|\\]", "", effect),
-      value = apply(re0, 2, base::mean),
-      se = apply(re0, 2, stats::sd)
+      value = base::colMeans(re0),
+      se = purrr::map_dbl(re0, stats::sd)
     )
 
   # add_ci may add prob as arg in future
@@ -332,10 +333,14 @@ extract_random_effects.brmsfit <- function(
 
   }
 
-
   if (!is.null(re)) {
     random_effects <- random_effects %>%
       dplyr::filter(group_var == re)
+  }
+
+  if (!is.null(component)) {
+    random_effects <- random_effects %>%
+      dplyr::filter(grepl(group_var, pattern = paste0('__', component, '$')))
   }
 
   random_effects %>%

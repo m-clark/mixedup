@@ -31,7 +31,14 @@ extract_random_coefs(
 
 \method{extract_random_coefs}{lme}(model, re = NULL, ci_level = NULL, digits = 3, ...)
 
-\method{extract_random_coefs}{brmsfit}(model, re = NULL, ci_level = 0.95, digits = 3, ...)
+\method{extract_random_coefs}{brmsfit}(
+  model,
+  re = NULL,
+  ci_level = 0.95,
+  digits = 3,
+  component = NULL,
+  ...
+)
 
 \method{extract_random_coefs}{gam}(model, re = NULL, ci_level = 0.95, digits = 3, ...)
 }

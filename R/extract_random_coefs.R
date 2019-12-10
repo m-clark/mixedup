@@ -205,7 +205,7 @@ extract_random_coefs.brmsfit <- function(
   re = NULL,
   ci_level = .95,
   digits = 3,
-  # component = NULL,
+  component = NULL,
   ...
 ) {
 
@@ -281,6 +281,11 @@ extract_random_coefs.brmsfit <- function(
   if (!is.null(re)) {
     coefs <- coefs %>%
       dplyr::filter(group_var == re)
+  }
+
+  if (!is.null(component)) {
+    coefs <- coefs %>%
+      dplyr::filter(grepl(group_var, pattern = paste0('__', component, '$')))
   }
 
   coefs %>%

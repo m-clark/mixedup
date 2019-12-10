@@ -203,7 +203,21 @@ test_that('extract_fixed_effects.brmsfit exponentiates', {
 })
 
 
-# TODO: test distributional models
+test_that('extract_fixed_effects.brmsfit basic functionality: multivariate model', {
+  init = extract_fixed_effects(brm_mv, component = 'back', ci_level = .8, digits = 2)
+  expect_match(init$term, 'back')
+})
+
+test_that('extract_fixed_effects.brmsfit basic functionality: autocor model', {
+  expect_s3_class(extract_fixed_effects(brm_corAR, ci_level = .8, digits = 2),
+                  'data.frame')
+})
+
+test_that('extract_fixed_effects.brmsfit basic functionality: zi model', {
+  init = extract_fixed_effects(brm_zi, component = 'zi', ci_level = .8, digits = 2)
+  expect_match(init$term, 'zi')
+})
+
 
 
 # Test mgcv ---------------------------------------------------------------
