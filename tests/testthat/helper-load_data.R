@@ -80,8 +80,8 @@ load('tmb_cor_struct_results.RData')
 
 # couldn't get corresponding brms model to run. This follows the vignette
 # example.
+# set.seed(1234)
 # simGroup <- function(g, n = 6) {
-#   set.seed(1234)
 #   x <- MASS::mvrnorm(mu = rep(0, n),
 #                      Sigma = .7 ^ as.matrix(dist(1:n)))    ## Simulate the process
 #   y <- x + rnorm(n)                               ## Add measurement noise
@@ -91,18 +91,36 @@ load('tmb_cor_struct_results.RData')
 # }
 #
 # dat1 <- do.call("rbind", lapply(1:100, simGroup))
-#
+# dat1$times_coord = numFactor(dat1$times)
+# dat1$group2 <- rep(1:200, e =3)
 #
 # tmb_ar <- glmmTMB(y ~ ar1(times + 0 | group), data = dat1)
 # tmb_us <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + us(times + 0 | group))
 # tmb_toep <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + toep(times + 0 | group))
 # tmb_cs <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + cs(times + 0 | group))
+# tmb_diag <- suppressWarnings(update(tmb_ar, . ~ . - ar1(times + 0 | group) + diag(times + 0 | group)))
+# tmb_ou <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + ou(times_coord + 0 | group))
+# tmb_mat <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + mat(times_coord + 0 | group))
+# tmb_gau <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + gau(times_coord + 0 | group))
+# tmb_exp <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + exp(times_coord + 0 | group))
+#
+# tmb_ar_2grp <- update(tmb_ar, . ~ . + ar1(times + 0 | group2))
+# tmb_diag_2grp <- update(tmb_diag, . ~ . + diag(times + 0 | group2))
+# tmb_gau_2grp <- update(tmb_gau, . ~ . + gau(times_coord + 0 | group2))
 #
 # save(
 #   tmb_ar,
 #   tmb_us,
 #   tmb_toep,
 #   tmb_cs,
+#   tmb_diag,
+#   tmb_ou,
+#   tmb_mat,
+#   tmb_gau,
+#   tmb_exp,
+#   tmb_ar_2grp,
+#   tmb_diag_2grp,
+#   tmb_gau_2grp,
 #   file = 'tests/testthat/tmb_cor_struct_results.RData'
 # )
 

@@ -181,9 +181,9 @@ extract_random_coefs(lmer_model)
 
 extract_vc(brm_model, ci_level = .8)
      group    effect variance     sd  sd_10  sd_90 var_prop
-1  Subject Intercept  716.496 26.767 18.757 35.717     0.50
-2  Subject      Days   43.301  6.580  4.816  8.554     0.03
-3 Residual            672.946 25.941 23.982 27.936     0.47
+1  Subject Intercept  706.729 26.584 18.580 35.233    0.498
+2  Subject      Days   42.301  6.504  4.858  8.383    0.030
+3 Residual            671.212 25.908 23.997 27.944    0.473
 
 summarize_model(lmer_model, cor_re = TRUE, digits = 1)
 Computing profile confidence intervals ...
@@ -220,25 +220,25 @@ find_typical(gam_model, probs = c(.25, .50, .75))
 ### Consistent output
 
 ``` r
-vc = list(
-  tmb  = extract_vc(tmb_model),
-  lmer = extract_vc(lmer_model), 
-  brm  = extract_vc(brm_model),
-  gam  = extract_vc(gam_model)
+mods = list(
+  tmb  = tmb_model,
+  lmer = lmer_model, 
+  brm  = brm_model,
+  gam  = gam_model
 )
-Computing profile confidence intervals ...
 
-dplyr::bind_rows(vc, .id = 'model')
+purrr::map_df(mods, extract_vc, .id = 'model') 
+Computing profile confidence intervals ...
    model    group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1    tmb  Subject Intercept  565.515 23.781 15.017  37.658    0.451
+1    tmb  Subject Intercept  565.516 23.781 15.017  37.658    0.451
 2    tmb  Subject      Days   32.682  5.717  3.805   8.588    0.026
 3    tmb Residual            654.941 25.592 22.800  28.725    0.523
-4   lmer  Subject Intercept  611.898 24.737 14.382  37.716    0.470
-5   lmer  Subject      Days   35.081  5.923  3.801   8.753    0.027
+4   lmer  Subject Intercept  611.898 24.737 14.382  37.714    0.470
+5   lmer  Subject      Days   35.081  5.923  3.801   8.754    0.027
 6   lmer Residual            654.941 25.592 22.898  28.858    0.503
-7    brm  Subject Intercept  716.496 26.767 15.268  42.905    0.500
-8    brm  Subject      Days   43.301  6.580  4.148  10.042    0.030
-9    brm Residual            672.946 25.941 23.079  29.232    0.470
+7    brm  Subject Intercept  706.729 26.584 15.330  42.324    0.498
+8    brm  Subject      Days   42.301  6.504  4.228   9.821    0.030
+9    brm Residual            671.212 25.908 23.064  29.228    0.473
 10   gam  Subject Intercept  627.571 25.051 16.085  39.015    0.477
 11   gam  Subject      Days   35.858  5.988  4.025   8.908    0.027
 12   gam Residual            653.582 25.565 22.792  28.676    0.496

@@ -7,19 +7,30 @@
 #'
 #' @param ci_level confidence level < 1, typically above 0.90. A value of 0 will
 #'   not report it. Default is .95.
+#' @param which_cor Required for glmmTMB.  Which correlation parameter to
+#'   extract. Must be one of 'ar1', 'ou', 'cs', 'toep', or 'us'.
+#' @param full_matrix For glmmTMB correlation, return the full residual
+#'   covariance/correlation matrix (`TRUE`), or simplified output where possible
+#'   (`FALSE`). Default is `FALSE`. See details.
+#'
+#'
 #'
 #' @details This function applies to models with residual correlation, i.e. that
 #'   contain something like corAR1(form = ~time) for \code{nlme} or \code{brms}
 #'   models with an \code{autocor} argument.  This functions extracts the
 #'   associated parameters (e.g. `Phi` in nlme, `ar[1]` in brms, etc.)
 #'
-#' For more detail, see this
-#' \href{https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html}{'braindump'
-#' from Ben Bolker}, and
-#' \href{https://cran.r-project.org/web/packages/glmmTMB/vignettes/covstruct.html}
-#' the glmmTMB vignette.
+#'   For glmmTMB objects, rather than the full matrix, simplified output is
+#'   provided by default. For `ar1`, `ou`, `cs`, a single value; for `toep`
+#'   (toeplitz) a single row/column; for `diag` structures just the diagonal.
 #'
-#' Most types of spatial models should work as well.
+#'   For more detail, see this \href{https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html}{'braindump'
+#' from Ben Bolker}, and the
+#' \href{https://cran.r-project.org/web/packages/glmmTMB/vignettes/covstruct.html}{glmmTMB
+#' vignette}.
+#'
+#'   Most types of spatial models should work as well.
+#'
 #'
 #' @return For nlme models, a data frame of the estimates. For brms, the
 #'   parameters and related uncertainty, similar to
@@ -46,8 +57,8 @@ extract_cor_structure <- function(
   digits = 3,
   ...
 ) {
-  if (!inherits(model, c('lme', 'brmsfit')))
-    stop('This only works for model objects from nlme and brms at present.')
+  if (!inherits(model, c('lme', 'brmsfit', 'glmmTMB')))
+    stop('This only works for model objects from nlme, brms, and glmmTMB.')
 
   UseMethod('extract_cor_structure')
 }
@@ -133,34 +144,62 @@ extract_cor_structure.brmsfit <- function(
 }
 
 
-#' #' @importFrom
-#' extract_cor_structure.glmmTMB <- function(
-#'   model,
-#'   digits = 3,
-#'   ...,
-#'   component = 'cond',
-#'   which_cor = NULL
-#' ) {
-#'
-#'   if (is.null(which_cor))
-#'     stop('Specify which_cor: ar1, cs, toep, or us.')
-#'
-#'   cor_init  <- summary(model)[['varcor']][[component]]
-#'
-#'   if (which_cor == 'diag')
-#'     cor_mats  <- purrr::map(cor_init, function(x) diag(attr(x, 'stddev')))
-#'   else
-#'     cor_mats  <- purrr::map(cor_init, function(x) attr(x, 'correlation'))
-#'
-#'   cor_types <- purrr::map(cor_init, function(x) names(attr(x, 'blockCode')))
-#'   extract <- which(unlist(cor_types) == which_cor)
-#'
-#'   if(purrr::is_empty(extract)) {
-#'     stop('No match between which_cor and model output.')
-#'   } else {
-#'     cor_par <- cor_mats[[extract]]
-#'   }
-#'
-#'   cor_par
-#'
-#' }
+#' @importFrom purrr is_empty
+#' @export
+extract_cor_structure.glmmTMB <- function(
+  model,
+  digits = 3,
+  ...,
+  component = 'cond',
+  which_cor,
+  full_matrix = FALSE
+) {
+
+
+  if (
+    purrr::is_empty(which_cor) |
+    !which_cor %in% c('ar1', 'ou', 'cs', 'toep', 'us', 'diag', 'mat', 'exp', 'gau')
+  )
+    stop('which_cor must be one of ar1, ou, cs, toep, us, or diag.')
+
+  cor_init  <- glmmTMB::VarCorr(model)[[component]]
+
+  if (which_cor == 'diag')
+    cor_mats <- purrr::map(cor_init, function(x) diag(attr(x, 'stddev')))
+  else
+    cor_mats <- purrr::map(cor_init, function(x) attr(x, 'correlation'))
+
+  cor_types <- purrr::map(cor_init, function(x) names(attr(x, 'blockCode')))
+
+  extract <- which(unlist(cor_types) == which_cor)
+
+  # in case an incorrect which_cor is supplied
+  if(purrr::is_empty(extract)) {
+    stop('No match between which_cor and model output.')
+  } else {
+    cor_par <- cor_mats[extract]
+  }
+
+  # extact first value when rest are determined
+  if (!full_matrix) {
+    if (which_cor %in% c('ar1', 'ou', 'cs')) {
+      cor_par <- purrr::map_df(cor_par, function(x)
+        round(x[1, 2], digits = digits)) %>%
+        dplyr::mutate(parameter = which_cor) %>%
+        dplyr::select(parameter, dplyr::everything())
+    }
+    # similar for diagonal
+    else if (which_cor ==  'diag') {
+      cor_par <- purrr::map_df(cor_par, function(x)
+        round(as.data.frame(t(diag(x))), digits = digits), .id = 'group')
+    }
+    # and toeplitz/spatial
+    else if (which_cor %in%  c('toep', 'exp', 'mat', 'gau')) {
+      cor_par <- purrr::map_df(cor_par, function(x)
+        round(data.frame(x[1, , drop = FALSE]), digits = digits), .id = 'group')
+    }
+  }
+
+  cor_par
+
+}

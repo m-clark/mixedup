@@ -126,14 +126,14 @@ find_typical(gam_model, probs = c(.25, .50, .75))
 ### Consistent output
 
 ```{r samestuff}
-vc = list(
-  tmb  = extract_vc(tmb_model),
-  lmer = extract_vc(lmer_model), 
-  brm  = extract_vc(brm_model),
-  gam  = extract_vc(gam_model)
+mods = list(
+  tmb  = tmb_model,
+  lmer = lmer_model, 
+  brm  = brm_model,
+  gam  = gam_model
 )
 
-dplyr::bind_rows(vc, .id = 'model')
+purrr::map_df(mods, extract_vc, .id = 'model') 
 ```
 
 

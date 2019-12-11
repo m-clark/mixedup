@@ -21,6 +21,13 @@ extract_cor_structure(model, digits = 3, ...)
 
 \item{ci_level}{confidence level < 1, typically above 0.90. A value of 0 will
 not report it. Default is .95.}
+
+\item{which_cor}{Required for glmmTMB.  Which correlation parameter to
+extract. Must be one of 'ar1', 'ou', 'cs', 'toep', or 'us'.}
+
+\item{full_matrix}{For glmmTMB correlation, return the full residual
+covariance/correlation matrix (\code{TRUE}), or simplified output where possible
+(\code{FALSE}). Default is \code{FALSE}. See details.}
 }
 \value{
 For nlme models, a data frame of the estimates. For brms, the
@@ -37,9 +44,14 @@ contain something like corAR1(form = ~time) for \code{nlme} or \code{brms}
 models with an \code{autocor} argument.  This functions extracts the
 associated parameters (e.g. \code{Phi} in nlme, \code{ar[1]} in brms, etc.)
 
-For more detail, see this
-\href{https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html}{'braindump'
-from Ben Bolker}.
+For glmmTMB objects, rather than the full matrix, simplified output is
+provided by default. For \code{ar1}, \code{ou}, \code{cs}, a single value; for \code{toep}
+(toeplitz) a single row/column; for \code{diag} structures just the diagonal.
+
+For more detail, see this \href{https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html}{'braindump'
+from Ben Bolker}, and the
+\href{https://cran.r-project.org/web/packages/glmmTMB/vignettes/covstruct.html}{glmmTMB
+vignette}.
 
 Most types of spatial models should work as well.
 }
@@ -55,5 +67,7 @@ brm_corAR <- brm(
   cores = 4,
   thin = 40
 )
+
+extract_cor_structure(brm_corAR)
 }
 }
