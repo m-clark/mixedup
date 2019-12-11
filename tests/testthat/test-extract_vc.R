@@ -110,34 +110,34 @@ test_that('extract_vc.merMod works with ci_scale = var', {
 context('test extract_vc.glmmTMB')
 
 
-test_that('extract_vc basic functionality: random intercept only', {
+test_that('extract_vc.glmmTMB basic functionality: random intercept only', {
   expect_s3_class(extract_vc(tmb_1, ci_level = 0), 'data.frame')
 })
 
-test_that('extract_vc basic functionality: random slopes', {
+test_that('extract_vc.glmmTMB basic functionality: random slopes', {
   expect_s3_class(extract_vc(tmb_2, ci_level = 0), 'data.frame')
 })
 
-test_that('extract_vc basic functionality: multiple grouping factors', {
+test_that('extract_vc.glmmTMB basic functionality: multiple grouping factors', {
   expect_s3_class(extract_vc(tmb_3, ci_level = 0), 'data.frame')
 })
 
-test_that('extract_vc basic functionality: ints/slopes with multiple grouping factors', {
+test_that('extract_vc.glmmTMB basic functionality: ints/slopes with multiple grouping factors', {
   expect_s3_class(extract_vc(tmb_4, ci_level = 0), 'data.frame')
 })
 
-test_that('extract_vc basic functionality: ints/slopes with multiple grouping factors', {
+test_that('extract_vc.glmmTMB basic functionality: ints/slopes with multiple grouping factors', {
   expect_s3_class(extract_vc(tmb_zip, component = 'zi'), 'data.frame')
 })
 
 
-test_that('extract_vc.merMod basic functionality: correct results', {
+test_that('extract_vc.glmmTMB basic functionality: correct results', {
   raw_output = c(attr(VarCorr(tmb_1)[['cond']][[1]], 'stddev'), attr(VarCorr(tmb_1)[['cond']], 'sc'))
   names(raw_output) = NULL
   expect_equal(extract_vc(tmb_1, ci_level = 0, digits = 10)$sd, raw_output)
 })
 
-test_that('extract_vc.merMod basic functionality: correct results', {
+test_that('extract_vc.glmmTMB basic functionality: correct results', {
   raw_output = c(attr(VarCorr(tmb_2)[['cond']][[1]], 'stddev'), attr(VarCorr(tmb_2)[['cond']], 'sc'))
   names(raw_output) = NULL
   expect_equal(extract_vc(tmb_2, ci_level = 0, digits = 10)$sd, raw_output)
@@ -165,6 +165,11 @@ test_that('extract_vc.glmmTMB works with ci_scale = var', {
 
   expect_type(extract_vc(tmb_1, ci_scale = 'var')$var_2.5, 'double')
   expect_type(extract_vc(tmb_1, ci_scale = 'sd')$sd_2.5, 'double')
+})
+
+
+test_that('extract_vc.glmmTMB errors with wrong component', {
+  expect_error(extract_vc(tmb_disp, component = 'disp'))
 })
 
 

@@ -8,10 +8,9 @@
 #' @param ci_level Where possible, confidence level < 1, typically above 0.90. A
 #'   value of 0 will not report it. Default is .95. Not applicable to nlme
 #'   objects.
-#' @param component For glmmTMB objects, which of the three
-#'   components 'cond', 'zi' or 'other' to select for a glmmTMB model. Default
-#'   is 'cond'. Minimal testing on other options. For brmsfit objects, this can
-#'   filter results to a certain part of the output, e.g. 'sigma' or 'zi' of
+#' @param component For glmmTMB objects, which of the two components 'cond' or
+#'   'zi' to select. Default is 'cond'. For brmsfit objects, this can filter
+#'   results to a certain part of the output, e.g. 'sigma' or 'zi' of
 #'   distributional models, or a specific outcome of a multivariate model.  In
 #'   this case \code{component} is a regular expression that ends the name of
 #'   the parameters of the output (e.g. '__component').
@@ -153,6 +152,10 @@ extract_random_effects.glmmTMB <- function(
 
   if (!is_package_installed('glmmTMB'))
     stop('glmmTMB package required', call. = FALSE)
+
+  if (!component %in% c('cond', 'zi')) {
+    stop('component must be one of "cond" or "zi".')
+  }
 
   # add check on re name
   all_re_names <- names(glmmTMB::ranef(model)[[component]])

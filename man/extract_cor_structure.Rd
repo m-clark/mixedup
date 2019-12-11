@@ -4,6 +4,7 @@
 \alias{extract_cor_structure}
 \alias{extract_cor_structure.lme}
 \alias{extract_cor_structure.brmsfit}
+\alias{extract_cor_structure.glmmTMB}
 \title{Extract correlation structure}
 \usage{
 extract_cor_structure(model, digits = 3, ...)
@@ -11,6 +12,15 @@ extract_cor_structure(model, digits = 3, ...)
 \method{extract_cor_structure}{lme}(model, digits = 3, ...)
 
 \method{extract_cor_structure}{brmsfit}(model, digits = 3, ..., ci_level = 0.95)
+
+\method{extract_cor_structure}{glmmTMB}(
+  model,
+  digits = 3,
+  ...,
+  component = "cond",
+  which_cor,
+  full_matrix = FALSE
+)
 }
 \arguments{
 \item{model}{An appropriate mixed model}
@@ -21,6 +31,9 @@ extract_cor_structure(model, digits = 3, ...)
 
 \item{ci_level}{confidence level < 1, typically above 0.90. A value of 0 will
 not report it. Default is .95.}
+
+\item{component}{For glmmTMB objects, which of the three components 'cond',
+'zi' or 'disp' to select. Default is 'cond'.}
 
 \item{which_cor}{Required for glmmTMB.  Which correlation parameter to
 extract. Must be one of 'ar1', 'ou', 'cs', 'toep', or 'us'.}
@@ -47,6 +60,7 @@ associated parameters (e.g. \code{Phi} in nlme, \code{ar[1]} in brms, etc.)
 For glmmTMB objects, rather than the full matrix, simplified output is
 provided by default. For \code{ar1}, \code{ou}, \code{cs}, a single value; for \code{toep}
 (toeplitz) a single row/column; for \code{diag} structures just the diagonal.
+In addition, for \code{diag} the residual variance is added to the estimates.
 
 For more detail, see this \href{https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html}{'braindump'
 from Ben Bolker}, and the

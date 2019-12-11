@@ -32,7 +32,7 @@ regarding the variances that many do not know what to do with, nor likely
 would be what they would want to report. I rarely do these models with
 nlme, and have only played around with the \code{varIdent} case.
 
-For glmmTMB, this serves as a wrapper for extract_cor_struct with for the
+For glmmTMB, this serves as a wrapper for \link{extract_cor_structure} with for the
 diagonal case.  See that function for details.
 }
 \examples{
@@ -49,11 +49,14 @@ extract_het_var(model)
 library(glmmTMB)
 
 # does not get the same estimates as nlme, but would get similar if modeled
-using dispersion approach.
+# using dispersion approach.
 model <-
   glmmTMB(distance ~ age + Sex + (1 | Subject) + diag(Sex + 0 | Subject),
           data = Orthodont)
 
 extract_het_var(model)
 
+}
+\seealso{
+\link{extract_cor_structure}
 }

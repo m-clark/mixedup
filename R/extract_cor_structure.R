@@ -12,8 +12,8 @@
 #' @param full_matrix For glmmTMB correlation, return the full residual
 #'   covariance/correlation matrix (`TRUE`), or simplified output where possible
 #'   (`FALSE`). Default is `FALSE`. See details.
-#'
-#'
+#' @param component For glmmTMB objects, which of the three components 'cond',
+#'   'zi' or 'disp' to select. Default is 'cond'.
 #'
 #' @details This function applies to models with residual correlation, i.e. that
 #'   contain something like corAR1(form = ~time) for \code{nlme} or \code{brms}
@@ -147,6 +147,7 @@ extract_cor_structure.brmsfit <- function(
 
 #' @importFrom purrr is_empty
 #' @export
+#' @rdname extract_cor_structure
 extract_cor_structure.glmmTMB <- function(
   model,
   digits = 3,
@@ -155,7 +156,6 @@ extract_cor_structure.glmmTMB <- function(
   which_cor,
   full_matrix = FALSE
 ) {
-
 
   if (
     purrr::is_empty(which_cor) |

@@ -67,6 +67,8 @@ load('tmb_cor_struct_results.RData')
 #   data = Salamanders
 # )
 #
+# tmb_disp <- update(tmb_2, . ~ ., dispformula =  ~Days)
+#
 # save(
 #   tmb_0,
 #   tmb_1,
@@ -74,9 +76,9 @@ load('tmb_cor_struct_results.RData')
 #   tmb_3,
 #   tmb_4,
 #   tmb_zip,
+#   tmb_disp,
 #   file = 'tests/testthat/tmb_results.RData'
 # )
-
 
 # couldn't get corresponding brms model to run. This follows the vignette
 # example.

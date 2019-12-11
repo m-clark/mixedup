@@ -57,10 +57,9 @@ objects.}
 
 \item{digits}{Rounding. Default is 3.}
 
-\item{component}{For glmmTMB objects, which of the three
-components 'cond', 'zi' or 'other' to select for a glmmTMB model. Default
-is 'cond'. Minimal testing on other options. For brmsfit objects, this can
-filter results to a certain part of the output, e.g. 'sigma' or 'zi' of
+\item{component}{For glmmTMB objects, which of the two components 'cond' or
+'zi' to select. Default is 'cond'. For brmsfit objects, this can filter
+results to a certain part of the output, e.g. 'sigma' or 'zi' of
 distributional models, or a specific outcome of a multivariate model.  In
 this case \code{component} is a regular expression that ends the name of
 the parameters of the output (e.g. '__component').}

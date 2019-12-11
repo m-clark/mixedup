@@ -10,12 +10,12 @@
 #' @param ci_args Additional arguments to the corresponding confint method.
 #' @param ci_scale A character string of 'sd' or 'var' to note the scale of the
 #'   interval estimate.  Default is 'sd'. at present.
-#' @param component For glmmTMB objects, which of the three components 'cond',
-#'   'zi' or 'other' to select. Default is cond. Minimal testing on other
-#'   options. For brmsfit objects, this can filter results to a certain part of
-#'   the output, e.g. 'sigma' or 'zi' of distributional models, or a specific
-#'   outcome of a multivariate model.  In this case \code{component} is a
-#'   regular expression that begins parameters of the output.
+#' @param component For glmmTMB objects, which of the three components 'cond' or
+#'   'zi' to select. Default is 'cond'.  For brmsfit objects, this can filter
+#'   results to a certain part of the output, e.g. 'sigma' or 'zi' of
+#'   distributional models, or a specific outcome of a multivariate model.  In
+#'   this case \code{component} is a regular expression that begins parameters
+#'   of the output.
 #' @param show_cor Return the intercept/slope correlations as a separate list
 #'   element. Default is \code{FALSE}.
 #' @param digits Rounding. Default is 3.
@@ -175,6 +175,11 @@ extract_vc.glmmTMB <- function(
   ...
 ) {
   vc_mat <- glmmTMB::VarCorr(model)[[component]]
+
+  # no re allowed for dispersion formula
+  if (!component %in% c('cond', 'zi')) {
+    stop('component must be one of "cond" or "zi".')
+  }
 
   # make dataframe and add names
   variance <- purrr::map(vc_mat, diag)

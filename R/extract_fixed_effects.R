@@ -122,8 +122,8 @@ extract_fixed_effects.glmmTMB <-
     ...
   ) {
 
-    if (!component %in% c('cond', 'zi', 'other')) {
-      stop('component must be one of "cond", "zi", "other".')
+    if (!component %in% c('cond', 'zi', 'disp')) {
+      stop('component must be one of "cond", "zi", "disp".')
     }
 
     # if don't use summary.glmmTMB, will fail if glmmTMB not loaded, but it's

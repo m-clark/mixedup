@@ -83,6 +83,11 @@ test_that('extract_random_effects errors with bad re name', {
   expect_error(extract_random_effects(tmb_zip, re = 'Site'))
 })
 
+test_that('extract_random_effects errors with wrong cond', {
+  expect_error(extract_random_effects(tmb_disp, re = 'site', component = 'disp'))
+})
+
+
 
 # nlme --------------------------------------------------------------------
 
