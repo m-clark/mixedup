@@ -25,6 +25,9 @@ utils::globalVariables(
     'se_fe',
     'value_fe',
     'std.dev',
-    'parameter'
+    'parameter',
+    'mcse',
+    'n_eff',
+    'Rhat'
   )
 )

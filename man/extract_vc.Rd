@@ -6,6 +6,7 @@
 \alias{extract_vc.glmmTMB}
 \alias{extract_vc.lme}
 \alias{extract_vc.brmsfit}
+\alias{extract_vc.stanreg}
 \alias{extract_vc.gam}
 \title{Extract variance components}
 \usage{
@@ -52,6 +53,17 @@ extract_vc(
 )
 
 \method{extract_vc}{brmsfit}(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  ci_scale = "sd",
+  show_cor = FALSE,
+  digits = 3,
+  component = NULL,
+  ...
+)
+
+\method{extract_vc}{stanreg}(
   model,
   ci_level = 0.95,
   ci_args = NULL,
@@ -130,5 +142,6 @@ extract_vc(lmer_mod, ci_scale = 'var')
 \code{\link[nlme:intervals]{intervals}},
 \code{\link[nlme:VarCorr]{VarCorr.lme}},
 \code{\link[brms:VarCorr]{VarCorr.brmsfit}}
+\code{\link[rstanarm:VarCorr]{VarCorr.stanreg}}
 \code{\link[mgcv:gam.vcomp]{gam.vcomp}}
 }

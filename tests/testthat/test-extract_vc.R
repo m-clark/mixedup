@@ -276,8 +276,7 @@ test_that('extract_vc.merMod basic functionality: correct results', {
 
 test_that('extract_vc.brmsfit returns correlation', {
   init = extract_vc(brm_2, ci_level = 0, show_cor = TRUE)$Cor[[1]]
-  expect_equal(dim(init),
-               c(2, 2))
+  expect_equal(dim(init), c(2, 2))
 })
 
 test_that('extract_vc.brmsfit returns correlation', {
@@ -316,6 +315,77 @@ test_that('extract_vc.brmsfit basic functionality: zi model', {
   init = extract_vc(brm_zi, component = 'zi', ci_level = .8, digits = 2)
   expect_match(init$effect, 'zi')
 })
+
+
+# Test rstanarm ---------------------------------------------------------------
+
+
+context('test extract_vc.stanreg')
+
+test_that('extract_vc.stanreg basic functionality: random intercept only', {
+  expect_s3_class(extract_vc(stan_glmer_1), 'data.frame')
+})
+
+test_that('extract_vc.stanreg basic functionality: random slopes', {
+  expect_s3_class(extract_vc(stan_glmer_2), 'data.frame')
+})
+
+test_that('extract_vc.stanreg basic functionality: multiple grouping factors', {
+  expect_s3_class(extract_vc(stan_glmer_3), 'data.frame')
+})
+
+test_that('extract_vc.stanreg basic functionality: ints/slopes with multiple grouping factors', {
+  expect_equivalent(unique(extract_vc(stan_glmer_4)$group), c('country', 'continent', 'Residual'))
+  expect_equivalent(unique(extract_vc(stan_glmer_4)$effect), c('Intercept', 'year', ''))
+})
+
+test_that('extract_vc.merMod basic functionality: correct results', {
+  raw_output = attr(VarCorr(stan_glmer_1)[[1]], 'stddev')
+  names(raw_output) = NULL
+  expect_equal(extract_vc(stan_glmer_1, digits = 10)$sd[1], raw_output)
+})
+
+test_that('extract_vc.merMod basic functionality: correct results', {
+  raw_output = attr(VarCorr(stan_glmer_2)[[1]], 'stddev')
+  names(raw_output) = NULL
+  expect_equal(extract_vc(stan_glmer_2, digits = 10)$sd[1:2], raw_output)
+})
+
+
+test_that('extract_vc.stanreg returns correlation', {
+  init = extract_vc(stan_glmer_2, show_cor = TRUE)$Cor[[1]]
+  expect_equal(dim(init), c(2, 2))
+})
+
+test_that('extract_vc.stanreg returns correlation', {
+  init = extract_vc(stan_glmer_4, ci_level = 0, show_cor = TRUE)$Cor
+
+  expect_type(init, 'list')
+
+  dims = lapply(init, dim)
+
+  expect_equal(dims$continent, c(2, 2))
+  expect_equal(dims$country, c(2, 2))
+})
+
+
+test_that('extract_vc.stanreg works with ci_scale = var', {
+
+  expect_type(extract_vc(stan_glmer_1, ci_scale = 'var')$var_2.5, 'double')
+  expect_type(extract_vc(stan_glmer_1, ci_scale = 'sd')$sd_2.5, 'double')
+})
+
+
+test_that('extract_vc.stanreg basic functionality: non-gaussian', {
+  expect_equal(nrow(extract_vc(stan_glmer_glm)), 1)  # no residual var
+})
+
+# Not yet implemented.
+# test_that('extract_vc.stanreg basic functionality: multivariate model', {
+#   init = extract_vc(stan_glmer_mv, component = 'back', ci_level = .8, digits = 2)
+#   expect_match(init$effect, 'back')
+# })
+
 
 
 

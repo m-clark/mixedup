@@ -444,19 +444,11 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 
 
 load('rstanarm_results.RData')
-
+#
+#
+#
 # library(rstanarm)
 #
-#
-#
-# stan_glmer_glm <- stan_glmer(
-#   count ~ zAge + zBase * Trt + (1 | patient),
-#   data = epilepsy,
-#   family = poisson(),
-#   prior = student_t(5,0,10),
-#   cores = 4,
-#   thin  = 40
-# )
 #
 # stan_glmer_0 <-
 #   stan_glmer(
@@ -467,25 +459,9 @@ load('rstanarm_results.RData')
 #     thin  = 40
 #   )
 #
-# stan_glmer_1 <-
-#   stan_glmer(
-#     Reaction ~ Days + (1 | Subject),
-#     data = lme4::sleepstudy,
-#     prior = normal(0, 10),
-#     cores = 4,
-#     thin  = 40
-#   )
+# stan_glmer_1 <- update(stan_glmer_0, .~.+ Days)
 #
-# stan_glmer_2 <-
-#   stan_glmer(
-#     Reaction ~ Days + (1 + Days | Subject),
-#     data = lme4::sleepstudy,
-#     prior = normal(0, 10),
-#     cores = 4,
-#     thin  = 40
-#   )
-#
-#
+# stan_glmer_2 <- update(stan_glmer_1, .~. - (1 | Subject) + (1 + Days | Subject))
 #
 # # more complex models just for testing (changed from others to minimize nparameters/object size)
 # stan_glmer_3 <-
@@ -514,6 +490,16 @@ load('rstanarm_results.RData')
 #     cores = 4,
 #     thin  = 40
 #   )
+#
+# stan_glmer_glm <- stan_glmer(
+#   count ~ zAge + zBase * Trt + (1 | patient),
+#   data = epilepsy,
+#   family = poisson(),
+#   prior = student_t(5,0,10),
+#   cores = 4,
+#   thin  = 40
+# )
+#
 # stan_glmer_mv <-
 #   stan_mvmer(
 #     formula = list(logBili ~ year + (1 | id),
@@ -522,6 +508,7 @@ load('rstanarm_results.RData')
 #     cores = 4,
 #     thin = 40
 #   )
+#
 #
 # save(
 #   stan_glmer_glm,

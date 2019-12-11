@@ -37,6 +37,7 @@
 #'   \code{\link[nlme:intervals]{intervals}},
 #'   \code{\link[nlme:VarCorr]{VarCorr.lme}},
 #'   \code{\link[brms:VarCorr]{VarCorr.brmsfit}}
+#'   \code{\link[rstanarm:VarCorr]{VarCorr.stanreg}}
 #'   \code{\link[mgcv:gam.vcomp]{gam.vcomp}}
 #'
 #' @examples
@@ -60,9 +61,8 @@ extract_vc <- function(
   component = 'cond',
   ...
 ) {
-  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'brmsfit')))
-    stop('This only works for model objects from lme4, glmmTMB, brms,
-         mgcv, and nlme.')
+  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'brmsfit', 'stanreg')))
+    stop('This model is not supported.')
 
   if (ci_level < 0 | ci_level >= 1)
     stop('Nonsensical confidence level for ci_level.  Must be between 0 and 1.')
@@ -85,11 +85,14 @@ extract_vc.merMod <- function(
   # component,
   ...
 ) {
+
   vc_mat <- lme4::VarCorr(model)
 
   # make dataframe and add names
   vc <- data.frame(vc_mat)
+
   colnames(vc) <- c('group', 'effect', 'effect_2', 'variance', 'sd')
+
   vc <- vc %>%
     data.frame() %>%
     dplyr::filter(is.na(effect) | is.na(effect_2))
@@ -492,6 +495,92 @@ extract_vc.brmsfit <- function(
 
   vc
 }
+
+
+#' @export
+#' @rdname extract_vc
+extract_vc.stanreg <- function(
+  model,
+  ci_level = .95,
+  ci_args = NULL,
+  ci_scale = 'sd',
+  show_cor = FALSE,
+  digits = 3,
+  component = NULL,
+  ...
+) {
+
+  vc_mat <- rstanarm::VarCorr(model)
+
+  if (inherits(model, 'stanmvreg')) {
+    message("Multivariate models not yet supported. VarCorr object returned.")
+    return(vc_mat)
+  }
+
+  # make dataframe and add names
+  vc <- data.frame(vc_mat)
+
+  colnames(vc) <- c('group', 'effect', 'effect_2', 'variance', 'sd')
+
+  vc <- vc %>%
+    dplyr::filter(is.na(effect) | is.na(effect_2))
+
+  # calculate CI; problem is that the names for objects containing the variance
+  # component intervals do not in any way match the names from the VarCorr
+  # object, and VarCorr doesn't provide interval estimates.
+
+  if (ci_level == 0) {
+    message('CI automatically provided for stanreg objects.
+    ci_level set to .9, feel free to change to another value.')
+    ci_level = .90
+  }
+
+  vc_ci <- rstanarm::posterior_interval(
+    model,
+    regex_pars = '^sigma$|^Sigma\\[',
+    prob = ci_level
+  )
+
+  # the horror of name cleaning/matching
+  vc_ci_clean = clean_rstanarm_vc(vc_ci, ci_level, ci_scale) %>%
+    dplyr::as_tibble()
+
+  if (ci_scale != 'var') {
+    vc_ci_clean <- vc_ci_clean %>%
+      dplyr::mutate_if(is.numeric, `^`, .5)
+  }
+
+  # cleanup/add to results
+  vc <- vc %>%
+    dplyr::mutate(
+      var_prop = variance / sum(variance),
+      effect   = gsub(effect, pattern = '[\\(,\\)]', replacement = ''),
+    )
+
+  vc <- vc %>%
+    dplyr::select(-effect_2) %>%
+    dplyr::mutate_if(is.character, function(x) ifelse(is.na(x), '', x)) %>%
+    dplyr::left_join(vc_ci_clean, by = c('group', 'effect'))
+
+  vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits) %>%
+    dplyr::select(-var_prop, dplyr::everything())
+
+  # deal with correlations
+  if (show_cor) {
+
+    cormats <- vc_mat %>%
+      purrr::map(attr, 'correlation') %>%
+      purrr::map(remove_parens) %>%
+      purrr::map(round, digits = digits)
+
+    return(list(`Variance Components` = vc, Cor = cormats))
+  }
+
+  vc
+
+}
+
+
 
 #' @rdname extract_vc
 #' @export

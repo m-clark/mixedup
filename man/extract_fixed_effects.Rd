@@ -6,6 +6,7 @@
 \alias{extract_fixed_effects.glmmTMB}
 \alias{extract_fixed_effects.lme}
 \alias{extract_fixed_effects.brmsfit}
+\alias{extract_fixed_effects.stanreg}
 \alias{extract_fixed_effects.gam}
 \title{Extract fixed effects}
 \usage{
@@ -47,6 +48,16 @@ extract_fixed_effects(
 )
 
 \method{extract_fixed_effects}{brmsfit}(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  digits = 3,
+  exponentiate = FALSE,
+  component = NULL,
+  ...
+)
+
+\method{extract_fixed_effects}{stanreg}(
   model,
   ci_level = 0.95,
   ci_args = NULL,

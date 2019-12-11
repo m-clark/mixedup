@@ -312,7 +312,7 @@ extract_fixed_effects.brmsfit <-
   }
 
 #' @export
-#' @rdName extract_fixed_effects
+#' @rdname extract_fixed_effects
 extract_fixed_effects.stanreg <-
   function(
     model,
@@ -336,9 +336,12 @@ extract_fixed_effects.stanreg <-
     upper <- 1 - lower
     probs <- c(lower, upper)
 
-    fe <- rstanarm:::summary.stanreg(model, pars = c('alpha', 'beta'), probs = probs)
-    fe <- data.frame(fe) %>%
-      select(-mcse, -n_eff, -Rhat)
+    model_summary <-
+      summary(model, pars = c('alpha', 'beta'), probs = probs)
+
+
+    fe <- data.frame(model_summary) %>%
+      dplyr::select(-mcse, -n_eff, -Rhat)
 
     colnames(fe)[3:4] = paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
 
