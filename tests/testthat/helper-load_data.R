@@ -3,7 +3,7 @@
 # all_mods  <- list.files('tests/testthat/', pattern = 'RData', full.names = T)
 # sapply(all_mods, load, envir = .GlobalEnv)
 #
-# some_mods <- list.files('tests/testthat/', pattern = '^tmb(.)*RData', full.names = T)
+# some_mods <- list.files('tests/testthat/', pattern = '^rstan(.)*RData', full.names = T)
 # sapply(some_mods, load, envir = .GlobalEnv)
 
 # Run lme4 models ---------------------------------------------------------
@@ -514,7 +514,14 @@ load('rstanarm_results.RData')
 #     cores = 4,
 #     thin  = 40
 #   )
-#
+# stan_glmer_mv <-
+#   stan_mvmer(
+#     formula = list(logBili ~ year + (1 | id),
+#                    albumin ~ sex + year + (year | id)),
+#     data = pbcLong,
+#     cores = 4,
+#     thin = 40
+#   )
 #
 # save(
 #   stan_glmer_glm,
@@ -524,6 +531,7 @@ load('rstanarm_results.RData')
 #   stan_glmer_3,
 #   stan_glmer_4,
 #   stan_glmer_5,
+#   stan_glmer_mv,
 #   file = 'tests/testthat/rstanarm_results.RData'
 # )
 

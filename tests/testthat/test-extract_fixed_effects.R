@@ -219,6 +219,52 @@ test_that('extract_fixed_effects.brmsfit basic functionality: zi model', {
 })
 
 
+# Test rstnarm ---------------------------------------------------------------
+
+
+context('test extract_fixed_effects.stanreg')
+
+test_that('extract_fixed_effects.stanreg basic functionality: random intercept only', {
+  expect_s3_class(extract_fixed_effects(stan_glmer_1), 'data.frame')
+})
+
+test_that('extract_fixed_effects.stanreg basic functionality: random slopes', {
+  expect_s3_class(extract_fixed_effects(stan_glmer_2), 'data.frame')
+})
+
+test_that('extract_fixed_effects.stanreg basic functionality: multiple grouping factors', {
+  expect_s3_class(extract_fixed_effects(stan_glmer_3), 'data.frame')
+})
+
+test_that('extract_fixed_effects.stanreg basic functionality: non-gaussian', {
+  expect_s3_class(extract_fixed_effects(stan_glmer_glm), 'data.frame')
+})
+
+test_that('extract_fixed_effects.stanreg handles digits', {
+  expect_s3_class(extract_fixed_effects(stan_glmer_3, digits = 2), 'data.frame')
+})
+
+test_that('extract_fixed_effects.stanreg will always provide ci', {
+  expect_message(extract_fixed_effects(stan_glmer_3, ci_level = 0))
+})
+
+
+test_that('extract_fixed_effects.stanreg exponentiates', {
+  exp_res = extract_fixed_effects(stan_glmer_glm, ci_level = .95, exponentiate = TRUE)
+  noexp_res = extract_fixed_effects(stan_glmer_glm, ci_level = .95)
+
+  expect_equal(exp_res$value[1],  exp(noexp_res$value[1]) )
+})
+
+# Not yet implemented
+# test_that('extract_fixed_effects.stanreg basic functionality: multivariate model', {
+#   init = extract_fixed_effects(stan_glmer_mv, component = 'back', ci_level = .8, digits = 2)
+#   expect_match(init$term, 'back')
+# })
+
+
+
+
 
 # Test mgcv ---------------------------------------------------------------
 

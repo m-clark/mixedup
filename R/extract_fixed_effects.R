@@ -35,9 +35,10 @@ extract_fixed_effects <- function(
   exponentiate = FALSE,
   ...
 ) {
-  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'brmsfit')))
-    stop('This only works for model objects from lme4, glmmTMB,
-         brms, mgcv, and nlme.')
+  if (!inherits(model,
+                c('merMod', 'glmmTMB', 'lme', 'gam', 'stanreg', 'brmsfit'))
+  )
+    stop('This is not a supported model type.')
 
   if (ci_level < 0 | ci_level >= 1)
     stop('Nonsensical confidence level for ci_level. Must be between 0 and 1.')
@@ -310,6 +311,66 @@ extract_fixed_effects.brmsfit <-
     fe
   }
 
+#' @export
+#' @rdName extract_fixed_effects
+extract_fixed_effects.stanreg <-
+  function(
+    model,
+    ci_level = .95,
+    ci_args = NULL,
+    digits = 3,
+    exponentiate = FALSE,
+    component = NULL,
+    ...
+  ) {
+
+    if (inherits(model, 'stanmvreg'))
+      stop('Multivariate models not supported yet.') # note pull y_vars attr from summary object as well as y* names
+
+    if (ci_level == 0) {
+      message('ci automatically provided for rstanarm fixed effects. Setting ci_level to .95.')
+      ci_level <- .95
+    }
+
+    lower <- (1 - ci_level)/2
+    upper <- 1 - lower
+    probs <- c(lower, upper)
+
+    fe <- rstanarm:::summary.stanreg(model, pars = c('alpha', 'beta'), probs = probs)
+    fe <- data.frame(fe) %>%
+      select(-mcse, -n_eff, -Rhat)
+
+    colnames(fe)[3:4] = paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
+
+    fe <- fe %>%
+      dplyr::rename(
+        value = mean,
+        se = sd
+      ) %>%
+      dplyr::mutate_all(round, digits = digits) %>%
+      dplyr::mutate(term = gsub(rownames(fe),
+                                pattern = '[\\(,\\)]',
+                                replacement = '')) %>%
+      dplyr::select(term, dplyr::everything()) %>%
+      dplyr::as_tibble()
+
+    if (exponentiate) {
+      fe <- fe %>%
+        dplyr::mutate_at(
+          dplyr::vars(dplyr::matches('^value|^low|^upp')),
+          exp
+        ) %>%
+        dplyr::mutate(se = se * value)
+    }
+
+    if (!is.null(component)) {
+      warning('component not yet implemented for stanreg objects. Ignoring.')
+      # fe <- fe %>%
+      #   dplyr::filter(grepl(term, pattern = paste0('^', component)))
+    }
+
+    fe
+  }
 
 #' @rdname extract_fixed_effects
 #' @export

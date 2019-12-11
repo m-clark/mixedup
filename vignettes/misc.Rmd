@@ -44,7 +44,7 @@ Miscellaneous functions are included to fill a need.
 
 ### Find typical values
 
-In many cases, predictions are made by holding the random effects to zero, which can be seen as the typical case. When the clusters carry substantive meaning, for example, school, country, or hospital, it might be of interest to note which are most 'typical', or at any other value relative to their peers.
+In many cases, predictions are made by holding the random effects to zero, which can be seen as the typical case. When the clusters carry substantive meaning, for example, school, country, or hospital, it might be of interest to note which are most 'typical', or at any other value relative to their peers.  This will work for any model to which `extract_random_effects` applies.
 
 ```{r typical}
 library(lme4)
@@ -60,7 +60,7 @@ find_typical(lmer_model, probs = c(.1, .9))
 
 ### Extract heterogeneous variances
 
-For this form of model only.  May include glmmTMB and/or brms at some point, and possibly extend to extract the AR coefficient for AR1 models.
+For `nlme`, only models with `varIdent` have been tested.  
 
 ```{r het-var}
 library(nlme)
@@ -76,9 +76,14 @@ extract_het_var(lme_1)
 ```
 
 
+May include `glmmTMB` and/or `brms` at some point, but for these, you can
+extract any parameters associated with sigma model for distributional models
+using the `component` argument of the other standard functions.
+
+
 ### Extract correlation structure
 
-With some packages one can estimate the residual correlation structure.  Right now this only works for nlme objects.
+With some packages one can estimate the residual correlation structure.  Right now this works for nlme and brms objects.
 
 ```{r cor-struct}
 base_model <-
