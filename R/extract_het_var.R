@@ -11,7 +11,14 @@
 #'   regarding the variances that many do not know what to do with, nor likely
 #'   would be what they would want to report. I rarely do these models with
 #'   nlme, and have only played around with the \code{varIdent} case.
+#'
+#'   For glmmTMB, this serves as a wrapper for \link{extract_cor_struct} with for the
+#'   diagonal case.  See that function for details.
+#'
 #' @return A vector of the estimates on the variance scale.
+#'
+#' @seealso \link{extract_cor_struct}
+#'
 #' @importFrom stats coef
 #'
 #' @examples
@@ -25,19 +32,30 @@
 #'
 #' extract_het_var(model)
 #'
+#' library(glmmTMB)
+#'
+#' # does not get the same estimates as nlme, but would get similar if modeled
+#' using dispersion approach.
+#' model <-
+#'   glmmTMB(distance ~ age + Sex + (1 | Subject) + diag(Sex + 0 | Subject),
+#'           data = Orthodont)
+#'
+#'extract_het_var(model)
+#'
 #' @export
 extract_het_var <- function(
   model,
   digits = 3,
   ...
 ) {
-  if (!inherits(model, c('lme')))
-    stop('This only works for model objects from nlme at present.')
+  if (!inherits(model, c('lme', 'glmmTMB')))
+    stop('This only works for model objects from nlme and glmmTMB at present.')
 
   UseMethod('extract_het_var')
 }
 
 #' @export
+#' @rdname extract_het_var
 extract_het_var.lme <- function(
   model,
   digits = 3,
@@ -56,4 +74,12 @@ extract_het_var.lme <- function(
     dplyr::mutate_if(is.numeric, round, digits = digits)
 }
 
-
+#' @export
+#' @rdname extract_het_var
+extract_het_var.glmmTMB <- function(
+  model,
+  digits = 3,
+  ...
+) {
+  extract_cor_structure(model, digits = digits, which_cor = 'diag', ...)
+}

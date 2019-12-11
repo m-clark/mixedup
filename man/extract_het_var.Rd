@@ -2,9 +2,15 @@
 % Please edit documentation in R/extract_het_var.R
 \name{extract_het_var}
 \alias{extract_het_var}
+\alias{extract_het_var.lme}
+\alias{extract_het_var.glmmTMB}
 \title{Extract heterogeneous variances}
 \usage{
 extract_het_var(model, digits = 3, ...)
+
+\method{extract_het_var}{lme}(model, digits = 3, ...)
+
+\method{extract_het_var}{glmmTMB}(model, digits = 3, ...)
 }
 \arguments{
 \item{model}{An appropriate mixed model}
@@ -25,6 +31,9 @@ like varIdent(form = ~1|Group), nlme returns a result in the summary
 regarding the variances that many do not know what to do with, nor likely
 would be what they would want to report. I rarely do these models with
 nlme, and have only played around with the \code{varIdent} case.
+
+For glmmTMB, this serves as a wrapper for extract_cor_struct with for the
+diagonal case.  See that function for details.
 }
 \examples{
 library(nlme)
@@ -34,6 +43,16 @@ model <- lme(distance ~ age + Sex, data = Orthodont, random = ~ 1|Subject,
 weights = varIdent(form = ~ 1 | Sex))
 
 summary(model)
+
+extract_het_var(model)
+
+library(glmmTMB)
+
+# does not get the same estimates as nlme, but would get similar if modeled
+using dispersion approach.
+model <-
+  glmmTMB(distance ~ age + Sex + (1 | Subject) + diag(Sex + 0 | Subject),
+          data = Orthodont)
 
 extract_het_var(model)
 

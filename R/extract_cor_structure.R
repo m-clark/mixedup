@@ -23,6 +23,7 @@
 #'   For glmmTMB objects, rather than the full matrix, simplified output is
 #'   provided by default. For `ar1`, `ou`, `cs`, a single value; for `toep`
 #'   (toeplitz) a single row/column; for `diag` structures just the diagonal.
+#'   In addition, for `diag` the residual variance is added to the estimates.
 #'
 #'   For more detail, see this \href{https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html}{'braindump'
 #' from Ben Bolker}, and the
@@ -165,7 +166,8 @@ extract_cor_structure.glmmTMB <- function(
   cor_init  <- glmmTMB::VarCorr(model)[[component]]
 
   if (which_cor == 'diag')
-    cor_mats <- purrr::map(cor_init, function(x) diag(attr(x, 'stddev')))
+    cor_mats <-
+    purrr::map(cor_init, function(x) attr(x, 'stddev') + glmmTMB::sigma(model) ^ 2)
   else
     cor_mats <- purrr::map(cor_init, function(x) attr(x, 'correlation'))
 
@@ -191,7 +193,7 @@ extract_cor_structure.glmmTMB <- function(
     # similar for diagonal
     else if (which_cor ==  'diag') {
       cor_par <- purrr::map_df(cor_par, function(x)
-        round(as.data.frame(t(diag(x))), digits = digits), .id = 'group')
+        data.frame(t(round(x, digits = digits))), .id = 'group')
     }
     # and toeplitz/spatial
     else if (which_cor %in%  c('toep', 'exp', 'mat', 'gau')) {
