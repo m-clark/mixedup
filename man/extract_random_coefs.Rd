@@ -6,6 +6,7 @@
 \alias{extract_random_coefs.glmmTMB}
 \alias{extract_random_coefs.lme}
 \alias{extract_random_coefs.brmsfit}
+\alias{extract_random_coefs.stanreg}
 \alias{extract_random_coefs.gam}
 \title{Extract random coefficients and their variances}
 \usage{
@@ -32,6 +33,15 @@ extract_random_coefs(
 \method{extract_random_coefs}{lme}(model, re = NULL, ci_level = NULL, digits = 3, ...)
 
 \method{extract_random_coefs}{brmsfit}(
+  model,
+  re = NULL,
+  ci_level = 0.95,
+  digits = 3,
+  component = NULL,
+  ...
+)
+
+\method{extract_random_coefs}{stanreg}(
   model,
   re = NULL,
   ci_level = 0.95,

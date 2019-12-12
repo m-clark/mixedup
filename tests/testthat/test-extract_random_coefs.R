@@ -143,32 +143,32 @@ test_that('extract_random_coefs correct output', {
 
 # brms --------------------------------------------------------------------
 
-context('test extract_random_coefbrmsfit')
+context('test extract_random_coef.brmsfit')
 
-test_that('extract_random_coefbrmsfit basic functionality', {
+test_that('extract_random_coef.brmsfit basic functionality', {
   expect_s3_class(extract_random_coefs(brm_1), 'data.frame')
 })
 
-test_that('extract_random_coefbrmsfit basic functionality', {
+test_that('extract_random_coef.brmsfit basic functionality', {
   expect_s3_class(extract_random_coefs(brm_2), 'data.frame')
 })
 
-test_that('extract_random_coefbrmsfit basic functionality', {
+test_that('extract_random_coef.brmsfit basic functionality', {
   expect_s3_class(extract_random_coefs(brm_4), 'data.frame')
 })
 
-test_that('extract_random_coefbrmsfit basic functionality', {
+test_that('extract_random_coef.brmsfit basic functionality', {
   expect_s3_class(extract_random_coefs(brm_1), 'data.frame')
 })
 
-test_that('extract_random_coefbrmsfit correct output', {
+test_that('extract_random_coef.brmsfit correct output', {
   expect_equal(
     nrow(extract_random_coefs(brm_2)),
     nlevels(sleepstudy$Subject)*2
   )
 })
 
-test_that('extract_random_coefbrmsfit correct output', {
+test_that('extract_random_coef.brmsfit correct output', {
   vals = round(coefficients(brm_2)$Subject[1:10,'Estimate',1], 1)
   ses = round(coefficients(brm_2)$Subject[1:10,,1][,'Est.Error'], 1)
   names(vals) <- names(ses) <- NULL
@@ -177,14 +177,14 @@ test_that('extract_random_coefbrmsfit correct output', {
   expect_equal(ses, round(extract_random_coefs(brm_2)$se[1:10], 1))
 })
 
-test_that('extract_random_coefbrmsfit takes re', {
+test_that('extract_random_coef.brmsfit takes re', {
   expect_equal(
     nrow(extract_random_coefs(brm_4, re = 'continent')),
     nlevels(factor(brm_4$data$continent))*2
   )
 })
 
-test_that('extract_random_coefbrmsfit takes ci_level', {
+test_that('extract_random_coef.brmsfit takes ci_level', {
   cn = colnames(extract_random_coefs(brm_1, ci_level = .8))
   expect_identical(
     c("lower_10", "upper_90"),
@@ -207,6 +207,62 @@ test_that('extract_random_coefs.brmsfit basic functionality: zi model', {
   init = extract_random_coefs(brm_zi, component = 'zi', ci_level = .8, digits = 2)
   expect_match(init$group_var, 'zi')
 })
+
+# rstanarm --------------------------------------------------------------------
+
+context('test extract_random_coef.stanreg')
+
+test_that('extract_random_coef.stanreg basic functionality', {
+  expect_s3_class(extract_random_coefs(stan_glmer_1), 'data.frame')
+})
+
+test_that('extract_random_coef.stanreg basic functionality', {
+  expect_s3_class(extract_random_coefs(stan_glmer_2), 'data.frame')
+})
+
+test_that('extract_random_coef.stanreg basic functionality', {
+  expect_s3_class(extract_random_coefs(stan_glmer_4), 'data.frame')
+})
+
+test_that('extract_random_coef.stanreg basic functionality', {
+  expect_s3_class(extract_random_coefs(stan_glmer_1), 'data.frame')
+})
+
+test_that('extract_random_coef.stanreg correct output', {
+  expect_equal(
+    nrow(extract_random_coefs(stan_glmer_2)),
+    nlevels(lme4::sleepstudy$Subject)*2
+  )
+})
+
+test_that('extract_random_coef.stanreg correct output', {
+  vals = coefficients(stan_glmer_1)$Subject[1:10, 1]
+  expect_lte(max(abs(vals - extract_random_coefs(stan_glmer_1)$value[1:10])),
+             expected = 5)
+})
+
+test_that('extract_random_coef.stanreg takes re', {
+  expect_equal(
+    nrow(extract_random_coefs(stan_glmer_4, re = 'continent')),
+    nlevels(factor(stan_glmer_4$data$continent))*2
+  )
+})
+
+test_that('extract_random_coef.stanreg takes ci_level', {
+  cn = colnames(extract_random_coefs(stan_glmer_1, ci_level = .8))
+  expect_identical(
+    c("lower_10", "upper_90"),
+    grep(cn, pattern = '[0-9]+', value =T))
+})
+
+# Not supported yet.
+# test_that('extract_random_coefs.stanreg basic functionality: multivariate model', {
+#   init = extract_random_coefs(brm_mv, component = 'back', ci_level = .8, digits = 2)
+#   expect_match(init$group_var, 'back')
+# })
+
+
+
 # mgcv --------------------------------------------------------------------
 
 context('test extract_random_coefs.gam')

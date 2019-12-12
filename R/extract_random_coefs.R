@@ -58,9 +58,8 @@ extract_random_coefs <- function(
   ...
 ) {
 
-  if (!inherits(model, c('merMod', 'glmmTMB', 'gam', 'lme', 'brmsfit')))
-    stop('This only works for model objects from lme4, glmmTMB, brms,
-         mgcv and nlme.')
+  if (!inherits(model, c('merMod', 'glmmTMB', 'gam', 'lme', 'brmsfit', 'stanreg')))
+    stop('This is not a supported model class.')
 
   if (ci_level < 0 | ci_level >= 1)
     stop('Nonsensical confidence level for ci_level. Must be between 0 and 1.')
@@ -260,7 +259,7 @@ extract_random_coefs.brmsfit <- function(
   coefs <- random_effects %>%
     dplyr::select(group_var, group, effect) %>%
     dplyr::mutate(value = rowMeans(coef_samples),
-                  se = apply(coef_samples, 1, sd))  # check this, doesn't jive with ci interval range
+                  se = apply(coef_samples, 1, sd))
 
   if (ci_level > 0) {
 
@@ -295,6 +294,111 @@ extract_random_coefs.brmsfit <- function(
 
 }
 
+
+#' @rdname extract_random_coefs
+#' @export
+extract_random_coefs.stanreg <- function(
+  model,
+  re = NULL,
+  ci_level = .95,
+  digits = 3,
+  component = NULL,
+  ...
+) {
+
+  if (!is_package_installed('rstanarm'))
+    stop('rstanarm package required', call. = FALSE)
+
+  # we don't call the extract* functions here as they already summarize the
+  # results, and we need the draws to estimate the variance. However, since they
+  # are so poorly named, much work is to be done for random effects.
+
+  # do re
+  re0 <- as.data.frame(model, regex_pars = '^b\\[')
+
+  # this  pretty much gets us what we want first element will be blank, the
+  # second the effect, the third the group_var, and the fourth the group
+  effects_group_var_group = do.call(
+    rbind,
+    strsplit(names(re0), split = '^b\\[| |:|\\]')
+  )
+
+  random_effects <-
+    data.frame(effect = effects_group_var_group[, 2], stringsAsFactors = FALSE)
+
+  random_effects <- random_effects %>%
+    dplyr::mutate(effect = remove_parens(effect),
+                  group_var = effects_group_var_group[, 3],
+                  group = effects_group_var_group[, 4]) %>%
+    cbind(t(re0))
+
+  # do fe
+  fe0 <- as.data.frame(model, pars = names(rstanarm::fixef(model)))
+
+  fixed_effects <- data.frame(effect = names(fe0), stringsAsFactors = FALSE)
+
+  fixed_effects <- fixed_effects %>%
+    dplyr::mutate(
+      effect = remove_parens(effect),
+      group_var = effect,
+      group = effect
+    ) %>%
+    cbind(t(fe0))
+
+  # previous is done to ensure samples are accurately matched, now combine
+  coefs_init <- random_effects %>%
+    dplyr::left_join(
+      fixed_effects,
+      by = 'effect',
+      suffix = c('_re', '_fe')
+    )
+
+  fe_samples <- coefs_init %>%
+    dplyr::select(dplyr::matches('^[0-9]+_fe'))
+
+  re_samples <- coefs_init %>%
+    dplyr::select(dplyr::matches('^[0-9]+_re'))
+
+  coef_samples <- fe_samples + re_samples
+
+  coefs <- random_effects %>%
+    dplyr::select(group_var, group, effect) %>%
+    dplyr::mutate(value = rowMeans(coef_samples),
+                  se = apply(coef_samples, 1, sd))
+
+  if (ci_level > 0) {
+
+    lower <- (1 - ci_level)/2
+    upper <- 1 - lower
+
+    ci <- data.frame(
+      lower = apply(coef_samples, 1, quantile, prob = lower),
+      upper = apply(coef_samples, 1, quantile, prob = upper)
+    )
+
+    colnames(ci) <- paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
+
+    coefs <- dplyr::bind_cols(coefs, ci)
+
+  }
+
+  if (!is.null(re)) {
+    coefs <- coefs %>%
+      dplyr::filter(group_var == re)
+  }
+
+  if (!is.null(component)) {
+    message('component not yet implemented. Skipping.')
+    # coefs <- coefs %>%
+    #   dplyr::filter(grepl(group_var, pattern = paste0('__', component, '$')))
+  }
+
+  coefs %>%
+    dplyr::as_tibble() %>%
+    dplyr::select(group_var, effect, dplyr::everything()) %>%
+    dplyr::mutate_if(is.numeric, round, digits = digits)
+
+}
 
 #' @rdname extract_random_coefs
 #' @export
