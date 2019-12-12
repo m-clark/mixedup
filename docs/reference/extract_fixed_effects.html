@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -193,6 +193,18 @@
   <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
   <span class='kw'>exponentiate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)
+
+<span class='co'># S3 method for stanreg</span>
+<span class='fu'>extract_fixed_effects</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>exponentiate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
 )
 
@@ -240,9 +252,12 @@ the new scale.</p></td>
     </tr>
     <tr>
       <th>component</th>
-      <td><p>For glmmTMB objects, which of the three components 'cond',
-'zi' or 'other' to select. Default is cond. Minimal testing on other
-options.</p></td>
+      <td><p>For glmmTMB objects, which of the three components 'cond' or
+'zi' to select. Default is 'cond'.  For brmsfit objects, this can filter
+results to a certain part of the output, e.g. 'sigma' or 'zi' of
+distributional models, or a specific outcome of a multivariate model.  In
+this case <code>component</code> is a regular expression that begins parameters
+of the output.</p></td>
     </tr>
     </table>
 

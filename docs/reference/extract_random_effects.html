@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -172,7 +172,14 @@
 <span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for brmsfit</span>
-<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+<span class='fu'>extract_random_effects</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S3 method for stanreg</span>
 <span class='fu'>extract_random_effects</span>(<span class='no'>...</span>)
@@ -194,8 +201,9 @@ is <code>NULL</code> to return all.</p></td>
     </tr>
     <tr>
       <th>ci_level</th>
-      <td><p>Where possible, confidence level &lt; 1, typically above 0.90. A value of 0 will
-not report it. Default is .95. Not applicable to nlme objects.</p></td>
+      <td><p>Where possible, confidence level &lt; 1, typically above 0.90. A
+value of 0 will not report it. Default is .95. Not applicable to nlme
+objects.</p></td>
     </tr>
     <tr>
       <th>digits</th>
@@ -203,9 +211,12 @@ not report it. Default is .95. Not applicable to nlme objects.</p></td>
     </tr>
     <tr>
       <th>component</th>
-      <td><p>Only applies to glmmTMB objects. Which of the three
-components 'cond', 'zi' or 'other' to select for a glmmTMB model. Default
-is 'cond'. Minimal testing on other options.</p></td>
+      <td><p>For glmmTMB objects, which of the two components 'cond' or
+'zi' to select. Default is 'cond'. For brmsfit objects, this can filter
+results to a certain part of the output, e.g. 'sigma' or 'zi' of
+distributional models, or a specific outcome of a multivariate model.  In
+this case <code>component</code> is a regular expression that ends the name of
+the parameters of the output (e.g. '__component').</p></td>
     </tr>
     <tr>
       <th>...</th>

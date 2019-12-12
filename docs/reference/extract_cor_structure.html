@@ -38,7 +38,8 @@
   
 
 <meta property="og:title" content="Extract correlation structure — extract_cor_structure" />
-<meta property="og:description" content="Extract residual correlation structure for nlme, and potentially other models." />
+<meta property="og:description" content="Extract residual correlation structure for nlme, brms, and
+potentially other models." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -71,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
       </span>
     </div>
 
@@ -143,13 +144,27 @@
     </div>
 
     <div class="ref-description">
-    <p>Extract residual correlation structure for nlme, and potentially other models.</p>
+    <p>Extract residual correlation structure for nlme, brms, and
+potentially other models.</p>
     </div>
 
     <pre class="usage"><span class='fu'>extract_cor_structure</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for lme</span>
-<span class='fu'>extract_cor_structure</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>extract_cor_structure</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>extract_cor_structure</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)
+
+<span class='co'># S3 method for glmmTMB</span>
+<span class='fu'>extract_cor_structure</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>,
+  <span class='no'>which_cor</span>,
+  <span class='kw'>full_matrix</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -159,21 +174,72 @@
       <td><p>An appropriate mixed model</p></td>
     </tr>
     <tr>
+      <th>digits</th>
+      <td><p>Rounding. Default is 3.</p></td>
+    </tr>
+    <tr>
       <th>...</th>
       <td><p>Other arguments appropriate to the method</p></td>
+    </tr>
+    <tr>
+      <th>ci_level</th>
+      <td><p>confidence level &lt; 1, typically above 0.90. A value of 0 will
+not report it. Default is .95.</p></td>
+    </tr>
+    <tr>
+      <th>component</th>
+      <td><p>For glmmTMB objects, which of the three components 'cond',
+'zi' or 'disp' to select. Default is 'cond'.</p></td>
+    </tr>
+    <tr>
+      <th>which_cor</th>
+      <td><p>Required for glmmTMB.  Which correlation parameter to
+extract. Must be one of 'ar1', 'ou', 'cs', 'toep', or 'us'.</p></td>
+    </tr>
+    <tr>
+      <th>full_matrix</th>
+      <td><p>For glmmTMB correlation, return the full residual
+covariance/correlation matrix (<code>TRUE</code>), or simplified output where possible
+(<code>FALSE</code>). Default is <code>FALSE</code>. See details.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A vector of the estimates.</p>
+    <p>For nlme models, a data frame of the estimates. For brms, the
+parameters and related uncertainty, similar to
+<a href='extract_fixed_effects.html'>extract_fixed_effects</a>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>For models with correlation, i.e. that contain something like
-corAR1(form = ~time).  For more see this
-<a href='https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html'>'braindump'
-from Ben Bolker</a>.</p>
+    <p>This function applies to models with residual correlation, i.e. that
+contain something like corAR1(form = ~time) for <code>nlme</code> or <code>brms</code>
+models with an <code>autocor</code> argument.  This functions extracts the
+associated parameters (e.g. <code>Phi</code> in nlme, <code>ar[1]</code> in brms, etc.)</p>
+<p>For glmmTMB objects, rather than the full matrix, simplified output is
+provided by default. For <code>ar1</code>, <code>ou</code>, <code>cs</code>, a single value; for <code>toep</code>
+(toeplitz) a single row/column; for <code>diag</code> structures just the diagonal.
+In addition, for <code>diag</code> the residual variance is added to the estimates.</p>
+<p>For more detail, see this <a href='https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html'>'braindump'
+from Ben Bolker</a>, and the
+<a href='https://cran.r-project.org/web/packages/glmmTMB/vignettes/covstruct.html'>glmmTMB
+vignette</a>.</p>
+<p>Most types of spatial models should work as well.</p>
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>brms</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
+
+<span class='no'>brm_corAR</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/brms/man/brm.html'>brm</a></span>(
+  <span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>),
+  <span class='kw'>autocor</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/brms/man/cor_ar.html'>cor_ar</a></span>( ~ <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>),
+  <span class='kw'>save_ranef</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>4</span>,
+  <span class='kw'>thin</span> <span class='kw'>=</span> <span class='fl'>40</span>
+)
+
+<span class='fu'>extract_cor_structure</span>(<span class='no'>brm_corAR</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -181,6 +247,7 @@ from Ben Bolker</a>.</p>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>

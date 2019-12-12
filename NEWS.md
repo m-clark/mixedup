@@ -1,3 +1,7 @@
+# mixedup 0.3.3
+
+* Add more functionality for rstanarm objects
+
 # mixedup 0.3.2
 
 * Add summarize_model, extract_cor_structure
