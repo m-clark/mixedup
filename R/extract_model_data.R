@@ -19,10 +19,7 @@
 extract_model_data <- function(model) {
   if (!inherits(model,
                 c('merMod', 'glmmTMB', 'lme', 'gam', 'stanreg', 'brmsfit')))
-    stop(paste0(
-      'This is for model objects from ',
-      'lme4, glmmTMB,rstanarm, brms, mgcv, and nlme.'
-    ))
+    stop('This is not a supported model class.')
 
   if (inherits(model, 'lme')) {
     data <- dplyr::as_tibble(model$data)

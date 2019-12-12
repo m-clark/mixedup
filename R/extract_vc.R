@@ -62,7 +62,7 @@ extract_vc <- function(
   ...
 ) {
   if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'brmsfit', 'stanreg')))
-    stop('This model is not supported.')
+    stop('This is not a supported model class.')
 
   if (ci_level < 0 | ci_level >= 1)
     stop('Nonsensical confidence level for ci_level.  Must be between 0 and 1.')

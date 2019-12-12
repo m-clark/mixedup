@@ -6,7 +6,7 @@ Authors@R:
            family = "Clark",
            role = c("aut", "cre"),
            email = "micl@umich.edu")
-Description: This provides tools for extracting various parts of mixed model output from commonly used packages in a consistent fashion. Results are produced in a usable form for visualization and table presentation.
+Description: This provides tools for extracting various parts of mixed model output from commonly used packages in a consistent fashion. Results are produced in a usable form for visualization and table presentation. It currently provides a wide variety of support for lme4, nlme, glmmTMB, mgcv, brms, and rstanarm.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true

@@ -43,10 +43,9 @@ devtools::install_github('m-clark/mixedup')
 - glmmTMB
 - nlme
 - mgcv
-- rstanarm *
+- rstanarm
 - brms
 
-\* preliminary support for some functions
 
 ## Feature list
 
@@ -60,11 +59,16 @@ devtools::install_github('m-clark/mixedup')
 - Summarize Model
 - Find Typical
 
+
+Not all features are available to the various modeling packages (e.g. autocorrelation for `lme4`), and some functionality may just not be supported for this package, but most functions are applicable to the packages listed.
+
 ## Examples
 
 ### Setup
 
-```{r mods}
+In the following I suppress the package startup and other information that isn't necessary for demo.
+
+```{r mods, results='hide', message=FALSE, warning=FALSE}
 library(lme4)
 
 lmer_model <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
@@ -90,7 +94,22 @@ brm_model = brm(
   data = sleepstudy, 
   refresh = -1,
   verbose = FALSE,
-  cores = 4
+  open_progress = FALSE,
+  cores = 4,
+  iter = 1000
+)
+
+library(rstanarm)
+
+rstanarm_model = stan_glmer(
+  Reaction ~ Days + (1 + Days | Subject), 
+  data = sleepstudy, 
+  refresh = -1,
+  verbose = FALSE,
+  show_messages = FALSE,
+  open_progress = FALSE,
+  cores = 4,
+  iter = 1000
 )
 
 library(mgcv)
@@ -130,6 +149,7 @@ mods = list(
   tmb  = tmb_model,
   lmer = lmer_model, 
   brm  = brm_model,
+  stan = rstanarm_model,
   gam  = gam_model
 )
 

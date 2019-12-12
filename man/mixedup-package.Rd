@@ -6,7 +6,7 @@
 \alias{mixedup-package}
 \title{mixedup: Miscellaneous functions for mixed models}
 \description{
-This provides tools for extracting various parts of mixed model output from commonly used packages in a consistent fashion. Results are produced in a usable form for visualization and table presentation.
+This provides tools for extracting various parts of mixed model output from commonly used packages in a consistent fashion. Results are produced in a usable form for visualization and table presentation. It currently provides a wide variety of support for lme4, nlme, glmmTMB, mgcv, brms, and rstanarm.
 }
 \seealso{
 Useful links:

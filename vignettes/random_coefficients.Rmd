@@ -39,7 +39,7 @@ brms_model <- mixedup:::brms_model
 
 ## Intro
 
-This creates a table of random coefficients, i.e. fixed effects plus random effects.  Uncertainty estimates are included, but likely only accurate for Bayesian approaches.
+This creates a table of random coefficients, i.e. fixed effects plus random effects.  Uncertainty estimates are included where possible, but likely only accurate for Bayesian approaches.
 
 
 ## Examples

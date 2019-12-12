@@ -60,7 +60,7 @@ find_typical(lmer_model, probs = c(.1, .9))
 
 ### Extract heterogeneous variances
 
-For `nlme`, only models with `varIdent` have been tested.  
+For `nlme`, only models with `varIdent` have been tested.  For <span class="pack" style = "">glmmTMB</span>, this applies to models that use the <span class="func" style = "">diag</span> function in the formula.
 
 ```{r het-var}
 library(nlme)
@@ -76,14 +76,15 @@ extract_het_var(lme_1)
 ```
 
 
-May include `glmmTMB` and/or `brms` at some point, but for these, you can
-extract any parameters associated with sigma model for distributional models
-using the `component` argument of the other standard functions.
+May include <span class="pack" style = "">brms</span> at some point, but for
+these, you can extract any parameters associated with sigma model for
+distributional models using the `component` argument of the other standard
+functions.
 
 
 ### Extract correlation structure
 
-With some packages one can estimate the residual correlation structure.  Right now this works for nlme and brms objects.
+With some packages one can estimate the residual correlation structure.  Right now this works for <span class="pack" style = "">nlme</span>, <span class="pack" style = "">glmmTMB</span>, and <span class="pack" style = "">brms</span> objects.
 
 ```{r cor-struct}
 base_model <-

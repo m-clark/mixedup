@@ -43,10 +43,8 @@ devtools::install_github('m-clark/mixedup')
   - glmmTMB
   - nlme
   - mgcv
-  - rstanarm \*
+  - rstanarm
   - brms
-
-\* preliminary support for some functions
 
 ## Feature list
 
@@ -60,30 +58,28 @@ devtools::install_github('m-clark/mixedup')
   - Summarize Model
   - Find Typical
 
+Not all features are available to the various modeling packages
+(e.g. autocorrelation for `lme4`), and some functionality may just not
+be supported for this package, but most functions are applicable to the
+packages listed.
+
 ## Examples
 
 ### Setup
 
+In the following I suppress the package startup and other information
+that isn’t necessary for demo.
+
 ``` r
 library(lme4)
-Loading required package: Matrix
 
 lmer_model <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
 library(glmmTMB)
-Warning in checkMatrixPackageVersion(): Package version inconsistency detected.
-TMB was built with Matrix version 1.2.17
-Current Matrix version is 1.2.18
-Please re-install 'TMB' from source using install.packages('TMB', type = 'source') or ask CRAN for a binary version of 'TMB' matching CRAN's 'Matrix' package
 
 tmb_model <- glmmTMB(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
 library(nlme)
-
-Attaching package: 'nlme'
-The following object is masked from 'package:lme4':
-
-    lmList
 
 nlme_model <-  nlme(
   height ~ SSasymp(age, Asym, R0, lrc),
@@ -94,36 +90,31 @@ nlme_model <-  nlme(
 )
 
 library(brms)
-Loading required package: Rcpp
-Registered S3 method overwritten by 'xts':
-  method     from
-  as.zoo.xts zoo 
-Loading 'brms' package (version 2.10.0). Useful instructions
-can be found by typing help('brms'). A more detailed introduction
-to the package is available through vignette('brms_overview').
-
-Attaching package: 'brms'
-The following object is masked from 'package:lme4':
-
-    ngrps
 
 brm_model = brm(
   Reaction ~ Days + (1 + Days | Subject), 
   data = sleepstudy, 
   refresh = -1,
   verbose = FALSE,
-  cores = 4
+  open_progress = FALSE,
+  cores = 4,
+  iter = 1000
 )
-Compiling the C++ model
-Start sampling
+
+library(rstanarm)
+
+rstanarm_model = stan_glmer(
+  Reaction ~ Days + (1 + Days | Subject), 
+  data = sleepstudy, 
+  refresh = -1,
+  verbose = FALSE,
+  show_messages = FALSE,
+  open_progress = FALSE,
+  cores = 4,
+  iter = 1000
+)
 
 library(mgcv)
-This is mgcv 1.8-31. For overview type 'help("mgcv-package")'.
-
-Attaching package: 'mgcv'
-The following objects are masked from 'package:brms':
-
-    s, t2
 
 gam_model = gam(
   Reaction ~  Days +
@@ -181,9 +172,9 @@ extract_random_coefs(lmer_model)
 
 extract_vc(brm_model, ci_level = .8)
      group    effect variance     sd  sd_10  sd_90 var_prop
-1  Subject Intercept  706.729 26.584 18.580 35.233    0.498
-2  Subject      Days   42.301  6.504  4.858  8.383    0.030
-3 Residual            671.212 25.908 23.997 27.944    0.473
+1  Subject Intercept  709.554 26.637 18.551 35.562    0.497
+2  Subject      Days   43.217  6.574  4.762  8.592    0.030
+3 Residual            675.334 25.987 24.156 27.969    0.473
 
 summarize_model(lmer_model, cor_re = TRUE, digits = 1)
 Computing profile confidence intervals ...
@@ -224,6 +215,7 @@ mods = list(
   tmb  = tmb_model,
   lmer = lmer_model, 
   brm  = brm_model,
+  stan = rstanarm_model,
   gam  = gam_model
 )
 
@@ -236,12 +228,15 @@ Computing profile confidence intervals ...
 4   lmer  Subject Intercept  611.898 24.737 14.382  37.714    0.470
 5   lmer  Subject      Days   35.081  5.923  3.801   8.754    0.027
 6   lmer Residual            654.941 25.592 22.898  28.858    0.503
-7    brm  Subject Intercept  706.729 26.584 15.330  42.324    0.498
-8    brm  Subject      Days   42.301  6.504  4.228   9.821    0.030
-9    brm Residual            671.212 25.908 23.064  29.228    0.473
-10   gam  Subject Intercept  627.571 25.051 16.085  39.015    0.477
-11   gam  Subject      Days   35.858  5.988  4.025   8.908    0.027
-12   gam Residual            653.582 25.565 22.792  28.676    0.496
+7    brm  Subject Intercept  709.554 26.637 15.338  41.996    0.497
+8    brm  Subject      Days   43.217  6.574  4.064  10.301    0.030
+9    brm Residual            675.334 25.987 23.249  29.291    0.473
+10  stan  Subject Intercept  594.887 24.390 13.097  37.199    0.452
+11  stan  Subject      Days   47.292  6.877  4.295  10.146    0.036
+12  stan Residual            673.954 25.961  4.808   5.416    0.512
+13   gam  Subject Intercept  627.571 25.051 16.085  39.015    0.477
+14   gam  Subject      Days   35.858  5.988  4.025   8.908    0.027
+15   gam Residual            653.582 25.565 22.792  28.676    0.496
 ```
 
 ## Code of Conduct
