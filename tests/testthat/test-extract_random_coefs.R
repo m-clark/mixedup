@@ -257,10 +257,13 @@ test_that('extract_random_coef.stanreg takes ci_level', {
 
 # Not supported yet.
 # test_that('extract_random_coefs.stanreg basic functionality: multivariate model', {
-#   init = extract_random_coefs(brm_mv, component = 'back', ci_level = .8, digits = 2)
+#   init = extract_random_coefs(stan_glmer_mv, component = 'back', ci_level = .8, digits = 2)
 #   expect_match(init$group_var, 'back')
 # })
 
+test_that('extract_random_coefs.stanreg basic functionality: multivariate model', {
+  expect_message(extract_random_coefs(stan_glmer_2, component = 'flag'))
+})
 
 
 # mgcv --------------------------------------------------------------------

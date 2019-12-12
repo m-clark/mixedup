@@ -387,6 +387,9 @@ test_that('extract_vc.stanreg basic functionality: non-gaussian', {
 # })
 
 
+test_that('extract_vc.stanreg basic functionality: multivariate model', {
+  expect_message(extract_vc(stan_glmer_mv, component = 'flag'))
+})
 
 
 
