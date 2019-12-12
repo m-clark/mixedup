@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-<img src="man/figures/package_logo.png" style="margin: 0 auto; width: 120px; valign: top" align = 'right'  alt="mixedup Logo"><br>
+<img src="man/figures/package_logo.png" style="margin: 0 auto; width: 120px; valign: top" align = 'right'  alt="mixedup Logo" width = 120><br>
 
 # mixedup
 
