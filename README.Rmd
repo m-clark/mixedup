@@ -15,7 +15,14 @@ knitr::opts_chunk$set(
 )
 ```
 
-# mixedup
+<img src="man/figures/package_logo.png" style="margin: 0 auto; width: 120px; valign: top" align = 'right'  alt="mixedup Logo"><br>
+
+# mixedup 
+
+##### a package for extracting clean results from mixed models 
+
+<br>
+<br>
 
 <!-- badges: start -->
 [![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
@@ -24,7 +31,9 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](https://codecov.io/gh/m-clark/mixedup?branch=master)
 <!-- badges: end -->
 
-This package provides extended functionality for mixed models. The goal of `mixedup` is to solve little problems I have had that slip through the cracks from the various modeling packages and others in trying to get presentable output.  Basically the idea is to create (tidy) objects that are easy to use and essentially ready for presentation, as well as *consistent* across packages and across functions.  I use several of these packages (including mgcv) for mixed models, and typically have to do some notable post processing to get some basic output even with `broom::tidy`, and this effort often isn't applicable if I switch to another package for the same type of model.  These functions attempt to address this issue.
+
+
+This package provides extended functionality for mixed models. The goal of `mixedup` is to solve little problems I have had that slip through the cracks from the various modeling packages and others in trying to get presentable output.  Basically the idea is to create (tidy) objects that are easy to use and essentially ready for presentation, as well as *consistent* across packages and across functions.  Such objects would be things like  variance components and random effects.  I use several of these packages (including mgcv) for mixed models, and typically have to do some notable post processing to get some viable output even with `broom::tidy`, and this effort often isn't applicable if I switch to another package for the same type of model.  These functions attempt to address this issue.
 
 For more details and examples see https://m-clark.github.io/mixedup/.
 
@@ -68,6 +77,11 @@ Not all features are available to the various modeling packages (e.g. autocorrel
 
 In the following I suppress the package startup and other information that isn't necessary for demo.
 
+```{r loadbayes, echo=FALSE}
+brm_model <- mixedup:::brms_model
+rstanarm_model <- mixedup:::rstanarm_model
+```
+
 ```{r mods, results='hide', message=FALSE, warning=FALSE}
 library(lme4)
 
@@ -89,28 +103,28 @@ nlme_model <-  nlme(
 
 library(brms)
 
-brm_model = brm(
-  Reaction ~ Days + (1 + Days | Subject), 
-  data = sleepstudy, 
-  refresh = -1,
-  verbose = FALSE,
-  open_progress = FALSE,
-  cores = 4,
-  iter = 1000
-)
+# brm_model = brm(
+#   Reaction ~ Days + (1 + Days | Subject), 
+#   data = sleepstudy, 
+#   refresh = -1,
+#   verbose = FALSE,
+#   open_progress = FALSE,
+#   cores = 4,
+#   iter = 1000
+# )
 
 library(rstanarm)
 
-rstanarm_model = stan_glmer(
-  Reaction ~ Days + (1 + Days | Subject), 
-  data = sleepstudy, 
-  refresh = -1,
-  verbose = FALSE,
-  show_messages = FALSE,
-  open_progress = FALSE,
-  cores = 4,
-  iter = 1000
-)
+# rstanarm_model = stan_glmer(
+#   Reaction ~ Days + (1 + Days | Subject), 
+#   data = sleepstudy, 
+#   refresh = -1,
+#   verbose = FALSE,
+#   show_messages = FALSE,
+#   open_progress = FALSE,
+#   cores = 4,
+#   iter = 1000
+# )
 
 library(mgcv)
 

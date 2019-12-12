@@ -1,7 +1,13 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
+<img src="man/figures/package_logo.png" style="margin: 0 auto; width: 120px; valign: top" align = 'right'  alt="mixedup Logo"><br>
+
 # mixedup
+
+##### a package for extracting clean results from mixed models
+
+<br> <br>
 
 <!-- badges: start -->
 
@@ -20,9 +26,10 @@ of `mixedup` is to solve little problems I have had that slip through
 the cracks from the various modeling packages and others in trying to
 get presentable output. Basically the idea is to create (tidy) objects
 that are easy to use and essentially ready for presentation, as well as
-*consistent* across packages and across functions. I use several of
+*consistent* across packages and across functions. Such objects would be
+things like variance components and random effects. I use several of
 these packages (including mgcv) for mixed models, and typically have to
-do some notable post processing to get some basic output even with
+do some notable post processing to get some viable output even with
 `broom::tidy`, and this effort often isn’t applicable if I switch to
 another package for the same type of model. These functions attempt to
 address this issue.
@@ -70,6 +77,10 @@ packages listed.
 In the following I suppress the package startup and other information
 that isn’t necessary for demo.
 
+    Registered S3 method overwritten by 'xts':
+      method     from
+      as.zoo.xts zoo 
+
 ``` r
 library(lme4)
 
@@ -91,28 +102,28 @@ nlme_model <-  nlme(
 
 library(brms)
 
-brm_model = brm(
-  Reaction ~ Days + (1 + Days | Subject), 
-  data = sleepstudy, 
-  refresh = -1,
-  verbose = FALSE,
-  open_progress = FALSE,
-  cores = 4,
-  iter = 1000
-)
+# brm_model = brm(
+#   Reaction ~ Days + (1 + Days | Subject), 
+#   data = sleepstudy, 
+#   refresh = -1,
+#   verbose = FALSE,
+#   open_progress = FALSE,
+#   cores = 4,
+#   iter = 1000
+# )
 
 library(rstanarm)
 
-rstanarm_model = stan_glmer(
-  Reaction ~ Days + (1 + Days | Subject), 
-  data = sleepstudy, 
-  refresh = -1,
-  verbose = FALSE,
-  show_messages = FALSE,
-  open_progress = FALSE,
-  cores = 4,
-  iter = 1000
-)
+# rstanarm_model = stan_glmer(
+#   Reaction ~ Days + (1 + Days | Subject), 
+#   data = sleepstudy, 
+#   refresh = -1,
+#   verbose = FALSE,
+#   show_messages = FALSE,
+#   open_progress = FALSE,
+#   cores = 4,
+#   iter = 1000
+# )
 
 library(mgcv)
 
@@ -172,9 +183,9 @@ extract_random_coefs(lmer_model)
 
 extract_vc(brm_model, ci_level = .8)
      group    effect variance     sd  sd_10  sd_90 var_prop
-1  Subject Intercept  709.554 26.637 18.551 35.562    0.497
-2  Subject      Days   43.217  6.574  4.762  8.592    0.030
-3 Residual            675.334 25.987 24.156 27.969    0.473
+1  Subject Intercept  733.227 27.078 18.347 36.560    0.510
+2  Subject      Days   41.659  6.454  4.850  8.346    0.029
+3 Residual            663.843 25.765 24.247 27.497    0.461
 
 summarize_model(lmer_model, cor_re = TRUE, digits = 1)
 Computing profile confidence intervals ...
@@ -222,18 +233,18 @@ mods = list(
 purrr::map_df(mods, extract_vc, .id = 'model') 
 Computing profile confidence intervals ...
    model    group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1    tmb  Subject Intercept  565.516 23.781 15.017  37.658    0.451
+1    tmb  Subject Intercept  565.515 23.781 15.017  37.658    0.451
 2    tmb  Subject      Days   32.682  5.717  3.805   8.588    0.026
 3    tmb Residual            654.941 25.592 22.800  28.725    0.523
-4   lmer  Subject Intercept  611.898 24.737 14.382  37.714    0.470
-5   lmer  Subject      Days   35.081  5.923  3.801   8.754    0.027
+4   lmer  Subject Intercept  611.898 24.737 14.382  37.716    0.470
+5   lmer  Subject      Days   35.081  5.923  3.801   8.753    0.027
 6   lmer Residual            654.941 25.592 22.898  28.858    0.503
-7    brm  Subject Intercept  709.554 26.637 15.338  41.996    0.497
-8    brm  Subject      Days   43.217  6.574  4.064  10.301    0.030
-9    brm Residual            675.334 25.987 23.249  29.291    0.473
-10  stan  Subject Intercept  594.887 24.390 13.097  37.199    0.452
-11  stan  Subject      Days   47.292  6.877  4.295  10.146    0.036
-12  stan Residual            673.954 25.961  4.808   5.416    0.512
+7    brm  Subject Intercept  733.227 27.078 14.566  41.591    0.510
+8    brm  Subject      Days   41.659  6.454  4.203   9.034    0.029
+9    brm Residual            663.843 25.765 23.063  28.359    0.461
+10  stan  Subject Intercept  575.869 23.997 13.244  35.705    0.441
+11  stan  Subject      Days   51.168  7.153  4.537  10.431    0.039
+12  stan Residual            678.970 26.057  4.802   5.379    0.520
 13   gam  Subject Intercept  627.571 25.051 16.085  39.015    0.477
 14   gam  Subject      Days   35.858  5.988  4.025   8.908    0.027
 15   gam Residual            653.582 25.565 22.792  28.676    0.496
