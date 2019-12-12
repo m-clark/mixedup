@@ -44,7 +44,7 @@ This is pretty printing of results of a mixed model.  Correlations of random and
 
 ## Examples
 
-```{r mods}
+```{r mods, message=FALSE}
 library(lme4)
 library(glmmTMB)
 library(nlme)
