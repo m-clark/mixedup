@@ -1,10 +1,13 @@
 {
-  "@context": ["https://doi.org/10.5063/schema/codemeta-2.0", "http://schema.org"],
+  "@context": [
+    "https://doi.org/10.5063/schema/codemeta-2.0",
+    "http://schema.org"
+  ],
   "@type": "SoftwareSourceCode",
   "identifier": "mixedup",
   "description": "This provides tools for extracting various parts of mixed model output from commonly used packages in a consistent fashion. Results are produced in a usable form for visualization and table presentation. It currently provides a wide variety of support for lme4, nlme, glmmTMB, mgcv, brms, and rstanarm.",
   "name": "mixedup: Miscellaneous functions for mixed models",
-  "codeRepository": "https://github.com/m-clark/mixedup",
+  "codeRepository": "https://m-clark.github.io/mixedup",
   "issueTracker": "https://github.com/m-clark/mixedup/issues",
   "license": "https://spdx.org/licenses/MIT",
   "version": "0.3.3",
@@ -204,8 +207,22 @@
   ],
   "releaseNotes": "https://github.com/m-clark/mixedup/blob/master/NEWS.md",
   "readme": "https://github.com/m-clark/mixedup/blob/master/README.md",
-  "fileSize": "30568.287KB",
-  "contIntegration": ["https://travis-ci.org/m-clark/mixedup", "https://ci.appveyor.com/project/m-clark/mixedup", "https://codecov.io/gh/m-clark/mixedup?branch=master"],
+  "fileSize": "30568.298KB",
+  "contIntegration": [
+    "https://travis-ci.org/m-clark/mixedup",
+    "https://ci.appveyor.com/project/m-clark/mixedup",
+    "https://codecov.io/gh/m-clark/mixedup?branch=master"
+  ],
   "developmentStatus": "https://www.tidyverse.org/lifecycle/#experimental",
-  "keywords": ["lme4", "glmmtmb", "nlme", "mixed-models", "random-effects", "random-coefficients", "variance-components", "brms", "mgcv"]
+  "keywords": [
+    "lme4",
+    "glmmtmb",
+    "nlme",
+    "mixed-models",
+    "random-effects",
+    "random-coefficients",
+    "variance-components",
+    "brms",
+    "mgcv"
+  ]
 }
