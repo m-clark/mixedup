@@ -11,3 +11,4 @@
 docs
 pkgdown
 data-raw
+^codemeta\.json$

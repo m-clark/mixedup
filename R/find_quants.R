@@ -3,7 +3,8 @@
 #' @param value The random effect values
 #' @param probs Desired probabilities passed to \code{quantile}
 #' @details Finds indices of random effect values closest to a specific quantile
-#'
+#' @return A vector of the observed values closest to the desired quantiles.
+#' @noRd
 find_quants <- function(value, probs) {
 
   qs <- quantile(value, probs = probs)

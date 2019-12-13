@@ -11,7 +11,7 @@ This provides tools for extracting various parts of mixed model output from comm
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/m-clark/mixedup}
+  \item \url{https://m-clark.github.io/mixedup}
   \item Report bugs at \url{https://github.com/m-clark/mixedup/issues}
 }
 

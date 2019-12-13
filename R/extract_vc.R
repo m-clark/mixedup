@@ -26,7 +26,7 @@
 #'   for either, the relative proportion of variance, and all in a data frame
 #'   with names that are clean and easy to use.
 #'
-#' @return A data frame with output for variance components or list that also
+#' @return A data frame with output for variance components, or list that also
 #' contains the correlations of the random effects.
 #'
 #' @seealso

@@ -10,7 +10,7 @@ extract_model_data(model)
 \item{model}{The mixed model}
 }
 \value{
-a tibble/dataframe
+A tibble/dataframe of the data used in the model.
 }
 \description{
 This is mostly just a wrapper for \code{model.frame}.

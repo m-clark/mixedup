@@ -9,10 +9,10 @@
 #' @details Essentially duplicates the \code{broom::tidy} approach with minor
 #'   name changes.  The package may or may not provide p-values by default.
 #'
-#' @return A data.frame with the fixed effects and associated statistics.
-#'
 #' @note For nlme, this is just a multiplier based on the estimated standard
 #'   error and critical value for the \code{ci_level}.
+#'
+#' @return A data.frame with the fixed effects and associated statistics.
 #'
 #' @seealso \code{\link[broom:tidy.merMod]{tidy.merMod}},
 #'   \code{\link[broom.mixed:tidy.glmmTMB]{tidy.glmmTMB}},

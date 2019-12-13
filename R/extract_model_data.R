@@ -4,7 +4,7 @@
 #'
 #' @param model The mixed model
 #'
-#' @return a tibble/dataframe
+#' @return A tibble/dataframe of the data used in the model.
 #'
 #' @seealso \link{model.frame}
 #'

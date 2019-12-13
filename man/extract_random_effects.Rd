@@ -74,7 +74,7 @@ Extracts the random effects and their standard errors.
 }
 \details{
 Relative to \code{ranef} for the various packages, this just adds
-the standard errors and cluster ids as columns, and intervals.
+the standard errors and cluster ids as columns, and uncertainty intervals.
 
 Current models supported:
 
@@ -89,11 +89,15 @@ Current models supported:
 }
 }
 \note{
-\code{nlme} only provides the estimated random effect parameters, not their uncertainty, so it isn't provided.
+\code{nlme} only provides the estimated random effect parameters, not
+their uncertainty, so it isn't provided.
 
-\code{merMod} and \code{glmmTMB} results are based on the estimated conditional variances, i.e. \code{condvar = TRUE}.  This is likely an underestimate relative to brms results.
+\code{merMod} and \code{glmmTMB} results are based on the estimated
+conditional variances, i.e. \code{condvar = TRUE}.  This is likely an
+underestimate relative to brms results.
 
-For \code{mgcv}, the \code{Vp} (Bayesian) estimated variance covariance matrix is used.
+For \code{mgcv}, the \code{Vp} (Bayesian) estimated variance covariance matrix is
+used.
 }
 \examples{
 library(lme4)

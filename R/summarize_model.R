@@ -13,6 +13,10 @@
 #' @param ... Not used at present. May allow models specific functionality.
 #'
 #' @importFrom stats vcov
+#'
+#' @return Prints the variance components, fixed effects, etc. Invisibly, a list
+#'   of those.
+#'
 #' @examples
 #' library(lme4)
 #' library(mixedup)

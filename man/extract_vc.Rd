@@ -111,7 +111,7 @@ of the output.}
 \item{...}{Other stuff to pass to the corresponding function. Unused/tested}
 }
 \value{
-A data frame with output for variance components or list that also
+A data frame with output for variance components, or list that also
 contains the correlations of the random effects.
 }
 \description{
