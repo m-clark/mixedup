@@ -192,23 +192,23 @@ test_that("rstanarm installation is checked", {
   )
 })
 
-test_that('extract_random_effects.merMod basic functionality', {
+test_that('extract_random_effects.stanreg basic functionality', {
   expect_s3_class(extract_random_effects(stan_glmer_1), 'data.frame')
 })
 
-test_that('extract_random_effects.merMod basic functionality', {
+test_that('extract_random_effects.stanreg basic functionality', {
   expect_s3_class(extract_random_effects(stan_glmer_2), 'data.frame')
 })
 
 
-test_that('extract_random_effects.merMod works with multiple re', {
+test_that('extract_random_effects.stanreg works with multiple re', {
   expect_equal(
     nrow(extract_random_effects(stan_glmer_3, re = 's')),
     length(unique(stan_glmer_3$data$s))
   )
 })
 
-test_that('extract_random_effects.merMod errors with bad re name', {
+test_that('extract_random_effects.stanreg errors with bad re name', {
   expect_error(extract_random_effects(stan_glmer_2, re = 'subject'))
 })
 

@@ -112,7 +112,7 @@ extract_random_effects(lmer_model)
 \code{\link[glmmTMB:ranef.glmmTMB]{ranef.glmmTMB}},
 \code{\link[nlme:ranef.lme]{ranef.lme}},
 \code{\link[brms:ranef.brmsfit]{ranef.brmsfit}},
-\code{\link[rstanarm:ranef.stanreg]{ranef.rstanarm}},
+\code{\link[rstanarm:ranef.stanreg]{ranef.stanreg}},
 \code{\link[mgcv:gamObject]{gamObject}},
 \code{\link[mgcv:smooth.construct.re.smooth.spec]{smooth.construct.re.smooth.spec}}
 

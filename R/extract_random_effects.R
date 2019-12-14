@@ -4,7 +4,7 @@
 #'
 #' @param model An appropriate model. See details.
 #' @param re The name of the grouping variable for the random effects. Default
-#'   is \code{NULL} to return all.
+#'   is `NULL` to return all.
 #' @param ci_level Where possible, confidence level < 1, typically above 0.90. A
 #'   value of 0 will not report it. Default is .95. Not applicable to nlme
 #'   objects.
@@ -12,12 +12,12 @@
 #'   'zi' to select. Default is 'cond'. For brmsfit objects, this can filter
 #'   results to a certain part of the output, e.g. 'sigma' or 'zi' of
 #'   distributional models, or a specific outcome of a multivariate model.  In
-#'   this case \code{component} is a regular expression that ends the name of
+#'   this case `component` is a regular expression that ends the name of
 #'   the parameters of the output (e.g. '__component').
 #' @param digits  Rounding. Default is 3.
 #' @param ... Other arguments specific to the method. Unused at present.
 #'
-#' @details Relative to \code{ranef} for the various packages, this just adds
+#' @details Relative to `ranef` for the various packages, this just adds
 #'   the standard errors and cluster ids as columns, and uncertainty intervals.
 #'
 #'  Current models supported:
@@ -32,14 +32,14 @@
 #'  \item{mgcv}{}
 #' }
 #'
-#' @note \code{nlme} only provides the estimated random effect parameters, not
-#' their uncertainty, so it isn't provided.
+#' @note The nlme package only provides the estimated random effect parameters,
+#'   not their uncertainty, so it isn't provided.
 #'
-#' \code{merMod} and \code{glmmTMB} results are based on the estimated
-#' conditional variances, i.e. \code{condvar = TRUE}.  This is likely an
+#' `merMod` and `glmmTMB` objects results are based on the estimated
+#' conditional variances, i.e. `condvar = TRUE`.  This is likely an
 #' underestimate relative to brms results.
 #'
-#' For \code{mgcv}, the `Vp` (Bayesian) estimated variance covariance matrix is
+#' For mgcv, the `Vp` (Bayesian) estimated variance covariance matrix is
 #' used.
 #'
 #' @return data frame of the random effects
@@ -49,6 +49,7 @@
 #' \code{\link[glmmTMB:ranef.glmmTMB]{ranef.glmmTMB}},
 #' \code{\link[nlme:ranef.lme]{ranef.lme}},
 #' \code{\link[brms:ranef.brmsfit]{ranef.brmsfit}},
+#' \code{\link[rstanarm:ranef.stanreg]{ranef.stanreg}},
 #' \code{\link[mgcv:gamObject]{gamObject}},
 #' \code{\link[mgcv:smooth.construct.re.smooth.spec]{smooth.construct.re.smooth.spec}}
 #'
@@ -59,8 +60,7 @@
 #' lmer_model <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #' extract_random_effects(lmer_model)
 #'
-#'@seealso \code{\link[lme4:ranef.merMod]{ranef.merMod}}, \code{\link[glmmTMB:ranef.glmmTMB]{ranef.glmmTMB}},
-#' \code{\link[nlme:ranef.lme]{ranef.lme}}, \code{\link[brms:ranef.brmsfit]{ranef.brmsfit}}
+#' @family extract
 #'
 #' @export
 extract_random_effects <- function(
@@ -364,13 +364,25 @@ extract_random_effects.brmsfit <- function(
 
 #' @rdname extract_random_effects
 #' @export
-extract_random_effects.stanreg <- function(...) {
+extract_random_effects.stanreg <- function(
+  model,
+  re = NULL,
+  ci_level = .95,
+  digits = 3,
+  ...
+) {
 
   if (!is_package_installed('rstanarm'))
     stop('rstanarm package required', call. = FALSE)
 
   # Structure is the same as lme4
-  extract_random_effects.merMod(...)
+  extract_random_effects.merMod(
+    model,
+    re = re,
+    ci_level = ci_level,
+    digits = digits,
+    ...
+  )
 }
 
 
