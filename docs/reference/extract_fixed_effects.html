@@ -38,7 +38,7 @@
   
 
 <meta property="og:title" content="Extract fixed effects — extract_fixed_effects" />
-<meta property="og:description" content="Extract fixed effects" />
+<meta property="og:description" content="Extract fixed effects parameters, variance estimates etc." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,12 +138,12 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Extract fixed effects</h1>
-    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/extract_fixed_effects.R'><code>R/extract_fixed_effects.R</code></a></small>
+    
     <div class="hidden name"><code>extract_fixed_effects.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract fixed effects</p>
+    <p>Extract fixed effects parameters, variance estimates etc.</p>
     </div>
 
     <pre class="usage"><span class='fu'>extract_fixed_effects</span>(
@@ -276,7 +276,16 @@ error and critical value for the <code>ci_level</code>.</p>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/broom/man/lme4_tidiers.html'>tidy.merMod</a></code>,
 <code><a href='https://rdrr.io/pkg/broom.mixed/man/glmmTMB_tidiers.html'>tidy.glmmTMB</a></code>,
-<code><a href='https://rdrr.io/pkg/broom.mixed/man/brms_tidiers.html'>tidy.brmsfit</a></code></p></div>
+<code><a href='https://rdrr.io/pkg/broom/man/nlme_tidiers.html'>tidy.lme</a></code>,
+<code><a href='https://rdrr.io/pkg/broom/man/lme4_tidiers.html'>tidy.merMod</a></code>,
+<code><a href='https://rdrr.io/pkg/broom.mixed/man/brms_tidiers.html'>tidy.brmsfit</a></code></p>
+<p>Other extract: 
+<code><a href='extract_cor_structure.html'>extract_cor_structure</a>()</code>,
+<code><a href='extract_het_var.html'>extract_het_var</a>()</code>,
+<code><a href='extract_model_data.html'>extract_model_data</a>()</code>,
+<code><a href='extract_random_coefs.html'>extract_random_coefs</a>()</code>,
+<code><a href='extract_random_effects.html'>extract_random_effects</a>()</code>,
+<code><a href='extract_vc.html'>extract_vc</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: Matrix</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
@@ -287,7 +296,8 @@ error and critical value for the <code>ci_level</code>.</p>
 #&gt;   term      value    se     t lower_2.5 upper_97.5
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> Intercept 251.   6.82 36.8     238.        265. 
-#&gt; </span><span style='color: #555555;'>2</span><span> Days       10.5  1.55  6.77      7.44       13.5</div></span></pre>
+#&gt; </span><span style='color: #555555;'>2</span><span> Days       10.5  1.55  6.77      7.44       13.5</div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

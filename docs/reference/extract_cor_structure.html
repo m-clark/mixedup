@@ -139,7 +139,7 @@ potentially other models." />
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Extract correlation structure</h1>
-    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/extract_cor_structure.R'><code>R/extract_cor_structure.R</code></a></small>
+    
     <div class="hidden name"><code>extract_cor_structure.Rd</code></div>
     </div>
 
@@ -171,7 +171,7 @@ potentially other models.</p>
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model</th>
-      <td><p>An appropriate mixed model</p></td>
+      <td><p>An appropriate mixed model.</p></td>
     </tr>
     <tr>
       <th>digits</th>
@@ -179,7 +179,7 @@ potentially other models.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Other arguments appropriate to the method</p></td>
+      <td><p>Other arguments appropriate to the method.</p></td>
     </tr>
     <tr>
       <th>ci_level</th>
@@ -212,7 +212,7 @@ parameters and related uncertainty, similar to
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function applies to models with residual correlation, i.e. that
-contain something like corAR1(form = ~time) for <code>nlme</code> or <code>brms</code>
+contain something like <code>corAR1(form = ~time)</code> for nlme, or brms
 models with an <code>autocor</code> argument.  This functions extracts the
 associated parameters (e.g. <code>Phi</code> in nlme, <code>ar[1]</code> in brms, etc.)</p>
 <p>For glmmTMB objects, rather than the full matrix, simplified output is
@@ -224,6 +224,15 @@ from Ben Bolker</a>, and the
 <a href='https://cran.r-project.org/web/packages/glmmTMB/vignettes/covstruct.html'>glmmTMB
 vignette</a>.</p>
 <p>Most types of spatial models should work as well.</p>
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other extract: 
+<code><a href='extract_fixed_effects.html'>extract_fixed_effects</a>()</code>,
+<code><a href='extract_het_var.html'>extract_het_var</a>()</code>,
+<code><a href='extract_model_data.html'>extract_model_data</a>()</code>,
+<code><a href='extract_random_coefs.html'>extract_random_coefs</a>()</code>,
+<code><a href='extract_random_effects.html'>extract_random_effects</a>()</code>,
+<code><a href='extract_vc.html'>extract_vc</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
@@ -247,6 +256,7 @@ vignette</a>.</p>
       <li><a href="#arguments">Arguments</a></li>
       <li><a href="#value">Value</a></li>
       <li><a href="#details">Details</a></li>
+      <li><a href="#see-also">See also</a></li>
       <li><a href="#examples">Examples</a></li>
     </ul>
 

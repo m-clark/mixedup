@@ -16,8 +16,8 @@
 #'   'zi' or 'disp' to select. Default is 'cond'.
 #'
 #' @details This function applies to models with residual correlation, i.e. that
-#'   contain something like corAR1(form = ~time) for \code{nlme} or \code{brms}
-#'   models with an \code{autocor} argument.  This functions extracts the
+#'   contain something like `corAR1(form = ~time)` for nlme, or brms
+#'   models with an `autocor` argument.  This functions extracts the
 #'   associated parameters (e.g. `Phi` in nlme, `ar[1]` in brms, etc.)
 #'
 #'   For glmmTMB objects, rather than the full matrix, simplified output is
@@ -52,6 +52,9 @@
 #'
 #' extract_cor_structure(brm_corAR)
 #' }
+#'
+#' @family extract
+#'
 #' @export
 extract_cor_structure <- function(
   model,

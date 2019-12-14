@@ -1,5 +1,7 @@
 #' Summarize a mixed model
 #'
+#' @description This function prints fixed effects and variance components for a mixed model.
+#'
 #' @param model A supported model.
 #' @param ci Whether to include a 95% uncertainty interval. Default is TRUE.
 #' @param cor_re Whether to include the correlations of the random effects.
@@ -12,10 +14,13 @@
 #'   options.
 #' @param ... Not used at present. May allow models specific functionality.
 #'
-#' @importFrom stats vcov
+#' @details This basically does pretty printing of the results of [extract_vc()]
+#'   and [extract_fixed_effects()].
 #'
 #' @return Prints the variance components, fixed effects, etc. Invisibly, a list
 #'   of those.
+#'
+#' @seealso [extract_vc()], [extract_fixed_effects()]
 #'
 #' @examples
 #' library(lme4)
@@ -24,6 +29,7 @@
 #' lmer_mod <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #' summarize_model(lmer_mod)
 #'
+#' @importFrom stats vcov
 #'
 #' @export
 summarize_model <- function(

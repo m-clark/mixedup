@@ -144,4 +144,13 @@ extract_vc(lmer_mod, ci_scale = 'var')
 \code{\link[brms:VarCorr]{VarCorr.brmsfit}}
 \code{\link[rstanarm:VarCorr]{VarCorr.stanreg}}
 \code{\link[mgcv:gam.vcomp]{gam.vcomp}}
+
+Other extract: 
+\code{\link{extract_cor_structure}()},
+\code{\link{extract_fixed_effects}()},
+\code{\link{extract_het_var}()},
+\code{\link{extract_model_data}()},
+\code{\link{extract_random_coefs}()},
+\code{\link{extract_random_effects}()}
 }
+\concept{extract}

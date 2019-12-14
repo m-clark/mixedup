@@ -138,7 +138,7 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Extract model data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/extract_model_data.R'><code>R/extract_model_data.R</code></a></small>
+    
     <div class="hidden name"><code>extract_model_data.Rd</code></div>
     </div>
 
@@ -153,16 +153,23 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model</th>
-      <td><p>The mixed model</p></td>
+      <td><p>The mixed model.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>a tibble/dataframe</p>
+    <p>A tibble/dataframe of the data used in the model.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='https://rdrr.io/r/stats/model.frame.html'>model.frame</a></p></div>
+    <div class='dont-index'><p><a href='https://rdrr.io/r/stats/model.frame.html'>model.frame</a></p>
+<p>Other extract: 
+<code><a href='extract_cor_structure.html'>extract_cor_structure</a>()</code>,
+<code><a href='extract_fixed_effects.html'>extract_fixed_effects</a>()</code>,
+<code><a href='extract_het_var.html'>extract_het_var</a>()</code>,
+<code><a href='extract_random_coefs.html'>extract_random_coefs</a>()</code>,
+<code><a href='extract_random_effects.html'>extract_random_effects</a>()</code>,
+<code><a href='extract_vc.html'>extract_vc</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)
@@ -183,6 +190,7 @@
 #&gt; </span><span style='color: #555555;'> 9</span><span>     431.     8 308    
 #&gt; </span><span style='color: #555555;'>10</span><span>     466.     9 308    
 #&gt; </span><span style='color: #555555;'># … with 170 more rows</span><span></div><div class='input'>
+
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

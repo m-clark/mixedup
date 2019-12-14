@@ -49,7 +49,11 @@ Prints the variance components, fixed effects, etc. Invisibly, a list
 of those.
 }
 \description{
-Summarize a mixed model
+This function prints fixed effects and variance components for a mixed model.
+}
+\details{
+This basically does pretty printing of the results of \code{\link[=extract_vc]{extract_vc()}}
+and \code{\link[=extract_fixed_effects]{extract_fixed_effects()}}.
 }
 \examples{
 library(lme4)
@@ -58,5 +62,7 @@ library(mixedup)
 lmer_mod <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 summarize_model(lmer_mod)
 
-
+}
+\seealso{
+\code{\link[=extract_vc]{extract_vc()}}, \code{\link[=extract_fixed_effects]{extract_fixed_effects()}}
 }

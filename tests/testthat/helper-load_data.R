@@ -444,8 +444,8 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 
 
 load('rstanarm_results.RData')
-#
-#
+
+
 #
 # library(rstanarm)
 #

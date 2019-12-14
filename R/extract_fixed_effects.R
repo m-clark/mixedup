@@ -1,21 +1,27 @@
 #' Extract fixed effects
 #'
+#' @description Extract fixed effects parameters, variance estimates etc.
+#'
 #' @inheritParams extract_vc
+#'
 #' @param exponentiate Exponentiate the fixed-effect coefficient estimates and
 #'   confidence intervals (common for logistic regression). If TRUE, also scales
 #'   the standard errors by the exponentiated coefficient, transforming them to
 #'   the new scale.
 #'
-#' @details Essentially duplicates the \code{broom::tidy} approach with minor
+#' @details Essentially duplicates the `broom::tidy` approach with minor
 #'   name changes.  The package may or may not provide p-values by default.
 #'
 #' @note For nlme, this is just a multiplier based on the estimated standard
-#'   error and critical value for the \code{ci_level}.
+#'   error and critical value for the `ci_level`.
 #'
 #' @return A data.frame with the fixed effects and associated statistics.
 #'
-#' @seealso \code{\link[broom:tidy.merMod]{tidy.merMod}},
+#' @seealso
+#'   \code{\link[broom:tidy.merMod]{tidy.merMod}},
 #'   \code{\link[broom.mixed:tidy.glmmTMB]{tidy.glmmTMB}},
+#'   \code{\link[broom:tidy.lme]{tidy.lme}},
+#'   \code{\link[broom:tidy.merMod]{tidy.merMod}},
 #'   \code{\link[broom.mixed:tidy.brmsfit]{tidy.brmsfit}}
 #'
 #' @examples
@@ -25,7 +31,11 @@
 #' lmer_mod <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 #'
 #' extract_fixed_effects(lmer_mod)
+#'
+#' @family extract
+#'
 #' @importFrom stats qnorm qt
+#'
 #' @export
 extract_fixed_effects <- function(
   model,

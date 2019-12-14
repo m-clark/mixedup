@@ -13,11 +13,11 @@ extract_het_var(model, digits = 3, ...)
 \method{extract_het_var}{glmmTMB}(model, digits = 3, ...)
 }
 \arguments{
-\item{model}{An appropriate mixed model}
+\item{model}{An appropriate mixed model.}
 
 \item{digits}{Rounding. Default is 3.}
 
-\item{...}{Other arguments appropriate to the method}
+\item{...}{Other arguments appropriate to the method.}
 }
 \value{
 A vector of the estimates on the variance scale.
@@ -27,13 +27,11 @@ Extract heterogeneous variances for nlme, and potentially other models.
 }
 \details{
 For models with heterogeneous variance, i.e. that contain something
-like varIdent(form = ~1|Group), nlme returns a result in the summary
-regarding the variances that many do not know what to do with, nor likely
-would be what they would want to report. I rarely do these models with
-nlme, and have only played around with the \code{varIdent} case.
+like \code{varIdent(form = ~1|Group)}, this returns a more presentable version
+of the estimates. Only tested with the \code{varIdent} case.
 
 For glmmTMB, this serves as a wrapper for \link{extract_cor_structure} with for the
-diagonal case.  See that function for details.
+'diag' option.  See that function for details.
 }
 \examples{
 library(nlme)
@@ -58,5 +56,12 @@ extract_het_var(model)
 
 }
 \seealso{
-\link{extract_cor_structure}
+Other extract: 
+\code{\link{extract_cor_structure}()},
+\code{\link{extract_fixed_effects}()},
+\code{\link{extract_model_data}()},
+\code{\link{extract_random_coefs}()},
+\code{\link{extract_random_effects}()},
+\code{\link{extract_vc}()}
 }
+\concept{extract}

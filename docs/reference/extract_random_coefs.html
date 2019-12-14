@@ -38,7 +38,7 @@
   
 
 <meta property="og:title" content="Extract random coefficients and their variances — extract_random_coefs" />
-<meta property="og:description" content="Extract random coefficients and their variances" />
+<meta property="og:description" content="Fixed effect + random effects." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,12 +138,12 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Extract random coefficients and their variances</h1>
-    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/extract_random_coefs.R'><code>R/extract_random_coefs.R</code></a></small>
+    
     <div class="hidden name"><code>extract_random_coefs.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Extract random coefficients and their variances</p>
+    <p>Fixed effect + random effects.</p>
     </div>
 
     <pre class="usage"><span class='fu'>extract_random_coefs</span>(
@@ -216,9 +216,12 @@ not report it. Default is .95. Not applicable to nlme objects.</p></td>
     </tr>
     <tr>
       <th>component</th>
-      <td><p>Only applies to <code>glmmTMB</code> objects. Which of the three
-components 'cond', 'zi' or 'other' to select for a glmmTMB model. Default
-is 'cond'. Minimal testing on other options.</p></td>
+      <td><p>For glmmTMB objects, which of the two components 'cond' or
+'zi' to select. Default is 'cond'. For brmsfit objects, this can filter
+results to a certain part of the output, e.g. 'sigma' or 'zi' of
+distributional models, or a specific outcome of a multivariate model.  In
+this case <code>component</code> is a regular expression that ends the name of the
+parameters of the output (e.g. '__component').</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -242,14 +245,19 @@ and additional discussion at the
 FAQ</a>. As noted there, this assumption may not be appropriate, and if you
 are really interested in an accurate uncertainty estimate you should
 probably use brms.</p>
-<p><code>nlme</code> only provides the coefficients no estimated variance, so this
+<p>The nlme package only provides the coefficients no estimated variance, so this
 function doesn't add to what you get from basic functionality for those
 models.  In addition, nlme adds all random effects to the fixed effects,
-whereas <code>lme4</code> and others only add the effects requested.</p>
+whereas lme4 and others only add the effects requested.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='extract_random_effects.html'>extract_random_effects</a></code>,
-<code><a href='extract_fixed_effects.html'>extract_fixed_effects</a></code></p></div>
+    <div class='dont-index'><p>Other extract: 
+<code><a href='extract_cor_structure.html'>extract_cor_structure</a>()</code>,
+<code><a href='extract_fixed_effects.html'>extract_fixed_effects</a>()</code>,
+<code><a href='extract_het_var.html'>extract_het_var</a>()</code>,
+<code><a href='extract_model_data.html'>extract_model_data</a>()</code>,
+<code><a href='extract_random_effects.html'>extract_random_effects</a>()</code>,
+<code><a href='extract_vc.html'>extract_vc</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)

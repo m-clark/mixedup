@@ -1,13 +1,18 @@
 #' Extract random coefficients and their variances
 #'
+#' @description Fixed effect + random effects.
+#'
 #' @param model A merMod, nlme, brms, or glmmTMB object
 #' @param re The name of the grouping variable for the random effects.
 #' @param ci_level Where possible, confidence level < 1, typically above 0.90. A value of 0 will
 #'   not report it. Default is .95. Not applicable to nlme objects.
 #' @param digits Rounding. Default is 3.
-#' @param component Only applies to \code{glmmTMB} objects. Which of the three
-#'   components 'cond', 'zi' or 'other' to select for a glmmTMB model. Default
-#'   is 'cond'. Minimal testing on other options.
+#' @param component For glmmTMB objects, which of the two components 'cond' or
+#'   'zi' to select. Default is 'cond'. For brmsfit objects, this can filter
+#'   results to a certain part of the output, e.g. 'sigma' or 'zi' of
+#'   distributional models, or a specific outcome of a multivariate model.  In
+#'   this case `component` is a regular expression that ends the name of the
+#'   parameters of the output (e.g. '__component').
 #' @param ... Other arguments specific to the method. Unused at present.
 #'
 #' @details Returns a data frame with random coefficients, a.k.a. random
@@ -22,17 +27,14 @@
 #'   are really interested in an accurate uncertainty estimate you should
 #'   probably use brms.
 #'
-#'
-#' \code{nlme} only provides the coefficients no estimated variance, so this
-#' function doesn't add to what you get from basic functionality for those
-#' models.  In addition, nlme adds all random effects to the fixed effects,
-#' whereas \code{lme4} and others only add the effects requested.
-#'
+#'   The nlme package only provides the coefficients no estimated variance, so this
+#'   function doesn't add to what you get from basic functionality for those
+#'   models.  In addition, nlme adds all random effects to the fixed effects,
+#'   whereas lme4 and others only add the effects requested.
 #'
 #' @return A data frame of the random coefficients and their standard errors.
 #'
-#' @seealso \code{\link[mixedup]{extract_random_effects}},
-#' \code{\link[mixedup]{extract_fixed_effects}}
+#' @family extract
 #'
 #' @importFrom stats coef vcov
 #' @importFrom dplyr rename_all

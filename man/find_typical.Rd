@@ -17,10 +17,10 @@ is \code{NULL} to return all.}
 \item{...}{Other arguments to pass to \link{extract_random_effects}.}
 }
 \value{
-A data frame of group label(s) and their random effect values.
+A data frame that is a subset of \code{\link[=extract_random_effects]{extract_random_effects()}}.
 }
 \description{
-Given random effect values find 'typical' instances.
+Given random effect values, find 'typical' instances.
 }
 \details{
 In many cases, predictions are made by holding the random effects to
@@ -40,10 +40,10 @@ random effect and the highest may not be statistically notable.
 \note{
 Not surprisingly, different estimation procedures may produce different
 random effect estimates. As such, you may get a different result from say,
-\code{lme4} vs. \code{glmmTMB}.  In addition, because \code{nlme} doesn't
+the lme4 vs. glmmTMB package.  In addition, because nlme doesn't
 automatically handle crossed random effects, you will potentially get a
 label that is not actually seen in the data, but reflects the nesting of
-multiple grouping factors.  I don't care enough about \code{nlme} usage to
+multiple grouping factors.  I don't care enough about nlme usage to
 do anything about this at present.
 }
 \examples{

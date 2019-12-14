@@ -49,7 +49,10 @@
 #' extract_vc(lmer_mod)
 #' extract_vc(lmer_mod, ci_scale = 'var')
 #'
+#' @family extract
+#'
 #' @importFrom  stats confint
+#'
 #' @export
 extract_vc <- function(
   model,

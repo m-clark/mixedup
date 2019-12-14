@@ -2,22 +2,20 @@
 #'
 #' @description Extract heterogeneous variances for nlme, and potentially other models.
 #'
-#' @param model An appropriate mixed model
+#' @param model An appropriate mixed model.
 #' @param digits Rounding. Default is 3.
-#' @param ... Other arguments appropriate to the method
+#' @param ... Other arguments appropriate to the method.
 #'
 #' @details For models with heterogeneous variance, i.e. that contain something
-#'   like varIdent(form = ~1|Group), nlme returns a result in the summary
-#'   regarding the variances that many do not know what to do with, nor likely
-#'   would be what they would want to report. I rarely do these models with
-#'   nlme, and have only played around with the \code{varIdent} case.
+#'   like `varIdent(form = ~1|Group)`, this returns a more presentable version
+#'   of the estimates. Only tested with the `varIdent` case.
 #'
 #'   For glmmTMB, this serves as a wrapper for \link{extract_cor_structure} with for the
-#'   diagonal case.  See that function for details.
+#'   'diag' option.  See that function for details.
 #'
 #' @return A vector of the estimates on the variance scale.
 #'
-#' @seealso \link{extract_cor_structure}
+#' @family extract
 #'
 #' @importFrom stats coef
 #'

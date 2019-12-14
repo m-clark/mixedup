@@ -102,7 +102,6 @@ extract_random_effects(lme_model)
 
 extract_random_effects(tmb_model)
 
-
 extract_random_effects(brms_model)
 
 

@@ -1,6 +1,6 @@
 #' Find typical groups
 #'
-#' @description Given random effect values find 'typical' instances.
+#' @description Given random effect values, find 'typical' instances.
 #'
 #' @param model A supported model, see \link{extract_random_effects}.
 #' @param re The name of the grouping variable for the random effects. Default
@@ -25,13 +25,13 @@
 #'
 #' @note Not surprisingly, different estimation procedures may produce different
 #'   random effect estimates. As such, you may get a different result from say,
-#'   \code{lme4} vs. \code{glmmTMB}.  In addition, because \code{nlme} doesn't
+#'   the lme4 vs. glmmTMB package.  In addition, because nlme doesn't
 #'   automatically handle crossed random effects, you will potentially get a
 #'   label that is not actually seen in the data, but reflects the nesting of
-#'   multiple grouping factors.  I don't care enough about \code{nlme} usage to
+#'   multiple grouping factors.  I don't care enough about nlme usage to
 #'   do anything about this at present.
 #'
-#' @return A data frame of group label(s) and their random effect values.
+#' @return A data frame that is a subset of [extract_random_effects()].
 #'
 #' @examples
 #' library(mixedup)
@@ -42,6 +42,7 @@
 #' find_typical(lmer_1, re = 'Subject')
 #'
 #' @importFrom stats quantile
+#'
 #' @export
 find_typical <- function(
   model,

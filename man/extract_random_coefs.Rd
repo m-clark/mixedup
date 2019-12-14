@@ -62,9 +62,12 @@ not report it. Default is .95. Not applicable to nlme objects.}
 
 \item{digits}{Rounding. Default is 3.}
 
-\item{component}{Only applies to \code{glmmTMB} objects. Which of the three
-components 'cond', 'zi' or 'other' to select for a glmmTMB model. Default
-is 'cond'. Minimal testing on other options.}
+\item{component}{For glmmTMB objects, which of the two components 'cond' or
+'zi' to select. Default is 'cond'. For brmsfit objects, this can filter
+results to a certain part of the output, e.g. 'sigma' or 'zi' of
+distributional models, or a specific outcome of a multivariate model.  In
+this case \code{component} is a regular expression that ends the name of the
+parameters of the output (e.g. '__component').}
 
 \item{...}{Other arguments specific to the method. Unused at present.}
 }
@@ -72,7 +75,7 @@ is 'cond'. Minimal testing on other options.}
 A data frame of the random coefficients and their standard errors.
 }
 \description{
-Extract random coefficients and their variances
+Fixed effect + random effects.
 }
 \details{
 Returns a data frame with random coefficients, a.k.a. random
@@ -87,10 +90,10 @@ FAQ}. As noted there, this assumption may not be appropriate, and if you
 are really interested in an accurate uncertainty estimate you should
 probably use brms.
 
-\code{nlme} only provides the coefficients no estimated variance, so this
+The nlme package only provides the coefficients no estimated variance, so this
 function doesn't add to what you get from basic functionality for those
 models.  In addition, nlme adds all random effects to the fixed effects,
-whereas \code{lme4} and others only add the effects requested.
+whereas lme4 and others only add the effects requested.
 }
 \examples{
 library(lme4)
@@ -104,6 +107,12 @@ extract_random_coefs(tmb_1, re = 'Subject')
 
 }
 \seealso{
-\code{\link[mixedup]{extract_random_effects}},
-\code{\link[mixedup]{extract_fixed_effects}}
+Other extract: 
+\code{\link{extract_cor_structure}()},
+\code{\link{extract_fixed_effects}()},
+\code{\link{extract_het_var}()},
+\code{\link{extract_model_data}()},
+\code{\link{extract_random_effects}()},
+\code{\link{extract_vc}()}
 }
+\concept{extract}

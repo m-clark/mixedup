@@ -38,7 +38,7 @@
   
 
 <meta property="og:title" content="Find typical groups — find_typical" />
-<meta property="og:description" content="Given random effect values find 'typical' instances." />
+<meta property="og:description" content="Given random effect values, find 'typical' instances." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -138,12 +138,12 @@
   <div class="col-md-9 contents">
     <div class="page-header">
     <h1>Find typical groups</h1>
-    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/find_typical.R'><code>R/find_typical.R</code></a></small>
+    
     <div class="hidden name"><code>find_typical.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>Given random effect values find 'typical' instances.</p>
+    <p>Given random effect values, find 'typical' instances.</p>
     </div>
 
     <pre class="usage"><span class='fu'>find_typical</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>probs</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='no'>...</span>)</pre>
@@ -172,7 +172,7 @@ is <code>NULL</code> to return all.</p></td>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A data frame of group label(s) and their random effect values.</p>
+    <p>A data frame that is a subset of <code><a href='extract_random_effects.html'>extract_random_effects()</a></code>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>In many cases, predictions are made by holding the random effects to
@@ -190,10 +190,10 @@ random effect and the highest may not be statistically notable.</p>
 
     <p>Not surprisingly, different estimation procedures may produce different
 random effect estimates. As such, you may get a different result from say,
-<code>lme4</code> vs. <code>glmmTMB</code>.  In addition, because <code>nlme</code> doesn't
+the lme4 vs. glmmTMB package.  In addition, because nlme doesn't
 automatically handle crossed random effects, you will potentially get a
 label that is not actually seen in the data, but reflects the nesting of
-multiple grouping factors.  I don't care enough about <code>nlme</code> usage to
+multiple grouping factors.  I don't care enough about nlme usage to
 do anything about this at present.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>

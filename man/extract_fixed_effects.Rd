@@ -105,7 +105,7 @@ of the output.}
 A data.frame with the fixed effects and associated statistics.
 }
 \description{
-Extract fixed effects
+Extract fixed effects parameters, variance estimates etc.
 }
 \details{
 Essentially duplicates the \code{broom::tidy} approach with minor
@@ -122,9 +122,21 @@ library(mixedup)
 lmer_mod <- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
 
 extract_fixed_effects(lmer_mod)
+
 }
 \seealso{
 \code{\link[broom:tidy.merMod]{tidy.merMod}},
 \code{\link[broom.mixed:tidy.glmmTMB]{tidy.glmmTMB}},
+\code{\link[broom:tidy.lme]{tidy.lme}},
+\code{\link[broom:tidy.merMod]{tidy.merMod}},
 \code{\link[broom.mixed:tidy.brmsfit]{tidy.brmsfit}}
+
+Other extract: 
+\code{\link{extract_cor_structure}()},
+\code{\link{extract_het_var}()},
+\code{\link{extract_model_data}()},
+\code{\link{extract_random_coefs}()},
+\code{\link{extract_random_effects}()},
+\code{\link{extract_vc}()}
 }
+\concept{extract}

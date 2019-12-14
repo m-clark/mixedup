@@ -23,11 +23,11 @@ extract_cor_structure(model, digits = 3, ...)
 )
 }
 \arguments{
-\item{model}{An appropriate mixed model}
+\item{model}{An appropriate mixed model.}
 
 \item{digits}{Rounding. Default is 3.}
 
-\item{...}{Other arguments appropriate to the method}
+\item{...}{Other arguments appropriate to the method.}
 
 \item{ci_level}{confidence level < 1, typically above 0.90. A value of 0 will
 not report it. Default is .95.}
@@ -53,7 +53,7 @@ potentially other models.
 }
 \details{
 This function applies to models with residual correlation, i.e. that
-contain something like corAR1(form = ~time) for \code{nlme} or \code{brms}
+contain something like \code{corAR1(form = ~time)} for nlme, or brms
 models with an \code{autocor} argument.  This functions extracts the
 associated parameters (e.g. \code{Phi} in nlme, \code{ar[1]} in brms, etc.)
 
@@ -84,4 +84,15 @@ brm_corAR <- brm(
 
 extract_cor_structure(brm_corAR)
 }
+
 }
+\seealso{
+Other extract: 
+\code{\link{extract_fixed_effects}()},
+\code{\link{extract_het_var}()},
+\code{\link{extract_model_data}()},
+\code{\link{extract_random_coefs}()},
+\code{\link{extract_random_effects}()},
+\code{\link{extract_vc}()}
+}
+\concept{extract}

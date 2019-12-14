@@ -2,7 +2,7 @@
 #'
 #' @description This is mostly just a wrapper for \code{model.frame}.
 #'
-#' @param model The mixed model
+#' @param model The mixed model.
 #'
 #' @return A tibble/dataframe of the data used in the model.
 #'
@@ -14,6 +14,9 @@
 #'
 #' lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
 #' extract_model_data(lmer_1)
+#'
+#'
+#' @family extract
 #'
 #' @export
 extract_model_data <- function(model) {

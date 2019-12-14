@@ -7,7 +7,7 @@
 extract_model_data(model)
 }
 \arguments{
-\item{model}{The mixed model}
+\item{model}{The mixed model.}
 }
 \value{
 A tibble/dataframe of the data used in the model.
@@ -22,7 +22,17 @@ library(mixedup)
 lmer_1 <- lmer(Reaction ~ Days + (1 | Subject), data = sleepstudy)
 extract_model_data(lmer_1)
 
+
 }
 \seealso{
 \link{model.frame}
+
+Other extract: 
+\code{\link{extract_cor_structure}()},
+\code{\link{extract_fixed_effects}()},
+\code{\link{extract_het_var}()},
+\code{\link{extract_random_coefs}()},
+\code{\link{extract_random_effects}()},
+\code{\link{extract_vc}()}
 }
+\concept{extract}
