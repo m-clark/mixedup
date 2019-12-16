@@ -404,6 +404,19 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #
 
 ### misc other models
+
+# group <- rep(c("treat", "placebo"), each = 30)
+# symptom_post <- c(rnorm(30, mean = 1, sd = 2), rnorm(30, mean = 0, sd = 1))
+# dat1 <- data.frame(group, symptom_post)
+
+# brm_sigma_simple <-
+#   brm(
+#     bf(symptom_post ~ group, sigma ~ group),
+#     data = dat1,
+#     family = gaussian,
+#     cores = 4,
+#     thin = 40
+#   )
 #
 # brm_sigma <-
 #   update(
@@ -433,6 +446,7 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 # )
 #
 # save(
+#   brm_sigma_simple,
 #   brm_sigma,
 #   brm_zi,
 #   brm_mv,

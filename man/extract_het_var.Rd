@@ -4,41 +4,75 @@
 \alias{extract_het_var}
 \alias{extract_het_var.lme}
 \alias{extract_het_var.glmmTMB}
+\alias{extract_het_var.brmsfit}
 \title{Extract heterogeneous variances}
 \usage{
-extract_het_var(model, digits = 3, ...)
+extract_het_var(model, digits = 3, scale = "sd", ...)
 
-\method{extract_het_var}{lme}(model, digits = 3, ...)
+\method{extract_het_var}{lme}(model, digits = 3, scale = "sd", ...)
 
-\method{extract_het_var}{glmmTMB}(model, digits = 3, ...)
+\method{extract_het_var}{glmmTMB}(model, digits = 3, scale = "sd", ...)
+
+\method{extract_het_var}{brmsfit}(
+  model,
+  digits = 3,
+  scale = "sd",
+  ...,
+  ci_level = 0.95,
+  return_all = FALSE
+)
 }
 \arguments{
 \item{model}{An appropriate mixed model.}
 
 \item{digits}{Rounding. Default is 3.}
 
-\item{...}{Other arguments appropriate to the method.}
+\item{scale}{For brms class objects, return result on original standard
+deviation scale ('sd') or as variance ('var').}
+
+\item{...}{Other arguments specific to the method. Unused at present.}
+
+\item{ci_level}{For brms objects, confidence level < 1, typically above 0.90. A value of 0 will
+not report it. Default is .95.}
+
+\item{return_all}{For brms class objects, return all fitted values or only
+the distinct ones. Default is FALSE.}
 }
 \value{
-A vector of the estimates on the variance scale.
+A vector of the estimates on the variance scale
 }
 \description{
-Extract heterogeneous variances for nlme, and potentially other models.
+Extract heterogeneous variances for nlme, glmmTMB, and brms
+models.
 }
 \details{
-For models with heterogeneous variance, i.e. that contain something
-like \code{varIdent(form = ~1|Group)}, this returns a more presentable version
-of the estimates. Only tested with the \code{varIdent} case.
+For nlme models with heterogeneous variance, i.e. that contain
+something like \code{varIdent(form = ~1|Group)}, this returns a more presentable
+version the estimates. Only tested with the \code{varIdent} case.
 
-For glmmTMB, this serves as a wrapper for \link{extract_cor_structure} with for the
-'diag' option.  See that function for details.
+For glmmTMB, this serves as a wrapper for \link{extract_cor_structure} for
+models with for the 'diag' function as part of the formula.  See that
+function for details. For distributional models where the dispersion is
+explicitly modeled separately via \verb{disp = ~ }, use the \code{component} argument
+of the other functions in this packge.
+
+For brms distributional models with a \verb{sigma ~ . formula}, this produces the
+(unique) fitted values for the dispersion part of the model.  As this is
+often just a single grouping variable to allow variance to vary over the
+group levels, only the distinct fitted values, which would be one value per
+group, are returned. If all fitted values are desired, set \code{return_all} to
+\code{TRUE}.
 }
 \examples{
 library(nlme)
 library(mixedup)
 
-model <- lme(distance ~ age + Sex, data = Orthodont, random = ~ 1|Subject,
-weights = varIdent(form = ~ 1 | Sex))
+model <- lme(
+  distance ~ age + Sex,
+  data = Orthodont,
+  random = ~ 1|Subject,
+  weights = varIdent(form = ~ 1 | Sex)
+)
 
 summary(model)
 
@@ -53,6 +87,23 @@ model <-
           data = Orthodont)
 
 extract_het_var(model)
+
+# compare with
+model <-
+  glmmTMB(distance ~ age + Sex + (1 | Subject), dispformula = ~ Sex,
+          data = Orthodont)
+
+extract_fixed_effects(model, component = 'disp', exponentiate = TRUE)
+
+\dontrun{
+library(brms)
+
+model <-
+  brm(bf(distance ~ age + Sex + (1 | Subject), sigma ~ Sex),
+      data = Orthodont)
+
+extract_het_var(model)
+}
 
 }
 \seealso{
