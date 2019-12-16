@@ -1,3 +1,7 @@
+# mixedup 0.3.4
+
+* Add brmsfit method for extract_het_var and notable doc updates.
+
 # mixedup 0.3.3
 
 * Add more functionality for rstanarm objects

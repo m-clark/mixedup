@@ -39,7 +39,7 @@
 
 <meta property="og:title" content="Extract correlation structure — extract_cor_structure" />
 <meta property="og:description" content="Extract residual correlation structure for nlme, brms, and
-potentially other models." />
+glmmTMB models." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -72,7 +72,7 @@ potentially other models." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
       </span>
     </div>
 
@@ -145,16 +145,13 @@ potentially other models." />
 
     <div class="ref-description">
     <p>Extract residual correlation structure for nlme, brms, and
-potentially other models.</p>
+glmmTMB models.</p>
     </div>
 
     <pre class="usage"><span class='fu'>extract_cor_structure</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
 
 <span class='co'># S3 method for lme</span>
 <span class='fu'>extract_cor_structure</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
-
-<span class='co'># S3 method for brmsfit</span>
-<span class='fu'>extract_cor_structure</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)
 
 <span class='co'># S3 method for glmmTMB</span>
 <span class='fu'>extract_cor_structure</span>(
@@ -164,7 +161,10 @@ potentially other models.</p>
   <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>,
   <span class='no'>which_cor</span>,
   <span class='kw'>full_matrix</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
-)</pre>
+)
+
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>extract_cor_structure</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -179,12 +179,7 @@ potentially other models.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Other arguments appropriate to the method.</p></td>
-    </tr>
-    <tr>
-      <th>ci_level</th>
-      <td><p>confidence level &lt; 1, typically above 0.90. A value of 0 will
-not report it. Default is .95.</p></td>
+      <td><p>Other arguments specific to the method. Unused at present.</p></td>
     </tr>
     <tr>
       <th>component</th>
@@ -194,7 +189,8 @@ not report it. Default is .95.</p></td>
     <tr>
       <th>which_cor</th>
       <td><p>Required for glmmTMB.  Which correlation parameter to
-extract. Must be one of 'ar1', 'ou', 'cs', 'toep', or 'us'.</p></td>
+extract. Must be one of 'ar1', 'ou', 'cs', 'toep', 'diag','us', 'mat',
+'gau', 'exp'.</p></td>
     </tr>
     <tr>
       <th>full_matrix</th>
@@ -202,11 +198,16 @@ extract. Must be one of 'ar1', 'ou', 'cs', 'toep', or 'us'.</p></td>
 covariance/correlation matrix (<code>TRUE</code>), or simplified output where possible
 (<code>FALSE</code>). Default is <code>FALSE</code>. See details.</p></td>
     </tr>
+    <tr>
+      <th>ci_level</th>
+      <td><p>For brms objects, confidence level &lt; 1, typically above 0.90. A value of 0 will
+not report it. Default is .95.</p></td>
+    </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>For nlme models, a data frame of the estimates. For brms, the
+    <p>For nlme and glmmTMB models, a data frame of the estimates. For brms, the
 parameters and related uncertainty, similar to
 <a href='extract_fixed_effects.html'>extract_fixed_effects</a>.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
