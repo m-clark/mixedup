@@ -1,14 +1,13 @@
 #' Extract correlation structure
 #'
 #' @description Extract residual correlation structure for nlme, brms, and
-#' potentially other models.
+#' glmmTMB models.
 #'
 #' @inheritParams extract_het_var
 #'
-#' @param ci_level confidence level < 1, typically above 0.90. A value of 0 will
-#'   not report it. Default is .95.
 #' @param which_cor Required for glmmTMB.  Which correlation parameter to
-#'   extract. Must be one of 'ar1', 'ou', 'cs', 'toep', or 'us'.
+#'   extract. Must be one of 'ar1', 'ou', 'cs', 'toep', 'diag','us', 'mat',
+#'   'gau', 'exp'.
 #' @param full_matrix For glmmTMB correlation, return the full residual
 #'   covariance/correlation matrix (`TRUE`), or simplified output where possible
 #'   (`FALSE`). Default is `FALSE`. See details.
@@ -33,7 +32,7 @@
 #'   Most types of spatial models should work as well.
 #'
 #'
-#' @return For nlme models, a data frame of the estimates. For brms, the
+#' @return For nlme and glmmTMB models, a data frame of the estimates. For brms, the
 #'   parameters and related uncertainty, similar to
 #'   \link{extract_fixed_effects}.
 #'
@@ -114,40 +113,6 @@ extract_cor_structure.lme <- function(
 }
 
 
-#' @rdname extract_cor_structure
-#' @export
-extract_cor_structure.brmsfit <- function(
-  model,
-  digits = 3,
-  ...,
-  ci_level = .95
-) {
-
-  cor_par <- summary(model, prob = ci_level)$cor_par
-
-  lower <- (1 - ci_level)/2
-  upper <- 1 - lower
-
-  # rename intervals
-  cor_par <- dplyr::as_tibble(cor_par, rownames = 'parameter') %>%
-    dplyr::rename_at(dplyr::vars(dplyr::matches('l-')), function(x)
-      paste0('lower_', lower*100)) %>%
-    dplyr::rename_at(dplyr::vars(dplyr::matches('u-')), function(x)
-      paste0('upper_', upper*100))
-
-  # more cleanup/return
-  cor_par %>%
-    dplyr::select(parameter, Estimate, Est.Error,
-                  dplyr::matches('lower|upper')) %>%
-    dplyr::rename(
-      value = Estimate,
-      se = Est.Error
-    ) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
-
-}
-
-
 #' @importFrom purrr is_empty
 #' @export
 #' @rdname extract_cor_structure
@@ -208,3 +173,39 @@ extract_cor_structure.glmmTMB <- function(
   cor_par
 
 }
+
+
+#' @rdname extract_cor_structure
+#' @export
+extract_cor_structure.brmsfit <- function(
+  model,
+  digits = 3,
+  ...,
+  ci_level = .95
+) {
+
+  cor_par <- summary(model, prob = ci_level)$cor_par
+
+  lower <- (1 - ci_level)/2
+  upper <- 1 - lower
+
+  # rename intervals
+  cor_par <- dplyr::as_tibble(cor_par, rownames = 'parameter') %>%
+    dplyr::rename_at(dplyr::vars(dplyr::matches('l-')), function(x)
+      paste0('lower_', lower*100)) %>%
+    dplyr::rename_at(dplyr::vars(dplyr::matches('u-')), function(x)
+      paste0('upper_', upper*100))
+
+  # more cleanup/return
+  cor_par %>%
+    dplyr::select(parameter, Estimate, Est.Error,
+                  dplyr::matches('lower|upper')) %>%
+    dplyr::rename(
+      value = Estimate,
+      se = Est.Error
+    ) %>%
+    dplyr::mutate_if(is.numeric, round, digits = digits)
+
+}
+
+

@@ -3,8 +3,8 @@
 #' @description This has functionality for simpler models from \code{lme4},
 #'   \code{glmmTMB}, \code{nlme}, and \code{brms}.
 #'
-#' @param model an lme4, glmmTMB, nlme, mgcv, or brms model
-#' @param ci_level confidence level < 1, typically above 0.90. A value of 0 will
+#' @param model An lme4, glmmTMB, nlme, mgcv, or brms model.
+#' @param ci_level Confidence level < 1, typically above 0.90. A value of 0 will
 #'   not report it (except for gam objects, which will revert to .95 due to
 #'   \code{gam.vcomp}). Default is .95.
 #' @param ci_args Additional arguments to the corresponding confint method.

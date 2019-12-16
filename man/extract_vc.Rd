@@ -85,9 +85,9 @@ extract_vc(
 )
 }
 \arguments{
-\item{model}{an lme4, glmmTMB, nlme, mgcv, or brms model}
+\item{model}{An lme4, glmmTMB, nlme, mgcv, or brms model.}
 
-\item{ci_level}{confidence level < 1, typically above 0.90. A value of 0 will
+\item{ci_level}{Confidence level < 1, typically above 0.90. A value of 0 will
 not report it (except for gam objects, which will revert to .95 due to
 \code{gam.vcomp}). Default is .95.}
 

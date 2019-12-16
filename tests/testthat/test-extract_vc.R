@@ -316,6 +316,11 @@ test_that('extract_vc.brmsfit basic functionality: zi model', {
   expect_match(init$effect, 'zi')
 })
 
+test_that('extract_vc.brmsfit basic functionality: sigma model', {
+  init = extract_vc(brm_sigma, component = 'sigma', ci_level = .8, digits = 2)
+  expect_match(init$effect, 'sigma_Intercept')
+})
+
 
 # Test rstanarm ---------------------------------------------------------------
 

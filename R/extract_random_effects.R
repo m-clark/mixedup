@@ -114,9 +114,9 @@ extract_random_effects.merMod <- function(
 
   if (ci_level > 0) {
 
-    lower = (1 - ci_level)/2
-    upper = 1 - lower
-    mult <- stats::qnorm(upper)
+    lower <- (1 - ci_level)/2
+    upper <- 1 - lower
+    mult  <- stats::qnorm(upper)
 
     random_effects <- random_effects %>%
       dplyr::mutate(
@@ -180,9 +180,9 @@ extract_random_effects.glmmTMB <- function(
 
   if (ci_level > 0) {
 
-    lower = (1 - ci_level)/2
-    upper = 1 - lower
-    mult <- stats::qnorm(upper)
+    lower <- (1 - ci_level)/2
+    upper <- 1 - lower
+    mult  <- stats::qnorm(upper)
 
     random_effects <- random_effects %>%
       dplyr::mutate(

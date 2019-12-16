@@ -3,15 +3,13 @@
 \name{extract_cor_structure}
 \alias{extract_cor_structure}
 \alias{extract_cor_structure.lme}
-\alias{extract_cor_structure.brmsfit}
 \alias{extract_cor_structure.glmmTMB}
+\alias{extract_cor_structure.brmsfit}
 \title{Extract correlation structure}
 \usage{
 extract_cor_structure(model, digits = 3, ...)
 
 \method{extract_cor_structure}{lme}(model, digits = 3, ...)
-
-\method{extract_cor_structure}{brmsfit}(model, digits = 3, ..., ci_level = 0.95)
 
 \method{extract_cor_structure}{glmmTMB}(
   model,
@@ -21,35 +19,38 @@ extract_cor_structure(model, digits = 3, ...)
   which_cor,
   full_matrix = FALSE
 )
+
+\method{extract_cor_structure}{brmsfit}(model, digits = 3, ..., ci_level = 0.95)
 }
 \arguments{
 \item{model}{An appropriate mixed model.}
 
 \item{digits}{Rounding. Default is 3.}
 
-\item{...}{Other arguments appropriate to the method.}
-
-\item{ci_level}{confidence level < 1, typically above 0.90. A value of 0 will
-not report it. Default is .95.}
+\item{...}{Other arguments specific to the method. Unused at present.}
 
 \item{component}{For glmmTMB objects, which of the three components 'cond',
 'zi' or 'disp' to select. Default is 'cond'.}
 
 \item{which_cor}{Required for glmmTMB.  Which correlation parameter to
-extract. Must be one of 'ar1', 'ou', 'cs', 'toep', or 'us'.}
+extract. Must be one of 'ar1', 'ou', 'cs', 'toep', 'diag','us', 'mat',
+'gau', 'exp'.}
 
 \item{full_matrix}{For glmmTMB correlation, return the full residual
 covariance/correlation matrix (\code{TRUE}), or simplified output where possible
 (\code{FALSE}). Default is \code{FALSE}. See details.}
+
+\item{ci_level}{For brms objects, confidence level < 1, typically above 0.90. A value of 0 will
+not report it. Default is .95.}
 }
 \value{
-For nlme models, a data frame of the estimates. For brms, the
+For nlme and glmmTMB models, a data frame of the estimates. For brms, the
 parameters and related uncertainty, similar to
 \link{extract_fixed_effects}.
 }
 \description{
 Extract residual correlation structure for nlme, brms, and
-potentially other models.
+glmmTMB models.
 }
 \details{
 This function applies to models with residual correlation, i.e. that
