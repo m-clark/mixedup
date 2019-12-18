@@ -25,7 +25,8 @@ extract_fixed_effects(
   ci_args = list(method = "Wald"),
   digits = 3,
   exponentiate = FALSE,
-  ...
+  ...,
+  p_value = "Wald"
 )
 
 \method{extract_fixed_effects}{glmmTMB}(
@@ -33,9 +34,9 @@ extract_fixed_effects(
   ci_level = 0.95,
   ci_args = NULL,
   digits = 3,
+  ...,
   exponentiate = FALSE,
-  component = "cond",
-  ...
+  component = "cond"
 )
 
 \method{extract_fixed_effects}{lme}(
@@ -53,8 +54,8 @@ extract_fixed_effects(
   ci_args = NULL,
   digits = 3,
   exponentiate = FALSE,
-  component = NULL,
-  ...
+  ...,
+  component = NULL
 )
 
 \method{extract_fixed_effects}{stanreg}(
@@ -63,8 +64,8 @@ extract_fixed_effects(
   ci_args = NULL,
   digits = 3,
   exponentiate = FALSE,
-  component = NULL,
-  ...
+  ...,
+  component = NULL
 )
 
 \method{extract_fixed_effects}{gam}(
@@ -88,11 +89,13 @@ not report it (except for gam objects, which will revert to .95 due to
 \item{digits}{Rounding. Default is 3.}
 
 \item{exponentiate}{Exponentiate the fixed-effect coefficient estimates and
-confidence intervals (common for logistic regression). If TRUE, also scales
+confidence intervals (common for logistic regression). If \code{TRUE}, also scales
 the standard errors by the exponentiated coefficient, transforming them to
 the new scale.}
 
 \item{...}{Other stuff to pass to the corresponding function. Unused/tested}
+
+\item{p_value}{For lme4 models, one of 'Wald' or 'KR'. See details.}
 
 \item{component}{For glmmTMB objects, which of the three components 'cond' or
 'zi' to select. Default is 'cond'.  For brmsfit objects, this can filter
@@ -109,7 +112,12 @@ Extract fixed effects parameters, variance estimates etc.
 }
 \details{
 Essentially duplicates the \code{broom::tidy} approach with minor
-name changes.  The package may or may not provide p-values by default.
+name changes.  For lme4, 'Wald' p-values are provided lmer models for
+consistency with others, but there is \href{https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#what-are-the-p-values-listed-by-summaryglmerfit-etc.-are-they-reliable}{much issue with them},
+especially for low N/small numbers of groups.  The Kenward-Roger is also
+available if the pbkrtest package is installed (experimental). For either
+case, Only the p-value from the process is provide, all other output is
+default provided lme4 without adjustment.
 }
 \note{
 For nlme, this is just a multiplier based on the estimated standard

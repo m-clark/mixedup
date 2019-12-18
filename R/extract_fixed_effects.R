@@ -5,12 +5,19 @@
 #' @inheritParams extract_vc
 #'
 #' @param exponentiate Exponentiate the fixed-effect coefficient estimates and
-#'   confidence intervals (common for logistic regression). If TRUE, also scales
+#'   confidence intervals (common for logistic regression). If `TRUE`, also scales
 #'   the standard errors by the exponentiated coefficient, transforming them to
 #'   the new scale.
+#' @param p_value For lme4 models, one of 'Wald' or 'KR'. See details.
 #'
 #' @details Essentially duplicates the `broom::tidy` approach with minor
-#'   name changes.  The package may or may not provide p-values by default.
+#'   name changes.  For lme4, 'Wald' p-values are provided lmer models for
+#'   consistency with others, but there is [much issue with
+#'   them](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#what-are-the-p-values-listed-by-summaryglmerfit-etc.-are-they-reliable),
+#'   especially for low N/small numbers of groups.  The Kenward-Roger is also
+#'   available if the pbkrtest package is installed (experimental). For either
+#'   case, Only the p-value from the process is provide, all other output is
+#'   default provided lme4 without adjustment.
 #'
 #' @note For nlme, this is just a multiplier based on the estimated standard
 #'   error and critical value for the `ci_level`.
@@ -34,7 +41,7 @@
 #'
 #' @family extract
 #'
-#' @importFrom stats qnorm qt
+#' @importFrom stats qnorm qt pt
 #'
 #' @export
 extract_fixed_effects <- function(
@@ -58,6 +65,7 @@ extract_fixed_effects <- function(
 
 #' @rdname extract_fixed_effects
 #' @export
+
 extract_fixed_effects.merMod <-
   function(
     model,
@@ -65,8 +73,15 @@ extract_fixed_effects.merMod <-
     ci_args = list(method = 'Wald'),
     digits = 3,
     exponentiate = FALSE,
-    ...
+    ...,
+    p_value = 'Wald'
   ) {
+
+    if (!p_value %in% c('Wald', 'Satterthwaite', 'KR')) {
+      warning("p_value must be one of 'Wald' or 'KR', switching to 'Wald'")
+      p_value = 'Wald'
+    }
+
 
     fe <- data.frame(stats::coef(summary(model)))
 
@@ -75,6 +90,35 @@ extract_fixed_effects.merMod <-
     }
     else {
       colnames(fe) <- c('value', 'se', 't')
+
+      # Note, Satterthwaite required calling lmerTest::as_lmerModTest which has
+      # historical issues being used inside other functions that are still
+      # evidently present, so left out for now.
+      # if (p_value == 'Satterthwaite') {
+        # if (!is_package_installed('lmerTest')) {
+        #   p_value <- 'Wald'
+        #   warning('lmerTest package not installed. Switching p_value to Wald.')
+        # } else {
+        #   coerced_model <- lmerTest::as_lmerModLmerTest(model)
+        #   ps <- coef(summarycoerced_model())[, 'Pr(>|t|)']
+        # }
+      # }
+      if (p_value == 'KR') {
+        if (!is_package_installed('pbkrtest')) {
+          p_value <- 'Wald'
+          warning('pbkrtest required for Kenward-Roger. Switching p_value to Wald.')
+        } else {
+          L <- diag(nrow(fe))
+          ps <-
+            apply(L, 2, function(l)
+              pbkrtest::KRmodcomp(model, matrix(l, ncol = 2))$stats$p.value)
+          fe <-
+            dplyr::mutate(fe, p_value = ps)
+        }
+      }
+      else if (p_value == 'Wald')
+        fe <- dplyr::mutate(fe, p_value = 2 * pt(abs(t), Inf, lower.tail = FALSE))
+
     }
 
     if (ci_level > 0) {
@@ -128,9 +172,9 @@ extract_fixed_effects.glmmTMB <-
     ci_level = .95,
     ci_args = NULL,
     digits = 3,
+    ...,
     exponentiate = FALSE,
-    component = 'cond',
-    ...
+    component = 'cond'
   ) {
 
     if (!component %in% c('cond', 'zi', 'disp')) {
@@ -275,8 +319,8 @@ extract_fixed_effects.brmsfit <-
     ci_args = NULL,
     digits = 3,
     exponentiate = FALSE,
-    component = NULL,
-    ...
+    ...,
+    component = NULL
   ) {
 
     if (ci_level == 0) {
@@ -330,8 +374,8 @@ extract_fixed_effects.stanreg <-
     ci_args = NULL,
     digits = 3,
     exponentiate = FALSE,
-    component = NULL,
-    ...
+    ...,
+    component = NULL
   ) {
 
     if (inherits(model, 'stanmvreg'))

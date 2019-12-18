@@ -14,10 +14,10 @@
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
-    "version": "3.6.1",
+    "version": "3.6.2",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 3.6.1 (2019-07-05)",
+  "runtimePlatform": "R version 3.6.2 (2019-12-12)",
   "author": [
     {
       "@type": "Person",
@@ -125,6 +125,18 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "pbkrtest",
+      "name": "pbkrtest",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=pbkrtest"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "covr",
       "name": "covr",
       "provider": {
@@ -207,7 +219,7 @@
   ],
   "releaseNotes": "https://github.com/m-clark/mixedup/blob/master/NEWS.md",
   "readme": "https://github.com/m-clark/mixedup/blob/master/README.md",
-  "fileSize": "31661.934KB",
+  "fileSize": "31662.95KB",
   "contIntegration": [
     "https://travis-ci.org/m-clark/mixedup",
     "https://ci.appveyor.com/project/m-clark/mixedup",

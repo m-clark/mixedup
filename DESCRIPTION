@@ -26,6 +26,7 @@ Suggests:
   nlme,
   rstanarm,
   brms,
+  pbkrtest,
   covr,
   knitr,
   rmarkdown

@@ -49,7 +49,7 @@ test_that('extract_fixed_effects.merMod handles digits', {
 })
 
 test_that('extract_fixed_effects.merMod handles glmer', {
-  expect_equal(ncol(extract_fixed_effects(glmer_1, ci_level = 0)),  5)  # has z and p-value
+  expect_equal(ncol(extract_fixed_effects(glmer_1, ci_level = 0)),  5)  # has z and p-value need to update
 })
 
 test_that('extract_fixed_effects.merMod exponentiates', {
@@ -60,6 +60,11 @@ test_that('extract_fixed_effects.merMod exponentiates', {
 })
 
 
+test_that('extract_fixed_effects.merMod handles p_value', {
+
+  expect_equal(extract_fixed_effects(lmer_2)$p_value,  c(0, 0))
+  expect_equal(extract_fixed_effects(lmer_2, p_value = 'KR')$p_value,  c(0, 0))
+})
 
 
 # Test glmmTMB ------------------------------------------------------------
