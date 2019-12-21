@@ -101,7 +101,7 @@
       <h1>Extracting Fixed Effects</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2019-12-15</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2019-12-21</span></h4>
       
       
       <div class="hidden name"><code>fixed_effects.Rmd</code></div>
@@ -154,11 +154,11 @@
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(mixedup)</a>
 <a class="sourceLine" id="cb2-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb2-3" data-line-number="3"><span class="kw"><a href="../reference/extract_fixed_effects.html">extract_fixed_effects</a></span>(lmer_model)</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># A tibble: 2 x 6</span></a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">  term      value    se     t lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.82</span> <span class="fl">36.8</span>     <span class="fl">238.</span>        <span class="fl">265.</span> </a>
-<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.55</span>  <span class="fl">6.77</span>      <span class="fl">7.44</span>       <span class="fl">13.5</span></a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"><span class="co"># A tibble: 2 x 7</span></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  term      value    se     t p_value lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb2-7" data-line-number="7"><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.82</span> <span class="fl">36.8</span>        <span class="dv">0</span>    <span class="fl">238.</span>        <span class="fl">265.</span> </a>
+<a class="sourceLine" id="cb2-8" data-line-number="8"><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.55</span>  <span class="fl">6.77</span>       <span class="dv">0</span>      <span class="fl">7.44</span>       <span class="fl">13.5</span></a>
 <a class="sourceLine" id="cb2-9" data-line-number="9"></a>
 <a class="sourceLine" id="cb2-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb2-11" data-line-number="11"><span class="kw"><a href="../reference/extract_fixed_effects.html">extract_fixed_effects</a></span>(lme_model)</a>
@@ -201,11 +201,11 @@
 <a class="sourceLine" id="cb3-4" data-line-number="4">  <span class="dt">ci_args =</span> <span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(<span class="dt">method =</span> <span class="st">'boot'</span>, <span class="dt">nsim =</span> <span class="dv">50</span>),</a>
 <a class="sourceLine" id="cb3-5" data-line-number="5">  <span class="dt">digits =</span> <span class="dv">2</span></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6">)</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co"># A tibble: 2 x 6</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">  term      value    se     t lower_<span class="dv">5</span> upper_<span class="dv">95</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.82</span> <span class="fl">36.8</span>   <span class="fl">241.</span>      <span class="fl">265.</span> </a>
-<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.55</span>  <span class="fl">6.77</span>    <span class="fl">7.85</span>     <span class="fl">14.1</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co"># A tibble: 2 x 7</span></a>
+<a class="sourceLine" id="cb3-8" data-line-number="8">  term      value    se     t p_value lower_<span class="dv">5</span> upper_<span class="dv">95</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.82</span> <span class="fl">36.8</span>        <span class="dv">0</span>   <span class="fl">232.</span>     <span class="fl">262.</span> </a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.55</span>  <span class="fl">6.77</span>       <span class="dv">0</span>     <span class="fl">5.8</span>     <span class="fl">13.7</span></a></code></pre></div>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">tmb_zip &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html">glmmTMB</a></span>(</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">  count <span class="op">~</span><span class="st"> </span>spp <span class="op">+</span><span class="st"> </span>mined <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>site),</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3">  <span class="dt">zi =</span>  <span class="op">~</span><span class="st"> </span>spp <span class="op">+</span><span class="st"> </span>mined <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>site),</a>
