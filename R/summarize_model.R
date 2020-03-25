@@ -111,7 +111,7 @@ summarize_model <- function(
 
   ### Print fe part ----
 
-  message("\n\nFixed Effects:\n")
+  message("\nFixed Effects:\n")
 
   print(format(data.frame(fe), nsmall = digits), row.names = FALSE)
 
