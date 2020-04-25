@@ -26,6 +26,16 @@
 #'   for either, the relative proportion of variance, and all in a data frame
 #'   with names that are clean and easy to use.
 #'
+#'
+#' @note Right now, there are several issues with getting confidence intervals
+#'   for `glmmTMB` objects
+#'   (\href{https://github.com/glmmTMB/glmmTMB/issues/571}{for example}).  If
+#'   you get an error, you should check by running `confint(my_tmb_model)` before
+#'   posting an issue.  While I've attempted some minor hacks to deal with some
+#'   of them, if the `glmmTMB` function doesn't work, this function won't
+#'   either.
+#'
+#'
 #' @return A data frame with output for variance components, or list that also
 #' contains the correlations of the random effects.
 #'
@@ -209,6 +219,7 @@ extract_vc.glmmTMB <- function(
   vc <- data.frame(variance, sd = sqrt(variance$variance))
 
   # TODO: confint will not work for some tmb objects, e.g. with ar, so need a trycatch
+
   if (ci_level > 0) {
     ci <- do.call(
       confint,
@@ -236,12 +247,25 @@ extract_vc.glmmTMB <- function(
 
     ci <- data.frame(ci)
 
-    # to deal with zi/other component issues noted above, paste component to search
-    pat <- paste0(component, '.Std.Dev', '|sigma')
+    # to deal with zi/other component issues noted above, paste component to
+    # search; however, in some cases, the component name is not part of the
+    # confint output
+    pat <- paste0(component, '.Std.Dev', '|^Std.Dev', '|sigma')
 
     ci <- dplyr::filter(ci, grepl(rownames(ci), pattern = pat))
 
-    vc <- cbind(vc, ci)
+    # the ci doesn't return anything for residual var, if it exists, so this is
+    # an attempt to deal with it
+    if (nrow(ci) < nrow(vc)) {
+      vc_ci = vc %>%
+        dplyr::slice(-nrow(vc)) %>%    # remove residual
+        dplyr::bind_cols(ci)
+
+      vc = dplyr::bind_rows(vc_ci, vc %>% dplyr::filter(group == 'Residual'))
+    }
+    else {
+      vc <- cbind(vc, ci)
+    }
   }
 
   # cleanup/add to results
