@@ -13,7 +13,7 @@ LazyData: true
 URL: https://m-clark.github.io/mixedup
 BugReports: https://github.com/m-clark/mixedup/issues
 Depends:
-  R (>= 3.5.0)
+  R (>= 3.6.0)
 Imports:
   dplyr,
   tidyr (>= 1.0.0),
