@@ -95,7 +95,7 @@ the new scale.}
 
 \item{...}{Other stuff to pass to the corresponding function. Unused/tested}
 
-\item{p_value}{For lme4 models, one of 'Wald' or 'KR'. See details.}
+\item{p_value}{For \code{lme4} models, one of 'Wald' or 'KR'. See details.}
 
 \item{component}{For glmmTMB objects, which of the three components 'cond' or
 'zi' to select. Default is 'cond'.  For brmsfit objects, this can filter
@@ -112,12 +112,12 @@ Extract fixed effects parameters, variance estimates etc.
 }
 \details{
 Essentially duplicates the \code{broom::tidy} approach with minor
-name changes.  For lme4, 'Wald' p-values are provided lmer models for
+name changes.  For \code{lme4}, 'Wald' p-values are provided lmer models for
 consistency with others, but there is \href{https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#what-are-the-p-values-listed-by-summaryglmerfit-etc.-are-they-reliable}{much issue with them},
 especially for low N/small numbers of groups.  The Kenward-Roger is also
-available if the pbkrtest package is installed (experimental). For either
+available if the \code{pbkrtest} package is installed (experimental). For either
 case, Only the p-value from the process is provide, all other output is
-default provided lme4 without adjustment.
+default provided \code{lme4} without adjustment.
 }
 \note{
 For nlme, this is just a multiplier based on the estimated standard

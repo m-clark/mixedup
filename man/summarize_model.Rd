@@ -28,7 +28,8 @@ summarise_model(
 \arguments{
 \item{model}{A supported model.}
 
-\item{ci}{Whether to include a 95\% uncertainty interval. Default is TRUE.}
+\item{ci}{Whether to include a 95\% uncertainty interval for the variance
+components. Default is TRUE.}
 
 \item{cor_re}{Whether to include the correlations of the random effects.
 Default is FALSE.}
@@ -42,7 +43,7 @@ Default is FALSE.}
 'zi' or 'other' to select. Default is cond. Minimal testing on other
 options.}
 
-\item{...}{Not used at present. May allow models specific functionality.}
+\item{...}{Not used at present. May allow model-specific functionality.}
 }
 \value{
 Prints the variance components, fixed effects, etc. Invisibly, a list

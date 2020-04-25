@@ -8,16 +8,16 @@
 #'   confidence intervals (common for logistic regression). If `TRUE`, also scales
 #'   the standard errors by the exponentiated coefficient, transforming them to
 #'   the new scale.
-#' @param p_value For lme4 models, one of 'Wald' or 'KR'. See details.
+#' @param p_value For `lme4` models, one of 'Wald' or 'KR'. See details.
 #'
 #' @details Essentially duplicates the `broom::tidy` approach with minor
-#'   name changes.  For lme4, 'Wald' p-values are provided lmer models for
+#'   name changes.  For `lme4`, 'Wald' p-values are provided lmer models for
 #'   consistency with others, but there is [much issue with
 #'   them](https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#what-are-the-p-values-listed-by-summaryglmerfit-etc.-are-they-reliable),
 #'   especially for low N/small numbers of groups.  The Kenward-Roger is also
-#'   available if the pbkrtest package is installed (experimental). For either
+#'   available if the `pbkrtest` package is installed (experimental). For either
 #'   case, Only the p-value from the process is provide, all other output is
-#'   default provided lme4 without adjustment.
+#'   default provided `lme4` without adjustment.
 #'
 #' @note For nlme, this is just a multiplier based on the estimated standard
 #'   error and critical value for the `ci_level`.
