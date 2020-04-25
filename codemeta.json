@@ -14,10 +14,10 @@
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
-    "version": "3.6.2",
+    "version": "3.6.3",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 3.6.2 (2019-12-12)",
+  "runtimePlatform": "R version 3.6.3 (2020-02-29)",
   "author": [
     {
       "@type": "Person",
@@ -218,8 +218,7 @@
     }
   ],
   "releaseNotes": "https://github.com/m-clark/mixedup/blob/master/NEWS.md",
-  "readme": "https://github.com/m-clark/mixedup/blob/master/README.md",
-  "fileSize": "31662.95KB",
+  "fileSize": "31763.273KB",
   "contIntegration": [
     "https://travis-ci.org/m-clark/mixedup",
     "https://ci.appveyor.com/project/m-clark/mixedup",

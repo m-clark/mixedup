@@ -50,19 +50,19 @@ test_that('extract_vc.merMod basic functionality: ints/slopes with multiple grou
 
 
 test_that('extract_vc.merMod basic functionality: correct results', {
-  raw_output = c(attr(VarCorr(lmer_1)[[1]], 'stddev'), attr(VarCorr(lmer_1), 'sc'))
+  raw_output = c(attr(lme4::VarCorr(lmer_1)[[1]], 'stddev'), attr(lme4::VarCorr(lmer_1), 'sc'))
   names(raw_output) = NULL
   expect_equal(extract_vc(lmer_1, ci_level = 0, digits = 10)$sd, raw_output)
 })
 
 test_that('extract_vc.merMod basic functionality: correct results', {
-  raw_output = c(attr(VarCorr(lmer_2)[[1]], 'stddev'), attr(VarCorr(lmer_2), 'sc'))
+  raw_output = c(attr(lme4::VarCorr(lmer_2)[[1]], 'stddev'), attr(lme4::VarCorr(lmer_2), 'sc'))
   names(raw_output) = NULL
   expect_equal(extract_vc(lmer_2, ci_level = 0, digits = 10)$sd, raw_output)
 })
 
 test_that('extract_vc.merMod basic functionality: correct results', {
-  init = data.frame(VarCorr(lmer_4))
+  init = data.frame(lme4::VarCorr(lmer_4))
   init = init[is.na(init$var2), ]
   raw_output = init[,'vcov']
   expect_equal(extract_vc(lmer_4, ci_level = 0, digits = 10)$variance, raw_output)
@@ -132,13 +132,13 @@ test_that('extract_vc.glmmTMB basic functionality: ints/slopes with multiple gro
 
 
 test_that('extract_vc.glmmTMB basic functionality: correct results', {
-  raw_output = c(attr(VarCorr(tmb_1)[['cond']][[1]], 'stddev'), attr(VarCorr(tmb_1)[['cond']], 'sc'))
+  raw_output = c(attr(glmmTMB::VarCorr(tmb_1)[['cond']][[1]], 'stddev'), attr(glmmTMB::VarCorr(tmb_1)[['cond']], 'sc'))
   names(raw_output) = NULL
   expect_equal(extract_vc(tmb_1, ci_level = 0, digits = 10)$sd, raw_output)
 })
 
 test_that('extract_vc.glmmTMB basic functionality: correct results', {
-  raw_output = c(attr(VarCorr(tmb_2)[['cond']][[1]], 'stddev'), attr(VarCorr(tmb_2)[['cond']], 'sc'))
+  raw_output = c(attr(glmmTMB::VarCorr(tmb_2)[['cond']][[1]], 'stddev'), attr(glmmTMB::VarCorr(tmb_2)[['cond']], 'sc'))
   names(raw_output) = NULL
   expect_equal(extract_vc(tmb_2, ci_level = 0, digits = 10)$sd, raw_output)
 })
@@ -199,12 +199,12 @@ test_that('extract_vc.lme basic functionality: nlme', {
 })
 
 test_that('extract_vc.merMod basic functionality: correct results', {
-  raw_output = as.numeric(VarCorr(lme_1)[,'Variance'])
+  raw_output = as.numeric(nlme::VarCorr(lme_1)[,'Variance'])
   expect_equal(extract_vc(lme_1, ci_level = 0, digits = 10)$variance, raw_output)
 })
 
 test_that('extract_vc.merMod basic functionality: correct results', {
-  raw_output = as.numeric(VarCorr(lme_2)[,'Variance'])
+  raw_output = as.numeric(nlme::VarCorr(lme_2)[,'Variance'])
   expect_equal(extract_vc(lme_2, ci_level = 0, digits = 10)$variance, raw_output)
 })
 
@@ -262,13 +262,13 @@ test_that('extract_vc.brmsfit basic functionality: ints/slopes with multiple gro
 })
 
 test_that('extract_vc.merMod basic functionality: correct results', {
-  raw_output = purrr::map_dbl(VarCorr(brm_1), function(x) x[[1]][,'Estimate'])
+  raw_output = purrr::map_dbl(brms::VarCorr(brm_1), function(x) x[[1]][,'Estimate'])
   names(raw_output) = NULL
   expect_equal(extract_vc(brm_1, ci_level = 0, digits = 10)$sd, raw_output)
 })
 
 test_that('extract_vc.merMod basic functionality: correct results', {
-  raw_output = c(VarCorr(brm_2)$Subject$sd[,'Estimate'], VarCorr(brm_2)$residual__$sd[,'Estimate'])
+  raw_output = c(brms::VarCorr(brm_2)$Subject$sd[,'Estimate'], brms::VarCorr(brm_2)$residual__$sd[,'Estimate'])
   names(raw_output) = NULL
   expect_equal(extract_vc(brm_2, ci_level = 0, digits = 10)$sd, raw_output)
 })
@@ -307,7 +307,10 @@ test_that('extract_vc.brmsfit basic functionality: multivariate model', {
   expect_match(init$effect, 'back')
 })
 
+# corAR and other models will throw an error unless brms is loaded
+
 test_that('extract_vc.brmsfit basic functionality: autocor model', {
+  require(brms)
   expect_s3_class(extract_vc(brm_corAR, ci_level = .8, digits = 2), 'data.frame')
 })
 
@@ -345,13 +348,13 @@ test_that('extract_vc.stanreg basic functionality: ints/slopes with multiple gro
 })
 
 test_that('extract_vc.merMod basic functionality: correct results', {
-  raw_output = attr(VarCorr(stan_glmer_1)[[1]], 'stddev')
+  raw_output = attr(rstanarm::VarCorr(stan_glmer_1)[[1]], 'stddev')
   names(raw_output) = NULL
   expect_equal(extract_vc(stan_glmer_1, digits = 10)$sd[1], raw_output)
 })
 
 test_that('extract_vc.merMod basic functionality: correct results', {
-  raw_output = attr(VarCorr(stan_glmer_2)[[1]], 'stddev')
+  raw_output = attr(rstanarm::VarCorr(stan_glmer_2)[[1]], 'stddev')
   names(raw_output) = NULL
   expect_equal(extract_vc(stan_glmer_2, digits = 10)$sd[1:2], raw_output)
 })

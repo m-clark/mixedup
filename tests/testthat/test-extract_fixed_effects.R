@@ -66,6 +66,10 @@ test_that('extract_fixed_effects.merMod handles p_value', {
   expect_equal(extract_fixed_effects(lmer_2, p_value = 'KR')$p_value,  c(0, 0))
 })
 
+test_that('extract_fixed_effects.merMod warns/corrects on wrong p_value input', {
+  expect_warning(extract_fixed_effects(lmer_2, p_value = 'KR20'))
+})
+
 
 # Test glmmTMB ------------------------------------------------------------
 

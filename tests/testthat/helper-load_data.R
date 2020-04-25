@@ -31,6 +31,29 @@ data("sleepstudy", package = 'lme4')
 #   data = glmmTMB::Salamanders
 # )
 #
+# # for converge_it
+#
+# suppressWarnings({
+#   lmer_conv <- lmer(
+#     score ~ Machine + (1 + Machine | Worker),
+#     data = nlme::Machines
+#   )
+# })
+#
+# suppressWarnings({
+#   glmer_conv <- glmer(
+#     count ~ spp + mined + DOP + Wtemp + DOY + (1 | sample) + (1 + DOY + DOP | site),
+#     family = poisson,
+#     data = glmmTMB::Salamanders
+#   )
+# })
+# suppressWarnings({
+#   lmer_conv_ridiculous <- lmer(
+#     distance ~  Sex*age + (1 + Sex + age | Subject),
+#     data = nlme::Orthodont,
+#     control = lmerControl(optCtrl = list(maxfun = 10))
+#   )
+# })
 #
 # save(
 #   lmer_0,
@@ -40,6 +63,9 @@ data("sleepstudy", package = 'lme4')
 #   lmer_4,
 #   lmer_5,
 #   glmer_1,
+#   lmer_conv,
+#   lmer_conv_ridiculous,
+#   glmer_conv,
 #   file = 'tests/testthat/lme4_results.RData'
 # )
 
