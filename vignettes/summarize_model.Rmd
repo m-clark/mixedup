@@ -113,3 +113,20 @@ summarize_model(
 
 summarise_model(lmer_model, ci = FALSE)
 ```
+
+## Get Convergence
+
+Often a model estimated by <span class="pack" style = "">lme4</span> needs a bit of help for convergence.  At present this function only works for <span class="pack" style = "">lme4</span>, but then, that's mostly where you're going to have the problem.  This function will start with your current model and run it long enough to the point that if you still have problems, you probably *really* have data or model issues, and not just an estimation problem.  See [this](https://m-clark.github.io/posts/2020-03-16-convergence/) for details.
+
+
+```{r convergence, warning=FALSE}
+lmer_not_converged <- lmer(
+  score ~ Machine + (1 + Machine | Worker),
+  data = nlme::Machines
+)
+
+lmer_converged <- converge_it(lmer_not_converged) # final result is a converged model
+
+summarize_model(lmer_converged, ci = FALSE)
+```
+

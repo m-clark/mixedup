@@ -6,20 +6,20 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Miscellaneous functions for mixed models • mixedup</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="bootstrap-toc.css">
+<script src="bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><link href="extra.css" rel="stylesheet">
 <meta property="og:title" content="Miscellaneous functions for mixed models">
 <meta property="og:description" content="This provides tools for extracting various parts of mixed model output from commonly used packages in a consistent fashion. Results are produced in a usable form for visualization and table presentation. It currently provides a wide variety of support for lme4, nlme, glmmTMB, mgcv, brms, and rstanarm.">
-<meta name="twitter:card" content="summary">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@
 <a href="#a-package-for-extracting-clean-results-from-mixed-models" class="anchor"></a>a package for extracting clean results from mixed models</h5>
 <p><br><br></p>
 <!-- badges: start -->
-
+<p><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a> <a href="https://travis-ci.org/m-clark/mixedup"><img src="https://travis-ci.org/m-clark/mixedup.svg?branch=master" alt="Travis build status"></a> <a href="https://ci.appveyor.com/project/m-clark/mixedup"><img src="https://ci.appveyor.com/api/projects/status/github/m-clark/mixedup?branch=master&amp;svg=true" alt="AppVeyor build status"></a> <a href="https://codecov.io/gh/m-clark/mixedup?branch=master"><img src="https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg" alt="Codecov test coverage"></a> <!-- badges: end --></p>
 <p>This package provides extended functionality for mixed models. The goal of <code>mixedup</code> is to solve little problems I have had that slip through the cracks from the various modeling packages and others in trying to get presentable output. Basically the idea is to create (tidy) objects that are easy to use and essentially ready for presentation, as well as <em>consistent</em> across packages and across functions. Such objects would be things like variance components and random effects. I use several of these packages (including mgcv) for mixed models, and typically have to do some notable post processing to get some viable output even with <code><a href="https://rdrr.io/pkg/broom/man/reexports.html">broom::tidy</a></code>, and this effort often isn’t applicable if I switch to another package for the same type of model. These functions attempt to address this issue.</p>
 <p>For more details and examples see <a href="https://m-clark.github.io/mixedup/" class="uri">https://m-clark.github.io/mixedup/</a>.</p>
 </div>
@@ -115,7 +115,7 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install mixedup from GitHub with <code>devtools</code>:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">devtools<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/devtools/man/remote-reexports.html">install_github</a></span>(<span class="st">'m-clark/mixedup'</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">'m-clark/mixedup'</span>)</pre></div>
 </div>
 <div id="supported-models" class="section level2">
 <h2 class="hasAnchor">
@@ -152,173 +152,173 @@
 <h3 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h3>
 <p>In the following I suppress the package startup and other information that isn’t necessary for demo.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">Registered S3 method overwritten by <span class="st">'xts'</span><span class="op">:</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"><span class="st">  </span>method     from</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">  as.zoo.xts zoo </a></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(lme4)</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">lmer_model &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data =</span> sleepstudy)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(glmmTMB)</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">tmb_model &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html">glmmTMB</a></span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data =</span> sleepstudy)</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nlme)</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10"></a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">nlme_model &lt;-<span class="st">  </span><span class="kw"><a href="https://rdrr.io/pkg/nlme/man/nlme.html">nlme</a></span>(</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">  height <span class="op">~</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/stats/SSasymp.html">SSasymp</a></span>(age, Asym, R0, lrc),</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">  <span class="dt">data =</span> Loblolly,</a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">  <span class="dt">fixed =</span> Asym <span class="op">+</span><span class="st"> </span>R0 <span class="op">+</span><span class="st"> </span>lrc <span class="op">~</span><span class="st"> </span><span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">  <span class="dt">random =</span> Asym <span class="op">~</span><span class="st"> </span><span class="dv">1</span>,</a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">  <span class="dt">start =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="dt">Asym =</span> <span class="dv">103</span>, <span class="dt">R0 =</span> <span class="fl">-8.5</span>, <span class="dt">lrc =</span> <span class="fl">-3.3</span>)</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">)</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(brms)</a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="co"># brm_model = brm(</span></a>
-<a class="sourceLine" id="cb3-22" data-line-number="22"><span class="co">#   Reaction ~ Days + (1 + Days | Subject), </span></a>
-<a class="sourceLine" id="cb3-23" data-line-number="23"><span class="co">#   data = sleepstudy, </span></a>
-<a class="sourceLine" id="cb3-24" data-line-number="24"><span class="co">#   refresh = -1,</span></a>
-<a class="sourceLine" id="cb3-25" data-line-number="25"><span class="co">#   verbose = FALSE,</span></a>
-<a class="sourceLine" id="cb3-26" data-line-number="26"><span class="co">#   open_progress = FALSE,</span></a>
-<a class="sourceLine" id="cb3-27" data-line-number="27"><span class="co">#   cores = 4,</span></a>
-<a class="sourceLine" id="cb3-28" data-line-number="28"><span class="co">#   iter = 1000</span></a>
-<a class="sourceLine" id="cb3-29" data-line-number="29"><span class="co"># )</span></a>
-<a class="sourceLine" id="cb3-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rstanarm)</a>
-<a class="sourceLine" id="cb3-32" data-line-number="32"></a>
-<a class="sourceLine" id="cb3-33" data-line-number="33"><span class="co"># rstanarm_model = stan_glmer(</span></a>
-<a class="sourceLine" id="cb3-34" data-line-number="34"><span class="co">#   Reaction ~ Days + (1 + Days | Subject), </span></a>
-<a class="sourceLine" id="cb3-35" data-line-number="35"><span class="co">#   data = sleepstudy, </span></a>
-<a class="sourceLine" id="cb3-36" data-line-number="36"><span class="co">#   refresh = -1,</span></a>
-<a class="sourceLine" id="cb3-37" data-line-number="37"><span class="co">#   verbose = FALSE,</span></a>
-<a class="sourceLine" id="cb3-38" data-line-number="38"><span class="co">#   show_messages = FALSE,</span></a>
-<a class="sourceLine" id="cb3-39" data-line-number="39"><span class="co">#   open_progress = FALSE,</span></a>
-<a class="sourceLine" id="cb3-40" data-line-number="40"><span class="co">#   cores = 4,</span></a>
-<a class="sourceLine" id="cb3-41" data-line-number="41"><span class="co">#   iter = 1000</span></a>
-<a class="sourceLine" id="cb3-42" data-line-number="42"><span class="co"># )</span></a>
-<a class="sourceLine" id="cb3-43" data-line-number="43"></a>
-<a class="sourceLine" id="cb3-44" data-line-number="44"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(mgcv)</a>
-<a class="sourceLine" id="cb3-45" data-line-number="45"></a>
-<a class="sourceLine" id="cb3-46" data-line-number="46">gam_model =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/pkg/mgcv/man/gam.html">gam</a></span>(</a>
-<a class="sourceLine" id="cb3-47" data-line-number="47">  Reaction <span class="op">~</span><span class="st">  </span>Days <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-48" data-line-number="48"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(Subject, <span class="dt">bs =</span> <span class="st">'re'</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb3-49" data-line-number="49"><span class="st">    </span><span class="kw"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(Days, Subject, <span class="dt">bs =</span> <span class="st">'re'</span>),</a>
-<a class="sourceLine" id="cb3-50" data-line-number="50">  <span class="dt">data =</span> lme4<span class="op">::</span>sleepstudy,</a>
-<a class="sourceLine" id="cb3-51" data-line-number="51">  <span class="dt">method =</span> <span class="st">'REML'</span></a>
-<a class="sourceLine" id="cb3-52" data-line-number="52">)</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>Registered S3 method overwritten by <span class="st">'xts'</span><span class="op">:</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="st">  </span>method     from</span>
+<span id="cb2-3"><a href="#cb2-3"></a>  as.zoo.xts zoo </span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">lme4</span>)
+
+<span class="no">lmer_model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span>(<span class="no">Reaction</span> ~ <span class="no">Days</span> + (<span class="fl">1</span> + <span class="no">Days</span> <span class="kw">|</span> <span class="no">Subject</span>), <span class="kw">data</span> <span class="kw">=</span> <span class="no">sleepstudy</span>)
+
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">glmmTMB</span>)
+
+<span class="no">tmb_model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html">glmmTMB</a></span>(<span class="no">Reaction</span> ~ <span class="no">Days</span> + (<span class="fl">1</span> + <span class="no">Days</span> <span class="kw">|</span> <span class="no">Subject</span>), <span class="kw">data</span> <span class="kw">=</span> <span class="no">sleepstudy</span>)
+
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">nlme</span>)
+
+<span class="no">nlme_model</span> <span class="kw">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/nlme.html">nlme</a></span>(
+  <span class="no">height</span> ~ <span class="fu"><a href="https://rdrr.io/r/stats/SSasymp.html">SSasymp</a></span>(<span class="no">age</span>, <span class="no">Asym</span>, <span class="no">R0</span>, <span class="no">lrc</span>),
+  <span class="kw">data</span> <span class="kw">=</span> <span class="no">Loblolly</span>,
+  <span class="kw">fixed</span> <span class="kw">=</span> <span class="no">Asym</span> + <span class="no">R0</span> + <span class="no">lrc</span> ~ <span class="fl">1</span>,
+  <span class="kw">random</span> <span class="kw">=</span> <span class="no">Asym</span> ~ <span class="fl">1</span>,
+  <span class="kw">start</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">Asym</span> <span class="kw">=</span> <span class="fl">103</span>, <span class="kw">R0</span> <span class="kw">=</span> -<span class="fl">8.5</span>, <span class="kw">lrc</span> <span class="kw">=</span> -<span class="fl">3.3</span>)
+)
+
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">brms</span>)
+
+<span class="co"># brm_model = brm(</span>
+<span class="co">#   Reaction ~ Days + (1 + Days | Subject), </span>
+<span class="co">#   data = sleepstudy, </span>
+<span class="co">#   refresh = -1,</span>
+<span class="co">#   verbose = FALSE,</span>
+<span class="co">#   open_progress = FALSE,</span>
+<span class="co">#   cores = 4,</span>
+<span class="co">#   iter = 1000</span>
+<span class="co"># )</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">rstanarm</span>)
+
+<span class="co"># rstanarm_model = stan_glmer(</span>
+<span class="co">#   Reaction ~ Days + (1 + Days | Subject), </span>
+<span class="co">#   data = sleepstudy, </span>
+<span class="co">#   refresh = -1,</span>
+<span class="co">#   verbose = FALSE,</span>
+<span class="co">#   show_messages = FALSE,</span>
+<span class="co">#   open_progress = FALSE,</span>
+<span class="co">#   cores = 4,</span>
+<span class="co">#   iter = 1000</span>
+<span class="co"># )</span>
+
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mgcv</span>)
+
+<span class="no">gam_model</span> <span class="kw">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/gam.html">gam</a></span>(
+  <span class="no">Reaction</span> ~  <span class="no">Days</span> +
+    <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(<span class="no">Subject</span>, <span class="kw">bs</span> <span class="kw">=</span> <span class="st">'re'</span>) +
+    <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(<span class="no">Days</span>, <span class="no">Subject</span>, <span class="kw">bs</span> <span class="kw">=</span> <span class="st">'re'</span>),
+  <span class="kw">data</span> <span class="kw">=</span> <span class="kw pkg">lme4</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/lme4/man/sleepstudy.html">sleepstudy</a></span>,
+  <span class="kw">method</span> <span class="kw">=</span> <span class="st">'REML'</span>
+)</pre></div>
 </div>
 <div id="extract-output-from-a-mixed-model" class="section level3">
 <h3 class="hasAnchor">
 <a href="#extract-output-from-a-mixed-model" class="anchor"></a>Extract Output from a Mixed Model</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(mixedup)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="reference/extract_random_effects.html">extract_random_effects</a></span>(tmb_model)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co"># A tibble: 36 x 7</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5">   group_var effect    group  value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6">   <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="st"> </span><span class="dv">1</span> Subject   Intercept <span class="dv">308</span>     <span class="fl">2.82</span>  <span class="fl">13.7</span>    <span class="fl">-23.9</span>        <span class="fl">29.6</span></a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"> <span class="dv">2</span> Subject   Intercept <span class="dv">309</span>   <span class="fl">-40.0</span>   <span class="fl">13.8</span>    <span class="fl">-67.2</span>       <span class="fl">-12.9</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"> <span class="dv">3</span> Subject   Intercept <span class="dv">310</span>   <span class="fl">-38.4</span>   <span class="fl">13.7</span>    <span class="fl">-65.4</span>       <span class="fl">-11.5</span></a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"> <span class="dv">4</span> Subject   Intercept <span class="dv">330</span>    <span class="fl">22.8</span>   <span class="fl">13.9</span>     <span class="fl">-4.51</span>       <span class="fl">50.2</span></a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"> <span class="dv">5</span> Subject   Intercept <span class="dv">331</span>    <span class="fl">21.6</span>   <span class="fl">13.6</span>     <span class="fl">-5.11</span>       <span class="fl">48.2</span></a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"> <span class="dv">6</span> Subject   Intercept <span class="dv">332</span>     <span class="fl">8.82</span>  <span class="fl">12.9</span>    <span class="fl">-16.5</span>        <span class="fl">34.1</span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"> <span class="dv">7</span> Subject   Intercept <span class="dv">333</span>    <span class="fl">16.4</span>   <span class="fl">13.1</span>     <span class="fl">-9.23</span>       <span class="fl">42.1</span></a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"> <span class="dv">8</span> Subject   Intercept <span class="dv">334</span>    <span class="fl">-7.00</span>  <span class="fl">12.9</span>    <span class="fl">-32.3</span>        <span class="fl">18.3</span></a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"> <span class="dv">9</span> Subject   Intercept <span class="dv">335</span>    <span class="fl">-1.04</span>  <span class="fl">14.0</span>    <span class="fl">-28.5</span>        <span class="fl">26.4</span></a>
-<a class="sourceLine" id="cb4-16" data-line-number="16"><span class="dv">10</span> Subject   Intercept <span class="dv">337</span>    <span class="fl">34.7</span>   <span class="fl">13.6</span>      <span class="fl">7.94</span>       <span class="fl">61.4</span></a>
-<a class="sourceLine" id="cb4-17" data-line-number="17"><span class="co"># … with 26 more rows</span></a>
-<a class="sourceLine" id="cb4-18" data-line-number="18"></a>
-<a class="sourceLine" id="cb4-19" data-line-number="19"><span class="kw"><a href="reference/extract_fixed_effects.html">extract_fixed_effects</a></span>(nlme_model)</a>
-<a class="sourceLine" id="cb4-20" data-line-number="20"><span class="co"># A tibble: 3 x 7</span></a>
-<a class="sourceLine" id="cb4-21" data-line-number="21">  term   value    se     t p_value lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></a>
-<a class="sourceLine" id="cb4-22" data-line-number="22">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb4-23" data-line-number="23"><span class="dv">1</span> Asym  <span class="fl">101.</span>   <span class="fl">2.46</span>   <span class="fl">41.2</span>       <span class="dv">0</span>     <span class="fl">96.5</span>      <span class="fl">106.</span>  </a>
-<a class="sourceLine" id="cb4-24" data-line-number="24"><span class="dv">2</span> R0     <span class="fl">-8.63</span> <span class="fl">0.318</span> <span class="fl">-27.1</span>       <span class="dv">0</span>     <span class="fl">-9.26</span>      <span class="fl">-7.99</span></a>
-<a class="sourceLine" id="cb4-25" data-line-number="25"><span class="dv">3</span> lrc    <span class="fl">-3.23</span> <span class="fl">0.034</span> <span class="fl">-94.4</span>       <span class="dv">0</span>     <span class="fl">-3.30</span>      <span class="fl">-3.16</span></a>
-<a class="sourceLine" id="cb4-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb4-27" data-line-number="27"><span class="kw"><a href="reference/extract_random_coefs.html">extract_random_coefs</a></span>(lmer_model)</a>
-<a class="sourceLine" id="cb4-28" data-line-number="28"><span class="co"># A tibble: 36 x 7</span></a>
-<a class="sourceLine" id="cb4-29" data-line-number="29">   group_var effect    group value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></a>
-<a class="sourceLine" id="cb4-30" data-line-number="30">   <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb4-31" data-line-number="31"><span class="st"> </span><span class="dv">1</span> Subject   Intercept <span class="dv">308</span>    <span class="fl">254.</span>  <span class="fl">13.9</span>      <span class="fl">226.</span>       <span class="fl">281.</span></a>
-<a class="sourceLine" id="cb4-32" data-line-number="32"> <span class="dv">2</span> Subject   Intercept <span class="dv">309</span>    <span class="fl">211.</span>  <span class="fl">13.9</span>      <span class="fl">184.</span>       <span class="fl">238.</span></a>
-<a class="sourceLine" id="cb4-33" data-line-number="33"> <span class="dv">3</span> Subject   Intercept <span class="dv">310</span>    <span class="fl">212.</span>  <span class="fl">13.9</span>      <span class="fl">185.</span>       <span class="fl">240.</span></a>
-<a class="sourceLine" id="cb4-34" data-line-number="34"> <span class="dv">4</span> Subject   Intercept <span class="dv">330</span>    <span class="fl">275.</span>  <span class="fl">13.9</span>      <span class="fl">248.</span>       <span class="fl">302.</span></a>
-<a class="sourceLine" id="cb4-35" data-line-number="35"> <span class="dv">5</span> Subject   Intercept <span class="dv">331</span>    <span class="fl">274.</span>  <span class="fl">13.9</span>      <span class="fl">246.</span>       <span class="fl">301.</span></a>
-<a class="sourceLine" id="cb4-36" data-line-number="36"> <span class="dv">6</span> Subject   Intercept <span class="dv">332</span>    <span class="fl">260.</span>  <span class="fl">13.9</span>      <span class="fl">233.</span>       <span class="fl">288.</span></a>
-<a class="sourceLine" id="cb4-37" data-line-number="37"> <span class="dv">7</span> Subject   Intercept <span class="dv">333</span>    <span class="fl">268.</span>  <span class="fl">13.9</span>      <span class="fl">241.</span>       <span class="fl">295.</span></a>
-<a class="sourceLine" id="cb4-38" data-line-number="38"> <span class="dv">8</span> Subject   Intercept <span class="dv">334</span>    <span class="fl">244.</span>  <span class="fl">13.9</span>      <span class="fl">217.</span>       <span class="fl">271.</span></a>
-<a class="sourceLine" id="cb4-39" data-line-number="39"> <span class="dv">9</span> Subject   Intercept <span class="dv">335</span>    <span class="fl">251.</span>  <span class="fl">13.9</span>      <span class="fl">224.</span>       <span class="fl">278.</span></a>
-<a class="sourceLine" id="cb4-40" data-line-number="40"><span class="dv">10</span> Subject   Intercept <span class="dv">337</span>    <span class="fl">286.</span>  <span class="fl">13.9</span>      <span class="fl">259.</span>       <span class="fl">313.</span></a>
-<a class="sourceLine" id="cb4-41" data-line-number="41"><span class="co"># … with 26 more rows</span></a>
-<a class="sourceLine" id="cb4-42" data-line-number="42"></a>
-<a class="sourceLine" id="cb4-43" data-line-number="43"><span class="kw"><a href="reference/extract_vc.html">extract_vc</a></span>(brm_model, <span class="dt">ci_level =</span> <span class="fl">.8</span>)</a>
-<a class="sourceLine" id="cb4-44" data-line-number="44">     group    effect variance     sd  sd_<span class="dv">10</span>  sd_<span class="dv">90</span> var_prop</a>
-<a class="sourceLine" id="cb4-45" data-line-number="45"><span class="dv">1</span>  Subject Intercept  <span class="fl">733.227</span> <span class="fl">27.078</span> <span class="fl">18.347</span> <span class="fl">36.560</span>    <span class="fl">0.510</span></a>
-<a class="sourceLine" id="cb4-46" data-line-number="46"><span class="dv">2</span>  Subject      Days   <span class="fl">41.659</span>  <span class="fl">6.454</span>  <span class="fl">4.850</span>  <span class="fl">8.346</span>    <span class="fl">0.029</span></a>
-<a class="sourceLine" id="cb4-47" data-line-number="47"><span class="dv">3</span> Residual            <span class="fl">663.843</span> <span class="fl">25.765</span> <span class="fl">24.247</span> <span class="fl">27.497</span>    <span class="fl">0.461</span></a>
-<a class="sourceLine" id="cb4-48" data-line-number="48"></a>
-<a class="sourceLine" id="cb4-49" data-line-number="49"><span class="kw"><a href="reference/summarize_model.html">summarize_model</a></span>(lmer_model, <span class="dt">cor_re =</span> <span class="ot">TRUE</span>, <span class="dt">digits =</span> <span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb4-50" data-line-number="50">Computing profile confidence intervals ...</a>
-<a class="sourceLine" id="cb4-51" data-line-number="51"></a>
-<a class="sourceLine" id="cb4-52" data-line-number="52">Variance Components<span class="op">:</span></a>
-<a class="sourceLine" id="cb4-53" data-line-number="53"><span class="st">    </span>Group    Effect Variance   SD SD_<span class="fl">2.5</span> SD_<span class="fl">97.5</span> Var_prop</a>
-<a class="sourceLine" id="cb4-54" data-line-number="54">  Subject Intercept    <span class="fl">611.9</span> <span class="fl">24.7</span>   <span class="fl">14.4</span>    <span class="fl">37.7</span>      <span class="fl">0.5</span></a>
-<a class="sourceLine" id="cb4-55" data-line-number="55">  Subject      Days     <span class="fl">35.1</span>  <span class="fl">5.9</span>    <span class="fl">3.8</span>     <span class="fl">8.8</span>      <span class="fl">0.0</span></a>
-<a class="sourceLine" id="cb4-56" data-line-number="56"> Residual              <span class="fl">654.9</span> <span class="fl">25.6</span>   <span class="fl">22.9</span>    <span class="fl">28.9</span>      <span class="fl">0.5</span></a>
-<a class="sourceLine" id="cb4-57" data-line-number="57"></a>
-<a class="sourceLine" id="cb4-58" data-line-number="58">Correlation of Random Effects<span class="op">:</span></a>
-<a class="sourceLine" id="cb4-59" data-line-number="59"><span class="st">          </span>Intercept Days</a>
-<a class="sourceLine" id="cb4-60" data-line-number="60">Intercept       <span class="fl">1.0</span>  <span class="fl">0.1</span></a>
-<a class="sourceLine" id="cb4-61" data-line-number="61">Days            <span class="fl">0.1</span>  <span class="fl">1.0</span></a>
-<a class="sourceLine" id="cb4-62" data-line-number="62"></a>
-<a class="sourceLine" id="cb4-63" data-line-number="63"></a>
-<a class="sourceLine" id="cb4-64" data-line-number="64">Fixed Effects<span class="op">:</span></a>
-<a class="sourceLine" id="cb4-65" data-line-number="65"><span class="st">      </span>Term Value  SE    t Lower_<span class="fl">2.5</span> Upper_<span class="fl">97.5</span></a>
-<a class="sourceLine" id="cb4-66" data-line-number="66"> Intercept <span class="fl">251.4</span> <span class="fl">6.8</span> <span class="fl">36.8</span>     <span class="fl">238.0</span>      <span class="fl">264.8</span></a>
-<a class="sourceLine" id="cb4-67" data-line-number="67">      Days  <span class="fl">10.5</span> <span class="fl">1.5</span>  <span class="fl">6.8</span>       <span class="fl">7.4</span>       <span class="fl">13.5</span></a>
-<a class="sourceLine" id="cb4-68" data-line-number="68"></a>
-<a class="sourceLine" id="cb4-69" data-line-number="69"><span class="kw"><a href="reference/find_typical.html">find_typical</a></span>(gam_model, <span class="dt">probs =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">25</span>, <span class="fl">.50</span>, <span class="fl">.75</span>))</a>
-<a class="sourceLine" id="cb4-70" data-line-number="70"><span class="co"># A tibble: 6 x 8</span></a>
-<a class="sourceLine" id="cb4-71" data-line-number="71">  group_var effect    group   value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span> probs</a>
-<a class="sourceLine" id="cb4-72" data-line-number="72">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb4-73" data-line-number="73"><span class="dv">1</span> Subject   Days      <span class="dv">331</span>    <span class="fl">-3.19</span>   <span class="fl">2.67</span>     <span class="fl">-8.43</span>       <span class="fl">2.04</span> <span class="dv">25</span>%  </a>
-<a class="sourceLine" id="cb4-74" data-line-number="74"><span class="dv">2</span> Subject   Days      <span class="dv">369</span>     <span class="fl">0.873</span>  <span class="fl">2.67</span>     <span class="fl">-4.36</span>       <span class="fl">6.11</span> <span class="dv">50</span>%  </a>
-<a class="sourceLine" id="cb4-75" data-line-number="75"><span class="dv">3</span> Subject   Days      <span class="dv">352</span>     <span class="fl">3.51</span>   <span class="fl">2.67</span>     <span class="fl">-1.73</span>       <span class="fl">8.75</span> <span class="dv">75</span>%  </a>
-<a class="sourceLine" id="cb4-76" data-line-number="76"><span class="dv">4</span> Subject   Intercept <span class="dv">350</span>   <span class="fl">-13.9</span>   <span class="fl">13.3</span>     <span class="fl">-39.9</span>       <span class="fl">12.2</span>  <span class="dv">25</span>%  </a>
-<a class="sourceLine" id="cb4-77" data-line-number="77"><span class="dv">5</span> Subject   Intercept <span class="dv">369</span>     <span class="fl">3.26</span>  <span class="fl">13.3</span>     <span class="fl">-22.8</span>       <span class="fl">29.3</span>  <span class="dv">50</span>%  </a>
-<a class="sourceLine" id="cb4-78" data-line-number="78"><span class="dv">6</span> Subject   Intercept <span class="dv">333</span>    <span class="fl">17.2</span>   <span class="fl">13.3</span>      <span class="fl">-8.87</span>      <span class="fl">43.2</span>  <span class="dv">75</span>%  </a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="r">library(mixedup)
+
+extract_random_effects(tmb_model)
+# A tibble: 36 x 7
+   group_var effect    group  value    se lower_2.5 upper_97.5
+   <chr><chr><fct><dbl><dbl><dbl><dbl>
+ 1 Subject   Intercept 308     2.82  13.7    -23.9        29.6
+ 2 Subject   Intercept 309   -40.0   13.8    -67.2       -12.9
+ 3 Subject   Intercept 310   -38.4   13.7    -65.4       -11.5
+ 4 Subject   Intercept 330    22.8   13.9     -4.51       50.2
+ 5 Subject   Intercept 331    21.6   13.6     -5.11       48.2
+ 6 Subject   Intercept 332     8.82  12.9    -16.5        34.1
+ 7 Subject   Intercept 333    16.4   13.1     -9.23       42.1
+ 8 Subject   Intercept 334    -7.00  12.9    -32.3        18.3
+ 9 Subject   Intercept 335    -1.04  14.0    -28.5        26.4
+10 Subject   Intercept 337    34.7   13.6      7.94       61.4
+# … with 26 more rows
+
+extract_fixed_effects(nlme_model)
+# A tibble: 3 x 7
+  term   value    se     t p_value lower_2.5 upper_97.5
+  <chr><dbl><dbl><dbl><dbl><dbl><dbl>
+1 Asym  101.   2.46   41.2       0     96.5      106.  
+2 R0     -8.63 0.318 -27.1       0     -9.26      -7.99
+3 lrc    -3.23 0.034 -94.4       0     -3.30      -3.16
+
+extract_random_coefs(lmer_model)
+# A tibble: 36 x 7
+   group_var effect    group value    se lower_2.5 upper_97.5
+   <chr><chr><fct><dbl><dbl><dbl><dbl>
+ 1 Subject   Intercept 308    254.  13.9      226.       281.
+ 2 Subject   Intercept 309    211.  13.9      184.       238.
+ 3 Subject   Intercept 310    212.  13.9      185.       240.
+ 4 Subject   Intercept 330    275.  13.9      248.       302.
+ 5 Subject   Intercept 331    274.  13.9      246.       301.
+ 6 Subject   Intercept 332    260.  13.9      233.       288.
+ 7 Subject   Intercept 333    268.  13.9      241.       295.
+ 8 Subject   Intercept 334    244.  13.9      217.       271.
+ 9 Subject   Intercept 335    251.  13.9      224.       278.
+10 Subject   Intercept 337    286.  13.9      259.       313.
+# … with 26 more rows
+
+extract_vc(brm_model, ci_level = .8)
+     group    effect variance     sd  sd_10  sd_90 var_prop
+1  Subject Intercept  733.227 27.078 18.347 36.560    0.510
+2  Subject      Days   41.659  6.454  4.850  8.346    0.029
+3 Residual            663.843 25.765 24.247 27.497    0.461
+
+summarize_model(lmer_model, cor_re = TRUE, digits = 1)
+Computing profile confidence intervals ...
+
+Variance Components:
+    Group    Effect Variance   SD SD_2.5 SD_97.5 Var_prop
+  Subject Intercept    611.9 24.7   14.4    37.7      0.5
+  Subject      Days     35.1  5.9    3.8     8.8      0.0
+ Residual              654.9 25.6   22.9    28.9      0.5
+
+Correlation of Random Effects:
+          Intercept Days
+Intercept       1.0  0.1
+Days            0.1  1.0
+
+
+Fixed Effects:
+      Term Value  SE    t Lower_2.5 Upper_97.5
+ Intercept 251.4 6.8 36.8     238.0      264.8
+      Days  10.5 1.5  6.8       7.4       13.5
+
+find_typical(gam_model, probs = c(.25, .50, .75))
+# A tibble: 6 x 8
+  group_var effect    group   value    se lower_2.5 upper_97.5 probs
+  <chr><chr><chr><dbl><dbl><dbl><dbl><chr>
+1 Subject   Days      331    -3.19   2.67     -8.43       2.04 25%  
+2 Subject   Days      369     0.873  2.67     -4.36       6.11 50%  
+3 Subject   Days      352     3.51   2.67     -1.73       8.75 75%  
+4 Subject   Intercept 350   -13.9   13.3     -39.9       12.2  25%  
+5 Subject   Intercept 369     3.26  13.3     -22.8       29.3  50%  
+6 Subject   Intercept 333    17.2   13.3      -8.87      43.2  75%  </chr></dbl></dbl></dbl></dbl></chr></chr></chr></dbl></dbl></dbl></dbl></fct></chr></chr></dbl></dbl></dbl></dbl></dbl></dbl></chr></dbl></dbl></dbl></dbl></fct></chr></chr></pre></div>
 </div>
 <div id="consistent-output" class="section level3">
 <h3 class="hasAnchor">
 <a href="#consistent-output" class="anchor"></a>Consistent output</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1">mods =<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/list.html">list</a></span>(</a>
-<a class="sourceLine" id="cb5-2" data-line-number="2">  <span class="dt">tmb  =</span> tmb_model,</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3">  <span class="dt">lmer =</span> lmer_model, </a>
-<a class="sourceLine" id="cb5-4" data-line-number="4">  <span class="dt">brm  =</span> brm_model,</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5">  <span class="dt">stan =</span> rstanarm_model,</a>
-<a class="sourceLine" id="cb5-6" data-line-number="6">  <span class="dt">gam  =</span> gam_model</a>
-<a class="sourceLine" id="cb5-7" data-line-number="7">)</a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"></a>
-<a class="sourceLine" id="cb5-9" data-line-number="9">purrr<span class="op">::</span><span class="kw"><a href="https://purrr.tidyverse.org/reference/map.html">map_df</a></span>(mods, extract_vc, <span class="dt">.id =</span> <span class="st">'model'</span>) </a>
-<a class="sourceLine" id="cb5-10" data-line-number="10">Computing profile confidence intervals ...</a>
-<a class="sourceLine" id="cb5-11" data-line-number="11">   model    group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="dv">1</span>    tmb  Subject Intercept  <span class="fl">565.515</span> <span class="fl">23.781</span> <span class="fl">15.017</span>  <span class="fl">37.658</span>    <span class="fl">0.451</span></a>
-<a class="sourceLine" id="cb5-13" data-line-number="13"><span class="dv">2</span>    tmb  Subject      Days   <span class="fl">32.682</span>  <span class="fl">5.717</span>  <span class="fl">3.805</span>   <span class="fl">8.588</span>    <span class="fl">0.026</span></a>
-<a class="sourceLine" id="cb5-14" data-line-number="14"><span class="dv">3</span>    tmb Residual            <span class="fl">654.941</span> <span class="fl">25.592</span> <span class="fl">22.800</span>  <span class="fl">28.725</span>    <span class="fl">0.523</span></a>
-<a class="sourceLine" id="cb5-15" data-line-number="15"><span class="dv">4</span>   lmer  Subject Intercept  <span class="fl">611.898</span> <span class="fl">24.737</span> <span class="fl">14.382</span>  <span class="fl">37.716</span>    <span class="fl">0.470</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="dv">5</span>   lmer  Subject      Days   <span class="fl">35.081</span>  <span class="fl">5.923</span>  <span class="fl">3.801</span>   <span class="fl">8.753</span>    <span class="fl">0.027</span></a>
-<a class="sourceLine" id="cb5-17" data-line-number="17"><span class="dv">6</span>   lmer Residual            <span class="fl">654.941</span> <span class="fl">25.592</span> <span class="fl">22.898</span>  <span class="fl">28.858</span>    <span class="fl">0.503</span></a>
-<a class="sourceLine" id="cb5-18" data-line-number="18"><span class="dv">7</span>    brm  Subject Intercept  <span class="fl">733.227</span> <span class="fl">27.078</span> <span class="fl">14.566</span>  <span class="fl">41.591</span>    <span class="fl">0.510</span></a>
-<a class="sourceLine" id="cb5-19" data-line-number="19"><span class="dv">8</span>    brm  Subject      Days   <span class="fl">41.659</span>  <span class="fl">6.454</span>  <span class="fl">4.203</span>   <span class="fl">9.034</span>    <span class="fl">0.029</span></a>
-<a class="sourceLine" id="cb5-20" data-line-number="20"><span class="dv">9</span>    brm Residual            <span class="fl">663.843</span> <span class="fl">25.765</span> <span class="fl">23.063</span>  <span class="fl">28.359</span>    <span class="fl">0.461</span></a>
-<a class="sourceLine" id="cb5-21" data-line-number="21"><span class="dv">10</span>  stan  Subject Intercept  <span class="fl">575.869</span> <span class="fl">23.997</span> <span class="fl">13.244</span>  <span class="fl">35.705</span>    <span class="fl">0.441</span></a>
-<a class="sourceLine" id="cb5-22" data-line-number="22"><span class="dv">11</span>  stan  Subject      Days   <span class="fl">51.168</span>  <span class="fl">7.153</span>  <span class="fl">4.537</span>  <span class="fl">10.431</span>    <span class="fl">0.039</span></a>
-<a class="sourceLine" id="cb5-23" data-line-number="23"><span class="dv">12</span>  stan Residual            <span class="fl">678.970</span> <span class="fl">26.057</span>  <span class="fl">4.802</span>   <span class="fl">5.379</span>    <span class="fl">0.520</span></a>
-<a class="sourceLine" id="cb5-24" data-line-number="24"><span class="dv">13</span>   gam  Subject Intercept  <span class="fl">627.571</span> <span class="fl">25.051</span> <span class="fl">16.085</span>  <span class="fl">39.015</span>    <span class="fl">0.477</span></a>
-<a class="sourceLine" id="cb5-25" data-line-number="25"><span class="dv">14</span>   gam  Subject      Days   <span class="fl">35.858</span>  <span class="fl">5.988</span>  <span class="fl">4.025</span>   <span class="fl">8.908</span>    <span class="fl">0.027</span></a>
-<a class="sourceLine" id="cb5-26" data-line-number="26"><span class="dv">15</span>   gam Residual            <span class="fl">653.582</span> <span class="fl">25.565</span> <span class="fl">22.792</span>  <span class="fl">28.676</span>    <span class="fl">0.496</span></a></code></pre></div>
+<div class="sourceCode" id="cb5"><pre class="r">mods = list(
+  tmb  = tmb_model,
+  lmer = lmer_model, 
+  brm  = brm_model,
+  stan = rstanarm_model,
+  gam  = gam_model
+)
+
+purrr::map_df(mods, extract_vc, .id = 'model') 
+Computing profile confidence intervals ...
+   model    group    effect variance     sd sd_2.5 sd_97.5 var_prop
+1    tmb  Subject Intercept  565.515 23.781 15.017  37.658    0.451
+2    tmb  Subject      Days   32.682  5.717  3.805   8.588    0.026
+3    tmb Residual            654.941 25.592 22.800  28.725    0.523
+4   lmer  Subject Intercept  611.898 24.737 14.382  37.716    0.470
+5   lmer  Subject      Days   35.081  5.923  3.801   8.753    0.027
+6   lmer Residual            654.941 25.592 22.898  28.858    0.503
+7    brm  Subject Intercept  733.227 27.078 14.566  41.591    0.510
+8    brm  Subject      Days   41.659  6.454  4.203   9.034    0.029
+9    brm Residual            663.843 25.765 23.063  28.359    0.461
+10  stan  Subject Intercept  575.869 23.997 13.244  35.705    0.441
+11  stan  Subject      Days   51.168  7.153  4.537  10.431    0.039
+12  stan Residual            678.970 26.057  4.802   5.379    0.520
+13   gam  Subject Intercept  627.571 25.051 16.085  39.015    0.477
+14   gam  Subject      Days   35.858  5.988  4.025   8.908    0.027
+15   gam Residual            653.582 25.565 22.792  28.676    0.496</pre></div>
 </div>
 </div>
 <div id="code-of-conduct" class="section level2">
@@ -331,13 +331,15 @@
 
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
 <h2>Links</h2>
 <ul class="list-unstyled">
+<li>Browse source code at <br><a href="https://github.com/m-clark/mixedup/">https://​github.com/​m-clark/​mixedup/​</a>
+</li>
 <li>Report a bug at <br><a href="https://github.com/m-clark/mixedup/issues">https://​github.com/​m-clark/​mixedup/​issues</a>
 </li>
-<li>Docs on Stats, R, and more at <br><a href="http://m-clark.github.io">http://​m-clark.github.io</a>
+<li>Docs on Modeling, R, and more at <br><a href="http://m-clark.github.io">http://​m-clark.github.io</a>
 </li>
 </ul>
 </div>
@@ -363,16 +365,7 @@
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
-<ul class="list-unstyled">
-<li><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a></li>
-<li><a href="https://travis-ci.org/m-clark/mixedup"><img src="https://travis-ci.org/m-clark/mixedup.svg?branch=master" alt="Travis build status"></a></li>
-<li><a href="https://ci.appveyor.com/project/m-clark/mixedup"><img src="https://ci.appveyor.com/api/projects/status/github/m-clark/mixedup?branch=master&amp;svg=true" alt="AppVeyor build status"></a></li>
-<li><a href="https://codecov.io/gh/m-clark/mixedup?branch=master"><img src="https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
-</ul>
-</div>
-</div>
+  </div>
 </div>
 
 
@@ -381,7 +374,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

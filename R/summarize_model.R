@@ -3,7 +3,8 @@
 #' @description This function prints fixed effects and variance components for a mixed model.
 #'
 #' @param model A supported model.
-#' @param ci Whether to include a 95% uncertainty interval. Default is TRUE.
+#' @param ci Whether to include a 95% uncertainty interval for the variance
+#'   components. Default is TRUE.
 #' @param cor_re Whether to include the correlations of the random effects.
 #'   Default is FALSE.
 #' @param cor_fe Whether to include the correlations of the fixed effects.
@@ -12,7 +13,7 @@
 #' @param component For glmmTMB objects, which of the three components 'cond',
 #'   'zi' or 'other' to select. Default is cond. Minimal testing on other
 #'   options.
-#' @param ... Not used at present. May allow models specific functionality.
+#' @param ... Not used at present. May allow model-specific functionality.
 #'
 #' @details This basically does pretty printing of the results of [extract_vc()]
 #'   and [extract_fixed_effects()].

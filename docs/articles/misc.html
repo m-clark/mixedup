@@ -6,20 +6,20 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Miscellaneous Functions • mixedup</title>
-<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
-<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
+<!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/css/bootstrap.min.css" integrity="sha256-bZLfwXAP04zRMK2BjiO8iu9pf4FbLqX6zitd+tIvLhE=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.4.1/js/bootstrap.min.js" integrity="sha256-nuL8/2cJ5NDSSwnKD8VqreErSWHtnEP9E7AySL+1ev4=" crossorigin="anonymous"></script><!-- bootstrap-toc --><link rel="stylesheet" href="../bootstrap-toc.css">
+<script src="../bootstrap-toc.js"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/v4-shims.min.css" integrity="sha256-wZjR52fzng1pJHwx4aV2AO3yyTOXrcDW7jBpJtTwVxw=" crossorigin="anonymous">
+<!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><!-- headroom.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/headroom.min.js" integrity="sha256-AsUX4SJE1+yuDu5+mAVzJbuYNPHj/WroHuZ8Ir/CkE0=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.11.0/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script><!-- pkgdown --><link href="../pkgdown.css" rel="stylesheet">
 <script src="../pkgdown.js"></script><link href="../extra.css" rel="stylesheet">
 <meta property="og:title" content="Miscellaneous Functions">
-<meta property="og:description" content="">
-<meta name="twitter:card" content="summary">
+<meta property="og:description" content="mixedup">
 <!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js" integrity="sha256-nvJJv9wWKEm88qvoQl9ekL2J+k/RWIsaSScxxlsrv8k=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/config/TeX-AMS-MML_HTMLorMML.js" integrity="sha256-84DKXVJXs0/F8OTMzX4UR909+jtl4G7SPypPavF+GfA=" crossorigin="anonymous"></script><!--[if lt IE 9]>
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-<body>
+<body data-spy="scroll" data-target="#toc">
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
       </span>
     </div>
 
@@ -98,12 +98,12 @@
       </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
-      <h1>Miscellaneous Functions</h1>
+      <h1 data-toc-skip>Miscellaneous Functions</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2019-12-21</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-04-25</span></h4>
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/misc.Rmd"><code>vignettes/misc.Rmd</code></a></small>
       <div class="hidden name"><code>misc.Rmd</code></div>
 
     </div>
@@ -122,120 +122,66 @@
 <h3 class="hasAnchor">
 <a href="#find-typical-values" class="anchor"></a>Find typical values</h3>
 <p>In many cases, predictions are made by holding the random effects to zero, which can be seen as the typical case. When the clusters carry substantive meaning, for example, school, country, or hospital, it might be of interest to note which are most ‘typical’, or at any other value relative to their peers. This will work for any model to which <code>extract_random_effects</code> applies.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(lme4)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">lmer_model &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data =</span> sleepstudy)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"></a>
-<a class="sourceLine" id="cb1-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(mixedup)</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6"></a>
-<a class="sourceLine" id="cb1-7" data-line-number="7"><span class="kw"><a href="../reference/find_typical.html">find_typical</a></span>(lmer_model)  <span class="co"># closest RE to zero</span></a>
-<a class="sourceLine" id="cb1-8" data-line-number="8"><span class="co"># A tibble: 2 x 7</span></a>
-<a class="sourceLine" id="cb1-9" data-line-number="9">  group_var effect    group  value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></a>
-<a class="sourceLine" id="cb1-10" data-line-number="10">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb1-11" data-line-number="11"><span class="dv">1</span> Subject   Days      <span class="dv">333</span>   <span class="fl">-0.223</span>  <span class="fl">2.31</span>     <span class="fl">-4.74</span>       <span class="fl">4.29</span></a>
-<a class="sourceLine" id="cb1-12" data-line-number="12"><span class="dv">2</span> Subject   Intercept <span class="dv">335</span>   <span class="fl">-0.333</span> <span class="fl">12.1</span>     <span class="fl">-24.0</span>       <span class="fl">23.3</span> </a>
-<a class="sourceLine" id="cb1-13" data-line-number="13"></a>
-<a class="sourceLine" id="cb1-14" data-line-number="14"></a>
-<a class="sourceLine" id="cb1-15" data-line-number="15"><span class="kw"><a href="../reference/find_typical.html">find_typical</a></span>(lmer_model, <span class="dt">probs =</span> <span class="kw"><a href="https://rdrr.io/r/base/c.html">c</a></span>(.<span class="dv">1</span>, <span class="fl">.9</span>))</a>
-<a class="sourceLine" id="cb1-16" data-line-number="16"><span class="co"># A tibble: 4 x 8</span></a>
-<a class="sourceLine" id="cb1-17" data-line-number="17">  group_var effect    group  value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span> probs</a>
-<a class="sourceLine" id="cb1-18" data-line-number="18">  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb1-19" data-line-number="19"><span class="dv">1</span> Subject   Days      <span class="dv">310</span>    <span class="fl">-5.45</span>  <span class="fl">2.31</span>     <span class="fl">-9.97</span>     <span class="fl">-0.932</span> <span class="dv">10</span>%  </a>
-<a class="sourceLine" id="cb1-20" data-line-number="20"><span class="dv">2</span> Subject   Days      <span class="dv">350</span>     <span class="fl">6.61</span>  <span class="fl">2.31</span>      <span class="fl">2.10</span>     <span class="fl">11.1</span>   <span class="dv">90</span>%  </a>
-<a class="sourceLine" id="cb1-21" data-line-number="21"><span class="dv">3</span> Subject   Intercept <span class="dv">370</span>   <span class="fl">-25.6</span>  <span class="fl">12.1</span>     <span class="fl">-49.3</span>      <span class="fl">-1.95</span>  <span class="dv">10</span>%  </a>
-<a class="sourceLine" id="cb1-22" data-line-number="22"><span class="dv">4</span> Subject   Intercept <span class="dv">331</span>    <span class="fl">22.3</span>  <span class="fl">12.1</span>      <span class="fl">-1.40</span>     <span class="fl">45.9</span>   <span class="dv">90</span>%  </a></code></pre></div>
+<div class="sourceCode" id="cb1"><html><body><pre class="r">library(lme4)
+
+lmer_model      <chr><fct><dbl><dbl><dbl><dbl>
+1 Subject   Days      333   -0.223  2.31     -4.74       4.29
+2 Subject   Intercept 335   -0.333 12.1     -24.0       23.3 
+
+
+find_typical(lmer_model, probs = c(.1, .9))
+# A tibble: 4 x 8
+  group_var effect    group  value    se lower_2.5 upper_97.5 probs
+  <chr><chr><fct><dbl><dbl><dbl><dbl><chr>
+1 Subject   Days      310    -5.45  2.31     -9.97     -0.932 10%  
+2 Subject   Days      350     6.61  2.31      2.10     11.1   90%  
+3 Subject   Intercept 370   -25.6  12.1     -49.3      -1.95  10%  
+4 Subject   Intercept 331    22.3  12.1      -1.40     45.9   90%  </chr></dbl></dbl></dbl></dbl></fct></chr></chr></dbl></dbl></dbl></dbl></fct></chr></pre></body></html></div>
 </div>
 <div id="extract-heterogeneous-variances" class="section level3">
 <h3 class="hasAnchor">
 <a href="#extract-heterogeneous-variances" class="anchor"></a>Extract heterogeneous variances</h3>
 <p>For <code>nlme</code>, only models with <code>varIdent</code> have been tested. For <span class="pack" style="">glmmTMB</span>, this applies to models that use the <span class="func" style="">diag</span> function in the formula.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(nlme)</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">lme_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">lme</span>(</a>
-<a class="sourceLine" id="cb2-4" data-line-number="4">  distance <span class="op">~</span><span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/scale.html">scale</a></span>(age) <span class="op">+</span><span class="st"> </span>Sex,</a>
-<a class="sourceLine" id="cb2-5" data-line-number="5">  <span class="dt">data =</span> Orthodont,</a>
-<a class="sourceLine" id="cb2-6" data-line-number="6">  <span class="dt">random =</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Subject,</a>
-<a class="sourceLine" id="cb2-7" data-line-number="7">  <span class="dt">weights =</span> <span class="kw">varIdent</span>(<span class="dt">form =</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Sex)</a>
-<a class="sourceLine" id="cb2-8" data-line-number="8">)</a>
-<a class="sourceLine" id="cb2-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb2-10" data-line-number="10"><span class="kw"><a href="../reference/extract_het_var.html">extract_het_var</a></span>(lme_<span class="dv">1</span>)</a>
-<a class="sourceLine" id="cb2-11" data-line-number="11">   Male Female</a>
-<a class="sourceLine" id="cb2-12" data-line-number="12"><span class="dv">1</span> <span class="fl">1.762</span>    <span class="fl">0.8</span></a></code></pre></div>
+<div class="sourceCode" id="cb2"><html><body><pre class="r">library(nlme)
+
+lme_1 </pre></body></html></div>
 <p>May include <span class="pack" style="">brms</span> at some point, but for these, you can extract any parameters associated with sigma model for distributional models using the <code>component</code> argument of the other standard functions.</p>
 </div>
 <div id="extract-correlation-structure" class="section level3">
 <h3 class="hasAnchor">
 <a href="#extract-correlation-structure" class="anchor"></a>Extract correlation structure</h3>
 <p>With some packages one can estimate the residual correlation structure. Right now this works for <span class="pack" style="">nlme</span>, <span class="pack" style="">glmmTMB</span>, and <span class="pack" style="">brms</span> objects.</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">base_model &lt;-</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2"><span class="st">  </span><span class="kw">lme</span>(Reaction <span class="op">~</span><span class="st"> </span>Days,</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">      <span class="dt">random =</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>Days <span class="op">|</span><span class="st"> </span>Subject,</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">      <span class="dt">data =</span> sleepstudy)</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">lme_corSymm &lt;-</a>
-<a class="sourceLine" id="cb3-7" data-line-number="7"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/update.html">update</a></span>(</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">    base_model,</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">    <span class="dt">corr =</span> <span class="kw">corSymm</span>(<span class="dt">form =</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Subject),</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">    <span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(sleepstudy, Days <span class="op">&lt;</span><span class="st"> </span><span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">  )</a>
-<a class="sourceLine" id="cb3-12" data-line-number="12"></a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">lme_corAR &lt;-</a>
-<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="st">  </span><span class="kw"><a href="https://rdrr.io/r/stats/update.html">update</a></span>(</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">    base_model,</a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">    <span class="dt">corr =</span> <span class="kw">corAR1</span>(<span class="dt">form =</span> <span class="op">~</span><span class="st"> </span>Days),</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">    <span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span>(sleepstudy, Days <span class="op">&lt;</span><span class="st"> </span><span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18">  )</a>
-<a class="sourceLine" id="cb3-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb3-20" data-line-number="20"></a>
-<a class="sourceLine" id="cb3-21" data-line-number="21"><span class="kw"><a href="../reference/extract_cor_structure.html">extract_cor_structure</a></span>(lme_corSymm)</a>
-<a class="sourceLine" id="cb3-22" data-line-number="22">       V1    V2     V3     V4     V5</a>
-<a class="sourceLine" id="cb3-23" data-line-number="23">V1  <span class="fl">1.000</span> <span class="fl">0.263</span> <span class="fl">-0.460</span> <span class="fl">-0.222</span> <span class="fl">-0.092</span></a>
-<a class="sourceLine" id="cb3-24" data-line-number="24">V2  <span class="fl">0.263</span> <span class="fl">1.000</span>  <span class="fl">0.272</span>  <span class="fl">0.356</span>  <span class="fl">0.081</span></a>
-<a class="sourceLine" id="cb3-25" data-line-number="25">V3 <span class="fl">-0.460</span> <span class="fl">0.272</span>  <span class="fl">1.000</span>  <span class="fl">0.377</span> <span class="fl">-0.417</span></a>
-<a class="sourceLine" id="cb3-26" data-line-number="26">V4 <span class="fl">-0.222</span> <span class="fl">0.356</span>  <span class="fl">0.377</span>  <span class="fl">1.000</span>  <span class="fl">0.572</span></a>
-<a class="sourceLine" id="cb3-27" data-line-number="27">V5 <span class="fl">-0.092</span> <span class="fl">0.081</span> <span class="fl">-0.417</span>  <span class="fl">0.572</span>  <span class="fl">1.000</span></a>
-<a class="sourceLine" id="cb3-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb3-29" data-line-number="29"></a>
-<a class="sourceLine" id="cb3-30" data-line-number="30"><span class="kw"><a href="../reference/extract_cor_structure.html">extract_cor_structure</a></span>(lme_corAR)</a>
-<a class="sourceLine" id="cb3-31" data-line-number="31"><span class="co"># A tibble: 1 x 1</span></a>
-<a class="sourceLine" id="cb3-32" data-line-number="32">    Phi</a>
-<a class="sourceLine" id="cb3-33" data-line-number="33">  <span class="op">&lt;</span>dbl<span class="op">&gt;</span></a>
-<a class="sourceLine" id="cb3-34" data-line-number="34"><span class="dv">1</span> <span class="fl">0.662</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r">base_model 
+1 0.662</pre></body></html></div>
 </div>
 <div id="extract-model-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#extract-model-data" class="anchor"></a>Extract model data</h3>
 <p>Just a wrapper for <code>model.frame</code>.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="../reference/extract_model_data.html">extract_model_data</a></span>(lmer_model)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="co"># A tibble: 180 x 3</span></a>
-<a class="sourceLine" id="cb4-3" data-line-number="3">   Reaction  Days Subject</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4">      <span class="op">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="st"> </span><span class="dv">1</span>     <span class="fl">250.</span>     <span class="dv">0</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"> <span class="dv">2</span>     <span class="fl">259.</span>     <span class="dv">1</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"> <span class="dv">3</span>     <span class="fl">251.</span>     <span class="dv">2</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"> <span class="dv">4</span>     <span class="fl">321.</span>     <span class="dv">3</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"> <span class="dv">5</span>     <span class="fl">357.</span>     <span class="dv">4</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb4-10" data-line-number="10"> <span class="dv">6</span>     <span class="fl">415.</span>     <span class="dv">5</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb4-11" data-line-number="11"> <span class="dv">7</span>     <span class="fl">382.</span>     <span class="dv">6</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"> <span class="dv">8</span>     <span class="fl">290.</span>     <span class="dv">7</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"> <span class="dv">9</span>     <span class="fl">431.</span>     <span class="dv">8</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb4-14" data-line-number="14"><span class="dv">10</span>     <span class="fl">466.</span>     <span class="dv">9</span> <span class="dv">308</span>    </a>
-<a class="sourceLine" id="cb4-15" data-line-number="15"><span class="co"># … with 170 more rows</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r">extract_model_data(lmer_model)
+# A tibble: 180 x 3
+   Reaction  Days Subject
+      <dbl><dbl><fct>  
+ 1     250.     0 308    
+ 2     259.     1 308    
+ 3     251.     2 308    
+ 4     321.     3 308    
+ 5     357.     4 308    
+ 6     415.     5 308    
+ 7     382.     6 308    
+ 8     290.     7 308    
+ 9     431.     8 308    
+10     466.     9 308    
+# … with 170 more rows</fct></dbl></dbl></pre></body></html></div>
 </div>
 </div>
   </div>
 
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+  <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
 
-        <div id="tocnav">
-      <h2 class="hasAnchor">
-<a href="#tocnav" class="anchor"></a>Contents</h2>
-      <ul class="nav nav-pills nav-stacked">
-<li><a href="#intro">Intro</a></li>
-      <li><a href="#examples">Examples</a></li>
-      </ul>
+        <nav id="toc" data-toggle="toc"><h2 data-toc-skip>Contents</h2>
+    </nav>
 </div>
-      </div>
 
 </div>
 
@@ -246,7 +192,7 @@
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
 </div>
 
       </footer>

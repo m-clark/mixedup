@@ -1,3 +1,7 @@
+# mixedup 0.3.5
+
+* Add converge_it for lme4 models.
+
 # mixedup 0.3.4
 
 * Add brmsfit method for extract_het_var and notable doc updates.

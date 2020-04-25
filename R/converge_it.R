@@ -15,7 +15,8 @@
 #'   `update`).  At that point you can just feed the updated model and continue
 #'   further if desired, try a different optimizer, a different model, etc.
 #'   While this function may get you to convergence, you still may have
-#'   'singular' or other issues.
+#'   'singular' or other issues.  In addition, you will still see warnings as it
+#'   iterates toward a converged model.
 #'
 #' @note While it is true that GLMMs generally are hard to fit, most convergence
 #'   warnings with `lme4` seem really more about the underlying data, or a

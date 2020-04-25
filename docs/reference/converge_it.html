@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Extract model data — extract_model_data • mixedup</title>
+<title>Converge an lme4 model — converge_it • mixedup</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,11 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Extract model data — extract_model_data" />
-<meta property="og:description" content="This is mostly just a wrapper for model.frame." />
+<meta property="og:title" content="Converge an lme4 model — converge_it" />
+<meta property="og:description" content="Convergence is a common problem with mixed models of enough
+complexity, especially GLMM, and especially those fit by the lme4 package.
+Assuming it's not a data or specification problem causing the issue, this
+function will run the model successively until convergence." />
 
 
 
@@ -140,61 +143,82 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Extract model data</h1>
-    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/extract_model_data.R'><code>R/extract_model_data.R</code></a></small>
-    <div class="hidden name"><code>extract_model_data.Rd</code></div>
+    <h1>Converge an lme4 model</h1>
+    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/converge_it.R'><code>R/converge_it.R</code></a></small>
+    <div class="hidden name"><code>converge_it.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This is mostly just a wrapper for <code>model.frame</code>.</p>
+    <p>Convergence is a common problem with mixed models of enough
+complexity, especially GLMM, and especially those fit by the <code>lme4</code> package.
+Assuming it's not a data or specification problem causing the issue, this
+function will run the model successively until convergence.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_model_data</span>(<span class='no'>model</span>)</pre>
+    <pre class="usage"><span class='fu'>converge_it</span>(<span class='no'>model</span>)
+
+<span class='co'># S3 method for merMod</span>
+<span class='fu'>converge_it</span>(<span class='no'>model</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model</th>
-      <td><p>The mixed model.</p></td>
+      <td><p>An <code>lme4</code> model.</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>A tibble/dataframe of the data used in the model.</p>
+    <p>A hopefully successfully converged <code>lme4</code> model, or one closer to
+convergence.</p>
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This simple function currently just works for <code>lme4</code> objects.  Its
+main purpose is to just save the trouble of guessing how long you might
+need to run something to get to the default convergence. It
+just continues running <code>update</code> with additional iterations until
+convergence or an additional stopping point (10 additional runs of
+<code>update</code>).  At that point you can just feed the updated model and continue
+further if desired, try a different optimizer, a different model, etc.
+While this function may get you to convergence, you still may have
+'singular' or other issues.</p>
+    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
+
+    <p>While it is true that GLMMs generally are hard to fit, most convergence
+warnings with <code>lme4</code> seem really more about the underlying data, or a
+problematic model, rather than an issue with estimation.  Furthermore, it
+is often the case that the model with warnings will typically have no
+meaningful difference in results with those from a different optimizer, but
+this would need to be checked with some thing like <code>allFit</code>.  Also, if you
+are having a problem with a model fit with <code>lmer</code>, i.e. an LMM as opposed
+to a GLMM, this is usually a model that is too complex for the underlying
+data.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><a href='https://rdrr.io/r/stats/model.frame.html'>model.frame</a></p>
-<p>Other extract: 
-<code><a href='extract_cor_structure.html'>extract_cor_structure</a>()</code>,
-<code><a href='extract_fixed_effects.html'>extract_fixed_effects</a>()</code>,
-<code><a href='extract_het_var.html'>extract_het_var</a>()</code>,
-<code><a href='extract_random_coefs.html'>extract_random_coefs</a>()</code>,
-<code><a href='extract_random_effects.html'>extract_random_effects</a>()</code>,
-<code><a href='extract_vc.html'>extract_vc</a>()</code></p></div>
+    <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/lme4/man/convergence.html'>convergence</a></code>,
+<code><a href='https://rdrr.io/pkg/lme4/man/allFit.html'>allFit</a></code>,
+<code><a href='https://rdrr.io/pkg/lme4/man/isSingular.html'>isSingular</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)
+    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>Salamanders</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'glmmTMB'</span>)
+
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
 
-<span class='no'>lmer_1</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
-<span class='fu'>extract_model_data</span>(<span class='no'>lmer_1</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 180 x 3</span><span>
-#&gt;    Reaction  Days Subject
-#&gt;       </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>  
-#&gt; </span><span style='color: #555555;'> 1</span><span>     250.     0 308    
-#&gt; </span><span style='color: #555555;'> 2</span><span>     259.     1 308    
-#&gt; </span><span style='color: #555555;'> 3</span><span>     251.     2 308    
-#&gt; </span><span style='color: #555555;'> 4</span><span>     321.     3 308    
-#&gt; </span><span style='color: #555555;'> 5</span><span>     357.     4 308    
-#&gt; </span><span style='color: #555555;'> 6</span><span>     415.     5 308    
-#&gt; </span><span style='color: #555555;'> 7</span><span>     382.     6 308    
-#&gt; </span><span style='color: #555555;'> 8</span><span>     290.     7 308    
-#&gt; </span><span style='color: #555555;'> 9</span><span>     431.     8 308    
-#&gt; </span><span style='color: #555555;'>10</span><span>     466.     9 308    
-#&gt; </span><span style='color: #555555;'># … with 170 more rows</span><span></div><div class='input'>
+<span class='co'># a possibly silly model</span>
+<span class='no'>glmer_mod</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>glmer</a></span>(<span class='no'>count</span> ~ <span class='no'>spp</span> + <span class='no'>mined</span> + <span class='no'>DOP</span> + <span class='no'>Wtemp</span> + <span class='no'>DOY</span> +
+  (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>sample</span>) +
+  (<span class='fl'>1</span> + <span class='no'>DOY</span> + <span class='no'>DOP</span> <span class='kw'>|</span> <span class='no'>site</span>),
+  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Salamanders</span>,
+  <span class='kw'>family</span> <span class='kw'>=</span> <span class='no'>poisson</span>
+)
 
-</div></span></pre>
+
+<span class='fu'>converge_it</span>(<span class='no'>glmer_mod</span>)
+}</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

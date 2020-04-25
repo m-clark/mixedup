@@ -18,7 +18,7 @@ highlight: pygments
 home:
   #strip_header: true
   links:
-  - text: Docs on Stats, R, and more
+  - text: Docs on Modeling, R, and more
     href: http://m-clark.github.io
 
 reference:
@@ -67,6 +67,7 @@ reference:
       Clean printing of results.
     contents:
       - summarize_model
+      - converge_it
 
   - title: "Miscellaneous Functions"
     desc: >
