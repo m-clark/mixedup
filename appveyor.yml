@@ -11,7 +11,7 @@ install:
   ps: Bootstrap
 
 cache:
-  - C:\RLibrary
+  # - ~/Rlibs
 
 environment:
   NOT_CRAN: true
