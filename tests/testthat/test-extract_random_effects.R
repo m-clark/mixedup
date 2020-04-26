@@ -41,6 +41,10 @@ test_that('extract_random_effects.merMod works with multiple re', {
   )
 })
 
+test_that('extract_random_effects.merMod add_group_N', {
+  expect_s3_class(extract_random_effects(lmer_4, add_group_N = TRUE), 'data.frame')
+})
+
 test_that('extract_random_effects.merMod errors with bad re name', {
   expect_error(extract_random_effects(lmer_2, re = 'subject'))
 })
@@ -77,6 +81,14 @@ test_that('extract_random_effects can do zip', {
     extract_random_effects(tmb_zip, re = 'site', component = 'zi'),
     'data.frame'
     )
+})
+
+test_that('extract_random_effects.glmmTMB add_group_N', {
+  expect_s3_class(extract_random_effects(tmb_4, add_group_N = TRUE), 'data.frame')
+})
+
+test_that('extract_random_effects.glmmTMB add_group_N for zip', {
+  expect_s3_class(extract_random_effects(tmb_zip, add_group_N = TRUE), 'data.frame')
 })
 
 test_that('extract_random_effects errors with bad re name', {

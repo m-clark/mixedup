@@ -19,7 +19,14 @@ extract_random_effects(
   ...
 )
 
-\method{extract_random_effects}{merMod}(model, re = NULL, ci_level = 0.95, digits = 3, ...)
+\method{extract_random_effects}{merMod}(
+  model,
+  re = NULL,
+  ci_level = 0.95,
+  digits = 3,
+  add_group_N = FALSE,
+  ...
+)
 
 \method{extract_random_effects}{glmmTMB}(
   model,
@@ -27,6 +34,7 @@ extract_random_effects(
   ci_level = 0.95,
   digits = 3,
   component = "cond",
+  add_group_N = FALSE,
   ...
 )
 

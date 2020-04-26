@@ -91,6 +91,7 @@ extract_random_effects.merMod <- function(
   re = NULL,
   ci_level = .95,
   digits = 3,
+  add_group_N = FALSE,
   ...
   # component = 'cond',
 ) {
@@ -111,6 +112,17 @@ extract_random_effects.merMod <- function(
 
   random_effects <- as.data.frame(lme4::ranef(model, condVar = TRUE))
   colnames(random_effects) <- c('group_var', 'effect', 'group', 'value', 'se')
+
+  if (add_group_N) {
+    grp_vars = unique(random_effects$group_var)
+
+    ns = count_grps(model, grp_vars)
+
+    # suppress warning of char vs. factor
+    random_effects = suppressWarnings({
+      dplyr::left_join(random_effects, ns, by = c("group_var", "group"))
+    })
+  }
 
   if (ci_level > 0) {
 
@@ -134,7 +146,7 @@ extract_random_effects.merMod <- function(
   }
 
 
-  random_effects %>%
+  random_effects = random_effects %>%
     dplyr::mutate(
       effect = gsub(effect,
                     pattern = '[\\(, \\)]',
@@ -142,6 +154,12 @@ extract_random_effects.merMod <- function(
     ) %>%
     dplyr::mutate_if(is.numeric, round, digits = digits) %>%
     dplyr::as_tibble()
+
+  if (add_group_N) {
+    random_effects = random_effects %>% dplyr::select(-n, everything())
+  }
+
+  random_effects
 }
 
 #' @rdname extract_random_effects
@@ -152,6 +170,7 @@ extract_random_effects.glmmTMB <- function(
   ci_level = .95,
   digits = 3,
   component = 'cond',
+  add_group_N = FALSE,
   ...
 ) {
 
@@ -178,6 +197,17 @@ extract_random_effects.glmmTMB <- function(
 
   colnames(random_effects) <- c('group_var', 'effect', 'group', 'value', 'se')
 
+  if (add_group_N) {
+    grp_vars = unique(random_effects$group_var)
+
+    ns = count_grps(model, grp_vars)
+
+    # suppress warning of char vs. factor
+    random_effects = suppressWarnings({
+      dplyr::left_join(random_effects, ns, by = c("group_var", "group"))
+    })
+  }
+
   if (ci_level > 0) {
 
     lower <- (1 - ci_level)/2
@@ -199,7 +229,7 @@ extract_random_effects.glmmTMB <- function(
       dplyr::filter(group_var == re)
   }
 
-  random_effects %>%
+  random_effects = random_effects %>%
     dplyr::mutate(
       effect = gsub(effect,
                     pattern = '[\\(, \\)]',
@@ -207,6 +237,12 @@ extract_random_effects.glmmTMB <- function(
     ) %>%
     dplyr::mutate_if(is.numeric, round, digits = digits) %>%
     dplyr::as_tibble()
+
+  if (add_group_N) {
+    random_effects = random_effects %>% dplyr::select(-n, everything())
+  }
+
+  random_effects
 }
 
 
