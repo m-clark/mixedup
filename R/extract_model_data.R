@@ -6,6 +6,10 @@
 #'
 #' @return A tibble/dataframe of the data used in the model.
 #'
+#' @note For whatever reason, `nlme` class objects do not save the model data,
+#'   so this will throw an error stating as much. `lme` objects do save the data
+#'   so are fine.
+#'
 #' @seealso \link{model.frame}
 #'
 #' @examples
@@ -24,7 +28,11 @@ extract_model_data <- function(model) {
                 c('merMod', 'glmmTMB', 'lme', 'gam', 'stanreg', 'brmsfit')))
     stop('This is not a supported model class.')
 
-  if (inherits(model, 'lme')) {
+  if (inherits(model, 'nlme')) {
+    # seriously wtf?
+    stop("nlme doesn't save the data for models of class nlme. Sorry.")
+  }
+  else if (inherits(model, 'lme')) {
     data <- dplyr::as_tibble(model$data)
   }
   else {

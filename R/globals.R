@@ -11,6 +11,7 @@ utils::globalVariables(
     'intervals',
     'lower',
     'upper',
+    'n',
     'var_prop',
     'Estimate',
     'sd',

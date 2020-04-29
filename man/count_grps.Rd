@@ -2,23 +2,41 @@
 % Please edit documentation in R/count_grps.R
 \name{count_grps}
 \alias{count_grps}
+\alias{count_grps.default}
+\alias{count_grps.merMod}
+\alias{count_grps.glmmTMB}
+\alias{count_grps.lme}
+\alias{count_grps.brmsfit}
 \title{Count groups}
 \usage{
 count_grps(model, grp_vars)
+
+\method{count_grps}{default}(model, grp_vars)
+
+\method{count_grps}{merMod}(model, grp_vars)
+
+\method{count_grps}{glmmTMB}(model, grp_vars)
+
+\method{count_grps}{lme}(model, grp_vars)
+
+\method{count_grps}{brmsfit}(model, grp_vars)
 }
 \arguments{
 \item{model}{A fitted model e.g. from \code{lme4}.}
 
-\item{grp_vars}{A character vector fo the grouping/cluster variables used for random effects}
+\item{grp_vars}{A character vector fo the grouping/cluster variables used for
+random effects}
 }
 \value{
 A tibble of the results.
 }
 \description{
-A helper function to count groups to add to random effect results.
+A helper function to count groups to add to random effect
+results.
 }
 \details{
-For each grouping variable for which random effects are estimated, count the respective group sizes.  This is not meant to be used directly.
+For each grouping variable for which random effects are estimated,
+count the respective group sizes.  This is not meant to be used directly.
 }
 \examples{
 
@@ -30,3 +48,4 @@ mod = lmer(Reaction ~ Days + (1 + Days | Subject), sleepstudy)
 count_grps(mod, 'Subject')
 
 }
+\keyword{internal}

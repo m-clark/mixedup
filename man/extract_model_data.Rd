@@ -15,6 +15,11 @@ A tibble/dataframe of the data used in the model.
 \description{
 This is mostly just a wrapper for \code{model.frame}.
 }
+\note{
+For whatever reason, \code{nlme} class objects do not save the model data,
+so this will throw an error stating as much. \code{lme} objects do save the data
+so are fine.
+}
 \examples{
 library(lme4)
 library(mixedup)

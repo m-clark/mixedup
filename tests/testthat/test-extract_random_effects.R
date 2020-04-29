@@ -137,6 +137,16 @@ test_that('extract_random_effects.lme works with nlme', {
 })
 
 
+test_that('extract_random_effects.lme add_group_N', {
+  expect_s3_class(extract_random_effects(lme_3, add_group_N = TRUE), 'data.frame')
+})
+
+test_that('extract_random_effects.lme add_group_N for nlme', {
+  expect_s3_class(extract_random_effects(nlme_1, add_group_N = TRUE), 'data.frame')
+})
+
+
+
 # brms --------------------------------------------------------------------
 
 context('test extract_random_effects.brmsfit')
@@ -178,7 +188,7 @@ test_that('extract_random_effects.brmsfit errors with bad re name', {
 
 test_that('extract_random_effects.brmsfit basic functionality: multivariate model', {
   init = extract_random_effects(brm_mv, component = 'back', ci_level = .8, digits = 2)
-  expect_match(init$group_var, 'back')
+  expect_match(init$component, 'back')
 })
 
 # currently fails due to potential brms bug
@@ -189,8 +199,19 @@ test_that('extract_random_effects.brmsfit basic functionality: multivariate mode
 
 test_that('extract_random_effects.brmsfit basic functionality: zi model', {
   init = extract_random_effects(brm_zi, component = 'zi', ci_level = .8, digits = 2)
-  expect_match(init$group_var, 'zi')
+  expect_match(init$component, 'zi')
 })
+
+test_that('extract_random_effects.brmsfit add_group_N', {
+  expect_s3_class(extract_random_effects(brm_3, add_group_N = TRUE), 'data.frame')
+})
+
+test_that('extract_random_effects.brmsfit add_group_N for zi', {
+  expect_s3_class(extract_random_effects(brm_zi, component = 'zi', add_group_N = TRUE),
+                  'data.frame')
+})
+
+
 
 
 # rstanarm ----------------------------------------------------------------

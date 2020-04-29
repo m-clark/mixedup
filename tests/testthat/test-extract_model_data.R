@@ -32,7 +32,12 @@ test_that('extract_fixed_effects works', {
 
 # Non-standard models -----------------------------------------------------
 
+
+test_that('extract_fixed_effects works with lme', {
+  expect_s3_class(extract_model_data(lme_1), 'data.frame')
+})
+
 # these don't
 test_that('extract_fixed_effects works with lme', {
-  expect_s3_class(extract_model_data(nlme_1), 'data.frame')
+  expect_error(extract_model_data(nlme_1))
 })

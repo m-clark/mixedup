@@ -15,6 +15,7 @@ extract_random_effects(
   re = NULL,
   ci_level = 0.95,
   digits = 3,
+  add_group_N = FALSE,
   component = NULL,
   ...
 )
@@ -33,18 +34,26 @@ extract_random_effects(
   re = NULL,
   ci_level = 0.95,
   digits = 3,
-  component = "cond",
   add_group_N = FALSE,
+  component = "cond",
   ...
 )
 
-\method{extract_random_effects}{lme}(model, re = NULL, ci_level = NULL, digits = 3, ...)
+\method{extract_random_effects}{lme}(
+  model,
+  re = NULL,
+  ci_level = NULL,
+  digits = 3,
+  add_group_N = FALSE,
+  ...
+)
 
 \method{extract_random_effects}{brmsfit}(
   model,
   re = NULL,
   ci_level = 0.95,
   digits = 3,
+  add_group_N = FALSE,
   component = NULL,
   ...
 )
@@ -65,12 +74,14 @@ objects.}
 
 \item{digits}{Rounding. Default is 3.}
 
-\item{component}{For glmmTMB objects, which of the two components 'cond' or
-'zi' to select. Default is 'cond'. For brmsfit objects, this can filter
+\item{add_group_N}{Add group sample sizes to output? Default is \code{FALSE}.}
+
+\item{component}{For \code{glmmTMB} objects, which of the two components 'cond' or
+'zi' to select. Default is 'cond'. For \code{brmsfit} objects, this can filter
 results to a certain part of the output, e.g. 'sigma' or 'zi' of
-distributional models, or a specific outcome of a multivariate model.  In
-this case \code{component} is a regular expression that ends the name of
-the parameters of the output (e.g. '__component').}
+distributional models, or a specific outcome name of a multivariate model.
+In this case \code{component} is a regular expression that ends the name of the
+parameters of the output (e.g. '__component').}
 
 \item{...}{Other arguments specific to the method. Unused at present.}
 }
@@ -81,8 +92,8 @@ data frame of the random effects
 Extracts the random effects and their standard errors.
 }
 \details{
-Relative to \code{ranef} for the various packages, this just adds
-the standard errors and cluster ids as columns, and uncertainty intervals.
+Relative to \code{ranef} for the various packages, this just adds the
+standard errors and cluster ids as columns, and uncertainty intervals.
 
 Current models supported:
 

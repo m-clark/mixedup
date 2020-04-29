@@ -8,17 +8,18 @@
 #' @param ci_level Where possible, confidence level < 1, typically above 0.90. A
 #'   value of 0 will not report it. Default is .95. Not applicable to nlme
 #'   objects.
-#' @param component For glmmTMB objects, which of the two components 'cond' or
-#'   'zi' to select. Default is 'cond'. For brmsfit objects, this can filter
-#'   results to a certain part of the output, e.g. 'sigma' or 'zi' of
-#'   distributional models, or a specific outcome of a multivariate model.  In
-#'   this case `component` is a regular expression that ends the name of
-#'   the parameters of the output (e.g. '__component').
+#' @param component For `glmmTMB` objects, which of the two components 'cond' or
+#' 'zi' to select. Default is 'cond'. For `brmsfit` objects, this can filter
+#' results to a certain part of the output, e.g. 'sigma' or 'zi' of
+#' distributional models, or a specific outcome name of a multivariate model.
+#' In this case `component` is a regular expression that ends the name of the
+#' parameters of the output (e.g. '__component').
 #' @param digits  Rounding. Default is 3.
+#' @param add_group_N  Add group sample sizes to output? Default is `FALSE`.
 #' @param ... Other arguments specific to the method. Unused at present.
 #'
-#' @details Relative to `ranef` for the various packages, this just adds
-#'   the standard errors and cluster ids as columns, and uncertainty intervals.
+#' @details Relative to `ranef` for the various packages, this just adds the
+#'   standard errors and cluster ids as columns, and uncertainty intervals.
 #'
 #'  Current models supported:
 #'
@@ -67,8 +68,9 @@ extract_random_effects <- function(
   model,
   re = NULL,
   ci_level = .95,
-  digits = 3,
-  component = NULL,
+  digits   = 3,
+  add_group_N = FALSE,
+  component   = NULL,
   ...
 ) {
   if (!inherits(model,
@@ -145,7 +147,6 @@ extract_random_effects.merMod <- function(
       dplyr::filter(group_var == re)
   }
 
-
   random_effects = random_effects %>%
     dplyr::mutate(
       effect = gsub(effect,
@@ -156,7 +157,7 @@ extract_random_effects.merMod <- function(
     dplyr::as_tibble()
 
   if (add_group_N) {
-    random_effects = random_effects %>% dplyr::select(-n, everything())
+    random_effects = random_effects %>% dplyr::select(-n, dplyr::everything())
   }
 
   random_effects
@@ -169,8 +170,8 @@ extract_random_effects.glmmTMB <- function(
   re = NULL,
   ci_level = .95,
   digits = 3,
-  component = 'cond',
   add_group_N = FALSE,
+  component = 'cond',
   ...
 ) {
 
@@ -239,7 +240,7 @@ extract_random_effects.glmmTMB <- function(
     dplyr::as_tibble()
 
   if (add_group_N) {
-    random_effects = random_effects %>% dplyr::select(-n, everything())
+    random_effects = random_effects %>% dplyr::select(-n, dplyr::everything())
   }
 
   random_effects
@@ -253,6 +254,7 @@ extract_random_effects.lme <- function(
   re = NULL,
   ci_level = NULL,
   digits = 3,
+  add_group_N = FALSE,
   # component,
   ...
 ) {
@@ -308,7 +310,7 @@ extract_random_effects.lme <- function(
       dplyr::filter(group_var == re)
   }
 
-  random_effects %>%
+  random_effects =   random_effects %>%
     dplyr::mutate_if(is.numeric, round, digits = digits) %>%
     dplyr::select(group_var, effect, group, value) %>%
     dplyr::mutate(
@@ -320,6 +322,22 @@ extract_random_effects.lme <- function(
     ) %>%
     dplyr::arrange(group_var, effect, group) %>%
     dplyr::as_tibble()
+
+  if (add_group_N) {
+    grp_vars = unique(random_effects$group_var)
+
+    ns = count_grps(model, grp_vars)
+
+    # suppress warning of char vs. factor
+    random_effects = suppressWarnings({
+      dplyr::left_join(random_effects, ns, by = c("group_var", "group"))
+    })
+
+
+    random_effects = random_effects %>% dplyr::select(-n, dplyr::everything())
+  }
+
+  random_effects
 }
 
 #' @rdname extract_random_effects
@@ -329,6 +347,7 @@ extract_random_effects.brmsfit <- function(
   re = NULL,
   ci_level = .95,
   digits = 3,
+  add_group_N = FALSE,
   component = NULL,
   ...
 ) {
@@ -368,6 +387,34 @@ extract_random_effects.brmsfit <- function(
       se = purrr::map_dbl(re0, stats::sd)
     )
 
+  # deal with multiple components
+  re_info = model$ranef
+
+  if (dplyr::n_distinct(re_info$dpar) > 1 | dplyr::n_distinct(re_info$resp) > 1) {
+
+    random_effects <- random_effects %>%
+      tidyr::separate(
+        col    = group_var,
+        into   = c('group_var', 'component'),
+        sep    = '__',
+        fill   = 'right',
+        remove = FALSE
+      ) %>%
+      dplyr::mutate(component = dplyr::if_else(is.na(component), 'default', component))
+  }
+
+  if (add_group_N) {
+    grp_vars = unique(random_effects$group_var)
+
+    ns = count_grps(model, grp_vars)
+
+    # suppress warning of char vs. factor
+    random_effects = suppressWarnings({
+      dplyr::left_join(random_effects, ns, by = c("group_var", "group"))
+    })
+  }
+
+
   # add_ci may add prob as arg in future
   if (ci_level > 0) {
 
@@ -389,13 +436,19 @@ extract_random_effects.brmsfit <- function(
 
   if (!is.null(component)) {
     random_effects <- random_effects %>%
-      dplyr::filter(grepl(group_var, pattern = paste0('__', component, '$')))
+      dplyr::filter(grepl(component, pattern = !!component))
   }
 
   random_effects %>%
     dplyr::mutate_if(is.numeric, round, digits = digits) %>%
     dplyr::select(group_var, dplyr::everything()) %>%
     dplyr::as_tibble()
+
+  if (add_group_N) {
+    random_effects = random_effects %>% dplyr::select(-n, dplyr::everything())
+  }
+
+  random_effects
 }
 
 #' @rdname extract_random_effects
