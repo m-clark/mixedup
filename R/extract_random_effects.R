@@ -116,12 +116,12 @@ extract_random_effects.merMod <- function(
   colnames(random_effects) <- c('group_var', 'effect', 'group', 'value', 'se')
 
   if (add_group_N) {
-    grp_vars = unique(random_effects$group_var)
+    grp_vars <- unique(random_effects$group_var)
 
-    ns = count_grps(model, grp_vars)
+    ns <- count_grps(model, grp_vars)
 
     # suppress warning of char vs. factor
-    random_effects = suppressWarnings({
+    random_effects <- suppressWarnings({
       dplyr::left_join(random_effects, ns, by = c("group_var", "group"))
     })
   }
@@ -147,7 +147,7 @@ extract_random_effects.merMod <- function(
       dplyr::filter(group_var == re)
   }
 
-  random_effects = random_effects %>%
+  random_effects <- random_effects %>%
     dplyr::mutate(
       effect = gsub(effect,
                     pattern = '[\\(, \\)]',
@@ -157,7 +157,7 @@ extract_random_effects.merMod <- function(
     dplyr::as_tibble()
 
   if (add_group_N) {
-    random_effects = random_effects %>% dplyr::select(-n, dplyr::everything())
+    random_effects <- random_effects %>% dplyr::select(-n, dplyr::everything())
   }
 
   random_effects
@@ -199,12 +199,12 @@ extract_random_effects.glmmTMB <- function(
   colnames(random_effects) <- c('group_var', 'effect', 'group', 'value', 'se')
 
   if (add_group_N) {
-    grp_vars = unique(random_effects$group_var)
+    grp_vars <- unique(random_effects$group_var)
 
-    ns = count_grps(model, grp_vars)
+    ns <- count_grps(model, grp_vars)
 
     # suppress warning of char vs. factor
-    random_effects = suppressWarnings({
+    random_effects <- suppressWarnings({
       dplyr::left_join(random_effects, ns, by = c("group_var", "group"))
     })
   }
@@ -230,7 +230,7 @@ extract_random_effects.glmmTMB <- function(
       dplyr::filter(group_var == re)
   }
 
-  random_effects = random_effects %>%
+  random_effects <- random_effects %>%
     dplyr::mutate(
       effect = gsub(effect,
                     pattern = '[\\(, \\)]',
@@ -240,7 +240,7 @@ extract_random_effects.glmmTMB <- function(
     dplyr::as_tibble()
 
   if (add_group_N) {
-    random_effects = random_effects %>% dplyr::select(-n, dplyr::everything())
+    random_effects <- random_effects %>% dplyr::select(-n, dplyr::everything())
   }
 
   random_effects
@@ -310,7 +310,7 @@ extract_random_effects.lme <- function(
       dplyr::filter(group_var == re)
   }
 
-  random_effects =   random_effects %>%
+  random_effects <-   random_effects %>%
     dplyr::mutate_if(is.numeric, round, digits = digits) %>%
     dplyr::select(group_var, effect, group, value) %>%
     dplyr::mutate(
@@ -324,17 +324,17 @@ extract_random_effects.lme <- function(
     dplyr::as_tibble()
 
   if (add_group_N) {
-    grp_vars = unique(random_effects$group_var)
+    grp_vars <- unique(random_effects$group_var)
 
-    ns = count_grps(model, grp_vars)
+    ns <- count_grps(model, grp_vars)
 
     # suppress warning of char vs. factor
-    random_effects = suppressWarnings({
+    random_effects <- suppressWarnings({
       dplyr::left_join(random_effects, ns, by = c("group_var", "group"))
     })
 
 
-    random_effects = random_effects %>% dplyr::select(-n, dplyr::everything())
+    random_effects <- random_effects %>% dplyr::select(-n, dplyr::everything())
   }
 
   random_effects
@@ -388,7 +388,7 @@ extract_random_effects.brmsfit <- function(
     )
 
   # deal with multiple components
-  re_info = model$ranef
+  re_info <- model$ranef
 
   if (dplyr::n_distinct(re_info$dpar) > 1 | dplyr::n_distinct(re_info$resp) > 1) {
 
@@ -404,12 +404,12 @@ extract_random_effects.brmsfit <- function(
   }
 
   if (add_group_N) {
-    grp_vars = unique(random_effects$group_var)
+    grp_vars <- unique(random_effects$group_var)
 
-    ns = count_grps(model, grp_vars)
+    ns <- count_grps(model, grp_vars)
 
     # suppress warning of char vs. factor
-    random_effects = suppressWarnings({
+    random_effects <- suppressWarnings({
       dplyr::left_join(random_effects, ns, by = c("group_var", "group"))
     })
   }
@@ -445,7 +445,7 @@ extract_random_effects.brmsfit <- function(
     dplyr::as_tibble()
 
   if (add_group_N) {
-    random_effects = random_effects %>% dplyr::select(-n, dplyr::everything())
+    random_effects <- random_effects %>% dplyr::select(-n, dplyr::everything())
   }
 
   random_effects
@@ -458,6 +458,7 @@ extract_random_effects.stanreg <- function(
   re = NULL,
   ci_level = .95,
   digits = 3,
+  add_group_N = FALSE,
   ...
 ) {
 
@@ -484,6 +485,7 @@ extract_random_effects.gam <- function(
   # component,
   ci_level = .95,
   digits = 3,
+  add_group_N = FALSE,
   ...
 ) {
   # get the re variables and their levels
@@ -565,6 +567,17 @@ extract_random_effects.gam <- function(
       se = gam_se
     )
 
+  if (add_group_N) {
+    grp_vars <- unique(random_effects$group_var)
+
+    ns <- count_grps(model, grp_vars)
+
+    # suppress warning of char vs. factor
+    random_effects <- suppressWarnings({
+      dplyr::left_join(random_effects, ns, by = c("group_var", "group"))
+    })
+  }
+
   if (ci_level > 0) {
 
     lower = (1 - ci_level)/2
@@ -586,7 +599,13 @@ extract_random_effects.gam <- function(
       dplyr::filter(group_var == re)
   }
 
-  random_effects %>%
+  random_effects <- random_effects %>%
     dplyr::select(group_var, effect, dplyr::everything()) %>%
     dplyr::mutate_if(is.numeric, round, digits = digits)
+
+  if (add_group_N) {
+    random_effects <- random_effects %>% dplyr::select(-n, dplyr::everything())
+  }
+
+  random_effects
 }
