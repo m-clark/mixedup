@@ -245,6 +245,18 @@ test_that('extract_random_effects.stanreg errors with bad re name', {
   expect_error(extract_random_effects(stan_glmer_2, re = 'subject'))
 })
 
+test_that('extract_random_effects.stanreg add_group_N', {
+  expect_s3_class(extract_random_effects(stan_glmer_2, add_group_N = TRUE),
+                  'data.frame')
+})
+
+test_that('extract_random_effects.stanreg add_group_N', {
+  expect_s3_class(extract_random_effects(stan_glmer_3, add_group_N = TRUE),
+                  'data.frame')
+})
+
+
+
 # mgcv --------------------------------------------------------------------
 
 
@@ -310,4 +322,13 @@ test_that('extract_random_effects.gam correct output', {
     nrow(extract_random_effects(gam_2, re = 'Subject')),
     nlevels(sleepstudy$Subject)*2
   )
+})
+
+test_that('extract_random_effects.gam add_group_N', {
+  expect_s3_class(extract_random_effects(gam_3, add_group_N = TRUE), 'data.frame')
+})
+
+test_that('extract_random_effects.gam add_group_N', {
+  expect_s3_class(extract_random_effects(gam_glm, add_group_N = TRUE),
+                  'data.frame')
 })

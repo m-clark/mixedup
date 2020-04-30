@@ -58,9 +58,23 @@ extract_random_effects(
   ...
 )
 
-\method{extract_random_effects}{stanreg}(model, re = NULL, ci_level = 0.95, digits = 3, ...)
+\method{extract_random_effects}{stanreg}(
+  model,
+  re = NULL,
+  ci_level = 0.95,
+  digits = 3,
+  add_group_N = FALSE,
+  ...
+)
 
-\method{extract_random_effects}{gam}(model, re = NULL, ci_level = 0.95, digits = 3, ...)
+\method{extract_random_effects}{gam}(
+  model,
+  re = NULL,
+  ci_level = 0.95,
+  digits = 3,
+  add_group_N = FALSE,
+  ...
+)
 }
 \arguments{
 \item{model}{An appropriate model. See details.}

@@ -63,3 +63,8 @@ test_that('count_grps works brms mv', {
   expect_s3_class(count_grps(brm_mv, 'fosternest'), 'data.frame')
 })
 
+
+
+# mgcv --------------------------------------------------------------------
+
+

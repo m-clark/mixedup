@@ -7,6 +7,8 @@
 \alias{count_grps.glmmTMB}
 \alias{count_grps.lme}
 \alias{count_grps.brmsfit}
+\alias{count_grps.stanreg}
+\alias{count_grps.gam}
 \title{Count groups}
 \usage{
 count_grps(model, grp_vars)
@@ -20,6 +22,10 @@ count_grps(model, grp_vars)
 \method{count_grps}{lme}(model, grp_vars)
 
 \method{count_grps}{brmsfit}(model, grp_vars)
+
+\method{count_grps}{stanreg}(model, grp_vars)
+
+\method{count_grps}{gam}(model, grp_vars)
 }
 \arguments{
 \item{model}{A fitted model e.g. from \code{lme4}.}

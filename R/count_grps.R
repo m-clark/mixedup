@@ -25,10 +25,10 @@
 #' @export
 count_grps <- function(model, grp_vars) {
 
-  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit')))
-    # , 'gam', 'stanreg'
-    stop('This only works for model objects from lme4, glmmTMB, brms,
-           and nlme.') # , rstanarm mgcv,
+  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit',
+                         'gam', 'stanreg')))
+    stop('This only works for model objects from lme4, glmmTMB, brms, rstanarm,
+    mgcv, and nlme.') #
 
   UseMethod('count_grps')
 
@@ -97,6 +97,20 @@ count_grps.lme <- function(model, grp_vars) {
 #' @rdname count_grps
 #' @export
 count_grps.brmsfit <- function(model, grp_vars) {
+
+  count_grps.default(model, grp_vars)
+
+}
+
+
+#  stan_glmer objects are structured the same as merMod objects
+#' @rdname count_grps
+#' @export
+count_grps.stanreg <- count_grps.merMod
+
+#' @rdname count_grps
+#' @export
+count_grps.gam <- function(model, grp_vars) {
 
   count_grps.default(model, grp_vars)
 
