@@ -1,3 +1,7 @@
+# mixedup 0.3.6
+
+* Add group counts for extract_random_effects.
+
 # mixedup 0.3.5
 
 * Add converge_it for lme4 models.
