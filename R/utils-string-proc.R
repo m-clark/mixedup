@@ -18,6 +18,17 @@ remove_parens <- function(x) {
   x
 }
 
+# remove_brackets <- function(x) {
+#   if (inherits(x, c('data.frame', 'matrix'))) {
+#     colnames(x) <- gsub(colnames(x), pattern = '[\\[,\\]', replacement = '')
+#     rownames(x) <- colnames(x)
+#   } else {
+#     x = gsub(x, pattern = "\\[|\\]", replacement = '')
+#   }
+#
+#   x
+# }
+
 
 split_group_effect <- function(x, which = 1) {
   init = strsplit(x, split = ",")

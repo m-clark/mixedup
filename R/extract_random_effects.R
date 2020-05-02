@@ -402,7 +402,7 @@ extract_random_effects.brmsfit <- function(
         remove = FALSE
       ) %>%
       dplyr::mutate(component = dplyr::if_else(is.na(component), 'default', component)) %>%
-      dplyr::select(component, group_var, everything())
+      dplyr::select(component, group_var, dplyr::everything())
   }
 
   if (add_group_N) {
@@ -494,7 +494,7 @@ extract_random_effects.stanreg <- function(
         effect = remove_parens(effect)) %>%
       tidyr::separate(effect, into = c('component', 'effect', 'group_var', 'group')) %>%
       dplyr::select(-mcse, -n_eff,  -Rhat) %>%
-      dplyr::select(component, group_var, everything()) %>%
+      dplyr::select(component, group_var, dplyr::everything()) %>%
       dplyr::rename(se = sd)
 
 
