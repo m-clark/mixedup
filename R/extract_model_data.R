@@ -28,13 +28,21 @@ extract_model_data <- function(model) {
                 c('merMod', 'glmmTMB', 'lme', 'gam', 'stanreg', 'brmsfit')))
     stop('This is not a supported model class.')
 
+
+  # eventually break out into methods, but right now, these are just one-liners
   if (inherits(model, 'nlme')) {
     # seriously wtf?
     stop("nlme doesn't save the data for models of class nlme. Sorry.")
   }
+
   else if (inherits(model, 'lme')) {
     data <- dplyr::as_tibble(model$data)
   }
+
+  else if (inherits(model, 'stanmvreg')) {
+    data <- purrr::map(stats::model.frame(model), dplyr::as_tibble)
+  }
+
   else {
     data <- dplyr::as_tibble(stats::model.frame(model))
   }

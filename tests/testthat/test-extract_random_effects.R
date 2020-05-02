@@ -255,7 +255,37 @@ test_that('extract_random_effects.stanreg add_group_N', {
                   'data.frame')
 })
 
+test_that('extract_random_effects.stanreg returns output with multivariate', {
+  expect_s3_class(extract_random_effects(stan_glmer_mv), 'data.frame')
+})
 
+test_that('extract_random_effects.stanreg returns output with multivariate', {
+  expect_s3_class(extract_random_effects(stan_glmer_mv, re = 'id'), 'data.frame')
+})
+
+test_that('extract_random_effects.stanreg returns output with multivariate
+          and specific component', {
+  re0 = extract_random_effects(stan_glmer_mv)
+  re1 = extract_random_effects(stan_glmer_mv, component =  'y2')
+  expect_lt(nrow(re1), nrow(re0))
+})
+
+
+test_that('extract_random_effects.stanreg returns output with multivariate
+          and group N', {
+  init = extract_random_effects(stan_glmer_mv,  add_group_N = T)
+  expect_true('n' %in% colnames(init))
+})
+
+
+
+# test_that('extract_random_effects.stanreg warns with jm', {
+#   expect_warning(extract_random_effects(stan_glmer_jm, re = 'subject'))
+# })
+#
+# test_that('extract_random_effects.stanreg returns output with jm and add group', {
+#   expect_s3_class(extract_random_effects(stan_glmer_jm, re = 'subject', add_group_N = T), 'data.frame')
+# })
 
 # mgcv --------------------------------------------------------------------
 

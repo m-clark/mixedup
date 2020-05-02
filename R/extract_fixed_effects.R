@@ -144,14 +144,6 @@ extract_fixed_effects.merMod <-
       fe <- data.frame(fe, ci)
     }
 
-    fe <- fe %>%
-      dplyr::mutate_all(round, digits = digits) %>%
-      dplyr::mutate(term = gsub(rownames(fe),
-                                pattern = '[\\(,\\)]',
-                                replacement = '')) %>%
-      dplyr::select(term, dplyr::everything()) %>%
-      dplyr::as_tibble()
-
     if (exponentiate) {
       fe <- fe %>%
         dplyr::mutate_at(
@@ -160,6 +152,15 @@ extract_fixed_effects.merMod <-
         ) %>%
         dplyr::mutate(se = se * value)
     }
+
+    # cleanup names, round, etc.
+    fe <- fe %>%
+      dplyr::mutate_all(round, digits = digits) %>%
+      dplyr::mutate(term = gsub(rownames(fe),
+                                pattern = '[\\(,\\)]',
+                                replacement = '')) %>%
+      dplyr::select(term, dplyr::everything()) %>%
+      dplyr::as_tibble()
 
     fe
 }
@@ -233,14 +234,6 @@ extract_fixed_effects.glmmTMB <-
 
     }
 
-    fe <- fe %>%
-      dplyr::mutate_all(round, digits = digits) %>%
-      dplyr::mutate(term = gsub(rownames(fe),
-                                pattern = '[\\(,\\)]',
-                                replacement = '')) %>%
-      dplyr::select(term, dplyr::everything()) %>%
-      dplyr::as_tibble()
-
     if (exponentiate) {
       fe <- fe %>%
         dplyr::mutate_at(
@@ -249,6 +242,15 @@ extract_fixed_effects.glmmTMB <-
         ) %>%
         dplyr::mutate(se = se * value)
     }
+
+    # cleanup names, round, etc.
+    fe <- fe %>%
+      dplyr::mutate_all(round, digits = digits) %>%
+      dplyr::mutate(term = gsub(rownames(fe),
+                                pattern = '[\\(,\\)]',
+                                replacement = '')) %>%
+      dplyr::select(term, dplyr::everything()) %>%
+      dplyr::as_tibble()
 
     fe
 }
@@ -290,14 +292,6 @@ extract_fixed_effects.lme <-
       fe <- data.frame(fe, ci)
     }
 
-    fe <- fe %>%
-      dplyr::mutate_all(round, digits = digits) %>%
-      dplyr::mutate(term = gsub(rownames(fe),
-                                pattern = '[\\(,\\)]',
-                                replacement = '')) %>%
-      dplyr::select(term, dplyr::everything()) %>%
-      dplyr::as_tibble()
-
     if (exponentiate) {
       fe <- fe %>%
         dplyr::mutate_at(
@@ -306,6 +300,15 @@ extract_fixed_effects.lme <-
         ) %>%
         dplyr::mutate(se = se * value)
     }
+
+    # cleanup names, round, etc.
+    fe <- fe %>%
+      dplyr::mutate_all(round, digits = digits) %>%
+      dplyr::mutate(term = gsub(rownames(fe),
+                                pattern = '[\\(,\\)]',
+                                replacement = '')) %>%
+      dplyr::select(term, dplyr::everything()) %>%
+      dplyr::as_tibble()
 
     fe
 }
@@ -335,18 +338,11 @@ extract_fixed_effects.brmsfit <-
     fe <- data.frame(brms::fixef(model, probs = probs))
 
     colnames(fe)[3:4] = paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
-
     fe <- fe %>%
       dplyr::rename(
         value = Estimate,
         se = Est.Error
-      ) %>%
-      dplyr::mutate_all(round, digits = digits) %>%
-      dplyr::mutate(term = gsub(rownames(fe),
-                                pattern = '[\\(,\\)]',
-                                replacement = '')) %>%
-      dplyr::select(term, dplyr::everything()) %>%
-      dplyr::as_tibble()
+      )
 
     if (exponentiate) {
       fe <- fe %>%
@@ -356,6 +352,16 @@ extract_fixed_effects.brmsfit <-
         ) %>%
         dplyr::mutate(se = se * value)
     }
+
+    # cleanup names, round, etc.
+    fe <- fe %>%
+      dplyr::mutate_all(round, digits = digits) %>%
+      dplyr::mutate(term = gsub(rownames(fe),
+                                pattern = '[\\(,\\)]',
+                                replacement = '')) %>%
+      dplyr::select(term, dplyr::everything()) %>%
+      dplyr::as_tibble()
+
 
     if (!is.null(component)) {
       fe <- fe %>%
@@ -398,18 +404,11 @@ extract_fixed_effects.stanreg <-
       dplyr::select(-mcse, -n_eff, -Rhat)
 
     colnames(fe)[3:4] = paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
-
     fe <- fe %>%
       dplyr::rename(
         value = mean,
         se = sd
-      ) %>%
-      dplyr::mutate_all(round, digits = digits) %>%
-      dplyr::mutate(term = gsub(rownames(fe),
-                                pattern = '[\\(,\\)]',
-                                replacement = '')) %>%
-      dplyr::select(term, dplyr::everything()) %>%
-      dplyr::as_tibble()
+      )
 
     if (exponentiate) {
       fe <- fe %>%
@@ -419,6 +418,16 @@ extract_fixed_effects.stanreg <-
         ) %>%
         dplyr::mutate(se = se * value)
     }
+
+    fe <- fe %>%
+      dplyr::mutate_all(round, digits = digits) %>%
+      dplyr::mutate(term = gsub(rownames(fe),
+                                pattern = '[\\(,\\)]',
+                                replacement = '')) %>%
+      dplyr::select(term, dplyr::everything()) %>%
+      dplyr::as_tibble()
+
+
 
     if (!is.null(component)) {
       warning('component not yet implemented for stanreg objects. Ignoring.')
@@ -463,13 +472,10 @@ extract_fixed_effects.gam <-
       fe <- data.frame(fe, ci)
     }
 
+    # still problems wtih term names thanks to autodrop of rownames never asked for
     fe <- fe %>%
-      dplyr::mutate_all(round, digits = digits) %>%
-      dplyr::mutate(term = gsub(rownames(fe),
-                                pattern = '[\\(,\\)]',
-                                replacement = '')) %>%
-      dplyr::select(term, dplyr::everything()) %>%
-      dplyr::as_tibble()
+      dplyr::mutate(term = remove_parens(rownames(.))) %>%
+      dplyr::mutate_if(is.numeric, round, digits = digits)
 
     if (exponentiate) {
       fe <- fe %>%
@@ -479,6 +485,10 @@ extract_fixed_effects.gam <-
         ) %>%
         dplyr::mutate(se = se * value)
     }
+
+    fe <- fe %>%
+      dplyr::select(term, dplyr::everything()) %>%
+      dplyr::as_tibble()
 
     fe
   }

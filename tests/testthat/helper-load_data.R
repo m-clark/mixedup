@@ -549,6 +549,23 @@ load('rstanarm_results.RData')
 #     thin = 40
 #   )
 #
+# not a good sign, this first example from helpfile has problems converging
+# stan_glmer_jm <- stan_jm(
+#   formulaLong = list(logBili ~ year + (1 | id),
+#                      albumin ~ sex + year + (year | id)),
+#   dataLong = pbcLong,
+#   formulaEvent = Surv(futimeYears, death) ~ sex + trt,
+#   dataEvent = pbcSurv,
+#   assoc = list(c("etavalue", "etaslope"), "etaauc"),
+#   time_var = "year",
+#   chains = 2,
+#   iter = 1000,
+#   thin = 20,
+#   seed = 12345
+# )
+#
+
+#
 #
 # save(
 #   stan_glmer_glm,
@@ -559,6 +576,7 @@ load('rstanarm_results.RData')
 #   stan_glmer_4,
 #   stan_glmer_5,
 #   stan_glmer_mv,
+#   stan_glmer_jm,
 #   file = 'tests/testthat/rstanarm_results.RData'
 # )
 

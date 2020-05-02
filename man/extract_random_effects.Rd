@@ -64,6 +64,7 @@ extract_random_effects(
   ci_level = 0.95,
   digits = 3,
   add_group_N = FALSE,
+  component = NULL,
   ...
 )
 

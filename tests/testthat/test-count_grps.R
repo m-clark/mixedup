@@ -49,7 +49,15 @@ test_that('count_grps works tmb zip', {
 
 
 
+# rstanarm ----------------------------------------------------------------
 
+test_that('count_grps works stanreg mv', {
+  expect_s3_class(count_grps(stan_glmer_mv, 'id'), 'data.frame')
+})
+
+test_that('count_grps works stanreg mv', {
+  expect_s3_class(count_grps(stan_glmer_jm, 'id'), 'data.frame')
+})
 
 
 

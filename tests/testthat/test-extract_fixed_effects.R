@@ -53,10 +53,15 @@ test_that('extract_fixed_effects.merMod handles glmer', {
 })
 
 test_that('extract_fixed_effects.merMod exponentiates', {
-  exp_res = extract_fixed_effects(glmer_1, ci_level = .95, exponentiate = TRUE)
-  noexp_res = extract_fixed_effects(glmer_1, ci_level = .95)
+  exp_res = extract_fixed_effects(
+    glmer_1,
+    ci_level = .95,
+    digits = 5,
+    exponentiate = TRUE
+  )
+  noexp_res = extract_fixed_effects(glmer_1, ci_level = .95, digits = 5)
 
-  expect_equal(exp_res$value[1],  exp(noexp_res$value[1]) )
+  expect_equal(exp_res$value[1],  exp(noexp_res$value[1]), tolerance = 1e-4)
 })
 
 
@@ -122,10 +127,15 @@ test_that('extract_fixed_effects.glmmTMB handles other cond', {
 
 
 test_that('extract_fixed_effects.glmmTMB exponentiates', {
-  exp_res = extract_fixed_effects(tmb_zip, ci_level = .95, exponentiate = TRUE)
-  noexp_res = extract_fixed_effects(tmb_zip, ci_level = .95)
+  exp_res = extract_fixed_effects(
+    tmb_zip,
+    digits = 5,
+    ci_level = .95,
+    exponentiate = TRUE
+  )
+  noexp_res = extract_fixed_effects(tmb_zip, digits = 5, ci_level = .95)
 
-  expect_equal(exp_res$value[1],  exp(noexp_res$value[1]) )
+  expect_equal(exp_res$value[1],  exp(noexp_res$value[1]), tolerance = 1e-4)
 })
 
 
@@ -168,10 +178,10 @@ test_that('extract_fixed_effects.merMod handles digits', {
 
 
 test_that('extract_fixed_effects.lme exponentiates', {
-  exp_res = extract_fixed_effects(nlme_1, ci_level = .95, exponentiate = TRUE)
-  noexp_res = extract_fixed_effects(nlme_1, ci_level = .95)
+  exp_res = extract_fixed_effects(nlme_1, digits = 5, ci_level = .95, exponentiate = TRUE)
+  noexp_res = extract_fixed_effects(nlme_1, digits = 5, ci_level = .95)
 
-  expect_equal(exp_res$value[2],  exp(noexp_res$value[2]) )
+  expect_equal(exp_res$value[2],  exp(noexp_res$value[2]), tolerance = 1e-4)
 })
 
 # Test brms ---------------------------------------------------------------
@@ -205,10 +215,15 @@ test_that('extract_fixed_effects.brmsfit will always provide ci', {
 
 
 test_that('extract_fixed_effects.brmsfit exponentiates', {
-  exp_res = extract_fixed_effects(brm_glm, ci_level = .95, exponentiate = TRUE)
-  noexp_res = extract_fixed_effects(brm_glm, ci_level = .95)
+  exp_res = extract_fixed_effects(
+    brm_glm,
+    digits = 5,
+    ci_level = .95,
+    exponentiate = TRUE
+  )
+  noexp_res = extract_fixed_effects(brm_glm, digits = 5, ci_level = .95)
 
-  expect_equal(exp_res$value[1],  exp(noexp_res$value[1]) )
+  expect_equal(exp_res$value[1],  exp(noexp_res$value[1]), tolerance = 1e-4)
 })
 
 
@@ -259,10 +274,10 @@ test_that('extract_fixed_effects.stanreg will always provide ci', {
 
 
 test_that('extract_fixed_effects.stanreg exponentiates', {
-  exp_res = extract_fixed_effects(stan_glmer_glm, ci_level = .95, exponentiate = TRUE)
-  noexp_res = extract_fixed_effects(stan_glmer_glm, ci_level = .95)
+  exp_res = extract_fixed_effects(stan_glmer_glm, digits = 5, ci_level = .95, exponentiate = TRUE)
+  noexp_res = extract_fixed_effects(stan_glmer_glm, digits = 5, ci_level = .95)
 
-  expect_equal(exp_res$value[1],  exp(noexp_res$value[1]) )
+  expect_equal(exp_res$value[1],  exp(noexp_res$value[1]), tolerance = 1e-4)
 })
 
 # Not yet implemented. Check error if attempted, and warning about component,
@@ -325,9 +340,14 @@ test_that('extract_fixed_effects.gam handles digits', {
 })
 
 test_that('extract_fixed_effects.brmsfit exponentiates', {
-  exp_res = extract_fixed_effects(gam_glm, ci_level = .95, exponentiate = TRUE)
-  noexp_res = extract_fixed_effects(gam_glm, ci_level = .95)
+  exp_res = extract_fixed_effects(
+    gam_glm,
+    digits = 5,
+    ci_level = .95,
+    exponentiate = TRUE
+  )
+  noexp_res = extract_fixed_effects(gam_glm, digits = 5, ci_level = .95)
 
-  expect_equal(exp_res$value[1],  exp(noexp_res$value[1]) )
+  expect_equal(exp_res$value[1],  exp(noexp_res$value[1]), tolerance = 1e-4)
 })
 

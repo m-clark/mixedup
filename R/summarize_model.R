@@ -9,6 +9,10 @@
 #'   Default is FALSE.
 #' @param cor_fe Whether to include the correlations of the fixed effects.
 #'   Default is FALSE.
+#' @param exponentiate Exponentiate the fixed-effect coefficient estimates and
+#'   confidence intervals (common for logistic regression). If `TRUE`, also scales
+#'   the standard errors by the exponentiated coefficient, transforming them to
+#'   the new scale.
 #' @param digits Digits to display.
 #' @param component For glmmTMB objects, which of the three components 'cond',
 #'   'zi' or 'other' to select. Default is cond. Minimal testing on other
@@ -17,6 +21,9 @@
 #'
 #' @details This basically does pretty printing of the results of [extract_vc()]
 #'   and [extract_fixed_effects()].
+#'
+#' @note Not tested yet for complicated `stanreg` objects like multivariate or
+#'   joint models.
 #'
 #' @return Prints the variance components, fixed effects, etc. Invisibly, a list
 #'   of those.
@@ -38,6 +45,7 @@ summarize_model <- function(
   ci = TRUE,
   cor_re = FALSE,
   cor_fe = FALSE,
+  exponentiate = FALSE,
   digits = 2,
   component = NULL,
   ...
@@ -71,7 +79,13 @@ summarize_model <- function(
     ) %>%
     dplyr::rename_at(dplyr::vars(dplyr::matches('^sd')), toupper)
 
-  fe <- extract_fixed_effects(model, digits = digits, component = component) %>%
+  fe <-
+    extract_fixed_effects(
+      model,
+      digits = digits,
+      component = component,
+      exponentiate = exponentiate
+    ) %>%
     dplyr::rename_at(
       dplyr::vars(dplyr::matches('term|value|^z$|p_value|^low|^up')),
       totitle

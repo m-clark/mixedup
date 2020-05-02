@@ -8,6 +8,7 @@
 \alias{count_grps.lme}
 \alias{count_grps.brmsfit}
 \alias{count_grps.stanreg}
+\alias{count_grps.stanmvreg}
 \alias{count_grps.gam}
 \title{Count groups}
 \usage{
@@ -24,6 +25,8 @@ count_grps(model, grp_vars)
 \method{count_grps}{brmsfit}(model, grp_vars)
 
 \method{count_grps}{stanreg}(model, grp_vars)
+
+\method{count_grps}{stanmvreg}(model, grp_vars)
 
 \method{count_grps}{gam}(model, grp_vars)
 }
