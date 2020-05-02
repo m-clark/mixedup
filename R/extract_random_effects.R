@@ -385,7 +385,8 @@ extract_random_effects.brmsfit <- function(
       effect = gsub(".*,|\\]", "", effect),
       value = base::colMeans(re0),
       se = purrr::map_dbl(re0, stats::sd)
-    )
+    ) %>%
+    dplyr::select(group_var, dplyr::everything())
 
   # deal with multiple components
   re_info <- model$ranef
@@ -400,7 +401,8 @@ extract_random_effects.brmsfit <- function(
         fill   = 'right',
         remove = FALSE
       ) %>%
-      dplyr::mutate(component = dplyr::if_else(is.na(component), 'default', component))
+      dplyr::mutate(component = dplyr::if_else(is.na(component), 'default', component)) %>%
+      dplyr::select(component, group_var, everything())
   }
 
   if (add_group_N) {
@@ -439,13 +441,13 @@ extract_random_effects.brmsfit <- function(
       dplyr::filter(grepl(component, pattern = !!component))
   }
 
-  random_effects %>%
+  random_effects <- random_effects %>%
     dplyr::mutate_if(is.numeric, round, digits = digits) %>%
-    dplyr::select(group_var, dplyr::everything()) %>%
     dplyr::as_tibble()
 
   if (add_group_N) {
-    random_effects <- random_effects %>% dplyr::select(-n, dplyr::everything())
+    random_effects <- random_effects %>%
+      dplyr::select(-n, dplyr::everything())
   }
 
   random_effects
@@ -459,20 +461,78 @@ extract_random_effects.stanreg <- function(
   ci_level = .95,
   digits = 3,
   add_group_N = FALSE,
+  component = NULL,
   ...
 ) {
 
   if (!is_package_installed('rstanarm'))
     stop('rstanarm package required', call. = FALSE)
 
-  # Structure is the same as lme4
-  extract_random_effects.merMod(
-    model,
-    re = re,
-    ci_level = ci_level,
-    digits = digits,
-    ...
-  )
+  # Structure is the same as lme4 if just a standard stanreg object
+  if (!inherits(model, c('stanmvreg',' stanjm'))) {
+    random_effects <- extract_random_effects.merMod(
+      model,
+      re = re,
+      ci_level = ci_level,
+      add_group_N = add_group_N,
+      digits = digits,
+      ...
+    )
+  }
+  else if (inherits(model, 'stanmvreg')) {
+    lower <- (1 - ci_level)/2
+    upper <- 1 - lower
+
+    random_effects <- dplyr::as_tibble(
+      summary(model, pars = 'varying', probs = c(lower, upper)),
+      rownames = 'effect'
+    )
+
+    random_effects <- random_effects %>%
+      dplyr::mutate(
+        effect =  gsub(effect, pattern = "b\\[|\\]", replacement = ''),
+        effect = remove_parens(effect)) %>%
+      tidyr::separate(effect, into = c('component', 'effect', 'group_var', 'group')) %>%
+      dplyr::select(-mcse, -n_eff,  -Rhat) %>%
+      dplyr::select(component, group_var, everything()) %>%
+      dplyr::rename(se = sd)
+
+
+    colnames(random_effects)[grepl(colnames(random_effects), pattern = '%')] <-
+      paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
+
+    if (add_group_N) {
+      grp_vars <- unique(random_effects$group_var)
+
+      ns <- count_grps(model, grp_vars)
+
+      ns <- ns %>%
+        dplyr::mutate(group = as.character(group))
+
+      # suppress warning of char vs. factor
+      random_effects <- suppressWarnings({
+        dplyr::left_join(random_effects, ns, by = c('component', "group_var", "group"))
+      })
+    }
+
+    if (!is.null(re)) {
+      random_effects <- random_effects %>%
+        dplyr::filter(group_var == re)
+    }
+
+    if (!is.null(component)) {
+      random_effects <- random_effects %>%
+        dplyr::filter(group_var == component)
+    }
+
+
+  }
+  # else {
+  #   warning('This model only has minimal support')
+  #   as.data.frame(rstanarm::ranef(model))
+  # }
+  random_effects
+
 }
 
 
@@ -580,8 +640,8 @@ extract_random_effects.gam <- function(
 
   if (ci_level > 0) {
 
-    lower = (1 - ci_level)/2
-    upper = 1 - lower
+    lower <- (1 - ci_level)/2
+    upper <- 1 - lower
     mult <- stats::qnorm(upper)
 
     random_effects <- random_effects %>%

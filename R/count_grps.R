@@ -103,10 +103,38 @@ count_grps.brmsfit <- function(model, grp_vars) {
 }
 
 
-#  stan_glmer objects are structured the same as merMod objects
+#  standard stan_glmer objects are structured the same as merMod objects
 #' @rdname count_grps
 #' @export
 count_grps.stanreg <- count_grps.merMod
+
+#' @rdname count_grps
+#' @export
+count_grps.stanmvreg <-  function(model, grp_vars) {
+  # the model data is actually a list of separate dataframes, one for each
+  # target variable
+  gv <- purrr::map(grp_vars, dplyr::sym)
+
+  # if (inherits(model, 'stanjm'))
+  #   model_data <- model$dataLong
+
+  purrr::pmap_df(
+    list(
+    extract_model_data(model),
+    gv,
+    grp_vars
+    ),
+    function(data, grp, name)
+      data %>%
+      dplyr::count(!!grp) %>%
+      dplyr::mutate(group_var = name) %>%
+      dplyr::rename(group = !!grp) %>%
+      dplyr::mutate_if(is.factor, as.character) %>%
+      dplyr::select(group_var, group, n),
+    .id = 'component'
+  )
+
+}
 
 #' @rdname count_grps
 #' @export
