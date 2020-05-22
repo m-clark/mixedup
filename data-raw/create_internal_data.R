@@ -1,7 +1,8 @@
-library(brms)
+
+# for quicker loading vignettes
 
 brms_model <-
-  brm(Reaction ~ Days + (1 + Days | Subject),
+  brms::brm(Reaction ~ Days + (1 + Days | Subject),
       data = lme4::sleepstudy,
       cores = 4,
       refresh = -1,
@@ -9,12 +10,9 @@ brms_model <-
       thin = 40
   )
 
-# for quicker loading vignettes
-
-library(rstanarm)
 
 rstanarm_model <-
-  stan_glmer(Reaction ~ Days + (1 + Days | Subject),
+  rstanarm::stan_glmer(Reaction ~ Days + (1 + Days | Subject),
              data = lme4::sleepstudy,
              cores = 4,
              refresh = -1,

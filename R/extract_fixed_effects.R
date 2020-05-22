@@ -83,13 +83,16 @@ extract_fixed_effects.merMod <-
     }
 
 
-    fe <- data.frame(stats::coef(summary(model)))
+    # do term now otherwise you can lose rownames if ci_level = 0
+    fe <- data.frame(stats::coef(summary(model))) %>%
+      dplyr::mutate(term = rownames(.)) %>%
+      dplyr::select(term, dplyr::everything())
 
     if (inherits(model, 'glmerMod')) {
-      colnames(fe) <- c('value', 'se', 'z', 'p_value')
+      colnames(fe) <- c('term', 'value', 'se', 'z', 'p_value')
     }
     else {
-      colnames(fe) <- c('value', 'se', 't')
+      colnames(fe) <- c('term', 'value', 'se', 't')
 
       # Note, Satterthwaite required calling lmerTest::as_lmerModTest which has
       # historical issues being used inside other functions that are still
@@ -155,8 +158,8 @@ extract_fixed_effects.merMod <-
 
     # cleanup names, round, etc.
     fe <- fe %>%
-      dplyr::mutate_all(round, digits = digits) %>%
-      dplyr::mutate(term = gsub(rownames(fe),
+      dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+      dplyr::mutate(term = gsub(term,
                                 pattern = '[\\(,\\)]',
                                 replacement = '')) %>%
       dplyr::select(term, dplyr::everything()) %>%
