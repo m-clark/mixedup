@@ -13,12 +13,15 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+![R-CMD-check](https://github.com/m-clark/mixedup/workflows/R-CMD-check/badge.svg)
 [![Travis build
 status](https://travis-ci.org/m-clark/mixedup.svg?branch=master)](https://travis-ci.org/m-clark/mixedup)
 [![AppVeyor build
 status](https://ci.appveyor.com/api/projects/status/github/m-clark/mixedup?branch=master&svg=true)](https://ci.appveyor.com/project/m-clark/mixedup)
 [![Codecov test
 coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](https://codecov.io/gh/m-clark/mixedup?branch=master)
+[![R build
+status](https://github.com/m-clark/mixedup/workflows/R-CMD-check/badge.svg)](https://github.com/m-clark/mixedup/actions)
 <!-- badges: end -->
 
 This package provides extended functionality for mixed models. The goal
