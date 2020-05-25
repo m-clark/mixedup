@@ -46,6 +46,14 @@ You can install mixedup from GitHub with `devtools`:
 devtools::install_github('m-clark/mixedup')
 ```
 
+If you have an issue with the installation (something about `rstanarm` and `brms_model`), you can ignore it with the following, as it only regards some internal data used for the vignettes, which is completely unnecessary for the package.
+
+```r
+withr::with_envvar(c(R_REMOTES_NO_ERRORS_FROM_WARNINGS="true"), 
+  devtools::install_github('m-clark/mixedup')
+)
+```
+
 ## Supported models
 
 - lme4

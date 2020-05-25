@@ -44,6 +44,17 @@ You can install mixedup from GitHub with `devtools`:
 devtools::install_github('m-clark/mixedup')
 ```
 
+If you have an issue with the installation (something about `rstanarm`
+and `brms_model`), you can ignore it with the following, as it only
+regards some internal data used for the vignettes, which is completely
+unnecessary for the package.
+
+``` r
+withr::with_envvar(c(R_REMOTES_NO_ERRORS_FROM_WARNINGS="true"), 
+  devtools::install_github('m-clark/mixedup')
+)
+```
+
 ## Supported models
 
   - lme4
@@ -76,10 +87,6 @@ packages listed.
 
 In the following I suppress the package startup and other information
 that isn’t necessary for demo.
-
-    Registered S3 method overwritten by 'xts':
-      method     from
-      as.zoo.xts zoo 
 
 ``` r
 library(lme4)
@@ -183,16 +190,16 @@ extract_random_coefs(lmer_model)
 
 extract_vc(brm_model, ci_level = .8)
      group    effect variance     sd  sd_10  sd_90 var_prop
-1  Subject Intercept  733.227 27.078 18.347 36.560    0.510
-2  Subject      Days   41.659  6.454  4.850  8.346    0.029
-3 Residual            663.843 25.765 24.247 27.497    0.461
+1  Subject Intercept  680.180 26.080 18.482 34.451    0.488
+2  Subject      Days   44.483  6.670  4.867  8.544    0.032
+3 Residual            669.604 25.877 24.171 27.862    0.480
 
 summarize_model(lmer_model, cor_re = TRUE, digits = 1)
 Computing profile confidence intervals ...
 
 Variance Components:
     Group    Effect Variance   SD SD_2.5 SD_97.5 Var_prop
-  Subject Intercept    611.9 24.7   14.4    37.7      0.5
+  Subject Intercept    612.1 24.7   14.4    37.7      0.5
   Subject      Days     35.1  5.9    3.8     8.8      0.0
  Residual              654.9 25.6   22.9    28.9      0.5
 
@@ -201,11 +208,10 @@ Correlation of Random Effects:
 Intercept       1.0  0.1
 Days            0.1  1.0
 
-
 Fixed Effects:
-      Term Value  SE    t Lower_2.5 Upper_97.5
- Intercept 251.4 6.8 36.8     238.0      264.8
-      Days  10.5 1.5  6.8       7.4       13.5
+      Term Value  SE    t P_value Lower_2.5 Upper_97.5
+ Intercept 251.4 6.8 36.8     0.0     238.0      264.8
+      Days  10.5 1.5  6.8     0.0       7.4       13.5
 
 find_typical(gam_model, probs = c(.25, .50, .75))
 # A tibble: 6 x 8
@@ -235,16 +241,16 @@ Computing profile confidence intervals ...
    model    group    effect variance     sd sd_2.5 sd_97.5 var_prop
 1    tmb  Subject Intercept  565.515 23.781 15.017  37.658    0.451
 2    tmb  Subject      Days   32.682  5.717  3.805   8.588    0.026
-3    tmb Residual            654.941 25.592 22.800  28.725    0.523
-4   lmer  Subject Intercept  611.898 24.737 14.382  37.716    0.470
-5   lmer  Subject      Days   35.081  5.923  3.801   8.753    0.027
-6   lmer Residual            654.941 25.592 22.898  28.858    0.503
-7    brm  Subject Intercept  733.227 27.078 14.566  41.591    0.510
-8    brm  Subject      Days   41.659  6.454  4.203   9.034    0.029
-9    brm Residual            663.843 25.765 23.063  28.359    0.461
-10  stan  Subject Intercept  575.869 23.997 13.244  35.705    0.441
-11  stan  Subject      Days   51.168  7.153  4.537  10.431    0.039
-12  stan Residual            678.970 26.057  4.802   5.379    0.520
+3    tmb Residual            654.942 25.592     NA      NA    0.523
+4   lmer  Subject Intercept  612.100 24.741 14.381  37.716    0.470
+5   lmer  Subject      Days   35.072  5.922  3.801   8.753    0.027
+6   lmer Residual            654.940 25.592 22.898  28.858    0.503
+7    brm  Subject Intercept  680.180 26.080 16.324  37.155    0.488
+8    brm  Subject      Days   44.483  6.670  4.424  10.270    0.032
+9    brm Residual            669.604 25.877 23.519  28.958    0.480
+10  stan  Subject Intercept  596.717 24.428 12.255  35.737    0.448
+11  stan  Subject      Days   45.829  6.770  4.374   9.755    0.034
+12  stan Residual            688.537 26.240  4.790   5.382    0.517
 13   gam  Subject Intercept  627.571 25.051 16.085  39.015    0.477
 14   gam  Subject      Days   35.858  5.988  4.025   8.908    0.027
 15   gam Residual            653.582 25.565 22.792  28.676    0.496
