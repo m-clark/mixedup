@@ -13,7 +13,6 @@
 
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-![R-CMD-check](https://github.com/m-clark/mixedup/workflows/R-CMD-check/badge.svg)
 [![Travis build
 status](https://travis-ci.org/m-clark/mixedup.svg?branch=master)](https://travis-ci.org/m-clark/mixedup)
 [![AppVeyor build
@@ -53,7 +52,7 @@ regards some internal data used for the vignettes, which is completely
 unnecessary for the package.
 
 ``` r
-withr::with_envvar(c(R_REMOTES_NO_ERRORS_FROM_WARNINGS="true"), 
+withr::with_envvar(c(R_REMOTES_NO_ERRORS_FROM_WARNINGS = "true"), 
   devtools::install_github('m-clark/mixedup')
 )
 ```
