@@ -162,7 +162,6 @@ extract_fixed_effects.merMod <-
       dplyr::mutate(term = gsub(term,
                                 pattern = '[\\(,\\)]',
                                 replacement = '')) %>%
-      dplyr::select(term, dplyr::everything()) %>%
       dplyr::as_tibble()
 
     fe
@@ -188,9 +187,12 @@ extract_fixed_effects.glmmTMB <-
     # if don't use summary.glmmTMB, will fail if glmmTMB not loaded, but it's
     # not exported, requiring ::: which isn't good.  will work around at some
     # point.
-    fe <- data.frame(stats::coef(summary(model))[[component]])
+    # do term now otherwise you can lose rownames if ci_level = 0
+    fe <- data.frame(stats::coef(summary(model))[[component]]) %>%
+      dplyr::mutate(term = rownames(.)) %>%
+      dplyr::select(term, dplyr::everything())
 
-    colnames(fe) <- c('value', 'se', 'z', 'p_value')
+    colnames(fe) <- c('term', 'value', 'se', 'z', 'p_value')
 
     if (ci_level > 0) {
 
@@ -248,11 +250,10 @@ extract_fixed_effects.glmmTMB <-
 
     # cleanup names, round, etc.
     fe <- fe %>%
-      dplyr::mutate_all(round, digits = digits) %>%
-      dplyr::mutate(term = gsub(rownames(fe),
+      dplyr::mutate_if(is.numeric,round, digits = digits) %>%
+      dplyr::mutate(term = gsub(term,
                                 pattern = '[\\(,\\)]',
                                 replacement = '')) %>%
-      dplyr::select(term, dplyr::everything()) %>%
       dplyr::as_tibble()
 
     fe
@@ -271,11 +272,14 @@ extract_fixed_effects.lme <-
   ) {
 
     fe <- as.data.frame(stats::coef(summary(model)))
-    dfs <- fe$DF
-    fe <- fe %>%
-      dplyr::select(-DF)
 
-    colnames(fe) =  c('value', 'se', 't', 'p_value')
+    dfs <- fe$DF
+
+    fe <- fe %>%
+      dplyr::mutate(term = rownames(.)) %>%
+      dplyr::select(term, dplyr::everything(), -DF)
+
+    colnames(fe) <- c('term', 'value', 'se', 'z', 'p_value')
 
     if (ci_level > 0) {
 
@@ -306,11 +310,10 @@ extract_fixed_effects.lme <-
 
     # cleanup names, round, etc.
     fe <- fe %>%
-      dplyr::mutate_all(round, digits = digits) %>%
-      dplyr::mutate(term = gsub(rownames(fe),
+      dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+      dplyr::mutate(term = gsub(term,
                                 pattern = '[\\(,\\)]',
                                 replacement = '')) %>%
-      dplyr::select(term, dplyr::everything()) %>%
       dplyr::as_tibble()
 
     fe
@@ -341,7 +344,9 @@ extract_fixed_effects.brmsfit <-
     fe <- data.frame(brms::fixef(model, probs = probs))
 
     colnames(fe)[3:4] = paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
+
     fe <- fe %>%
+      dplyr::mutate(term = rownames(.)) %>%
       dplyr::rename(
         value = Estimate,
         se = Est.Error
@@ -358,13 +363,12 @@ extract_fixed_effects.brmsfit <-
 
     # cleanup names, round, etc.
     fe <- fe %>%
-      dplyr::mutate_all(round, digits = digits) %>%
-      dplyr::mutate(term = gsub(rownames(fe),
+      dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+      dplyr::mutate(term = gsub(term,
                                 pattern = '[\\(,\\)]',
                                 replacement = '')) %>%
       dplyr::select(term, dplyr::everything()) %>%
       dplyr::as_tibble()
-
 
     if (!is.null(component)) {
       fe <- fe %>%
@@ -407,7 +411,9 @@ extract_fixed_effects.stanreg <-
       dplyr::select(-mcse, -n_eff, -Rhat)
 
     colnames(fe)[3:4] = paste0(c('lower_', 'upper_'), c(lower, upper) * 100)
+
     fe <- fe %>%
+      dplyr::mutate(term = rownames(.)) %>%
       dplyr::rename(
         value = mean,
         se = sd
@@ -423,8 +429,8 @@ extract_fixed_effects.stanreg <-
     }
 
     fe <- fe %>%
-      dplyr::mutate_all(round, digits = digits) %>%
-      dplyr::mutate(term = gsub(rownames(fe),
+      dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+      dplyr::mutate(term = gsub(term,
                                 pattern = '[\\(,\\)]',
                                 replacement = '')) %>%
       dplyr::select(term, dplyr::everything()) %>%
@@ -475,7 +481,6 @@ extract_fixed_effects.gam <-
       fe <- data.frame(fe, ci)
     }
 
-    # still problems wtih term names thanks to autodrop of rownames never asked for
     fe <- fe %>%
       dplyr::mutate(term = remove_parens(rownames(.))) %>%
       dplyr::mutate_if(is.numeric, round, digits = digits)

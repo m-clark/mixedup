@@ -37,7 +37,9 @@ test_that('extract_fixed_effects.merMod basic functionality: ints/slopes with mu
 })
 
 test_that('extract_fixed_effects.merMod handles no ci', {
-  expect_s3_class(extract_fixed_effects(lmer_2, ci_level = 0), 'data.frame')
+  init = extract_fixed_effects(lmer_2, ci_level = 0)
+  expect_s3_class(init, 'data.frame')
+  expect_equal(init$term, c('Intercept', 'Days'))  # test that term names are not lost
 })
 
 test_that('extract_fixed_effects.merMod handles ci args', {
@@ -62,6 +64,7 @@ test_that('extract_fixed_effects.merMod exponentiates', {
   noexp_res = extract_fixed_effects(glmer_1, ci_level = .95, digits = 5)
 
   expect_equal(exp_res$value[1],  exp(noexp_res$value[1]), tolerance = 1e-4)
+  expect_equal(noexp_res$term[1], 'Intercept')  # test that term names are not lost
 })
 
 
@@ -102,7 +105,9 @@ test_that('extract_fixed_effects.glmmTMB basic functionality: ints/slopes with m
 
 
 test_that('extract_fixed_effects.glmmTMB handles no ci', {
-  expect_s3_class(extract_fixed_effects(tmb_2, ci_level = 0), 'data.frame')
+  init = extract_fixed_effects(tmb_2, ci_level = 0)
+  expect_s3_class(init, 'data.frame')
+  expect_equal(init$term, c('Intercept', 'Days'))
 })
 
 
@@ -136,6 +141,7 @@ test_that('extract_fixed_effects.glmmTMB exponentiates', {
   noexp_res = extract_fixed_effects(tmb_zip, digits = 5, ci_level = .95)
 
   expect_equal(exp_res$value[1],  exp(noexp_res$value[1]), tolerance = 1e-4)
+  expect_equal(exp_res$term[1], 'Intercept')
 })
 
 
@@ -168,7 +174,9 @@ test_that('extract_fixed_effects.lme basic functionality: nlme', {
 
 
 test_that('extract_fixed_effects.lme handles no ci', {
-  expect_s3_class(extract_fixed_effects(nlme_1, ci_level = 0), 'data.frame')
+  init = extract_fixed_effects(lme_2, ci_level = 0)
+  expect_s3_class(init, 'data.frame')
+  expect_equal(init$term, c('Intercept', 'Days'))
 })
 
 
@@ -182,10 +190,12 @@ test_that('extract_fixed_effects.lme exponentiates', {
   noexp_res = extract_fixed_effects(nlme_1, digits = 5, ci_level = .95)
 
   expect_equal(exp_res$value[2],  exp(noexp_res$value[2]), tolerance = 1e-4)
+  expect_equal(exp_res$term[1], 'Asym')
 })
 
-# Test brms ---------------------------------------------------------------
 
+
+# Test brms ---------------------------------------------------------------
 
 context('test extract_fixed_effects.brmsfit')
 
@@ -224,6 +234,7 @@ test_that('extract_fixed_effects.brmsfit exponentiates', {
   noexp_res = extract_fixed_effects(brm_glm, digits = 5, ci_level = .95)
 
   expect_equal(exp_res$value[1],  exp(noexp_res$value[1]), tolerance = 1e-4)
+  expect_equal(exp_res$term[1],  'Intercept')
 })
 
 
@@ -278,6 +289,8 @@ test_that('extract_fixed_effects.stanreg exponentiates', {
   noexp_res = extract_fixed_effects(stan_glmer_glm, digits = 5, ci_level = .95)
 
   expect_equal(exp_res$value[1],  exp(noexp_res$value[1]), tolerance = 1e-4)
+
+  expect_equal(exp_res$term[1],  'Intercept')
 })
 
 # Not yet implemented. Check error if attempted, and warning about component,
@@ -326,7 +339,10 @@ test_that('extract_vc.gam basic functionality: bam', {
 
 
 test_that('extract_fixed_effects.gam handles no ci', {
-  expect_s3_class(extract_fixed_effects(gam_2, ci_level = 0), 'data.frame')
+  init = extract_fixed_effects(gam_2, ci_level = 0)
+
+  expect_s3_class(init, 'data.frame')
+  expect_equal(init$term, c('Intercept', 'Days'))  # test that term names are not lost
 })
 
 
@@ -349,5 +365,6 @@ test_that('extract_fixed_effects.brmsfit exponentiates', {
   noexp_res = extract_fixed_effects(gam_glm, digits = 5, ci_level = .95)
 
   expect_equal(exp_res$value[1],  exp(noexp_res$value[1]), tolerance = 1e-4)
+  expect_equal(noexp_res$term[1], 'Intercept')  # test that term names are not lost
 })
 
