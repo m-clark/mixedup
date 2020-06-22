@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@
       <h1 data-toc-skip>Extracting Random Effects</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-04-25</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-06-15</span></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/random_effects.Rmd"><code>vignettes/random_effects.Rmd</code></a></small>
       <div class="hidden name"><code>random_effects.Rmd</code></div>
@@ -165,16 +165,16 @@
 extract_random_effects(lmer_model)
 # A tibble: 36 x 7
    group_var effect    group   value    se lower_2.5 upper_97.5
-   <chr><chr><fct><dbl><dbl><dbl><dbl>
+   &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
  1 Subject   Intercept 308     2.26   12.1   -21.4         25.9
  2 Subject   Intercept 309   -40.4    12.1   -64.1        -16.7
  3 Subject   Intercept 310   -39.0    12.1   -62.6        -15.3
- 4 Subject   Intercept 330    23.7    12.1     0.031       47.3
+ 4 Subject   Intercept 330    23.7    12.1     0.032       47.3
  5 Subject   Intercept 331    22.3    12.1    -1.40        45.9
  6 Subject   Intercept 332     9.04   12.1   -14.6         32.7
  7 Subject   Intercept 333    16.8    12.1    -6.82        40.5
  8 Subject   Intercept 334    -7.23   12.1   -30.9         16.4
- 9 Subject   Intercept 335    -0.333  12.1   -24.0         23.3
+ 9 Subject   Intercept 335    -0.334  12.1   -24.0         23.3
 10 Subject   Intercept 337    34.9    12.1    11.2         58.5
 # … with 26 more rows
 
@@ -182,7 +182,7 @@ extract_random_effects(lmer_model)
 extract_random_effects(lme_model)
 # A tibble: 36 x 4
    group_var effect group   value
-   <chr><chr><chr><dbl>
+   &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;   &lt;dbl&gt;
  1 Subject   Days   308     9.20 
  2 Subject   Days   309    -8.62 
  3 Subject   Days   310    -5.45 
@@ -199,7 +199,7 @@ extract_random_effects(lme_model)
 extract_random_effects(tmb_model)
 # A tibble: 36 x 7
    group_var effect    group  value    se lower_2.5 upper_97.5
-   <chr><chr><fct><dbl><dbl><dbl><dbl>
+   &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
  1 Subject   Intercept 308     2.82  13.7    -23.9        29.6
  2 Subject   Intercept 309   -40.0   13.8    -67.2       -12.9
  3 Subject   Intercept 310   -38.4   13.7    -65.4       -11.5
@@ -215,41 +215,41 @@ extract_random_effects(tmb_model)
 extract_random_effects(brms_model)
 # A tibble: 36 x 7
    group_var effect    group   value    se lower_2.5 upper_97.5
-   <chr><chr><chr><dbl><dbl><dbl><dbl>
- 1 Subject   Intercept 308     2.97   13.6    -24.8        32.4
- 2 Subject   Intercept 309   -39.5    15.1    -72.7       -14.5
- 3 Subject   Intercept 310   -38.4    14.3    -65.4       -16.0
- 4 Subject   Intercept 330    22.2    13.2     -1.95       47.6
- 5 Subject   Intercept 331    23.5    15.0     -6.85       50.4
- 6 Subject   Intercept 332     9.28   12.6    -14.0        29.9
- 7 Subject   Intercept 333    18.1    14.0    -11.8        41.4
- 8 Subject   Intercept 334    -9.25   13.6    -37.1        16.6
- 9 Subject   Intercept 335     0.165  14.2    -27.6        23.9
-10 Subject   Intercept 337    36.6    12.6     13.8        65.6
+   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+ 1 Subject   Intercept 308     1.32   11.9    -18.0        24.8
+ 2 Subject   Intercept 309   -41.6    13.8    -67.7       -17.8
+ 3 Subject   Intercept 310   -38.7    14.5    -69.3       -15.8
+ 4 Subject   Intercept 330    22.4    14.0     -2.87       50.3
+ 5 Subject   Intercept 331    22.8    13.0     -1.03       43.2
+ 6 Subject   Intercept 332     9.31   13.4    -11.8        37.3
+ 7 Subject   Intercept 333    16.1    13.4    -11.1        37.2
+ 8 Subject   Intercept 334    -6.44   11.4    -26.2        17.9
+ 9 Subject   Intercept 335    -0.455  12.6    -23.9        24.5
+10 Subject   Intercept 337    33.5    12.2     10.1        58.4
 # … with 26 more rows
 
 
 extract_random_effects(rstanarm_model)
 # A tibble: 36 x 7
    group_var effect    group  value    se lower_2.5 upper_97.5
-   <chr><chr><fct><dbl><dbl><dbl><dbl>
- 1 Subject   Intercept 308     1.62  12.3    -22.6        25.8
- 2 Subject   Intercept 309   -36.3   12.3    -60.5       -12.1
- 3 Subject   Intercept 310   -36.3   12.3    -60.5       -12.1
- 4 Subject   Intercept 330    22.9   12.3     -1.31       47.1
- 5 Subject   Intercept 331    20.9   12.3     -3.26       45.1
- 6 Subject   Intercept 332     6.53  12.3    -17.7        30.7
- 7 Subject   Intercept 333    15.4   12.3     -8.84       39.6
- 8 Subject   Intercept 334    -4.92  12.3    -29.1        19.3
- 9 Subject   Intercept 335    -1.50  12.3    -25.7        22.7
-10 Subject   Intercept 337    34.3   12.3     10.1        58.5
+   &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+ 1 Subject   Intercept 308     3.31  12.3    -20.9        27.5
+ 2 Subject   Intercept 309   -35.7   12.3    -59.9       -11.5
+ 3 Subject   Intercept 310   -34.6   12.3    -58.8       -10.4
+ 4 Subject   Intercept 330    18.7   12.3     -5.46       42.9
+ 5 Subject   Intercept 331    21.0   12.3     -3.22       45.2
+ 6 Subject   Intercept 332    10.7   12.3    -13.5        34.9
+ 7 Subject   Intercept 333    12.7   12.3    -11.5        36.9
+ 8 Subject   Intercept 334    -5.77  12.3    -30.0        18.4
+ 9 Subject   Intercept 335    -2.96  12.3    -27.2        21.2
+10 Subject   Intercept 337    31.7   12.3      7.53       55.9
 # … with 26 more rows
 
 
 extract_random_effects(mgcv_model)
 # A tibble: 36 x 7
    group_var effect    group   value    se lower_2.5 upper_97.5
-   <chr><chr><chr><dbl><dbl><dbl><dbl>
+   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
  1 Subject   Intercept 308     1.51   13.3    -24.5        27.5
  2 Subject   Intercept 309   -40.4    13.3    -66.4       -14.3
  3 Subject   Intercept 310   -39.2    13.3    -65.2       -13.2
@@ -260,12 +260,22 @@ extract_random_effects(mgcv_model)
  8 Subject   Intercept 334    -7.45   13.3    -33.5        18.6
  9 Subject   Intercept 335     0.579  13.3    -25.4        26.6
 10 Subject   Intercept 337    34.8    13.3      8.74       60.8
-# … with 26 more rows</dbl></dbl></dbl></dbl></chr></chr></chr></dbl></dbl></dbl></dbl></fct></chr></chr></dbl></dbl></dbl></dbl></chr></chr></chr></dbl></dbl></dbl></dbl></fct></chr></chr></dbl></chr></chr></chr></dbl></dbl></dbl></dbl></fct></chr></chr></pre></body></html></div>
+# … with 26 more rows</pre></body></html></div>
 </div>
 <div id="options" class="section level2">
 <h2 class="hasAnchor">
 <a href="#options" class="anchor"></a>Options</h2>
-<div class="sourceCode" id="cb3"><html><body><pre class="r">lmer_model      <chr><fct><dbl><dbl><dbl><dbl>
+<div class="sourceCode" id="cb3"><html><body><pre class="r">lmer_model &lt;-
+  lmer(y ~ service + (1 | d) + (1 | s), data = InstEval[1:5000,])
+
+extract_random_effects(
+  lmer_model,
+  ci_level = .9,
+  digits = 2
+)
+# A tibble: 1,012 x 7
+   group_var effect    group  value    se lower_5 upper_95
+   &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
  1 d         Intercept 1     -0.02   0.39   -0.66     0.62
  2 d         Intercept 6      0.09   0.34   -0.46     0.65
  3 d         Intercept 7      0.3    0.41   -0.38     0.98
@@ -276,8 +286,21 @@ extract_random_effects(mgcv_model)
  8 d         Intercept 15    -0.13   0.47   -0.91     0.65
  9 d         Intercept 17     0.4    0.35   -0.18     0.99
 10 d         Intercept 18     0.08   0.47   -0.69     0.86
-# … with 1,002 more rows</dbl></dbl></dbl></dbl></fct></chr></pre></body></html></div>
-<div class="sourceCode" id="cb4"><html><body><pre class="r">tmb_zip      <chr><fct><dbl><dbl><dbl><dbl>
+# … with 1,002 more rows</pre></body></html></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r">tmb_zip &lt;- glmmTMB(
+  count ~ spp + mined + (1 | site),
+  zi =  ~ spp + mined + (1 | site),
+  family = truncated_poisson,
+  data = Salamanders
+)
+
+extract_random_effects(
+  tmb_zip,
+  cond = 'zi'
+)
+# A tibble: 46 x 7
+   group_var effect    group  value    se lower_2.5 upper_97.5
+   &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
  1 site      Intercept R-1   -0.02  0.126    -0.267      0.227
  2 site      Intercept R-2    0.037 0.125    -0.209      0.283
  3 site      Intercept R-3    0.051 0.135    -0.214      0.316
@@ -288,7 +311,7 @@ extract_random_effects(mgcv_model)
  8 site      Intercept R-8   -0.068 0.13     -0.323      0.188
  9 site      Intercept R-9    0.22  0.158    -0.09       0.53 
 10 site      Intercept R-10  -0.1   0.135    -0.366      0.165
-# … with 36 more rows</dbl></dbl></dbl></dbl></fct></chr></pre></body></html></div>
+# … with 36 more rows</pre></body></html></div>
 </div>
   </div>
 
@@ -307,7 +330,7 @@ extract_random_effects(mgcv_model)
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

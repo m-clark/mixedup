@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -256,7 +256,7 @@ the new scale.</p></td>
     </tr>
     <tr>
       <th>p_value</th>
-      <td><p>For lme4 models, one of 'Wald' or 'KR'. See details.</p></td>
+      <td><p>For <code>lme4</code> models, one of 'Wald' or 'KR'. See details.</p></td>
     </tr>
     <tr>
       <th>component</th>
@@ -275,12 +275,12 @@ of the output.</p></td>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Essentially duplicates the <code><a href='https://rdrr.io/pkg/broom/man/reexports.html'>broom::tidy</a></code> approach with minor
-name changes.  For lme4, 'Wald' p-values are provided lmer models for
+name changes.  For <code>lme4</code>, 'Wald' p-values are provided lmer models for
 consistency with others, but there is <a href='https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#what-are-the-p-values-listed-by-summaryglmerfit-etc.-are-they-reliable'>much issue with them</a>,
 especially for low N/small numbers of groups.  The Kenward-Roger is also
-available if the pbkrtest package is installed (experimental). For either
+available if the <code>pbkrtest</code> package is installed (experimental). For either
 case, Only the p-value from the process is provide, all other output is
-default provided lme4 without adjustment.</p>
+default provided <code>lme4</code> without adjustment.</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>For nlme, this is just a multiplier based on the estimated standard
@@ -301,7 +301,8 @@ error and critical value for the <code>ci_level</code>.</p>
 <code><a href='extract_vc.html'>extract_vc</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: Matrix</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
 
 <span class='no'>lmer_mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> + <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
 
@@ -326,7 +327,7 @@ error and critical value for the <code>ci_level</code>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

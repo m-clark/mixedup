@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@
       <h1 data-toc-skip>Extracting Fixed Effects</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-04-25</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-06-15</span></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/fixed_effects.Rmd"><code>vignettes/fixed_effects.Rmd</code></a></small>
       <div class="hidden name"><code>fixed_effects.Rmd</code></div>
@@ -156,15 +156,15 @@
 extract_fixed_effects(lmer_model)
 # A tibble: 2 x 7
   term      value    se     t p_value lower_2.5 upper_97.5
-  <chr><dbl><dbl><dbl><dbl><dbl><dbl>
+  &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
 1 Intercept 251.   6.82 36.8        0    238.        265. 
 2 Days       10.5  1.55  6.77       0      7.44       13.5
 
 
 extract_fixed_effects(lme_model)
 # A tibble: 2 x 7
-  term      value    se     t p_value lower_2.5 upper_97.5
-  <chr><dbl><dbl><dbl><dbl><dbl><dbl>
+  term      value    se     z p_value lower_2.5 upper_97.5
+  &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
 1 Intercept 251.   6.82 36.8        0    238.        265. 
 2 Days       10.5  1.55  6.77       0      7.42       13.5
 
@@ -172,7 +172,7 @@ extract_fixed_effects(lme_model)
 extract_fixed_effects(tmb_model)
 # A tibble: 2 x 7
   term      value    se     z p_value lower_2.5 upper_97.5
-  <chr><dbl><dbl><dbl><dbl><dbl><dbl>
+  &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
 1 Intercept 251.   6.63 37.9        0    238.        264. 
 2 Days       10.5  1.50  6.97       0      7.52       13.4
 
@@ -180,17 +180,17 @@ extract_fixed_effects(tmb_model)
 extract_fixed_effects(brms_model)
 # A tibble: 2 x 5
   term      value    se lower_2.5 upper_97.5
-  <chr><dbl><dbl><dbl><dbl>
-1 Intercept 251.   7.47    240.        267. 
-2 Days       10.4  1.62      6.77       13.4
+  &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+1 Intercept 252.   6.74    238.        265. 
+2 Days       10.3  1.70      7.14       13.4
 
 
 extract_fixed_effects(mgcv_model)
 # A tibble: 2 x 7
   term      value    se     t p_value lower_2.5 upper_97.5
-  <chr><dbl><dbl><dbl><dbl><dbl><dbl>
+  &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
 1 Intercept 251.   6.88 36.5        0    238.        265. 
-2 Days       10.5  1.56  6.71       0      7.39       13.5</dbl></dbl></dbl></dbl></dbl></dbl></chr></dbl></dbl></dbl></dbl></chr></dbl></dbl></dbl></dbl></dbl></dbl></chr></dbl></dbl></dbl></dbl></dbl></dbl></chr></dbl></dbl></dbl></dbl></dbl></dbl></chr></pre></body></html></div>
+2 Days       10.5  1.56  6.71       0      7.39       13.5</pre></body></html></div>
 </div>
 <div id="options" class="section level2">
 <h2 class="hasAnchor">
@@ -203,18 +203,32 @@ extract_fixed_effects(mgcv_model)
 )
 # A tibble: 2 x 7
   term      value    se     t p_value lower_5 upper_95
-  <chr><dbl><dbl><dbl><dbl><dbl><dbl>
-1 Intercept 251.   6.82 36.8        0  237.      272. 
-2 Days       10.5  1.55  6.77       0    6.51     12.5</dbl></dbl></dbl></dbl></dbl></dbl></chr></pre></body></html></div>
-<div class="sourceCode" id="cb4"><html><body><pre class="r">tmb_zip      <dbl><dbl><dbl><dbl><dbl><dbl>
-1 Intercept 0.935 0.193 -0.325   0.745     0.624       1.40
+  &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
+1 Intercept 251.   6.82 36.8        0  241.      265. 
+2 Days       10.5  1.55  6.77       0    7.64     12.8</pre></body></html></div>
+<div class="sourceCode" id="cb4"><html><body><pre class="r">tmb_zip &lt;- glmmTMB(
+  count ~ spp + mined + (1 | site),
+  zi =  ~ spp + mined + (1 | site),
+  family = truncated_poisson,
+  data = Salamanders
+)
+
+extract_fixed_effects(
+  tmb_zip,
+  cond = 'zi',
+  exponentiate = TRUE
+)
+# A tibble: 8 x 7
+  term      value    se      z p_value lower_2.5 upper_97.5
+  &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+1 Intercept 0.935 0.193 -0.325   0.745     0.624       1.4 
 2 sppPR     0.594 0.166 -1.87    0.062     0.344       1.03
-3 sppDM     1.25  0.182  1.55    0.121     0.943       1.66
+3 sppDM     1.25  0.181  1.55    0.121     0.942       1.66
 4 sppEC-A   0.822 0.165 -0.972   0.331     0.554       1.22
-5 sppEC-L   1.91  0.252  4.89    0         1.47        2.47
-6 sppDES-L  1.83  0.238  4.64    0         1.42        2.36
+5 sppEC-L   1.91  0.253  4.89    0         1.47        2.47
+6 sppDES-L  1.83  0.239  4.64    0         1.42        2.36
 7 sppDF     1.05  0.161  0.299   0.765     0.774       1.42
-8 minedno   2.76  0.515  5.42    0         1.91        3.98</dbl></dbl></dbl></dbl></dbl></dbl></pre></body></html></div>
+8 minedno   2.76  0.516  5.42    0         1.91        3.98</pre></body></html></div>
 </div>
   </div>
 
@@ -233,7 +247,7 @@ extract_fixed_effects(mgcv_model)
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

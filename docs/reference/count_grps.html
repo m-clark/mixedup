@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Summarize a mixed model — summarize_model • mixedup</title>
+<title>Count groups — count_grps • mixedup</title>
 
 
 <!-- jquery -->
@@ -41,8 +41,9 @@
   <link href="../extra.css" rel="stylesheet">
   
 
-<meta property="og:title" content="Summarize a mixed model — summarize_model" />
-<meta property="og:description" content="This function prints fixed effects and variance components for a mixed model." />
+<meta property="og:title" content="Count groups — count_grps" />
+<meta property="og:description" content="A helper function to count groups to add to random effect
+results." />
 
 
 
@@ -140,112 +141,92 @@
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>Summarize a mixed model</h1>
-    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/summarize_model.R'><code>R/summarize_model.R</code></a></small>
-    <div class="hidden name"><code>summarize_model.Rd</code></div>
+    <h1>Count groups</h1>
+    <small class="dont-index">Source: <a href='https://github.com/m-clark/mixedup/blob/master/R/count_grps.R'><code>R/count_grps.R</code></a></small>
+    <div class="hidden name"><code>count_grps.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p>This function prints fixed effects and variance components for a mixed model.</p>
+    <p>A helper function to count groups to add to random effect
+results.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>summarize_model</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>cor_re</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>cor_fe</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>exponentiate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)
+    <pre class="usage"><span class='fu'>count_grps</span>(<span class='no'>model</span>, <span class='no'>grp_vars</span>)
 
-<span class='fu'>summarise_model</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>cor_re</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>cor_fe</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>exponentiate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)</pre>
+<span class='co'># S3 method for default</span>
+<span class='fu'>count_grps</span>(<span class='no'>model</span>, <span class='no'>grp_vars</span>)
+
+<span class='co'># S3 method for merMod</span>
+<span class='fu'>count_grps</span>(<span class='no'>model</span>, <span class='no'>grp_vars</span>)
+
+<span class='co'># S3 method for glmmTMB</span>
+<span class='fu'>count_grps</span>(<span class='no'>model</span>, <span class='no'>grp_vars</span>)
+
+<span class='co'># S3 method for lme</span>
+<span class='fu'>count_grps</span>(<span class='no'>model</span>, <span class='no'>grp_vars</span>)
+
+<span class='co'># S3 method for brmsfit</span>
+<span class='fu'>count_grps</span>(<span class='no'>model</span>, <span class='no'>grp_vars</span>)
+
+<span class='co'># S3 method for stanreg</span>
+<span class='fu'>count_grps</span>(<span class='no'>model</span>, <span class='no'>grp_vars</span>)
+
+<span class='co'># S3 method for stanmvreg</span>
+<span class='fu'>count_grps</span>(<span class='no'>model</span>, <span class='no'>grp_vars</span>)
+
+<span class='co'># S3 method for gam</span>
+<span class='fu'>count_grps</span>(<span class='no'>model</span>, <span class='no'>grp_vars</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>model</th>
-      <td><p>A supported model.</p></td>
+      <td><p>A fitted model e.g. from <code>lme4</code>.</p></td>
     </tr>
     <tr>
-      <th>ci</th>
-      <td><p>Whether to include a 95% uncertainty interval for the variance
-components. Default is TRUE.</p></td>
-    </tr>
-    <tr>
-      <th>cor_re</th>
-      <td><p>Whether to include the correlations of the random effects.
-Default is FALSE.</p></td>
-    </tr>
-    <tr>
-      <th>cor_fe</th>
-      <td><p>Whether to include the correlations of the fixed effects.
-Default is FALSE.</p></td>
-    </tr>
-    <tr>
-      <th>exponentiate</th>
-      <td><p>Exponentiate the fixed-effect coefficient estimates and
-confidence intervals (common for logistic regression). If <code>TRUE</code>, also scales
-the standard errors by the exponentiated coefficient, transforming them to
-the new scale.</p></td>
-    </tr>
-    <tr>
-      <th>digits</th>
-      <td><p>Digits to display.</p></td>
-    </tr>
-    <tr>
-      <th>component</th>
-      <td><p>For glmmTMB objects, which of the three components 'cond',
-'zi' or 'other' to select. Default is cond. Minimal testing on other
-options.</p></td>
-    </tr>
-    <tr>
-      <th>...</th>
-      <td><p>Not used at present. May allow model-specific functionality.</p></td>
+      <th>grp_vars</th>
+      <td><p>A character vector fo the grouping/cluster variables used for
+random effects</p></td>
     </tr>
     </table>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p>Prints the variance components, fixed effects, etc. Invisibly, a list
-of those.</p>
+    <p>A tibble of the results.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This basically does pretty printing of the results of <code><a href='extract_vc.html'>extract_vc()</a></code>
-and <code><a href='extract_fixed_effects.html'>extract_fixed_effects()</a></code>.</p>
-    <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
-
-    <p>Not tested yet for complicated <code>stanreg</code> objects like multivariate or
-joint models.</p>
-    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
-
-    <div class='dont-index'><p><code><a href='extract_vc.html'>extract_vc()</a></code>, <code><a href='extract_fixed_effects.html'>extract_fixed_effects()</a></code></p></div>
+    <p>For each grouping variable for which random effects are estimated,
+count the respective group sizes.  This is not meant to be used directly.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
+    <pre class="examples"><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: Matrix</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
 
-<span class='no'>lmer_mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> + <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
-<span class='fu'>summarize_model</span>(<span class='no'>lmer_mod</span>)</div><div class='output co'>#&gt; <span class='message'>Computing profile confidence intervals ...</span></div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Variance Components:</span></div><div class='output co'>#&gt;     Group    Effect Variance    SD SD_2.5 SD_97.5 Var_prop
-#&gt;   Subject Intercept   612.10 24.74  14.38   37.72     0.47
-#&gt;   Subject      Days    35.07  5.92   3.80    8.75     0.03
-#&gt;  Residual             654.94 25.59  22.90   28.86     0.50</div><div class='output co'>#&gt; <span class='message'></span>
-#&gt; <span class='message'>Fixed Effects:</span></div><div class='output co'>#&gt;       Term  Value   SE     t P_value Lower_2.5 Upper_97.5
-#&gt;  Intercept 251.41 6.82 36.84    0.00    238.03     264.78
-#&gt;       Days  10.47 1.55  6.77    0.00      7.44      13.50</div><div class='input'>
-</div></pre>
+<span class='no'>mod</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> + <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sleepstudy</span>)
+
+<span class='fu'>count_grps</span>(<span class='no'>mod</span>, <span class='st'>'Subject'</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 18 x 3</span><span>
+#&gt;    group_var group     n
+#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #555555;'> 1</span><span> Subject   308      10
+#&gt; </span><span style='color: #555555;'> 2</span><span> Subject   309      10
+#&gt; </span><span style='color: #555555;'> 3</span><span> Subject   310      10
+#&gt; </span><span style='color: #555555;'> 4</span><span> Subject   330      10
+#&gt; </span><span style='color: #555555;'> 5</span><span> Subject   331      10
+#&gt; </span><span style='color: #555555;'> 6</span><span> Subject   332      10
+#&gt; </span><span style='color: #555555;'> 7</span><span> Subject   333      10
+#&gt; </span><span style='color: #555555;'> 8</span><span> Subject   334      10
+#&gt; </span><span style='color: #555555;'> 9</span><span> Subject   335      10
+#&gt; </span><span style='color: #555555;'>10</span><span> Subject   337      10
+#&gt; </span><span style='color: #555555;'>11</span><span> Subject   349      10
+#&gt; </span><span style='color: #555555;'>12</span><span> Subject   350      10
+#&gt; </span><span style='color: #555555;'>13</span><span> Subject   351      10
+#&gt; </span><span style='color: #555555;'>14</span><span> Subject   352      10
+#&gt; </span><span style='color: #555555;'>15</span><span> Subject   369      10
+#&gt; </span><span style='color: #555555;'>16</span><span> Subject   370      10
+#&gt; </span><span style='color: #555555;'>17</span><span> Subject   371      10
+#&gt; </span><span style='color: #555555;'>18</span><span> Subject   372      10</div><div class='input'>
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

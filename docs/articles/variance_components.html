@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@
       <h1 data-toc-skip>Extracting Variance Components</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-04-25</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-06-15</span></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/variance_components.Rmd"><code>vignettes/variance_components.Rmd</code></a></small>
       <div class="hidden name"><code>variance_components.Rmd</code></div>
@@ -155,9 +155,9 @@
 
 extract_vc(lmer_model)
      group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  611.898 24.737 14.382  37.714    0.470
-2  Subject      Days   35.081  5.923  3.801   8.754    0.027
-3 Residual            654.941 25.592 22.898  28.858    0.503
+1  Subject Intercept  612.100 24.741 14.381  37.716    0.470
+2  Subject      Days   35.072  5.922  3.801   8.753    0.027
+3 Residual            654.940 25.592 22.898  28.858    0.503
 
 
 extract_vc(lme_model)
@@ -176,9 +176,9 @@ extract_vc(tmb_model)
 
 extract_vc(brms_model)
      group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  733.227 27.078 14.566  41.591    0.510
-2  Subject      Days   41.659  6.454  4.203   9.034    0.029
-3 Residual            663.843 25.765 23.063  28.359    0.461
+1  Subject Intercept  680.180 26.080 16.324  37.155    0.488
+2  Subject      Days   44.483  6.670  4.424  10.270    0.032
+3 Residual            669.604 25.877 23.519  28.958    0.480
 
 
 extract_vc(mgcv_model)
@@ -190,7 +190,19 @@ extract_vc(mgcv_model)
 <div id="options" class="section level2">
 <h2 class="hasAnchor">
 <a href="#options" class="anchor"></a>Options</h2>
-<div class="sourceCode" id="cb3"><html><body><pre class="r">tmb_model </pre></body></html></div>
+<div class="sourceCode" id="cb3"><html><body><pre class="r">tmb_model &lt;-
+  glmmTMB(y ~ service + (1 | d) + (1 | s), data = InstEval[1:5000,])
+
+extract_vc(
+  tmb_model,
+  ci_level = .9,
+  ci_scale = 'var',
+  digits = 2
+)
+     group    effect variance   sd var_5 var_95 var_prop
+1        d Intercept     0.26 0.51  0.22   0.31     0.15
+2        s Intercept     0.11 0.33  0.08   0.14     0.06
+3 Residual               1.36 1.17    NA     NA     0.79</pre></body></html></div>
 </div>
   </div>
 
@@ -209,7 +221,7 @@ extract_vc(mgcv_model)
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

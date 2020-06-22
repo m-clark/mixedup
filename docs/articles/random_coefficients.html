@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -101,7 +101,7 @@
       <h1 data-toc-skip>Extracting Random Coefficients</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-04-25</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-06-15</span></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/random_coefficients.Rmd"><code>vignettes/random_coefficients.Rmd</code></a></small>
       <div class="hidden name"><code>random_coefficients.Rmd</code></div>
@@ -156,7 +156,7 @@
 extract_random_coefs(lmer_model)
 # A tibble: 36 x 7
    group_var effect    group value    se lower_2.5 upper_97.5
-   <chr><chr><fct><dbl><dbl><dbl><dbl>
+   &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
  1 Subject   Intercept 308    254.  13.9      226.       281.
  2 Subject   Intercept 309    211.  13.9      184.       238.
  3 Subject   Intercept 310    212.  13.9      185.       240.
@@ -173,7 +173,7 @@ extract_random_coefs(lmer_model)
 extract_random_coefs(lme_model)
 # A tibble: 36 x 4
    group_var effect group  value
-   <chr><chr><chr><dbl>
+   &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt;
  1 Subject   Days   308   19.7  
  2 Subject   Days   309    1.85 
  3 Subject   Days   310    5.02 
@@ -190,7 +190,7 @@ extract_random_coefs(lme_model)
 extract_random_coefs(tmb_model)
 # A tibble: 36 x 7
    group_var effect    group value    se lower_2.5 upper_97.5
-   <chr><chr><fct><dbl><dbl><dbl><dbl>
+   &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
  1 Subject   Intercept 308    254.  15.2      224.       284.
  2 Subject   Intercept 309    211.  15.3      181.       241.
  3 Subject   Intercept 310    213.  15.3      183.       243.
@@ -207,24 +207,24 @@ extract_random_coefs(tmb_model)
 extract_random_coefs(brms_model)
 # A tibble: 36 x 7
    group_var effect    group value    se lower_2.5 upper_97.5
-   <chr><chr><chr><dbl><dbl><dbl><dbl>
- 1 Subject   Intercept 308    254.  11.4      233.       276.
- 2 Subject   Intercept 309    212.  12.9      189.       238.
- 3 Subject   Intercept 310    213.  12.5      186.       232.
- 4 Subject   Intercept 330    273.  12.8      251.       297.
- 5 Subject   Intercept 331    275.  12.6      252.       300.
- 6 Subject   Intercept 332    261.  11.6      239.       281.
- 7 Subject   Intercept 333    269.  12.0      245.       291.
- 8 Subject   Intercept 334    242.  11.7      223.       266.
- 9 Subject   Intercept 335    251.  13.1      224.       275.
-10 Subject   Intercept 337    288.  11.9      265.       310.
+   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
+ 1 Subject   Intercept 308    254.  11.5      233.       276.
+ 2 Subject   Intercept 309    211.  13.1      188.       232.
+ 3 Subject   Intercept 310    214.  13.7      183.       236.
+ 4 Subject   Intercept 330    275.  12.5      254.       299.
+ 5 Subject   Intercept 331    275.  12.8      256.       298.
+ 6 Subject   Intercept 332    262.  12.4      240.       287.
+ 7 Subject   Intercept 333    268.  12.2      244.       287.
+ 8 Subject   Intercept 334    246.  11.2      222.       266.
+ 9 Subject   Intercept 335    252.  12.4      227.       274.
+10 Subject   Intercept 337    286.  10.7      264.       307.
 # … with 26 more rows
 
 
 extract_random_coefs(mgcv_model)
 # A tibble: 36 x 7
    group_var effect    group value    se lower_2.5 upper_97.5
-   <chr><chr><chr><dbl><dbl><dbl><dbl>
+   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
  1 Subject   Intercept 308    253.  15.0      224.       282.
  2 Subject   Intercept 309    211.  15.0      182.       240.
  3 Subject   Intercept 310    212.  15.0      183.       242.
@@ -235,7 +235,7 @@ extract_random_coefs(mgcv_model)
  8 Subject   Intercept 334    244.  15.0      215.       273.
  9 Subject   Intercept 335    252.  15.0      223.       281.
 10 Subject   Intercept 337    286.  15.0      257.       315.
-# … with 26 more rows</dbl></dbl></dbl></dbl></chr></chr></chr></dbl></dbl></dbl></dbl></chr></chr></chr></dbl></dbl></dbl></dbl></fct></chr></chr></dbl></chr></chr></chr></dbl></dbl></dbl></dbl></fct></chr></chr></pre></body></html></div>
+# … with 26 more rows</pre></body></html></div>
 </div>
 <div id="options" class="section level2">
 <h2 class="hasAnchor">
@@ -247,7 +247,7 @@ extract_random_coefs(mgcv_model)
 )
 # A tibble: 36 x 7
    group_var effect    group value    se lower_5 upper_95
-   <chr><chr><fct><dbl><dbl><dbl><dbl>
+   &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
  1 Subject   Intercept 308    254.  13.9    231.     276.
  2 Subject   Intercept 309    211.  13.9    188.     234.
  3 Subject   Intercept 310    212.  13.9    190.     235.
@@ -258,7 +258,7 @@ extract_random_coefs(mgcv_model)
  8 Subject   Intercept 334    244.  13.9    221.     267.
  9 Subject   Intercept 335    251.  13.9    228.     274.
 10 Subject   Intercept 337    286.  13.9    263.     309.
-# … with 26 more rows</dbl></dbl></dbl></dbl></fct></chr></chr></pre></body></html></div>
+# … with 26 more rows</pre></body></html></div>
 </div>
   </div>
 
@@ -277,7 +277,7 @@ extract_random_coefs(mgcv_model)
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -154,12 +154,20 @@
   <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
   <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
 )
 
 <span class='co'># S3 method for merMod</span>
-<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+<span class='fu'>extract_random_effects</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S3 method for glmmTMB</span>
 <span class='fu'>extract_random_effects</span>(
@@ -167,12 +175,20 @@
   <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
   <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>,
   <span class='no'>...</span>
 )
 
 <span class='co'># S3 method for lme</span>
-<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+<span class='fu'>extract_random_effects</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S3 method for brmsfit</span>
 <span class='fu'>extract_random_effects</span>(
@@ -180,15 +196,31 @@
   <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
   <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='no'>...</span>
 )
 
 <span class='co'># S3 method for stanreg</span>
-<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+<span class='fu'>extract_random_effects</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>
+)
 
 <span class='co'># S3 method for gam</span>
-<span class='fu'>extract_random_effects</span>(<span class='no'>model</span>, <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)</pre>
+<span class='fu'>extract_random_effects</span>(
+  <span class='no'>model</span>,
+  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
+  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
+  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='no'>...</span>
+)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -213,13 +245,17 @@ objects.</p></td>
       <td><p>Rounding. Default is 3.</p></td>
     </tr>
     <tr>
+      <th>add_group_N</th>
+      <td><p>Add group sample sizes to output? Default is <code>FALSE</code>.</p></td>
+    </tr>
+    <tr>
       <th>component</th>
-      <td><p>For glmmTMB objects, which of the two components 'cond' or
-'zi' to select. Default is 'cond'. For brmsfit objects, this can filter
+      <td><p>For <code>glmmTMB</code> objects, which of the two components 'cond' or
+'zi' to select. Default is 'cond'. For <code>brmsfit</code> objects, this can filter
 results to a certain part of the output, e.g. 'sigma' or 'zi' of
-distributional models, or a specific outcome of a multivariate model.  In
-this case <code>component</code> is a regular expression that ends the name of
-the parameters of the output (e.g. '__component').</p></td>
+distributional models, or a specific outcome name of a multivariate model.
+In this case <code>component</code> is a regular expression that ends the name of the
+parameters of the output (e.g. '__component').</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -232,8 +268,8 @@ the parameters of the output (e.g. '__component').</p></td>
     <p>data frame of the random effects</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Relative to <code>ranef</code> for the various packages, this just adds
-the standard errors and cluster ids as columns, and uncertainty intervals.</p>
+    <p>Relative to <code>ranef</code> for the various packages, this just adds the
+standard errors and cluster ids as columns, and uncertainty intervals.</p>
 <p>Current models supported:</p>
 <dl'>
 <dt>merMod</dt><dd><p></p></dd>
@@ -283,12 +319,12 @@ used.</p>
 #&gt; </span><span style='color: #555555;'> 1</span><span> Subject   Intercept 308     2.26   12.1   -</span><span style='color: #BB0000;'>21.4</span><span>         25.9
 #&gt; </span><span style='color: #555555;'> 2</span><span> Subject   Intercept 309   -</span><span style='color: #BB0000;'>40.4</span><span>    12.1   -</span><span style='color: #BB0000;'>64.1</span><span>        -</span><span style='color: #BB0000;'>16.7</span><span>
 #&gt; </span><span style='color: #555555;'> 3</span><span> Subject   Intercept 310   -</span><span style='color: #BB0000;'>39.0</span><span>    12.1   -</span><span style='color: #BB0000;'>62.6</span><span>        -</span><span style='color: #BB0000;'>15.3</span><span>
-#&gt; </span><span style='color: #555555;'> 4</span><span> Subject   Intercept 330    23.7    12.1     0.031       47.3
+#&gt; </span><span style='color: #555555;'> 4</span><span> Subject   Intercept 330    23.7    12.1     0.032       47.3
 #&gt; </span><span style='color: #555555;'> 5</span><span> Subject   Intercept 331    22.3    12.1    -</span><span style='color: #BB0000;'>1.40</span><span>        45.9
 #&gt; </span><span style='color: #555555;'> 6</span><span> Subject   Intercept 332     9.04   12.1   -</span><span style='color: #BB0000;'>14.6</span><span>         32.7
 #&gt; </span><span style='color: #555555;'> 7</span><span> Subject   Intercept 333    16.8    12.1    -</span><span style='color: #BB0000;'>6.82</span><span>        40.5
 #&gt; </span><span style='color: #555555;'> 8</span><span> Subject   Intercept 334    -</span><span style='color: #BB0000;'>7.23</span><span>   12.1   -</span><span style='color: #BB0000;'>30.9</span><span>         16.4
-#&gt; </span><span style='color: #555555;'> 9</span><span> Subject   Intercept 335    -</span><span style='color: #BB0000;'>0.333</span><span>  12.1   -</span><span style='color: #BB0000;'>24.0</span><span>         23.3
+#&gt; </span><span style='color: #555555;'> 9</span><span> Subject   Intercept 335    -</span><span style='color: #BB0000;'>0.334</span><span>  12.1   -</span><span style='color: #BB0000;'>24.0</span><span>         23.3
 #&gt; </span><span style='color: #555555;'>10</span><span> Subject   Intercept 337    34.9    12.1    11.2         58.5
 #&gt; </span><span style='color: #555555;'># … with 26 more rows</span><span></div><div class='input'>
 </div></span></pre>
@@ -307,7 +343,7 @@ used.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>

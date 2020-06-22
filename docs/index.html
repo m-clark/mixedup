@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.6</span>
       </span>
     </div>
 
@@ -107,7 +107,7 @@
 <a href="#a-package-for-extracting-clean-results-from-mixed-models" class="anchor"></a>a package for extracting clean results from mixed models</h5>
 <p><br><br></p>
 <!-- badges: start -->
-<p><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a> <a href="https://travis-ci.org/m-clark/mixedup"><img src="https://travis-ci.org/m-clark/mixedup.svg?branch=master" alt="Travis build status"></a> <a href="https://ci.appveyor.com/project/m-clark/mixedup"><img src="https://ci.appveyor.com/api/projects/status/github/m-clark/mixedup?branch=master&amp;svg=true" alt="AppVeyor build status"></a> <a href="https://codecov.io/gh/m-clark/mixedup?branch=master"><img src="https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg" alt="Codecov test coverage"></a> <!-- badges: end --></p>
+<p><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a> <a href="https://travis-ci.org/m-clark/mixedup"><img src="https://travis-ci.org/m-clark/mixedup.svg?branch=master" alt="Travis build status"></a> <a href="https://ci.appveyor.com/project/m-clark/mixedup"><img src="https://ci.appveyor.com/api/projects/status/github/m-clark/mixedup?branch=master&amp;svg=true" alt="AppVeyor build status"></a> <a href="https://codecov.io/gh/m-clark/mixedup?branch=master"><img src="https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://github.com/m-clark/mixedup/actions"><img src="https://github.com/m-clark/mixedup/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <!-- badges: end --></p>
 <p>This package provides extended functionality for mixed models. The goal of <code>mixedup</code> is to solve little problems I have had that slip through the cracks from the various modeling packages and others in trying to get presentable output. Basically the idea is to create (tidy) objects that are easy to use and essentially ready for presentation, as well as <em>consistent</em> across packages and across functions. Such objects would be things like variance components and random effects. I use several of these packages (including mgcv) for mixed models, and typically have to do some notable post processing to get some viable output even with <code><a href="https://rdrr.io/pkg/broom/man/reexports.html">broom::tidy</a></code>, and this effort often isn’t applicable if I switch to another package for the same type of model. These functions attempt to address this issue.</p>
 <p>For more details and examples see <a href="https://m-clark.github.io/mixedup/" class="uri">https://m-clark.github.io/mixedup/</a>.</p>
 </div>
@@ -116,6 +116,10 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install mixedup from GitHub with <code>devtools</code>:</p>
 <div class="sourceCode" id="cb1"><pre class="r"><span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">'m-clark/mixedup'</span>)</pre></div>
+<p>If you have an issue with the installation (something about <code>rstanarm</code> and <code>brms_model</code>), you can ignore it with the following, as it only regards some internal data used for the vignettes, which is completely unnecessary for the package.</p>
+<div class="sourceCode" id="cb2"><pre class="r"><span class="kw pkg">withr</span><span class="kw ns">::</span><span class="fu"><a href="https://rdrr.io/pkg/withr/man/with_envvar.html">with_envvar</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(<span class="kw">R_REMOTES_NO_ERRORS_FROM_WARNINGS</span> <span class="kw">=</span> <span class="st">"true"</span>),
+  <span class="kw pkg">devtools</span><span class="kw ns">::</span><span class="fu"><a href="https://devtools.r-lib.org//reference/remote-reexports.html">install_github</a></span>(<span class="st">'m-clark/mixedup'</span>)
+)</pre></div>
 </div>
 <div id="supported-models" class="section level2">
 <h2 class="hasAnchor">
@@ -152,9 +156,6 @@
 <h3 class="hasAnchor">
 <a href="#setup" class="anchor"></a>Setup</h3>
 <p>In the following I suppress the package startup and other information that isn’t necessary for demo.</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>Registered S3 method overwritten by <span class="st">'xts'</span><span class="op">:</span></span>
-<span id="cb2-2"><a href="#cb2-2"></a><span class="st">  </span>method     from</span>
-<span id="cb2-3"><a href="#cb2-3"></a>  as.zoo.xts zoo </span></code></pre></div>
 <div class="sourceCode" id="cb3"><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">lme4</span>)
 
 <span class="no">lmer_model</span> <span class="kw">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span>(<span class="no">Reaction</span> ~ <span class="no">Days</span> + (<span class="fl">1</span> + <span class="no">Days</span> <span class="kw">|</span> <span class="no">Subject</span>), <span class="kw">data</span> <span class="kw">=</span> <span class="no">sleepstudy</span>)
@@ -216,7 +217,7 @@
 extract_random_effects(tmb_model)
 # A tibble: 36 x 7
    group_var effect    group  value    se lower_2.5 upper_97.5
-   <chr><chr><fct><dbl><dbl><dbl><dbl>
+   &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
  1 Subject   Intercept 308     2.82  13.7    -23.9        29.6
  2 Subject   Intercept 309   -40.0   13.8    -67.2       -12.9
  3 Subject   Intercept 310   -38.4   13.7    -65.4       -11.5
@@ -232,7 +233,7 @@ extract_random_effects(tmb_model)
 extract_fixed_effects(nlme_model)
 # A tibble: 3 x 7
   term   value    se     t p_value lower_2.5 upper_97.5
-  <chr><dbl><dbl><dbl><dbl><dbl><dbl>
+  &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
 1 Asym  101.   2.46   41.2       0     96.5      106.  
 2 R0     -8.63 0.318 -27.1       0     -9.26      -7.99
 3 lrc    -3.23 0.034 -94.4       0     -3.30      -3.16
@@ -240,7 +241,7 @@ extract_fixed_effects(nlme_model)
 extract_random_coefs(lmer_model)
 # A tibble: 36 x 7
    group_var effect    group value    se lower_2.5 upper_97.5
-   <chr><chr><fct><dbl><dbl><dbl><dbl>
+   &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
  1 Subject   Intercept 308    254.  13.9      226.       281.
  2 Subject   Intercept 309    211.  13.9      184.       238.
  3 Subject   Intercept 310    212.  13.9      185.       240.
@@ -255,16 +256,16 @@ extract_random_coefs(lmer_model)
 
 extract_vc(brm_model, ci_level = .8)
      group    effect variance     sd  sd_10  sd_90 var_prop
-1  Subject Intercept  733.227 27.078 18.347 36.560    0.510
-2  Subject      Days   41.659  6.454  4.850  8.346    0.029
-3 Residual            663.843 25.765 24.247 27.497    0.461
+1  Subject Intercept  680.180 26.080 18.482 34.451    0.488
+2  Subject      Days   44.483  6.670  4.867  8.544    0.032
+3 Residual            669.604 25.877 24.171 27.862    0.480
 
 summarize_model(lmer_model, cor_re = TRUE, digits = 1)
 Computing profile confidence intervals ...
 
 Variance Components:
     Group    Effect Variance   SD SD_2.5 SD_97.5 Var_prop
-  Subject Intercept    611.9 24.7   14.4    37.7      0.5
+  Subject Intercept    612.1 24.7   14.4    37.7      0.5
   Subject      Days     35.1  5.9    3.8     8.8      0.0
  Residual              654.9 25.6   22.9    28.9      0.5
 
@@ -273,22 +274,21 @@ Correlation of Random Effects:
 Intercept       1.0  0.1
 Days            0.1  1.0
 
-
 Fixed Effects:
-      Term Value  SE    t Lower_2.5 Upper_97.5
- Intercept 251.4 6.8 36.8     238.0      264.8
-      Days  10.5 1.5  6.8       7.4       13.5
+      Term Value  SE    t P_value Lower_2.5 Upper_97.5
+ Intercept 251.4 6.8 36.8     0.0     238.0      264.8
+      Days  10.5 1.5  6.8     0.0       7.4       13.5
 
 find_typical(gam_model, probs = c(.25, .50, .75))
 # A tibble: 6 x 8
   group_var effect    group   value    se lower_2.5 upper_97.5 probs
-  <chr><chr><chr><dbl><dbl><dbl><dbl><chr>
+  &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt;   &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;
 1 Subject   Days      331    -3.19   2.67     -8.43       2.04 25%  
 2 Subject   Days      369     0.873  2.67     -4.36       6.11 50%  
 3 Subject   Days      352     3.51   2.67     -1.73       8.75 75%  
 4 Subject   Intercept 350   -13.9   13.3     -39.9       12.2  25%  
 5 Subject   Intercept 369     3.26  13.3     -22.8       29.3  50%  
-6 Subject   Intercept 333    17.2   13.3      -8.87      43.2  75%  </chr></dbl></dbl></dbl></dbl></chr></chr></chr></dbl></dbl></dbl></dbl></fct></chr></chr></dbl></dbl></dbl></dbl></dbl></dbl></chr></dbl></dbl></dbl></dbl></fct></chr></chr></pre></div>
+6 Subject   Intercept 333    17.2   13.3      -8.87      43.2  75%  </pre></div>
 </div>
 <div id="consistent-output" class="section level3">
 <h3 class="hasAnchor">
@@ -306,16 +306,16 @@ Computing profile confidence intervals ...
    model    group    effect variance     sd sd_2.5 sd_97.5 var_prop
 1    tmb  Subject Intercept  565.515 23.781 15.017  37.658    0.451
 2    tmb  Subject      Days   32.682  5.717  3.805   8.588    0.026
-3    tmb Residual            654.941 25.592 22.800  28.725    0.523
-4   lmer  Subject Intercept  611.898 24.737 14.382  37.716    0.470
-5   lmer  Subject      Days   35.081  5.923  3.801   8.753    0.027
-6   lmer Residual            654.941 25.592 22.898  28.858    0.503
-7    brm  Subject Intercept  733.227 27.078 14.566  41.591    0.510
-8    brm  Subject      Days   41.659  6.454  4.203   9.034    0.029
-9    brm Residual            663.843 25.765 23.063  28.359    0.461
-10  stan  Subject Intercept  575.869 23.997 13.244  35.705    0.441
-11  stan  Subject      Days   51.168  7.153  4.537  10.431    0.039
-12  stan Residual            678.970 26.057  4.802   5.379    0.520
+3    tmb Residual            654.942 25.592     NA      NA    0.523
+4   lmer  Subject Intercept  612.100 24.741 14.381  37.716    0.470
+5   lmer  Subject      Days   35.072  5.922  3.801   8.753    0.027
+6   lmer Residual            654.940 25.592 22.898  28.858    0.503
+7    brm  Subject Intercept  680.180 26.080 16.324  37.155    0.488
+8    brm  Subject      Days   44.483  6.670  4.424  10.270    0.032
+9    brm Residual            669.604 25.877 23.519  28.958    0.480
+10  stan  Subject Intercept  596.717 24.428 12.255  35.737    0.448
+11  stan  Subject      Days   45.829  6.770  4.374   9.755    0.034
+12  stan Residual            688.537 26.240  4.790   5.382    0.517
 13   gam  Subject Intercept  627.571 25.051 16.085  39.015    0.477
 14   gam  Subject      Days   35.858  5.988  4.025   8.908    0.027
 15   gam Residual            653.582 25.565 22.792  28.676    0.496</pre></div>
@@ -374,7 +374,7 @@ Computing profile confidence intervals ...
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
 </div>
 
       </footer>
