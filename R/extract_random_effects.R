@@ -576,15 +576,20 @@ extract_random_effects.gam <- function(
   }
 
 
+
   if (purrr::is_empty(re_levels) | all(purrr::map_lgl(re_levels, is.null))) {
     stop('No factor random effects.')
   }
 
   non_factors <- purrr::map_lgl(re_levels, is.null)
+  re_idx = which(!non_factors)
 
   # this test is covered but covr ignores for some reason
   if (any(non_factors)) {
+
     re_terms[non_factors] <- FALSE
+    re_names  <- re_names[re_idx]
+    # re_levels <- re_levels[re_idx]
   }
 
   if (!is.null(re) && !re %in% re_names)
@@ -594,21 +599,33 @@ extract_random_effects.gam <- function(
       )
     )
 
-  re_labels <- purrr::map(model$smooth[re_terms], function(x) x$label)
+  re_labels <- purrr::map(model$smooth[re_idx], function(x) x$label)
 
   gam_coef <- stats::coef(model)
 
   # issue, parenthesis in the names means problematic regex matching so remove
   # all but key part of pattern
   re_label_base <- gsub(re_labels, pattern = "s\\(", replacement = '') # remove first s
+
   re_label_base <- gsub(re_label_base, pattern = "\\(|\\)", replacement = '') # remove parenthesis
 
-  re_coef <- grepl(names(gam_coef), pattern = paste0('^s\\(', re_label_base, collapse = "|"))
+  re_coef  <- vector('list', length = length(re_idx))
+  coef_idx <- vector('list', length = length(re_idx))
 
-  re0 <- gam_coef[re_coef]
+  for (i in re_idx) {
+    first_para <- model$smooth[[i]]$first.para
+    last_para  <- model$smooth[[i]]$last.para
+
+    coef_idx[[i]] <- first_para:last_para
+    re_coef[[i]]  <- gam_coef[coef_idx[[i]]]
+  }
+
+  re0 <- unlist(re_coef)
+  # re0 <- gam_coef[re_coef]
 
   gam_se <- sqrt(diag(model$Vp)) # no names
-  gam_se <- gam_se[names(gam_coef) %in% names(re0)]
+  gam_se <- gam_se[unlist(coef_idx)]
+  # gam_se <- gam_se[names(gam_coef) %in% names(re0)]
 
   # clean up names
   names(re0) <- gsub(names(re0), pattern = "s\\(|\\)", replacement = '')
@@ -616,15 +633,29 @@ extract_random_effects.gam <- function(
 
   re_n <- dplyr::n_distinct(names(re0)) # possible use later
   re_names <- names(re0)
+  re_effects <- purrr::map_chr(model$smooth, function(x) x$term[1])
+  re_effects <- rep(re_effects, times = purrr::map_int(re_coef, length))
+
+  # check to see if factors are the smooth terms, and repeat levels of grouping
+  # variable the number of levels in the factor
+  for (i in re_idx) {
+    smooth_vars <-  model$smooth[[i]]$term
+    smooth_term <- model$model[[smooth_vars[1]]] # it will be the first term, 2nd term is the RE var
+
+    if (length(smooth_vars) > 1 & (is.factor(smooth_term) | is.character(smooth_term))) {
+      n_levs <- dplyr::n_distinct(smooth_term)
+      re_levels[[i]] = rep(re_levels[[i]], times = n_levs)
+    }
+  }
 
   random_effects <- dplyr::tibble(effect = re_names) %>%
     dplyr::mutate(
       group_var = split_group_effect(effect, which = 2),
-      effect = split_group_effect(effect, which = 1),
+      effect = re_effects,
       effect = ifelse(effect ==  group_var, 'Intercept', effect),
-      group = unlist(re_levels),
-      value = re0,
-      se = gam_se
+      group  = unlist(re_levels),
+      value  = re0,
+      se     = gam_se
     )
 
   if (add_group_N) {

@@ -252,6 +252,7 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #
 # bprior1 <- prior(student_t(5,0,10), class = b) +
 #   prior(cauchy(0,2), class = sd)
+# pr = prior(normal(0, 10), class = b)
 #
 # brm_glm <- brm(
 #   count ~ zAge + zBase * Trt + (1 | patient),
@@ -262,7 +263,7 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #   thin  = 40
 # )
 #
-# pr = prior(normal(0, 10), class = b)
+
 #
 # brm_0 <-
 #   brm(
@@ -321,9 +322,11 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #   )
 #
 # probably problematic models but fine for testing
-
+#
+#
+#
 ### standard autocor
-
+#
 # brm_corAR <- update(
 #   brm_2,
 #   autocor = cor_ar( ~ Days | Subject),
@@ -470,8 +473,27 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #   cores = 4,
 #   thin = 40,
 # )
+# brm_ordinal <- brm(
+#   rating ~ period + carry + cs(treat) + (1|subject),
+#   data  = inhaler,
+#   family = sratio("cloglog"),
+#   prior = pr,
+#   cores = 4,
+#   thin  = 40
+# )
+#
+# brm_categorical <- brm(
+#   rating ~ period + carry + treat + (1|subject),
+#   data  = inhaler,
+#   family = categorical,
+#   prior = pr,
+#   cores = 4,
+#   thin  = 40
+# )
 #
 # save(
+#   brm_ordinal,
+#   brm_categorical,
 #   brm_sigma_simple,
 #   brm_sigma,
 #   brm_zi,
@@ -616,6 +638,17 @@ load('mgcv_results.RData')
 #   data = glmmTMB::Salamanders
 # )
 #
+# gam_cat_slope <-
+#   gam(
+#     Reaction ~ Days + s(Subject, bs = "re") + s(Days, Subject, bs = "re"),
+#     data = lme4::sleepstudy %>%
+#       mutate(Days = factor(
+#         case_when(Days < 2 ~ "x",
+#                   Days < 5 ~ "y",
+#                   TRUE ~ "z")
+#       )
+#       )
+#   )
 #
 # bam objects are very large to save even for small models
 # bam_1 = bam(
@@ -632,6 +665,7 @@ load('mgcv_results.RData')
 #   gam_1,
 #   gam_2,
 #   gam_3,
+#   gam_cat_slope,
 #   gam_glm,
 #   bam_1,
 #   file = 'tests/testthat/mgcv_results.RData'
