@@ -90,9 +90,12 @@ FAQ}. As noted there, this assumption may not be appropriate, and if you
 are really interested in an accurate uncertainty estimate you should
 probably use \code{brms}.
 
-For more complex models that include multiple outcomes/categories, this
-function likely will not work at present, as naming conventions are not
-consistent. I will possibly be able to update this in the future.
+For more complex models that include multiple outcomes/categories or have
+other anomalies, this function likely will not work at present, even if the
+underlying \code{extract_fixed_effects} and \code{extract_random_effects} do, as
+naming conventions are not consistent enough to deal with this without a
+lot of tedium that still may not satisfy every situation. I will possibly
+be able to update this in the future.
 
 The \code{nlme} package only provides the coefficients no estimated variance, so this
 function doesn't add to what you get from basic functionality for those

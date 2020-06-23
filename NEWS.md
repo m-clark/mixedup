@@ -1,3 +1,7 @@
+# mixedup 0.3.7
+
+* Extend exponentiate to summarize_model, extend extract_random_effects to multivariate models, minor fixes (e.g. issue #12).
+
 # mixedup 0.3.6
 
 * Add group counts for extract_random_effects.
