@@ -33,7 +33,7 @@ count_grps(model, grp_vars)
 \arguments{
 \item{model}{A fitted model e.g. from \code{lme4}.}
 
-\item{grp_vars}{A character vector fo the grouping/cluster variables used for
+\item{grp_vars}{A character vector for the grouping/cluster variables used for
 random effects}
 }
 \value{

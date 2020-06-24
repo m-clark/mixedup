@@ -46,13 +46,13 @@
 #' @return data frame of the random effects
 #'
 #' @seealso
-#' \code{\link[lme4:ranef.merMod]{ranef.merMod}},
-#' \code{\link[glmmTMB:ranef.glmmTMB]{ranef.glmmTMB}},
-#' \code{\link[nlme:ranef.lme]{ranef.lme}},
-#' \code{\link[brms:ranef.brmsfit]{ranef.brmsfit}},
-#' \code{\link[rstanarm:ranef.stanreg]{ranef.stanreg}},
-#' \code{\link[mgcv:gamObject]{gamObject}},
-#' \code{\link[mgcv:smooth.construct.re.smooth.spec]{smooth.construct.re.smooth.spec}}
+#' [lme4::ranef()],
+#' [glmmTMB::ranef()],
+#' [nlme::ranef()],
+#' [brms::ranef()],
+#' [rstanarm::ranef()],
+#' [mgcv::gamObject()],
+#' [mgcv::smooth.construct.re.smooth.spec()]
 #'
 #' @examples
 #' library(lme4)

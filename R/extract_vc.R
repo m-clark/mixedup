@@ -40,15 +40,15 @@
 #' contains the correlations of the random effects.
 #'
 #' @seealso
-#'   \code{\link[lme4]{confint.merMod}},
-#'   \code{\link[lme4:VarCorr]{VarCorr.merMod}},
-#'   \code{\link[glmmTMB]{confint.glmmTMB}},
-#'   \code{\link[glmmTMB:VarCorr]{VarCorr.glmmTMB}},
-#'   \code{\link[nlme:intervals]{intervals}},
-#'   \code{\link[nlme:VarCorr]{VarCorr.lme}},
-#'   \code{\link[brms:VarCorr]{VarCorr.brmsfit}}
-#'   \code{\link[rstanarm:VarCorr]{VarCorr.stanreg}}
-#'   \code{\link[mgcv:gam.vcomp]{gam.vcomp}}
+#'   [lme4::confint()]
+#'   [lme4::VarCorr()]
+#'   [glmmTMB::confint()],
+#'   [glmmTMB::VarCorr()],
+#'   [nlme::intervals()],
+#'   [nlme::VarCorr()],
+#'   [brms::VarCorr()],
+#'   [rstanarm::VarCorr()],
+#'   [mgcv::gam.vcomp()]
 #'
 #' @examples
 #' library(lme4)

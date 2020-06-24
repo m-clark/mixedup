@@ -4,7 +4,7 @@
 #'   results.
 #'
 #' @param model A fitted model e.g. from `lme4`.
-#' @param grp_vars A character vector fo the grouping/cluster variables used for
+#' @param grp_vars A character vector for the grouping/cluster variables used for
 #'   random effects
 #'
 #' @details For each grouping variable for which random effects are estimated,

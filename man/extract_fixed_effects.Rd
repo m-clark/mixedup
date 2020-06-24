@@ -120,7 +120,7 @@ case, Only the p-value from the process is provide, all other output is
 default provided \code{lme4} without adjustment.
 }
 \note{
-For nlme, this is just a multiplier based on the estimated standard
+For \code{nlme}, this is just a multiplier based on the estimated standard
 error and critical value for the \code{ci_level}.
 }
 \examples{
@@ -133,11 +133,11 @@ extract_fixed_effects(lmer_mod)
 
 }
 \seealso{
-\code{\link[broom:tidy.merMod]{tidy.merMod}},
-\code{\link[broom.mixed:tidy.glmmTMB]{tidy.glmmTMB}},
-\code{\link[broom:tidy.lme]{tidy.lme}},
-\code{\link[broom:tidy.merMod]{tidy.merMod}},
-\code{\link[broom.mixed:tidy.brmsfit]{tidy.brmsfit}}
+\code{\link[broom:tidy.merMod]{broom::tidy.merMod()}},
+\code{\link[broom.mixed:tidy.glmmTMB]{broom.mixed::tidy.glmmTMB()}},
+\code{\link[broom:tidy.lme]{broom::tidy.lme()}},
+\code{\link[broom:tidy.merMod]{broom::tidy.merMod()}},
+\code{\link[broom.mixed:tidy.brmsfit]{broom.mixed::tidy.brmsfit()}}
 
 Other extract: 
 \code{\link{extract_cor_structure}()},

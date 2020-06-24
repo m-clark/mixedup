@@ -19,17 +19,17 @@
 #'   case, Only the p-value from the process is provide, all other output is
 #'   default provided `lme4` without adjustment.
 #'
-#' @note For nlme, this is just a multiplier based on the estimated standard
+#' @note For `nlme`, this is just a multiplier based on the estimated standard
 #'   error and critical value for the `ci_level`.
 #'
 #' @return A data.frame with the fixed effects and associated statistics.
 #'
 #' @seealso
-#'   \code{\link[broom:tidy.merMod]{tidy.merMod}},
-#'   \code{\link[broom.mixed:tidy.glmmTMB]{tidy.glmmTMB}},
-#'   \code{\link[broom:tidy.lme]{tidy.lme}},
-#'   \code{\link[broom:tidy.merMod]{tidy.merMod}},
-#'   \code{\link[broom.mixed:tidy.brmsfit]{tidy.brmsfit}}
+#'   [broom::tidy.merMod()],
+#'   [broom.mixed::tidy.glmmTMB()],
+#'   [broom::tidy.lme()],
+#'   [broom::tidy.merMod()],
+#'   [broom.mixed::tidy.brmsfit()]
 #'
 #' @examples
 #' library(lme4)

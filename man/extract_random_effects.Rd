@@ -142,13 +142,13 @@ extract_random_effects(lmer_model)
 
 }
 \seealso{
-\code{\link[lme4:ranef.merMod]{ranef.merMod}},
-\code{\link[glmmTMB:ranef.glmmTMB]{ranef.glmmTMB}},
-\code{\link[nlme:ranef.lme]{ranef.lme}},
-\code{\link[brms:ranef.brmsfit]{ranef.brmsfit}},
-\code{\link[rstanarm:ranef.stanreg]{ranef.stanreg}},
-\code{\link[mgcv:gamObject]{gamObject}},
-\code{\link[mgcv:smooth.construct.re.smooth.spec]{smooth.construct.re.smooth.spec}}
+\code{\link[lme4:ranef]{lme4::ranef()}},
+\code{\link[glmmTMB:ranef]{glmmTMB::ranef()}},
+\code{\link[nlme:ranef]{nlme::ranef()}},
+\code{\link[brms:ranef]{brms::ranef()}},
+\code{\link[rstanarm:ranef]{rstanarm::ranef()}},
+\code{\link[mgcv:gamObject]{mgcv::gamObject()}},
+\code{\link[mgcv:smooth.construct.re.smooth.spec]{mgcv::smooth.construct.re.smooth.spec()}}
 
 Other extract: 
 \code{\link{extract_cor_structure}()},
