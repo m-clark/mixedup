@@ -88,12 +88,19 @@ and additional discussion at the
 \href{https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#confidence-intervals-on-conditional-meansblupsrandom-effects}{GLMM
 FAQ}. As noted there, this assumption may not be appropriate, and if you
 are really interested in an accurate uncertainty estimate you should
-probably use brms.
+probably use \code{brms}.
 
-The nlme package only provides the coefficients no estimated variance, so this
+For more complex models that include multiple outcomes/categories or have
+other anomalies, this function likely will not work at present, even if the
+underlying \code{extract_fixed_effects} and \code{extract_random_effects} do, as
+naming conventions are not consistent enough to deal with this without a
+lot of tedium that still may not satisfy every situation. I will possibly
+be able to update this in the future.
+
+The \code{nlme} package only provides the coefficients no estimated variance, so this
 function doesn't add to what you get from basic functionality for those
-models.  In addition, nlme adds all random effects to the fixed effects,
-whereas lme4 and others only add the effects requested.
+models.  In addition, \code{nlme} adds all random effects to the fixed effects,
+whereas \code{lme4} and others only add the effects requested.
 }
 \examples{
 library(lme4)

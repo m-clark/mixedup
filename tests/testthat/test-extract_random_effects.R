@@ -347,6 +347,14 @@ test_that('extract_random_effects.gam fails if no factors', {
 
 })
 
+test_that('extract_random_effects.gam can handle categorical slopes', {
+  # cat_slope discretizes Days into 3 levels
+  expect_equal(
+    nrow(extract_random_effects(gam_cat_slope, re = 'Subject', add_group_N = TRUE, ci_level = .9)),
+    nlevels(sleepstudy$Subject)*1 + nlevels(sleepstudy$Subject)*3
+  )
+})
+
 test_that('extract_random_effects.gam correct output', {
   expect_equal(
     nrow(extract_random_effects(gam_2, re = 'Subject')),
