@@ -144,9 +144,8 @@ extract_vc(lmer_mod, ci_scale = 'var')
 
 }
 \seealso{
-\code{\link[lme4:confint]{lme4::confint()}}
-\code{\link[lme4:VarCorr]{lme4::VarCorr()}}
-\code{\link[glmmTMB:confint]{glmmTMB::confint()}},
+\code{\link[lme4:confint.merMod]{lme4::confint.merMod()}},
+\code{\link[lme4:VarCorr]{lme4::VarCorr()}},
 \code{\link[glmmTMB:VarCorr]{glmmTMB::VarCorr()}},
 \code{\link[nlme:intervals]{nlme::intervals()}},
 \code{\link[nlme:VarCorr]{nlme::VarCorr()}},

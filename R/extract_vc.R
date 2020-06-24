@@ -40,9 +40,8 @@
 #' contains the correlations of the random effects.
 #'
 #' @seealso
-#'   [lme4::confint()]
-#'   [lme4::VarCorr()]
-#'   [glmmTMB::confint()],
+#'   [lme4::confint.merMod()],
+#'   [lme4::VarCorr()],
 #'   [glmmTMB::VarCorr()],
 #'   [nlme::intervals()],
 #'   [nlme::VarCorr()],
