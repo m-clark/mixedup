@@ -143,10 +143,10 @@ extract_random_effects(lmer_model)
 }
 \seealso{
 \code{\link[lme4:ranef]{lme4::ranef()}},
-\code{\link[glmmTMB:ranef]{glmmTMB::ranef()}},
-\code{\link[nlme:ranef]{nlme::ranef()}},
-\code{\link[brms:ranef]{brms::ranef()}},
-\code{\link[rstanarm:ranef]{rstanarm::ranef()}},
+\code{\link[glmmTMB:ranef.glmmTMB]{glmmTMB::ranef()}},
+\code{\link[nlme:random.effects]{nlme::ranef()}},
+\code{\link[brms:ranef.brmsfit]{brms::ranef()}},
+\code{\link[rstanarm:stanreg-methods]{rstanarm::ranef()}},
 \code{\link[mgcv:gamObject]{mgcv::gamObject()}},
 \code{\link[mgcv:smooth.construct.re.smooth.spec]{mgcv::smooth.construct.re.smooth.spec()}}
 

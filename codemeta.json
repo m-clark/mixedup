@@ -218,7 +218,7 @@
     }
   ],
   "releaseNotes": "https://github.com/m-clark/mixedup/blob/master/NEWS.md",
-  "fileSize": "37466.78KB",
+  "fileSize": "37467.028KB",
   "contIntegration": [
     "https://travis-ci.org/m-clark/mixedup",
     "https://ci.appveyor.com/project/m-clark/mixedup",
