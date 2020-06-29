@@ -12,11 +12,7 @@
 <!-- badges: start -->
 
 [![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
-[![Travis build
-status](https://travis-ci.org/m-clark/mixedup.svg?branch=master)](https://travis-ci.org/m-clark/mixedup)
-[![AppVeyor build
-status](https://ci.appveyor.com/api/projects/status/github/m-clark/mixedup?branch=master&svg=true)](https://ci.appveyor.com/project/m-clark/mixedup)
+experimental](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Codecov test
 coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](https://codecov.io/gh/m-clark/mixedup?branch=master)
 [![R build
@@ -168,7 +164,7 @@ extract_random_effects(tmb_model)
 
 extract_fixed_effects(nlme_model)
 # A tibble: 3 x 7
-  term   value    se     t p_value lower_2.5 upper_97.5
+  term   value    se     z p_value lower_2.5 upper_97.5
   <chr>  <dbl> <dbl> <dbl>   <dbl>     <dbl>      <dbl>
 1 Asym  101.   2.46   41.2       0     96.5      106.  
 2 R0     -8.63 0.318 -27.1       0     -9.26      -7.99

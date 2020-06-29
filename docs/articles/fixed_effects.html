@@ -101,7 +101,7 @@
       <h1 data-toc-skip>Extracting Fixed Effects</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-06-24</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-06-29</span></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/fixed_effects.Rmd"><code>vignettes/fixed_effects.Rmd</code></a></small>
       <div class="hidden name"><code>fixed_effects.Rmd</code></div>
@@ -204,8 +204,8 @@ extract_fixed_effects(mgcv_model)
 # A tibble: 2 x 7
   term      value    se     t p_value lower_5 upper_95
   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
-1 Intercept 251.   6.82 36.8        0  242.      262. 
-2 Days       10.5  1.55  6.77       0    8.24     13.0</pre></body></html></div>
+1 Intercept 251.   6.82 36.8        0  241.      263. 
+2 Days       10.5  1.55  6.77       0    7.79     13.5</pre></body></html></div>
 <div class="sourceCode" id="cb4"><html><body><pre class="r">tmb_zip &lt;- glmmTMB(
   count ~ spp + mined + (1 | site),
   zi =  ~ spp + mined + (1 | site),

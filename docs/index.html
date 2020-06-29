@@ -107,7 +107,7 @@
 <a href="#a-package-for-extracting-clean-results-from-mixed-models" class="anchor"></a>a package for extracting clean results from mixed models</h5>
 <p><br><br></p>
 <!-- badges: start -->
-<p><a href="https://www.tidyverse.org/lifecycle/#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" alt="Lifecycle: experimental"></a> <a href="https://travis-ci.org/m-clark/mixedup"><img src="https://travis-ci.org/m-clark/mixedup.svg?branch=master" alt="Travis build status"></a> <a href="https://ci.appveyor.com/project/m-clark/mixedup"><img src="https://ci.appveyor.com/api/projects/status/github/m-clark/mixedup?branch=master&amp;svg=true" alt="AppVeyor build status"></a> <a href="https://codecov.io/gh/m-clark/mixedup?branch=master"><img src="https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://github.com/m-clark/mixedup/actions"><img src="https://github.com/m-clark/mixedup/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <!-- badges: end --></p>
+<p><a href="https://www.tidyverse.org/lifecycle/#maturing"><img src="https://img.shields.io/badge/lifecycle-maturing-blue.svg" alt="Lifecycle: experimental"></a> <a href="https://codecov.io/gh/m-clark/mixedup?branch=master"><img src="https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg" alt="Codecov test coverage"></a> <a href="https://github.com/m-clark/mixedup/actions"><img src="https://github.com/m-clark/mixedup/workflows/R-CMD-check/badge.svg" alt="R build status"></a> <!-- badges: end --></p>
 <p>This package provides extended functionality for mixed models. The goal of <code>mixedup</code> is to solve little problems I have had that slip through the cracks from the various modeling packages and others in trying to get presentable output. Basically the idea is to create (tidy) objects that are easy to use and essentially ready for presentation, as well as <em>consistent</em> across packages and across functions. Such objects would be things like variance components and random effects. I use several of these packages (including mgcv) for mixed models, and typically have to do some notable post processing to get some viable output even with <code><a href="https://rdrr.io/pkg/broom/man/reexports.html">broom::tidy</a></code>, and this effort often isn’t applicable if I switch to another package for the same type of model. These functions attempt to address this issue.</p>
 <p>For more details and examples see <a href="https://m-clark.github.io/mixedup/" class="uri">https://m-clark.github.io/mixedup/</a>.</p>
 </div>
@@ -232,7 +232,7 @@ extract_random_effects(tmb_model)
 
 extract_fixed_effects(nlme_model)
 # A tibble: 3 x 7
-  term   value    se     t p_value lower_2.5 upper_97.5
+  term   value    se     z p_value lower_2.5 upper_97.5
   &lt;chr&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
 1 Asym  101.   2.46   41.2       0     96.5      106.  
 2 R0     -8.63 0.318 -27.1       0     -9.26      -7.99
