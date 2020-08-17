@@ -25,10 +25,9 @@
 #' @return A data.frame with the fixed effects and associated statistics.
 #'
 #' @seealso
-#'   [broom::tidy.merMod()],
+#'   [broom.mixed::tidy.merMod()],
 #'   [broom.mixed::tidy.glmmTMB()],
-#'   [broom::tidy.lme()],
-#'   [broom::tidy.merMod()],
+#'   [broom.mixed::tidy.lme()],
 #'   [broom.mixed::tidy.brmsfit()]
 #'
 #' @examples
@@ -87,6 +86,9 @@ extract_fixed_effects.merMod <-
     fe <- data.frame(stats::coef(summary(model))) %>%
       dplyr::mutate(term = rownames(.)) %>%
       dplyr::select(term, dplyr::everything())
+
+    # edge case of a no covariate, no intercept model
+    if (nrow(fe) == 0) return(NULL)
 
     if (inherits(model, 'glmerMod')) {
       colnames(fe) <- c('term', 'value', 'se', 'z', 'p_value')

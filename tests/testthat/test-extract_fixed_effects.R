@@ -78,6 +78,10 @@ test_that('extract_fixed_effects.merMod warns/corrects on wrong p_value input', 
   expect_warning(extract_fixed_effects(lmer_2, p_value = 'KR20'))
 })
 
+test_that('extract_fixed_effects.merMod is null if no covariates', {
+  expect_null(extract_fixed_effects(lme4::lmer(Reaction ~ -1 + (1|Subject), lme4::sleepstudy)))
+})
+
 
 # Test glmmTMB ------------------------------------------------------------
 

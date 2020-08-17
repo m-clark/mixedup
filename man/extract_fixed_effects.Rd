@@ -133,10 +133,9 @@ extract_fixed_effects(lmer_mod)
 
 }
 \seealso{
-\code{\link[broom:lme4_tidiers]{broom::tidy.merMod()}},
+\code{\link[broom.mixed:lme4_tidiers]{broom.mixed::tidy.merMod()}},
 \code{\link[broom.mixed:glmmTMB_tidiers]{broom.mixed::tidy.glmmTMB()}},
-\code{\link[broom:nlme_tidiers]{broom::tidy.lme()}},
-\code{\link[broom:lme4_tidiers]{broom::tidy.merMod()}},
+\code{\link[broom.mixed:nlme_tidiers]{broom.mixed::tidy.lme()}},
 \code{\link[broom.mixed:brms_tidiers]{broom.mixed::tidy.brmsfit()}}
 
 Other extract: 
