@@ -553,6 +553,8 @@ extract_random_effects.gam <- function(
                              function(x)
                                inherits(x, "random.effect"))
 
+  re_smooths <- model$smooth[re_terms]
+
   re_names <- purrr::map_chr(model$smooth[re_terms],
                              function(x)
                                ifelse(length(x$vn) == 1,
@@ -560,6 +562,7 @@ extract_random_effects.gam <- function(
                                       x$vn[length(x$vn)]))
 
   re_levels <- vector("list", length(re_names))
+
 
   # add check on re name/type
   # check that re is factor as re smooth can be applied to continuous
@@ -597,7 +600,7 @@ extract_random_effects.gam <- function(
       )
     )
 
-  re_labels <- purrr::map(model$smooth[re_idx], function(x) x$label)
+  re_labels <- purrr::map(re_smooths[re_idx], function(x) x$label)
 
   gam_coef <- stats::coef(model)
 
@@ -610,8 +613,8 @@ extract_random_effects.gam <- function(
   coef_idx <- vector('list', length = length(re_idx))
 
   for (i in re_idx) {
-    first_para <- model$smooth[[i]]$first.para
-    last_para  <- model$smooth[[i]]$last.para
+    first_para <- re_smooths[[i]]$first.para
+    last_para  <- re_smooths[[i]]$last.para
 
     coef_idx[[i]] <- first_para:last_para
     re_coef[[i]]  <- gam_coef[coef_idx[[i]]]
@@ -626,13 +629,13 @@ extract_random_effects.gam <- function(
   names(re0) <- gsub(names(re0), pattern = "\\.[0-9]+", replacement = '')
 
   re_names   <- names(re0)
-  re_effects <- purrr::map_chr(model$smooth, function(x) x$term[1])
+  re_effects <- purrr::map_chr(re_smooths, function(x) x$term[1])
   re_effects <- rep(re_effects, times = purrr::map_int(re_coef, length))
 
   # check to see if factors are the smooth terms (i.e. random cat slope), and
   # repeat levels of grouping variable the number of levels in the factor
   for (i in re_idx) {
-    smooth_vars <-  model$smooth[[i]]$term
+    smooth_vars <-  re_smooths[[i]]$term
     smooth_term <- model$model[[smooth_vars[1]]] # it will be the first term, 2nd term is the RE var
 
     if (length(smooth_vars) > 1 & (is.factor(smooth_term) | is.character(smooth_term))) {

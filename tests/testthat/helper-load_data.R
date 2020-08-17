@@ -606,7 +606,7 @@ load('rstanarm_results.RData')
 
 load('mgcv_results.RData')
 
-# library(mgcv)
+library(mgcv)
 #
 # gam_0 = gam(Reaction ~  s(Subject, bs = 're'),
 #                   data = lme4::sleepstudy,
@@ -650,6 +650,16 @@ load('mgcv_results.RData')
 #       )
 #   )
 #
+# gam_other_smooth <- gam(
+#     Reaction ~  Days +
+#       s(x) +
+#       s(Subject, bs = 're') +
+#       s(Days),
+#     data = data.frame(lme4::sleepstudy, x = rnorm(nrow(lme4::sleepstudy))),
+#     method = 'REML'
+# )
+#
+#
 # bam objects are very large to save even for small models
 # bam_1 = bam(
 #   y ~ service +
@@ -666,6 +676,7 @@ load('mgcv_results.RData')
 #   gam_2,
 #   gam_3,
 #   gam_cat_slope,
+#   gam_other_smooth,
 #   gam_glm,
 #   bam_1,
 #   file = 'tests/testthat/mgcv_results.RData'

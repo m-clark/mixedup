@@ -294,15 +294,24 @@ context('test extract_random_effects.gam')
 
 
 test_that('extract_random_effects.gam basic functionality', {
-  expect_s3_class(extract_random_effects(gam_1), 'data.frame')
+  init = extract_random_effects(gam_1)
+
+  expect_s3_class(init, 'data.frame')
+  expect_equal(nrow(init), 18)
 })
 
 test_that('extract_random_effects.gam basic functionality', {
-  expect_s3_class(extract_random_effects(gam_2), 'data.frame')
+  init = extract_random_effects(gam_2)
+
+  expect_s3_class(init, 'data.frame')
+  expect_equal(nrow(init), 36)
 })
 
 test_that('extract_vc.gam basic functionality: bam', {
+  init = extract_random_effects(bam_1)
+
   expect_s3_class(extract_random_effects(bam_1), 'data.frame')
+  expect_equal(unique(init$group_var), c('d', 'dept'))
 })
 
 test_that('extract_random_effects.gam works with multiple re', {
@@ -345,6 +354,26 @@ test_that('extract_random_effects.gam fails if no factors', {
 
   expect_error(suppressWarnings(extract_random_effects(ga_model_num_re)))
 
+})
+
+
+test_that('extract_random_effects.gam can handle other smooths',{
+  testmod = mgcv::gam(Reaction ~  s(Days) + s(Subject, bs='re'),
+                      data = lme4::sleepstudy,
+                      method = 'REML')
+
+  expect_equal(extract_random_effects(gam_1, digits = 1),
+               extract_random_effects(testmod, digits = 1))
+})
+
+test_that('extract_random_effects.gam can handle other smooths',{
+
+  init = mean(abs(
+    extract_random_effects(gam_other_smooth, digits = 1)$value -
+      extract_random_effects(gam_1, digits = 1)$value
+  ))
+
+  expect_lt(as.numeric(init), 1)
 })
 
 test_that('extract_random_effects.gam can handle categorical slopes', {
