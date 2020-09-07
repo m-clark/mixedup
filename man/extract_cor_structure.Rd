@@ -40,8 +40,8 @@ extract. Must be one of 'ar1', 'ou', 'cs', 'toep', 'diag','us', 'mat',
 covariance/correlation matrix (\code{TRUE}), or simplified output where possible
 (\code{FALSE}). Default is \code{FALSE}. See details.}
 
-\item{ci_level}{For brms objects, confidence level < 1, typically above 0.90. A value of 0 will
-not report it. Default is .95.}
+\item{ci_level}{For brms objects, confidence level < 1, typically above
+0.90. A value of 0 will not report it. Default is .95.}
 }
 \value{
 For nlme and glmmTMB models, a data frame of the estimates. For brms, the

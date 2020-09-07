@@ -18,7 +18,7 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          # - {os: macOS-latest,   r: 'devel'} #
+          # - {os: macOS-latest,   r: 'devel'} # https://github.com/r-lib/actions/issues/140
           - {os: macOS-latest,   r: 'release'}
           - {os: macOS-latest,   r: '3.6'}
           - {os: windows-latest, r: 'release'}

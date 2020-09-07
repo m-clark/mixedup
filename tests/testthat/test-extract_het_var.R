@@ -40,10 +40,18 @@ test_that('extract_het_var.glmmTMB returns a data.frame', {
 })
 
 test_that('extract_het_var.glmTMB can do variance scale', {
-  initsd = extract_het_var(tmb_diag, scale = 'sd')[,-1]
-  initvar = extract_het_var(tmb_diag, scale = 'var')[,-1]
+  initsd  = extract_het_var(tmb_diag, scale = 'sd')[-1]
+  initvar = extract_het_var(tmb_diag, scale = 'var')[-1]
+
 
   expect_equal(round(initvar, 2), round(initsd^2, 2))
+})
+
+test_that('extract_het_var.glmTMB gives correct result', {
+  inittmb = attr(VarCorr(tmb_diag)$cond$group, 'stddev')^2 + glmmTMB::sigma(tmb_diag)^2
+  initmixed = extract_het_var(tmb_diag, scale = 'var')[-1] # remove 'group' identifier
+
+  expect_equal(round(inittmb, 2), round(unlist(initmixed), 2), tolerance = .01)
 })
 
 

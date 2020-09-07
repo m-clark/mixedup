@@ -7,17 +7,16 @@
   "identifier": "mixedup",
   "description": "This provides tools for extracting various parts of mixed model output from commonly used packages in a consistent fashion. Results are produced in a usable form for visualization and table presentation. It currently provides a wide variety of support for lme4, nlme, glmmTMB, mgcv, brms, and rstanarm.",
   "name": "mixedup: Miscellaneous functions for mixed models",
-  "codeRepository": "https://m-clark.github.io/mixedup",
+  "codeRepository": "https://github.com/m-clark/mixedup",
   "issueTracker": "https://github.com/m-clark/mixedup/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.3.7",
+  "version": "0.3.8",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
-    "version": "4.0.0",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.0 (2020-04-24)",
+  "runtimePlatform": "R version 4.0.2 (2020-06-22)",
   "author": [
     {
       "@type": "Person",
@@ -218,13 +217,9 @@
     }
   ],
   "releaseNotes": "https://github.com/m-clark/mixedup/blob/master/NEWS.md",
-  "fileSize": "37467.028KB",
-  "contIntegration": [
-    "https://travis-ci.org/m-clark/mixedup",
-    "https://ci.appveyor.com/project/m-clark/mixedup",
-    "https://codecov.io/gh/m-clark/mixedup?branch=master"
-  ],
-  "developmentStatus": "https://www.tidyverse.org/lifecycle/#experimental",
+  "fileSize": "40467.364KB",
+  "contIntegration": "https://codecov.io/gh/m-clark/mixedup?branch=master",
+  "developmentStatus": "https://www.tidyverse.org/lifecycle/#maturing",
   "keywords": [
     "lme4",
     "glmmtmb",
@@ -236,5 +231,5 @@
     "brms",
     "mgcv"
   ],
-  "readme": "https://github.com/m-clark/mixedup/blob/master/README.md"
+  "relatedLink": "https://m-clark.github.io/mixedup"
 }

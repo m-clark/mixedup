@@ -5,12 +5,12 @@
 #'
 #' @param model An appropriate mixed model.
 #' @param digits Rounding. Default is 3.
-#' @param ci_level  For brms objects, confidence level < 1, typically above 0.90. A value of 0 will
-#'   not report it. Default is .95.
-#' @param return_all For brms class objects, return all fitted values or only
-#'   the distinct ones. Default is FALSE.
-#' @param scale For brms class objects, return result on original standard
-#'   deviation scale ('sd') or as variance ('var').
+#' @param ci_level  For brms objects, confidence level < 1, typically above
+#'   0.90. A value of 0 will not report it. Default is .95.
+#' @param return_all For brms class objects, return all fitted values (`TRUE`) or only
+#'   the distinct ones. Default is `FALSE`.
+#' @param scale Return result on original standard deviation scale ('sd') or as
+#'   variance ('var'), the default.
 #' @param ... Other arguments specific to the method. Unused at present.
 #'
 #' @details For nlme models with heterogeneous variance, i.e. that contain
@@ -18,10 +18,10 @@
 #' version the estimates. Only tested with the `varIdent` case.
 #'
 #' For glmmTMB, this serves as a wrapper for \link{extract_cor_structure} for
-#' models with for the 'diag' function as part of the formula.  See that
+#' models with for the `diag` function as part of the formula.  See that
 #' function for details. For distributional models where the dispersion is
 #' explicitly modeled separately via `disp = ~ `, use the `component` argument
-#' of the other functions in this packge.
+#' of the other functions in this package.
 #'
 #' For brms distributional models with a `sigma ~ . formula`, this produces the
 #' (unique) fitted values for the dispersion part of the model.  As this is
@@ -29,6 +29,9 @@
 #' group levels, only the distinct fitted values, which would be one value per
 #' group, are returned. If all fitted values are desired, set `return_all` to
 #' `TRUE`.
+#'
+#' This function has not been tested except in the more simple model settings.
+#' It's unclear how well it will work with other model complications added.
 #'
 #' @return A vector of the estimates on the variance scale
 #'
@@ -82,7 +85,7 @@
 extract_het_var <- function(
   model,
   digits = 3,
-  scale = 'sd',
+  scale = 'var',
   ...
 ) {
   if (!inherits(model, c('lme', 'glmmTMB', 'brmsfit')))
@@ -97,7 +100,7 @@ extract_het_var <- function(
 extract_het_var.lme <- function(
   model,
   digits = 3,
-  scale = 'sd',
+  scale = 'var',
   ...
 ) {
 
@@ -122,11 +125,12 @@ extract_het_var.lme <- function(
 extract_het_var.glmmTMB <- function(
   model,
   digits = 3,
-  scale = 'sd',
+  scale = 'var',
   ...
 ) {
   sigmas <- extract_cor_structure(model, digits = digits, which_cor = 'diag', ...)
 
+  # by default, the result is var
   if (scale == 'sd')
     sigmas <- sigmas %>% dplyr::mutate_if(is.numeric, sqrt)
 
@@ -140,7 +144,7 @@ extract_het_var.glmmTMB <- function(
 extract_het_var.brmsfit <- function(
   model,
   digits = 3,
-  scale = 'sd',
+  scale = 'var',
   ...,
   ci_level = .95,
   return_all = FALSE

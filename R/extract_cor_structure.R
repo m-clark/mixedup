@@ -135,7 +135,7 @@ extract_cor_structure.glmmTMB <- function(
 
   if (which_cor == 'diag')
     cor_mats <-
-    purrr::map(cor_init, function(x) attr(x, 'stddev') + glmmTMB::sigma(model) ^ 2)
+    purrr::map(cor_init, function(x) attr(x, 'stddev') ^ 2 + glmmTMB::sigma(model) ^ 2)
   else
     cor_mats <- purrr::map(cor_init, function(x) attr(x, 'correlation'))
 
