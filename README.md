@@ -36,31 +36,28 @@ For more details and examples see <https://m-clark.github.io/mixedup/>.
 
 ## Installation
 
-You can install mixedup from GitHub with `devtools`:
+You can install mixedup from GitHub with `remotes`. Use the second
+approach if you don’t already have `rstanarm` or `brms` (they aren’t
+required to use in general).
 
 ``` r
-devtools::install_github('m-clark/mixedup')
-```
+remotes::install_github('m-clark/mixedup')
 
-If you have an issue with the installation (something about `rstanarm`
-and `brms_model`), you can ignore it with the following, as it only
-regards some internal data used for the vignettes, which is completely
-unnecessary for the package.
+# if you don't already have rstanarm and/or brms
 
-``` r
 withr::with_envvar(c(R_REMOTES_NO_ERRORS_FROM_WARNINGS = "true"), 
-  devtools::install_github('m-clark/mixedup')
+  remotes::install_github('m-clark/mixedup')
 )
 ```
 
 ## Supported models
 
-  - lme4
-  - glmmTMB
-  - nlme
-  - mgcv
-  - rstanarm
-  - brms
+  - `lme4`
+  - `glmmTMB`
+  - `nlme`
+  - `mgcv`
+  - `rstanarm`
+  - `brms`
 
 ## Feature list
 
@@ -237,7 +234,7 @@ mods = list(
 purrr::map_df(mods, extract_vc, .id = 'model') 
 Computing profile confidence intervals ...
    model    group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1    tmb  Subject Intercept  565.515 23.781 15.017  37.658    0.451
+1    tmb  Subject Intercept  565.516 23.781 15.017  37.658    0.451
 2    tmb  Subject      Days   32.682  5.717  3.805   8.588    0.026
 3    tmb Residual            654.942 25.592     NA      NA    0.523
 4   lmer  Subject Intercept  612.100 24.741 14.381  37.716    0.470

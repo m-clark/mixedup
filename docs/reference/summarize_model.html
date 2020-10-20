@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -150,25 +150,25 @@
     </div>
 
     <pre class="usage"><span class='fu'>summarize_model</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>cor_re</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>cor_fe</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>exponentiate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  ci = <span class='fl'>TRUE</span>,
+  cor_re = <span class='fl'>FALSE</span>,
+  cor_fe = <span class='fl'>FALSE</span>,
+  exponentiate = <span class='fl'>FALSE</span>,
+  digits = <span class='fl'>2</span>,
+  component = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='fu'>summarise_model</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>ci</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>cor_re</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>cor_fe</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>exponentiate</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>2</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  ci = <span class='fl'>TRUE</span>,
+  cor_re = <span class='fl'>FALSE</span>,
+  cor_fe = <span class='fl'>FALSE</span>,
+  exponentiate = <span class='fl'>FALSE</span>,
+  digits = <span class='fl'>2</span>,
+  component = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -233,11 +233,12 @@ joint models.</p>
     <div class='dont-index'><p><code><a href='extract_vc.html'>extract_vc()</a></code>, <code><a href='extract_fixed_effects.html'>extract_fixed_effects()</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/lme4/lme4'>lme4</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://m-clark.github.io/mixedup'>mixedup</a></span>)
 
-<span class='no'>lmer_mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> + <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
-<span class='fu'>summarize_model</span>(<span class='no'>lmer_mod</span>)</div><div class='output co'>#&gt; <span class='message'>Computing profile confidence intervals ...</span></div><div class='output co'>#&gt; <span class='message'></span>
+<span class='kw'>lmer_mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='kw'>Reaction</span> <span class='op'>~</span> <span class='kw'>Days</span> <span class='op'>+</span> (<span class='fl'>1</span> <span class='op'>+</span> <span class='kw'>Days</span> <span class='op'>|</span> <span class='kw'>Subject</span>), data = <span class='kw'>sleepstudy</span>)
+<span class='fu'>summarize_model</span>(<span class='kw'>lmer_mod</span>)
+</div><div class='output co'>#&gt; <span class='message'>Computing profile confidence intervals ...</span></div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Variance Components:</span></div><div class='output co'>#&gt;     Group    Effect Variance    SD SD_2.5 SD_97.5 Var_prop
 #&gt;   Subject Intercept   612.10 24.74  14.38   37.72     0.47
 #&gt;   Subject      Days    35.07  5.92   3.80    8.75     0.03
@@ -261,7 +262,7 @@ joint models.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -75,7 +75,7 @@ models." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -151,22 +151,22 @@ models." />
 models.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_het_var</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>extract_het_var</span>(<span class='kw'>model</span>, digits = <span class='fl'>3</span>, scale = <span class='st'>"var"</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for lme</span>
-<span class='fu'>extract_het_var</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>, <span class='no'>...</span>)
+<span class='fu'>extract_het_var</span>(<span class='kw'>model</span>, digits = <span class='fl'>3</span>, scale = <span class='st'>"var"</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for glmmTMB</span>
-<span class='fu'>extract_het_var</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='kw'>scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>, <span class='no'>...</span>)
+<span class='fu'>extract_het_var</span>(<span class='kw'>model</span>, digits = <span class='fl'>3</span>, scale = <span class='st'>"var"</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for brmsfit</span>
 <span class='fu'>extract_het_var</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>return_all</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>model</span>,
+  digits = <span class='fl'>3</span>,
+  scale = <span class='st'>"var"</span>,
+  <span class='kw'>...</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  return_all = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -182,8 +182,8 @@ models.</p>
     </tr>
     <tr>
       <th>scale</th>
-      <td><p>For brms class objects, return result on original standard
-deviation scale ('sd') or as variance ('var').</p></td>
+      <td><p>Return result on original standard deviation scale ('sd') or as
+variance ('var'), the default.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -191,13 +191,13 @@ deviation scale ('sd') or as variance ('var').</p></td>
     </tr>
     <tr>
       <th>ci_level</th>
-      <td><p>For brms objects, confidence level &lt; 1, typically above 0.90. A value of 0 will
-not report it. Default is .95.</p></td>
+      <td><p>For brms objects, confidence level &lt; 1, typically above
+0.90. A value of 0 will not report it. Default is .95.</p></td>
     </tr>
     <tr>
       <th>return_all</th>
-      <td><p>For brms class objects, return all fitted values or only
-the distinct ones. Default is FALSE.</p></td>
+      <td><p>For brms class objects, return all fitted values (<code>TRUE</code>) or only
+the distinct ones. Default is <code>FALSE</code>.</p></td>
     </tr>
     </table>
 
@@ -210,16 +210,18 @@ the distinct ones. Default is FALSE.</p></td>
 something like <code><a href='https://rdrr.io/pkg/nlme/man/varIdent.html'>varIdent(form = ~1|Group)</a></code>, this returns a more presentable
 version the estimates. Only tested with the <code>varIdent</code> case.</p>
 <p>For glmmTMB, this serves as a wrapper for <a href='extract_cor_structure.html'>extract_cor_structure</a> for
-models with for the 'diag' function as part of the formula.  See that
+models with for the <code>diag</code> function as part of the formula.  See that
 function for details. For distributional models where the dispersion is
 explicitly modeled separately via <code>disp = ~ </code>, use the <code>component</code> argument
-of the other functions in this packge.</p>
+of the other functions in this package.</p>
 <p>For brms distributional models with a <code>sigma ~ . formula</code>, this produces the
 (unique) fitted values for the dispersion part of the model.  As this is
 often just a single grouping variable to allow variance to vary over the
 group levels, only the distinct fitted values, which would be one value per
 group, are returned. If all fitted values are desired, set <code>return_all</code> to
 <code>TRUE</code>.</p>
+<p>This function has not been tested except in the more simple model settings.
+It's unclear how well it will work with other model complications added.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p>Other extract: 
@@ -231,19 +233,21 @@ group, are returned. If all fitted values are desired, set <code>return_all</cod
 <code><a href='extract_vc.html'>extract_vc</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>nlme</span>)</div><div class='output co'>#&gt; <span class='message'></span>
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://svn.r-project.org/R-packages/trunk/nlme'>nlme</a></span>)
+</div><div class='output co'>#&gt; <span class='message'></span>
 #&gt; <span class='message'>Attaching package: ‘nlme’</span></div><div class='output co'>#&gt; <span class='message'>The following object is masked from ‘package:lme4’:</span>
 #&gt; <span class='message'></span>
-#&gt; <span class='message'>    lmList</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
+#&gt; <span class='message'>    lmList</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://m-clark.github.io/mixedup'>mixedup</a></span>)
 
-<span class='no'>model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/nlme/man/lme.html'>lme</a></span>(
-  <span class='no'>distance</span> ~ <span class='no'>age</span> + <span class='no'>Sex</span>,
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Orthodont</span>,
-  <span class='kw'>random</span> <span class='kw'>=</span> ~ <span class='fl'>1</span><span class='kw'>|</span><span class='no'>Subject</span>,
-  <span class='kw'>weights</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/nlme/man/varIdent.html'>varIdent</a></span>(<span class='kw'>form</span> <span class='kw'>=</span> ~ <span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>Sex</span>)
+<span class='kw'>model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/nlme/man/lme.html'>lme</a></span>(
+  <span class='kw'>distance</span> <span class='op'>~</span> <span class='kw'>age</span> <span class='op'>+</span> <span class='kw'>Sex</span>,
+  data = <span class='kw'>Orthodont</span>,
+  random = <span class='op'>~</span> <span class='fl'>1</span><span class='op'>|</span><span class='kw'>Subject</span>,
+  weights = <span class='fu'><a href='https://rdrr.io/pkg/nlme/man/varIdent.html'>varIdent</a></span>(form = <span class='op'>~</span> <span class='fl'>1</span> <span class='op'>|</span> <span class='kw'>Sex</span>)
 )
 
-<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='no'>model</span>)</div><div class='output co'>#&gt; Linear mixed-effects model fit by REML
+<span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span>(<span class='kw'>model</span>)
+</div><div class='output co'>#&gt; Linear mixed-effects model fit by REML
 #&gt;  Data: Orthodont 
 #&gt;        AIC      BIC    logLik
 #&gt;   432.3567 448.2805 -210.1784
@@ -275,38 +279,44 @@ group, are returned. If all fitted values are desired, set <code>return_all</cod
 #&gt; 
 #&gt; Number of Observations: 108
 #&gt; Number of Groups: 27 </div><div class='input'>
-<span class='fu'>extract_het_var</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt;    Male Female
-#&gt; 1 1.762    0.8</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>glmmTMB</span>)
+<span class='fu'>extract_het_var</span>(<span class='kw'>model</span>)
+</div><div class='output co'>#&gt;    Male Female
+#&gt; 1 3.104   0.64</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/glmmTMB/glmmTMB'>glmmTMB</a></span>)
 
 <span class='co'># does not get the same estimates as nlme, but would get similar if modeled</span>
 <span class='co'># using dispersion approach.</span>
-<span class='no'>model</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html'>glmmTMB</a></span>(<span class='no'>distance</span> ~ <span class='no'>age</span> + <span class='no'>Sex</span> + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>Subject</span>) + <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='no'>Sex</span> + <span class='fl'>0</span> <span class='kw'>|</span> <span class='no'>Subject</span>),
-          <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Orthodont</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Model convergence problem; non-positive-definite Hessian matrix. See vignette('troubleshooting')</span></div><div class='input'>
-<span class='fu'>extract_het_var</span>(<span class='no'>model</span>)</div><div class='output co'>#&gt;       group  SexMale SexFemale
-#&gt; 1 Subject.1 1.497665  1.730318</div><div class='input'>
+<span class='kw'>model</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html'>glmmTMB</a></span>(<span class='kw'>distance</span> <span class='op'>~</span> <span class='kw'>age</span> <span class='op'>+</span> <span class='kw'>Sex</span> <span class='op'>+</span> (<span class='fl'>1</span> <span class='op'>|</span> <span class='kw'>Subject</span>) <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span>(<span class='kw'>Sex</span> <span class='op'>+</span> <span class='fl'>0</span> <span class='op'>|</span> <span class='kw'>Subject</span>),
+          data = <span class='kw'>Orthodont</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Model convergence problem; non-positive-definite Hessian matrix. See vignette('troubleshooting')</span></div><div class='input'>
+<span class='fu'>extract_het_var</span>(<span class='kw'>model</span>)
+</div><div class='output co'>#&gt;       group SexMale SexFemale
+#&gt; 1 Subject.1   2.072     2.964</div><div class='input'>
 <span class='co'># compare with</span>
-<span class='no'>model</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html'>glmmTMB</a></span>(<span class='no'>distance</span> ~ <span class='no'>age</span> + <span class='no'>Sex</span> + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>dispformula</span> <span class='kw'>=</span> ~ <span class='no'>Sex</span>,
-          <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Orthodont</span>)
+<span class='kw'>model</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html'>glmmTMB</a></span>(<span class='kw'>distance</span> <span class='op'>~</span> <span class='kw'>age</span> <span class='op'>+</span> <span class='kw'>Sex</span> <span class='op'>+</span> (<span class='fl'>1</span> <span class='op'>|</span> <span class='kw'>Subject</span>), dispformula = <span class='op'>~</span> <span class='kw'>Sex</span>,
+          data = <span class='kw'>Orthodont</span>)
 
-<span class='fu'><a href='extract_fixed_effects.html'>extract_fixed_effects</a></span>(<span class='no'>model</span>, <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>'disp'</span>, <span class='kw'>exponentiate</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='warning'>Warning: Intervals could not be computed. Returning ci based on se.</span>
+<span class='fu'><a href='extract_fixed_effects.html'>extract_fixed_effects</a></span>(<span class='kw'>model</span>, component = <span class='st'>'disp'</span>, exponentiate = <span class='fl'>TRUE</span>)
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Intervals could not be computed. Returning ci based on se.</span>
 #&gt; <span class='warning'>                </span>
 #&gt; <span class='warning'>If se is NaN, check random effects for zero variance estimates.</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 2 x 7</span><span>
 #&gt;   term      value    se     z p_value lower_2.5 upper_97.5
 #&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'>1</span><span> Intercept 3.09  0.639  5.45       0     2.06       4.63 
 #&gt; </span><span style='color: #555555;'>2</span><span> SexFemale 0.202 0.069 -</span><span style='color: #BB0000;'>4.68</span><span>       0     0.103      0.395</div><div class='input'>
-<span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>brms</span>)
+<span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/paul-buerkner/brms'>brms</a></span>)
 
-<span class='no'>model</span> <span class='kw'>&lt;-</span>
-  <span class='fu'><a href='https://rdrr.io/pkg/brms/man/brm.html'>brm</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/brms/man/brmsformula.html'>bf</a></span>(<span class='no'>distance</span> ~ <span class='no'>age</span> + <span class='no'>Sex</span> + (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='no'>sigma</span> ~ <span class='no'>Sex</span>),
-      <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Orthodont</span>)
+<span class='kw'>model</span> <span class='op'>&lt;-</span>
+  <span class='fu'><a href='https://rdrr.io/pkg/brms/man/brm.html'>brm</a></span>(<span class='fu'><a href='https://rdrr.io/pkg/brms/man/brmsformula.html'>bf</a></span>(<span class='kw'>distance</span> <span class='op'>~</span> <span class='kw'>age</span> <span class='op'>+</span> <span class='kw'>Sex</span> <span class='op'>+</span> (<span class='fl'>1</span> <span class='op'>|</span> <span class='kw'>Subject</span>), <span class='kw'>sigma</span> <span class='op'>~</span> <span class='kw'>Sex</span>),
+      data = <span class='kw'>Orthodont</span>)
 
-<span class='fu'>extract_het_var</span>(<span class='no'>model</span>)
-}</div></span></pre>
+<span class='fu'>extract_het_var</span>(<span class='kw'>model</span>)
+}
+
+</div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -322,7 +332,7 @@ group, are returned. If all fitted values are desired, set <code>return_all</cod
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

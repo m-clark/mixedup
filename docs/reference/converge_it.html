@@ -77,7 +77,7 @@ function will run the model successively until convergence." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -155,10 +155,10 @@ Assuming it's not a data or specification problem causing the issue, this
 function will run the model successively until convergence.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>converge_it</span>(<span class='no'>model</span>)
+    <pre class="usage"><span class='fu'>converge_it</span>(<span class='kw'>model</span>)
 
 <span class='co'># S3 method for merMod</span>
-<span class='fu'>converge_it</span>(<span class='no'>model</span>)</pre>
+<span class='fu'>converge_it</span>(<span class='kw'>model</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,23 +203,24 @@ data.</p>
 <code><a href='https://rdrr.io/pkg/lme4/man/isSingular.html'>isSingular</a></code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='no'>Salamanders</span>, <span class='kw'>package</span> <span class='kw'>=</span> <span class='st'>'glmmTMB'</span>)
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/utils/data.html'>data</a></span>(<span class='kw'>Salamanders</span>, package = <span class='st'>'glmmTMB'</span>)
 
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/lme4/lme4'>lme4</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://m-clark.github.io/mixedup'>mixedup</a></span>)
 
 <span class='co'># a possibly silly model</span>
-<span class='no'>glmer_mod</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>glmer</a></span>(<span class='no'>count</span> ~ <span class='no'>spp</span> + <span class='no'>mined</span> + <span class='no'>DOP</span> + <span class='no'>Wtemp</span> + <span class='no'>DOY</span> +
-  (<span class='fl'>1</span> <span class='kw'>|</span> <span class='no'>sample</span>) +
-  (<span class='fl'>1</span> + <span class='no'>DOY</span> + <span class='no'>DOP</span> <span class='kw'>|</span> <span class='no'>site</span>),
-  <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>Salamanders</span>,
-  <span class='kw'>family</span> <span class='kw'>=</span> <span class='no'>poisson</span>
+<span class='kw'>glmer_mod</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/glmer.html'>glmer</a></span>(<span class='kw'>count</span> <span class='op'>~</span> <span class='kw'>spp</span> <span class='op'>+</span> <span class='kw'>mined</span> <span class='op'>+</span> <span class='kw'>DOP</span> <span class='op'>+</span> <span class='kw'>Wtemp</span> <span class='op'>+</span> <span class='kw'>DOY</span> <span class='op'>+</span>
+  (<span class='fl'>1</span> <span class='op'>|</span> <span class='kw'>sample</span>) <span class='op'>+</span>
+  (<span class='fl'>1</span> <span class='op'>+</span> <span class='kw'>DOY</span> <span class='op'>+</span> <span class='kw'>DOP</span> <span class='op'>|</span> <span class='kw'>site</span>),
+  data = <span class='kw'>Salamanders</span>,
+  family = <span class='kw'>poisson</span>
 )
 
 
-<span class='fu'>converge_it</span>(<span class='no'>glmer_mod</span>)
-}</div></pre>
+<span class='fu'>converge_it</span>(<span class='kw'>glmer_mod</span>)
+}
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -235,7 +236,7 @@ data.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -95,13 +95,13 @@
 
       
 
-      </header><script src="random_coefficients_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="random_coefficients_files/header-attrs-2.3/header-attrs.js"></script><script src="random_coefficients_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Extracting Random Coefficients</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-06-29</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-10-20</span></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/random_coefficients.Rmd"><code>vignettes/random_coefficients.Rmd</code></a></small>
       <div class="hidden name"><code>random_coefficients.Rmd</code></div>
@@ -118,21 +118,22 @@
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">lme4</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">glmmTMB</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">nlme</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">brms</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mgcv</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/lme4/lme4">lme4</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/glmmTMB/glmmTMB">glmmTMB</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://svn.r-project.org/R-packages/trunk/nlme">nlme</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/paul-buerkner/brms">brms</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">mgcv</span>)
 
 
-<span class="no">lmer_model</span> <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span>(<span class="no">Reaction</span> ~ <span class="no">Days</span> + (<span class="fl">1</span> + <span class="no">Days</span> <span class="kw">|</span> <span class="no">Subject</span>), <span class="kw">data</span> <span class="kw">=</span> <span class="no">sleepstudy</span>)
+<span class="kw">lmer_model</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span>(<span class="kw">Reaction</span> <span class="op">~</span> <span class="kw">Days</span> <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> <span class="kw">Days</span> <span class="op">|</span> <span class="kw">Subject</span>), data = <span class="kw">sleepstudy</span>)
 
-<span class="no">lme_model</span>  <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span>(<span class="no">Reaction</span> ~ <span class="no">Days</span>, <span class="kw">random</span> <span class="kw">=</span> ~ <span class="fl">1</span> + <span class="no">Days</span> <span class="kw">|</span> <span class="no">Subject</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">sleepstudy</span>)
+<span class="kw">lme_model</span>  <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span>(<span class="kw">Reaction</span> <span class="op">~</span> <span class="kw">Days</span>, random = <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="kw">Days</span> <span class="op">|</span> <span class="kw">Subject</span>, data = <span class="kw">sleepstudy</span>)
 
-<span class="no">tmb_model</span>  <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html">glmmTMB</a></span>(<span class="no">Reaction</span> ~ <span class="no">Days</span> + (<span class="fl">1</span> + <span class="no">Days</span> <span class="kw">|</span> <span class="no">Subject</span>), <span class="kw">data</span> <span class="kw">=</span> <span class="no">sleepstudy</span>)
+<span class="kw">tmb_model</span>  <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html">glmmTMB</a></span>(<span class="kw">Reaction</span> <span class="op">~</span> <span class="kw">Days</span> <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> <span class="kw">Days</span> <span class="op">|</span> <span class="kw">Subject</span>), data = <span class="kw">sleepstudy</span>)
 
 <span class="co"># brms_model &lt;-</span>
 <span class="co">#   brm(Reaction ~ Days + (1 + Days | Subject), </span>
@@ -143,122 +144,123 @@
 <span class="co">#   )</span>
 
 <span class="co"># this is akin to (1 | Subject) + (0 + Days | Subject) in lme4</span>
-<span class="no">mgcv_model</span> <span class="kw">&lt;-</span>
+<span class="kw">mgcv_model</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/gam.html">gam</a></span>(
-    <span class="no">Reaction</span> ~  <span class="no">Days</span> +
-      <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(<span class="no">Subject</span>, <span class="kw">bs</span> <span class="kw">=</span> <span class="st">'re'</span>) +
-      <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(<span class="no">Days</span>, <span class="no">Subject</span>, <span class="kw">bs</span> <span class="kw">=</span> <span class="st">'re'</span>),
-    <span class="kw">data</span> <span class="kw">=</span> <span class="kw pkg">lme4</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/lme4/man/sleepstudy.html">sleepstudy</a></span>,
-    <span class="kw">method</span> <span class="kw">=</span> <span class="st">'REML'</span>
-  )</pre></body></html></div>
-<div class="sourceCode" id="cb2"><html><body><pre class="r">library(mixedup)
-
-extract_random_coefs(lmer_model)
-# A tibble: 36 x 7
-   group_var effect    group value    se lower_2.5 upper_97.5
-   &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
- 1 Subject   Intercept 308    254.  13.9      226.       281.
- 2 Subject   Intercept 309    211.  13.9      184.       238.
- 3 Subject   Intercept 310    212.  13.9      185.       240.
- 4 Subject   Intercept 330    275.  13.9      248.       302.
- 5 Subject   Intercept 331    274.  13.9      246.       301.
- 6 Subject   Intercept 332    260.  13.9      233.       288.
- 7 Subject   Intercept 333    268.  13.9      241.       295.
- 8 Subject   Intercept 334    244.  13.9      217.       271.
- 9 Subject   Intercept 335    251.  13.9      224.       278.
-10 Subject   Intercept 337    286.  13.9      259.       313.
-# … with 26 more rows
-
-
-extract_random_coefs(lme_model)
-# A tibble: 36 x 4
-   group_var effect group  value
-   &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt;  &lt;dbl&gt;
- 1 Subject   Days   308   19.7  
- 2 Subject   Days   309    1.85 
- 3 Subject   Days   310    5.02 
- 4 Subject   Days   330    5.65 
- 5 Subject   Days   331    7.40 
- 6 Subject   Days   332   10.2  
- 7 Subject   Days   333   10.2  
- 8 Subject   Days   334   11.5  
- 9 Subject   Days   335   -0.285
-10 Subject   Days   337   19.1  
-# … with 26 more rows
-
-
-extract_random_coefs(tmb_model)
-# A tibble: 36 x 7
-   group_var effect    group value    se lower_2.5 upper_97.5
-   &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
- 1 Subject   Intercept 308    254.  15.2      224.       284.
- 2 Subject   Intercept 309    211.  15.3      181.       241.
- 3 Subject   Intercept 310    213.  15.3      183.       243.
- 4 Subject   Intercept 330    274.  15.4      244.       305.
- 5 Subject   Intercept 331    273.  15.1      243.       303.
- 6 Subject   Intercept 332    260.  14.5      232.       289.
- 7 Subject   Intercept 333    268.  14.7      239.       297.
- 8 Subject   Intercept 334    244.  14.5      216.       273.
- 9 Subject   Intercept 335    250.  15.5      220.       281.
-10 Subject   Intercept 337    286.  15.2      256.       316.
-# … with 26 more rows
-
-
-extract_random_coefs(brms_model)
-# A tibble: 36 x 7
-   group_var effect    group value    se lower_2.5 upper_97.5
-   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
- 1 Subject   Intercept 308    254.  11.5      233.       276.
- 2 Subject   Intercept 309    211.  13.1      188.       232.
- 3 Subject   Intercept 310    214.  13.7      183.       236.
- 4 Subject   Intercept 330    275.  12.5      254.       299.
- 5 Subject   Intercept 331    275.  12.8      256.       298.
- 6 Subject   Intercept 332    262.  12.4      240.       287.
- 7 Subject   Intercept 333    268.  12.2      244.       287.
- 8 Subject   Intercept 334    246.  11.2      222.       266.
- 9 Subject   Intercept 335    252.  12.4      227.       274.
-10 Subject   Intercept 337    286.  10.7      264.       307.
-# … with 26 more rows
-
-
-extract_random_coefs(mgcv_model)
-# A tibble: 36 x 7
-   group_var effect    group value    se lower_2.5 upper_97.5
-   &lt;chr&gt;     &lt;chr&gt;     &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
- 1 Subject   Intercept 308    253.  15.0      224.       282.
- 2 Subject   Intercept 309    211.  15.0      182.       240.
- 3 Subject   Intercept 310    212.  15.0      183.       242.
- 4 Subject   Intercept 330    276.  15.0      247.       305.
- 5 Subject   Intercept 331    274.  15.0      245.       304.
- 6 Subject   Intercept 332    261.  15.0      231.       290.
- 7 Subject   Intercept 333    269.  15.0      239.       298.
- 8 Subject   Intercept 334    244.  15.0      215.       273.
- 9 Subject   Intercept 335    252.  15.0      223.       281.
-10 Subject   Intercept 337    286.  15.0      257.       315.
-# … with 26 more rows</pre></body></html></div>
+    <span class="kw">Reaction</span> <span class="op">~</span>  <span class="kw">Days</span> <span class="op">+</span>
+      <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(<span class="kw">Subject</span>, bs = <span class="st">'re'</span>) <span class="op">+</span>
+      <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(<span class="kw">Days</span>, <span class="kw">Subject</span>, bs = <span class="st">'re'</span>),
+    data = <span class="kw">lme4</span>::<span class="kw"><a href="https://rdrr.io/pkg/lme4/man/sleepstudy.html">sleepstudy</a></span>,
+    method = <span class="st">'REML'</span>
+  )
+</pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(mixedup)</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">extract_random_coefs</span>(lmer_model)</span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># A tibble: 36 x 7</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>   group_var effect    group value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a>   <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="st"> </span><span class="dv">1</span> Subject   Intercept <span class="dv">308</span>    <span class="fl">254.</span>  <span class="fl">13.9</span>      <span class="fl">226.</span>       <span class="fl">281.</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a> <span class="dv">2</span> Subject   Intercept <span class="dv">309</span>    <span class="fl">211.</span>  <span class="fl">13.9</span>      <span class="fl">184.</span>       <span class="fl">238.</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a> <span class="dv">3</span> Subject   Intercept <span class="dv">310</span>    <span class="fl">212.</span>  <span class="fl">13.9</span>      <span class="fl">185.</span>       <span class="fl">240.</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a> <span class="dv">4</span> Subject   Intercept <span class="dv">330</span>    <span class="fl">275.</span>  <span class="fl">13.9</span>      <span class="fl">248.</span>       <span class="fl">302.</span></span>
+<span id="cb2-11"><a href="#cb2-11"></a> <span class="dv">5</span> Subject   Intercept <span class="dv">331</span>    <span class="fl">274.</span>  <span class="fl">13.9</span>      <span class="fl">246.</span>       <span class="fl">301.</span></span>
+<span id="cb2-12"><a href="#cb2-12"></a> <span class="dv">6</span> Subject   Intercept <span class="dv">332</span>    <span class="fl">260.</span>  <span class="fl">13.9</span>      <span class="fl">233.</span>       <span class="fl">288.</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a> <span class="dv">7</span> Subject   Intercept <span class="dv">333</span>    <span class="fl">268.</span>  <span class="fl">13.9</span>      <span class="fl">241.</span>       <span class="fl">295.</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a> <span class="dv">8</span> Subject   Intercept <span class="dv">334</span>    <span class="fl">244.</span>  <span class="fl">13.9</span>      <span class="fl">217.</span>       <span class="fl">271.</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a> <span class="dv">9</span> Subject   Intercept <span class="dv">335</span>    <span class="fl">251.</span>  <span class="fl">13.9</span>      <span class="fl">224.</span>       <span class="fl">278.</span></span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="dv">10</span> Subject   Intercept <span class="dv">337</span>    <span class="fl">286.</span>  <span class="fl">13.9</span>      <span class="fl">259.</span>       <span class="fl">313.</span></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="co"># … with 26 more rows</span></span>
+<span id="cb2-18"><a href="#cb2-18"></a></span>
+<span id="cb2-19"><a href="#cb2-19"></a></span>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="kw">extract_random_coefs</span>(lme_model)</span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="co"># A tibble: 36 x 4</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a>   group_var effect group  value</span>
+<span id="cb2-23"><a href="#cb2-23"></a>   <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb2-24"><a href="#cb2-24"></a><span class="st"> </span><span class="dv">1</span> Subject   Days   <span class="dv">308</span>   <span class="fl">19.7</span>  </span>
+<span id="cb2-25"><a href="#cb2-25"></a> <span class="dv">2</span> Subject   Days   <span class="dv">309</span>    <span class="fl">1.85</span> </span>
+<span id="cb2-26"><a href="#cb2-26"></a> <span class="dv">3</span> Subject   Days   <span class="dv">310</span>    <span class="fl">5.02</span> </span>
+<span id="cb2-27"><a href="#cb2-27"></a> <span class="dv">4</span> Subject   Days   <span class="dv">330</span>    <span class="fl">5.65</span> </span>
+<span id="cb2-28"><a href="#cb2-28"></a> <span class="dv">5</span> Subject   Days   <span class="dv">331</span>    <span class="fl">7.40</span> </span>
+<span id="cb2-29"><a href="#cb2-29"></a> <span class="dv">6</span> Subject   Days   <span class="dv">332</span>   <span class="fl">10.2</span>  </span>
+<span id="cb2-30"><a href="#cb2-30"></a> <span class="dv">7</span> Subject   Days   <span class="dv">333</span>   <span class="fl">10.2</span>  </span>
+<span id="cb2-31"><a href="#cb2-31"></a> <span class="dv">8</span> Subject   Days   <span class="dv">334</span>   <span class="fl">11.5</span>  </span>
+<span id="cb2-32"><a href="#cb2-32"></a> <span class="dv">9</span> Subject   Days   <span class="dv">335</span>   <span class="fl">-0.285</span></span>
+<span id="cb2-33"><a href="#cb2-33"></a><span class="dv">10</span> Subject   Days   <span class="dv">337</span>   <span class="fl">19.1</span>  </span>
+<span id="cb2-34"><a href="#cb2-34"></a><span class="co"># … with 26 more rows</span></span>
+<span id="cb2-35"><a href="#cb2-35"></a></span>
+<span id="cb2-36"><a href="#cb2-36"></a></span>
+<span id="cb2-37"><a href="#cb2-37"></a><span class="kw">extract_random_coefs</span>(tmb_model)</span>
+<span id="cb2-38"><a href="#cb2-38"></a><span class="co"># A tibble: 36 x 7</span></span>
+<span id="cb2-39"><a href="#cb2-39"></a>   group_var effect    group value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></span>
+<span id="cb2-40"><a href="#cb2-40"></a>   <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb2-41"><a href="#cb2-41"></a><span class="st"> </span><span class="dv">1</span> Subject   Intercept <span class="dv">308</span>    <span class="fl">254.</span>  <span class="fl">15.2</span>      <span class="fl">224.</span>       <span class="fl">284.</span></span>
+<span id="cb2-42"><a href="#cb2-42"></a> <span class="dv">2</span> Subject   Intercept <span class="dv">309</span>    <span class="fl">211.</span>  <span class="fl">15.3</span>      <span class="fl">181.</span>       <span class="fl">241.</span></span>
+<span id="cb2-43"><a href="#cb2-43"></a> <span class="dv">3</span> Subject   Intercept <span class="dv">310</span>    <span class="fl">213.</span>  <span class="fl">15.3</span>      <span class="fl">183.</span>       <span class="fl">243.</span></span>
+<span id="cb2-44"><a href="#cb2-44"></a> <span class="dv">4</span> Subject   Intercept <span class="dv">330</span>    <span class="fl">274.</span>  <span class="fl">15.4</span>      <span class="fl">244.</span>       <span class="fl">305.</span></span>
+<span id="cb2-45"><a href="#cb2-45"></a> <span class="dv">5</span> Subject   Intercept <span class="dv">331</span>    <span class="fl">273.</span>  <span class="fl">15.1</span>      <span class="fl">243.</span>       <span class="fl">303.</span></span>
+<span id="cb2-46"><a href="#cb2-46"></a> <span class="dv">6</span> Subject   Intercept <span class="dv">332</span>    <span class="fl">260.</span>  <span class="fl">14.5</span>      <span class="fl">232.</span>       <span class="fl">289.</span></span>
+<span id="cb2-47"><a href="#cb2-47"></a> <span class="dv">7</span> Subject   Intercept <span class="dv">333</span>    <span class="fl">268.</span>  <span class="fl">14.7</span>      <span class="fl">239.</span>       <span class="fl">297.</span></span>
+<span id="cb2-48"><a href="#cb2-48"></a> <span class="dv">8</span> Subject   Intercept <span class="dv">334</span>    <span class="fl">244.</span>  <span class="fl">14.5</span>      <span class="fl">216.</span>       <span class="fl">273.</span></span>
+<span id="cb2-49"><a href="#cb2-49"></a> <span class="dv">9</span> Subject   Intercept <span class="dv">335</span>    <span class="fl">250.</span>  <span class="fl">15.5</span>      <span class="fl">220.</span>       <span class="fl">281.</span></span>
+<span id="cb2-50"><a href="#cb2-50"></a><span class="dv">10</span> Subject   Intercept <span class="dv">337</span>    <span class="fl">286.</span>  <span class="fl">15.2</span>      <span class="fl">256.</span>       <span class="fl">316.</span></span>
+<span id="cb2-51"><a href="#cb2-51"></a><span class="co"># … with 26 more rows</span></span>
+<span id="cb2-52"><a href="#cb2-52"></a></span>
+<span id="cb2-53"><a href="#cb2-53"></a></span>
+<span id="cb2-54"><a href="#cb2-54"></a><span class="kw">extract_random_coefs</span>(brms_model)</span>
+<span id="cb2-55"><a href="#cb2-55"></a><span class="co"># A tibble: 36 x 7</span></span>
+<span id="cb2-56"><a href="#cb2-56"></a>   group_var effect    group value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></span>
+<span id="cb2-57"><a href="#cb2-57"></a>   <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb2-58"><a href="#cb2-58"></a><span class="st"> </span><span class="dv">1</span> Subject   Intercept <span class="dv">308</span>    <span class="fl">255.</span>  <span class="fl">12.7</span>      <span class="fl">231.</span>       <span class="fl">279.</span></span>
+<span id="cb2-59"><a href="#cb2-59"></a> <span class="dv">2</span> Subject   Intercept <span class="dv">309</span>    <span class="fl">210.</span>  <span class="fl">11.9</span>      <span class="fl">183.</span>       <span class="fl">229.</span></span>
+<span id="cb2-60"><a href="#cb2-60"></a> <span class="dv">3</span> Subject   Intercept <span class="dv">310</span>    <span class="fl">214.</span>  <span class="fl">13.4</span>      <span class="fl">188.</span>       <span class="fl">243.</span></span>
+<span id="cb2-61"><a href="#cb2-61"></a> <span class="dv">4</span> Subject   Intercept <span class="dv">330</span>    <span class="fl">273.</span>  <span class="fl">12.0</span>      <span class="fl">251.</span>       <span class="fl">299.</span></span>
+<span id="cb2-62"><a href="#cb2-62"></a> <span class="dv">5</span> Subject   Intercept <span class="dv">331</span>    <span class="fl">273.</span>  <span class="fl">12.0</span>      <span class="fl">249.</span>       <span class="fl">294.</span></span>
+<span id="cb2-63"><a href="#cb2-63"></a> <span class="dv">6</span> Subject   Intercept <span class="dv">332</span>    <span class="fl">257.</span>  <span class="fl">11.4</span>      <span class="fl">234.</span>       <span class="fl">278.</span></span>
+<span id="cb2-64"><a href="#cb2-64"></a> <span class="dv">7</span> Subject   Intercept <span class="dv">333</span>    <span class="fl">265.</span>  <span class="fl">12.4</span>      <span class="fl">237.</span>       <span class="fl">287.</span></span>
+<span id="cb2-65"><a href="#cb2-65"></a> <span class="dv">8</span> Subject   Intercept <span class="dv">334</span>    <span class="fl">245.</span>  <span class="fl">11.5</span>      <span class="fl">223.</span>       <span class="fl">267.</span></span>
+<span id="cb2-66"><a href="#cb2-66"></a> <span class="dv">9</span> Subject   Intercept <span class="dv">335</span>    <span class="fl">249.</span>  <span class="fl">12.0</span>      <span class="fl">225.</span>       <span class="fl">272.</span></span>
+<span id="cb2-67"><a href="#cb2-67"></a><span class="dv">10</span> Subject   Intercept <span class="dv">337</span>    <span class="fl">287.</span>  <span class="fl">14.2</span>      <span class="fl">259.</span>       <span class="fl">314.</span></span>
+<span id="cb2-68"><a href="#cb2-68"></a><span class="co"># … with 26 more rows</span></span>
+<span id="cb2-69"><a href="#cb2-69"></a></span>
+<span id="cb2-70"><a href="#cb2-70"></a></span>
+<span id="cb2-71"><a href="#cb2-71"></a><span class="kw">extract_random_coefs</span>(mgcv_model)</span>
+<span id="cb2-72"><a href="#cb2-72"></a><span class="co"># A tibble: 36 x 7</span></span>
+<span id="cb2-73"><a href="#cb2-73"></a>   group_var effect    group value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></span>
+<span id="cb2-74"><a href="#cb2-74"></a>   <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb2-75"><a href="#cb2-75"></a><span class="st"> </span><span class="dv">1</span> Subject   Intercept <span class="dv">308</span>    <span class="fl">253.</span>  <span class="fl">15.0</span>      <span class="fl">224.</span>       <span class="fl">282.</span></span>
+<span id="cb2-76"><a href="#cb2-76"></a> <span class="dv">2</span> Subject   Intercept <span class="dv">309</span>    <span class="fl">211.</span>  <span class="fl">15.0</span>      <span class="fl">182.</span>       <span class="fl">240.</span></span>
+<span id="cb2-77"><a href="#cb2-77"></a> <span class="dv">3</span> Subject   Intercept <span class="dv">310</span>    <span class="fl">212.</span>  <span class="fl">15.0</span>      <span class="fl">183.</span>       <span class="fl">242.</span></span>
+<span id="cb2-78"><a href="#cb2-78"></a> <span class="dv">4</span> Subject   Intercept <span class="dv">330</span>    <span class="fl">276.</span>  <span class="fl">15.0</span>      <span class="fl">247.</span>       <span class="fl">305.</span></span>
+<span id="cb2-79"><a href="#cb2-79"></a> <span class="dv">5</span> Subject   Intercept <span class="dv">331</span>    <span class="fl">274.</span>  <span class="fl">15.0</span>      <span class="fl">245.</span>       <span class="fl">304.</span></span>
+<span id="cb2-80"><a href="#cb2-80"></a> <span class="dv">6</span> Subject   Intercept <span class="dv">332</span>    <span class="fl">261.</span>  <span class="fl">15.0</span>      <span class="fl">231.</span>       <span class="fl">290.</span></span>
+<span id="cb2-81"><a href="#cb2-81"></a> <span class="dv">7</span> Subject   Intercept <span class="dv">333</span>    <span class="fl">269.</span>  <span class="fl">15.0</span>      <span class="fl">239.</span>       <span class="fl">298.</span></span>
+<span id="cb2-82"><a href="#cb2-82"></a> <span class="dv">8</span> Subject   Intercept <span class="dv">334</span>    <span class="fl">244.</span>  <span class="fl">15.0</span>      <span class="fl">215.</span>       <span class="fl">273.</span></span>
+<span id="cb2-83"><a href="#cb2-83"></a> <span class="dv">9</span> Subject   Intercept <span class="dv">335</span>    <span class="fl">252.</span>  <span class="fl">15.0</span>      <span class="fl">223.</span>       <span class="fl">281.</span></span>
+<span id="cb2-84"><a href="#cb2-84"></a><span class="dv">10</span> Subject   Intercept <span class="dv">337</span>    <span class="fl">286.</span>  <span class="fl">15.0</span>      <span class="fl">257.</span>       <span class="fl">315.</span></span>
+<span id="cb2-85"><a href="#cb2-85"></a><span class="co"># … with 26 more rows</span></span></code></pre></div>
 </div>
 <div id="options" class="section level2">
 <h2 class="hasAnchor">
 <a href="#options" class="anchor"></a>Options</h2>
-<div class="sourceCode" id="cb3"><html><body><pre class="r">extract_random_coefs(
-  lmer_model,
-  ci_level = .9,
-  digits = 2
-)
-# A tibble: 36 x 7
-   group_var effect    group value    se lower_5 upper_95
-   &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt; &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
- 1 Subject   Intercept 308    254.  13.9    231.     276.
- 2 Subject   Intercept 309    211.  13.9    188.     234.
- 3 Subject   Intercept 310    212.  13.9    190.     235.
- 4 Subject   Intercept 330    275.  13.9    252.     298.
- 5 Subject   Intercept 331    274.  13.9    251.     296.
- 6 Subject   Intercept 332    260.  13.9    238.     283.
- 7 Subject   Intercept 333    268.  13.9    245.     291.
- 8 Subject   Intercept 334    244.  13.9    221.     267.
- 9 Subject   Intercept 335    251.  13.9    228.     274.
-10 Subject   Intercept 337    286.  13.9    263.     309.
-# … with 26 more rows</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">extract_random_coefs</span>(</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  lmer_model,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  <span class="dt">ci_level =</span> <span class="fl">.9</span>,</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  <span class="dt">digits =</span> <span class="dv">2</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a>)</span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co"># A tibble: 36 x 7</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>   group_var effect    group value    se lower_<span class="dv">5</span> upper_<span class="dv">95</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>   <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="st"> </span><span class="dv">1</span> Subject   Intercept <span class="dv">308</span>    <span class="fl">254.</span>  <span class="fl">13.9</span>    <span class="fl">231.</span>     <span class="fl">276.</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a> <span class="dv">2</span> Subject   Intercept <span class="dv">309</span>    <span class="fl">211.</span>  <span class="fl">13.9</span>    <span class="fl">188.</span>     <span class="fl">234.</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a> <span class="dv">3</span> Subject   Intercept <span class="dv">310</span>    <span class="fl">212.</span>  <span class="fl">13.9</span>    <span class="fl">190.</span>     <span class="fl">235.</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a> <span class="dv">4</span> Subject   Intercept <span class="dv">330</span>    <span class="fl">275.</span>  <span class="fl">13.9</span>    <span class="fl">252.</span>     <span class="fl">298.</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a> <span class="dv">5</span> Subject   Intercept <span class="dv">331</span>    <span class="fl">274.</span>  <span class="fl">13.9</span>    <span class="fl">251.</span>     <span class="fl">296.</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a> <span class="dv">6</span> Subject   Intercept <span class="dv">332</span>    <span class="fl">260.</span>  <span class="fl">13.9</span>    <span class="fl">238.</span>     <span class="fl">283.</span></span>
+<span id="cb3-15"><a href="#cb3-15"></a> <span class="dv">7</span> Subject   Intercept <span class="dv">333</span>    <span class="fl">268.</span>  <span class="fl">13.9</span>    <span class="fl">245.</span>     <span class="fl">291.</span></span>
+<span id="cb3-16"><a href="#cb3-16"></a> <span class="dv">8</span> Subject   Intercept <span class="dv">334</span>    <span class="fl">244.</span>  <span class="fl">13.9</span>    <span class="fl">221.</span>     <span class="fl">267.</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a> <span class="dv">9</span> Subject   Intercept <span class="dv">335</span>    <span class="fl">251.</span>  <span class="fl">13.9</span>    <span class="fl">228.</span>     <span class="fl">274.</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a><span class="dv">10</span> Subject   Intercept <span class="dv">337</span>    <span class="fl">286.</span>  <span class="fl">13.9</span>    <span class="fl">263.</span>     <span class="fl">309.</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a><span class="co"># … with 26 more rows</span></span></code></pre></div>
 </div>
   </div>
 
@@ -277,7 +279,7 @@ extract_random_coefs(mgcv_model)
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

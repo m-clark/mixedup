@@ -39,28 +39,27 @@ For more details and examples see https://m-clark.github.io/mixedup/.
 
 ## Installation
 
-You can install mixedup from GitHub with `devtools`:
+You can install mixedup from GitHub with `remotes`.  Use the second approach if you don't already have `rstanarm` or `brms` (they aren't required to use in general).
 
 ``` r
-devtools::install_github('m-clark/mixedup')
-```
+remotes::install_github('m-clark/mixedup')
 
-If you have an issue with the installation (something about `rstanarm` and `brms_model`), you can ignore it with the following, as it only regards some internal data used for the vignettes, which is completely unnecessary for the package.
+# if you don't already have rstanarm and/or brms
 
-```r
 withr::with_envvar(c(R_REMOTES_NO_ERRORS_FROM_WARNINGS = "true"), 
-  devtools::install_github('m-clark/mixedup')
+  remotes::install_github('m-clark/mixedup')
 )
 ```
 
+
 ## Supported models
 
-- lme4
-- glmmTMB
-- nlme
-- mgcv
-- rstanarm
-- brms
+- `lme4`
+- `glmmTMB`
+- `nlme`
+- `mgcv`
+- `rstanarm`
+- `brms`
 
 
 ## Feature list

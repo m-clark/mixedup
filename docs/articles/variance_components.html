@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -95,13 +95,13 @@
 
       
 
-      </header><script src="variance_components_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="variance_components_files/header-attrs-2.3/header-attrs.js"></script><script src="variance_components_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Extracting Variance Components</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-06-29</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-10-20</span></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/variance_components.Rmd"><code>vignettes/variance_components.Rmd</code></a></small>
       <div class="hidden name"><code>variance_components.Rmd</code></div>
@@ -118,21 +118,22 @@
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
-<div class="sourceCode" id="cb1"><html><body><pre class="r"><span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">lme4</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">glmmTMB</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">nlme</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">brms</span>)
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="no">mgcv</span>)
+<div class="sourceCode" id="cb1"><pre class="downlit">
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/lme4/lme4">lme4</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/glmmTMB/glmmTMB">glmmTMB</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://svn.r-project.org/R-packages/trunk/nlme">nlme</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/paul-buerkner/brms">brms</a></span>)
+<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">mgcv</span>)
 
 
-<span class="no">lmer_model</span> <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span>(<span class="no">Reaction</span> ~ <span class="no">Days</span> + (<span class="fl">1</span> + <span class="no">Days</span> <span class="kw">|</span> <span class="no">Subject</span>), <span class="kw">data</span> <span class="kw">=</span> <span class="no">sleepstudy</span>)
+<span class="kw">lmer_model</span> <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span>(<span class="kw">Reaction</span> <span class="op">~</span> <span class="kw">Days</span> <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> <span class="kw">Days</span> <span class="op">|</span> <span class="kw">Subject</span>), data = <span class="kw">sleepstudy</span>)
 
-<span class="no">lme_model</span>  <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span>(<span class="no">Reaction</span> ~ <span class="no">Days</span>, <span class="kw">random</span> <span class="kw">=</span> ~ <span class="fl">1</span> + <span class="no">Days</span> <span class="kw">|</span> <span class="no">Subject</span>, <span class="kw">data</span> <span class="kw">=</span> <span class="no">sleepstudy</span>)
+<span class="kw">lme_model</span>  <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span>(<span class="kw">Reaction</span> <span class="op">~</span> <span class="kw">Days</span>, random = <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="kw">Days</span> <span class="op">|</span> <span class="kw">Subject</span>, data = <span class="kw">sleepstudy</span>)
 
-<span class="no">tmb_model</span>  <span class="kw">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html">glmmTMB</a></span>(<span class="no">Reaction</span> ~ <span class="no">Days</span> + (<span class="fl">1</span> + <span class="no">Days</span> <span class="kw">|</span> <span class="no">Subject</span>), <span class="kw">data</span> <span class="kw">=</span> <span class="no">sleepstudy</span>)
+<span class="kw">tmb_model</span>  <span class="op">&lt;-</span>
+  <span class="fu"><a href="https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html">glmmTMB</a></span>(<span class="kw">Reaction</span> <span class="op">~</span> <span class="kw">Days</span> <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> <span class="kw">Days</span> <span class="op">|</span> <span class="kw">Subject</span>), data = <span class="kw">sleepstudy</span>)
 
 <span class="co"># brms_model &lt;-</span>
 <span class="co">#   brm(Reaction ~ Days + (1 + Days | Subject), </span>
@@ -143,66 +144,67 @@
 <span class="co">#   )</span>
 
 <span class="co"># this is akin to (1 | Subject) + (0 + Days | Subject) in lme4</span>
-<span class="no">mgcv_model</span> <span class="kw">&lt;-</span>
+<span class="kw">mgcv_model</span> <span class="op">&lt;-</span>
   <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/gam.html">gam</a></span>(
-    <span class="no">Reaction</span> ~  <span class="no">Days</span> +
-      <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(<span class="no">Subject</span>, <span class="kw">bs</span> <span class="kw">=</span> <span class="st">'re'</span>) +
-      <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(<span class="no">Days</span>, <span class="no">Subject</span>, <span class="kw">bs</span> <span class="kw">=</span> <span class="st">'re'</span>),
-    <span class="kw">data</span> <span class="kw">=</span> <span class="kw pkg">lme4</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/lme4/man/sleepstudy.html">sleepstudy</a></span>,
-    <span class="kw">method</span> <span class="kw">=</span> <span class="st">'REML'</span>
-  )</pre></body></html></div>
-<div class="sourceCode" id="cb2"><html><body><pre class="r">library(mixedup)
-
-extract_vc(lmer_model)
-     group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  612.100 24.741 14.381  37.716    0.470
-2  Subject      Days   35.072  5.922  3.801   8.753    0.027
-3 Residual            654.940 25.592 22.898  28.858    0.503
-
-
-extract_vc(lme_model)
-     group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  612.080 24.740 15.518  39.444    0.470
-2  Subject      Days   35.071  5.922  3.904   8.983    0.027
-3 Residual            654.942 25.592 22.797  28.729    0.503
-
-
-extract_vc(tmb_model)
-     group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  565.515 23.781 15.017  37.658    0.451
-2  Subject      Days   32.682  5.717  3.805   8.588    0.026
-3 Residual            654.942 25.592     NA      NA    0.523
-
-
-extract_vc(brms_model)
-     group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  680.180 26.080 16.324  37.155    0.488
-2  Subject      Days   44.483  6.670  4.424  10.270    0.032
-3 Residual            669.604 25.877 23.519  28.958    0.480
-
-
-extract_vc(mgcv_model)
-     group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1  Subject Intercept  627.571 25.051 16.085  39.015    0.477
-2  Subject      Days   35.858  5.988  4.025   8.908    0.027
-3 Residual            653.582 25.565 22.792  28.676    0.496</pre></body></html></div>
+    <span class="kw">Reaction</span> <span class="op">~</span>  <span class="kw">Days</span> <span class="op">+</span>
+      <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(<span class="kw">Subject</span>, bs = <span class="st">'re'</span>) <span class="op">+</span>
+      <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(<span class="kw">Days</span>, <span class="kw">Subject</span>, bs = <span class="st">'re'</span>),
+    data = <span class="kw">lme4</span>::<span class="kw"><a href="https://rdrr.io/pkg/lme4/man/sleepstudy.html">sleepstudy</a></span>,
+    method = <span class="st">'REML'</span>
+  )
+</pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(mixedup)</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">extract_vc</span>(lmer_model)</span>
+<span id="cb2-4"><a href="#cb2-4"></a>     group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="dv">1</span>  Subject Intercept  <span class="fl">612.100</span> <span class="fl">24.741</span> <span class="fl">14.381</span>  <span class="fl">37.716</span>    <span class="fl">0.470</span></span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="dv">2</span>  Subject      Days   <span class="fl">35.072</span>  <span class="fl">5.922</span>  <span class="fl">3.801</span>   <span class="fl">8.753</span>    <span class="fl">0.027</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="dv">3</span> Residual            <span class="fl">654.940</span> <span class="fl">25.592</span> <span class="fl">22.898</span>  <span class="fl">28.858</span>    <span class="fl">0.503</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="kw">extract_vc</span>(lme_model)</span>
+<span id="cb2-11"><a href="#cb2-11"></a>     group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="dv">1</span>  Subject Intercept  <span class="fl">612.080</span> <span class="fl">24.740</span> <span class="fl">15.518</span>  <span class="fl">39.444</span>    <span class="fl">0.470</span></span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="dv">2</span>  Subject      Days   <span class="fl">35.071</span>  <span class="fl">5.922</span>  <span class="fl">3.904</span>   <span class="fl">8.983</span>    <span class="fl">0.027</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="dv">3</span> Residual            <span class="fl">654.942</span> <span class="fl">25.592</span> <span class="fl">22.797</span>  <span class="fl">28.729</span>    <span class="fl">0.503</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a></span>
+<span id="cb2-16"><a href="#cb2-16"></a></span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="kw">extract_vc</span>(tmb_model)</span>
+<span id="cb2-18"><a href="#cb2-18"></a>     group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</span>
+<span id="cb2-19"><a href="#cb2-19"></a><span class="dv">1</span>  Subject Intercept  <span class="fl">565.516</span> <span class="fl">23.781</span> <span class="fl">15.017</span>  <span class="fl">37.658</span>    <span class="fl">0.451</span></span>
+<span id="cb2-20"><a href="#cb2-20"></a><span class="dv">2</span>  Subject      Days   <span class="fl">32.682</span>  <span class="fl">5.717</span>  <span class="fl">3.805</span>   <span class="fl">8.588</span>    <span class="fl">0.026</span></span>
+<span id="cb2-21"><a href="#cb2-21"></a><span class="dv">3</span> Residual            <span class="fl">654.942</span> <span class="fl">25.592</span>     <span class="ot">NA</span>      <span class="ot">NA</span>    <span class="fl">0.523</span></span>
+<span id="cb2-22"><a href="#cb2-22"></a></span>
+<span id="cb2-23"><a href="#cb2-23"></a></span>
+<span id="cb2-24"><a href="#cb2-24"></a><span class="kw">extract_vc</span>(brms_model)</span>
+<span id="cb2-25"><a href="#cb2-25"></a>     group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</span>
+<span id="cb2-26"><a href="#cb2-26"></a><span class="dv">1</span>  Subject Intercept  <span class="fl">695.259</span> <span class="fl">26.368</span> <span class="fl">16.608</span>  <span class="fl">44.489</span>    <span class="fl">0.487</span></span>
+<span id="cb2-27"><a href="#cb2-27"></a><span class="dv">2</span>  Subject      Days   <span class="fl">39.950</span>  <span class="fl">6.321</span>  <span class="fl">4.104</span>   <span class="fl">9.264</span>    <span class="fl">0.028</span></span>
+<span id="cb2-28"><a href="#cb2-28"></a><span class="dv">3</span> Residual            <span class="fl">692.387</span> <span class="fl">26.313</span> <span class="fl">23.257</span>  <span class="fl">29.863</span>    <span class="fl">0.485</span></span>
+<span id="cb2-29"><a href="#cb2-29"></a></span>
+<span id="cb2-30"><a href="#cb2-30"></a></span>
+<span id="cb2-31"><a href="#cb2-31"></a><span class="kw">extract_vc</span>(mgcv_model)</span>
+<span id="cb2-32"><a href="#cb2-32"></a>     group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</span>
+<span id="cb2-33"><a href="#cb2-33"></a><span class="dv">1</span>  Subject Intercept  <span class="fl">627.571</span> <span class="fl">25.051</span> <span class="fl">16.085</span>  <span class="fl">39.015</span>    <span class="fl">0.477</span></span>
+<span id="cb2-34"><a href="#cb2-34"></a><span class="dv">2</span>  Subject      Days   <span class="fl">35.858</span>  <span class="fl">5.988</span>  <span class="fl">4.025</span>   <span class="fl">8.908</span>    <span class="fl">0.027</span></span>
+<span id="cb2-35"><a href="#cb2-35"></a><span class="dv">3</span> Residual            <span class="fl">653.582</span> <span class="fl">25.565</span> <span class="fl">22.792</span>  <span class="fl">28.676</span>    <span class="fl">0.496</span></span></code></pre></div>
 </div>
 <div id="options" class="section level2">
 <h2 class="hasAnchor">
 <a href="#options" class="anchor"></a>Options</h2>
-<div class="sourceCode" id="cb3"><html><body><pre class="r">tmb_model &lt;-
-  glmmTMB(y ~ service + (1 | d) + (1 | s), data = InstEval[1:5000,])
-
-extract_vc(
-  tmb_model,
-  ci_level = .9,
-  ci_scale = 'var',
-  digits = 2
-)
-     group    effect variance   sd var_5 var_95 var_prop
-1        d Intercept     0.26 0.51  0.22   0.31     0.15
-2        s Intercept     0.11 0.33  0.08   0.14     0.06
-3 Residual               1.36 1.17    NA     NA     0.79</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>tmb_model &lt;-</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span><span class="kw">glmmTMB</span>(y <span class="op">~</span><span class="st"> </span>service <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>d) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>s), <span class="dt">data =</span> InstEval[<span class="dv">1</span><span class="op">:</span><span class="dv">5000</span>,])</span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="kw">extract_vc</span>(</span>
+<span id="cb3-5"><a href="#cb3-5"></a>  tmb_model,</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  <span class="dt">ci_level =</span> <span class="fl">.9</span>,</span>
+<span id="cb3-7"><a href="#cb3-7"></a>  <span class="dt">ci_scale =</span> <span class="st">'var'</span>,</span>
+<span id="cb3-8"><a href="#cb3-8"></a>  <span class="dt">digits =</span> <span class="dv">2</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>)</span>
+<span id="cb3-10"><a href="#cb3-10"></a>     group    effect variance   sd var_<span class="dv">5</span> var_<span class="dv">95</span> var_prop</span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="dv">1</span>        d Intercept     <span class="fl">0.26</span> <span class="fl">0.51</span>  <span class="fl">0.22</span>   <span class="fl">0.31</span>     <span class="fl">0.15</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a><span class="dv">2</span>        s Intercept     <span class="fl">0.11</span> <span class="fl">0.33</span>  <span class="fl">0.08</span>   <span class="fl">0.14</span>     <span class="fl">0.06</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a><span class="dv">3</span> Residual               <span class="fl">1.36</span> <span class="fl">1.17</span>    <span class="ot">NA</span>     <span class="ot">NA</span>     <span class="fl">0.79</span></span></code></pre></div>
 </div>
   </div>
 
@@ -221,7 +223,7 @@ extract_vc(
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

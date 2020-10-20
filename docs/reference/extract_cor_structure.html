@@ -75,7 +75,7 @@ glmmTMB models." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -151,23 +151,23 @@ glmmTMB models." />
 glmmTMB models.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_cor_structure</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+    <pre class="usage"><span class='fu'>extract_cor_structure</span>(<span class='kw'>model</span>, digits = <span class='fl'>3</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for lme</span>
-<span class='fu'>extract_cor_structure</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>)
+<span class='fu'>extract_cor_structure</span>(<span class='kw'>model</span>, digits = <span class='fl'>3</span>, <span class='kw'>...</span>)
 
 <span class='co'># S3 method for glmmTMB</span>
 <span class='fu'>extract_cor_structure</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>,
-  <span class='no'>which_cor</span>,
-  <span class='kw'>full_matrix</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>model</span>,
+  digits = <span class='fl'>3</span>,
+  <span class='kw'>...</span>,
+  component = <span class='st'>"cond"</span>,
+  <span class='kw'>which_cor</span>,
+  full_matrix = <span class='fl'>FALSE</span>
 )
 
 <span class='co'># S3 method for brmsfit</span>
-<span class='fu'>extract_cor_structure</span>(<span class='no'>model</span>, <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>, <span class='no'>...</span>, <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>)</pre>
+<span class='fu'>extract_cor_structure</span>(<span class='kw'>model</span>, digits = <span class='fl'>3</span>, <span class='kw'>...</span>, ci_level = <span class='fl'>0.95</span>)</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -203,8 +203,8 @@ covariance/correlation matrix (<code>TRUE</code>), or simplified output where po
     </tr>
     <tr>
       <th>ci_level</th>
-      <td><p>For brms objects, confidence level &lt; 1, typically above 0.90. A value of 0 will
-not report it. Default is .95.</p></td>
+      <td><p>For brms objects, confidence level &lt; 1, typically above
+0.90. A value of 0 will not report it. Default is .95.</p></td>
     </tr>
     </table>
 
@@ -216,7 +216,7 @@ parameters and related uncertainty, similar to
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>This function applies to models with residual correlation, i.e. that
-contain something like <code>corAR1(form = ~time)</code> for nlme, or brms
+contain something like <code><a href='https://rdrr.io/pkg/nlme/man/corAR1.html'>corAR1(form = ~time)</a></code> for nlme, or brms
 models with an <code>autocor</code> argument.  This functions extracts the
 associated parameters (e.g. <code>Phi</code> in nlme, <code>ar[1]</code> in brms, etc.)</p>
 <p>For glmmTMB objects, rather than the full matrix, simplified output is
@@ -239,20 +239,22 @@ vignette</a>.</p>
 <code><a href='extract_vc.html'>extract_vc</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='kw'>if</span> (<span class='fl'>FALSE</span>) {
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>brms</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
+    <pre class="examples"><div class='input'><span class='co'>if</span> (<span class='fl'>FALSE</span>) {
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/paul-buerkner/brms'>brms</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://m-clark.github.io/mixedup'>mixedup</a></span>)
 
-<span class='no'>brm_corAR</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/brms/man/brm.html'>brm</a></span>(
-  <span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>),
-  <span class='kw'>autocor</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/brms/man/cor_ar.html'>cor_ar</a></span>( ~ <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>),
-  <span class='kw'>save_ranef</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>cores</span> <span class='kw'>=</span> <span class='fl'>4</span>,
-  <span class='kw'>thin</span> <span class='kw'>=</span> <span class='fl'>40</span>
+<span class='kw'>brm_corAR</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/brms/man/brm.html'>brm</a></span>(
+  <span class='kw'>Reaction</span> <span class='op'>~</span> <span class='kw'>Days</span> <span class='op'>+</span> (<span class='kw'>Days</span> <span class='op'>|</span> <span class='kw'>Subject</span>),
+  autocor = <span class='fu'><a href='https://rdrr.io/pkg/brms/man/cor_ar.html'>cor_ar</a></span>( <span class='op'>~</span> <span class='kw'>Days</span> <span class='op'>|</span> <span class='kw'>Subject</span>),
+  save_ranef = <span class='fl'>FALSE</span>,
+  cores = <span class='fl'>4</span>,
+  thin = <span class='fl'>40</span>
 )
 
-<span class='fu'>extract_cor_structure</span>(<span class='no'>brm_corAR</span>)
-}</div></pre>
+<span class='fu'>extract_cor_structure</span>(<span class='kw'>brm_corAR</span>)
+}
+
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -268,7 +270,7 @@ vignette</a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

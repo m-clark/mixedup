@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -95,13 +95,13 @@
 
       
 
-      </header><script src="misc_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
+      </header><script src="misc_files/header-attrs-2.3/header-attrs.js"></script><script src="misc_files/accessible-code-block-0.0.1/empty-anchor.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Miscellaneous Functions</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-06-29</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-10-20</span></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/misc.Rmd"><code>vignettes/misc.Rmd</code></a></small>
       <div class="hidden name"><code>misc.Rmd</code></div>
@@ -122,105 +122,105 @@
 <h3 class="hasAnchor">
 <a href="#find-typical-values" class="anchor"></a>Find typical values</h3>
 <p>In many cases, predictions are made by holding the random effects to zero, which can be seen as the typical case. When the clusters carry substantive meaning, for example, school, country, or hospital, it might be of interest to note which are most ‘typical’, or at any other value relative to their peers. This will work for any model to which <code>extract_random_effects</code> applies.</p>
-<div class="sourceCode" id="cb1"><html><body><pre class="r">library(lme4)
-
-lmer_model &lt;- lmer(Reaction ~ Days + (1 + Days | Subject), data = sleepstudy)
-
-library(mixedup)
-
-find_typical(lmer_model)  # closest RE to zero
-# A tibble: 2 x 7
-  group_var effect    group  value    se lower_2.5 upper_97.5
-  &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt;
-1 Subject   Days      333   -0.224  2.31     -4.74       4.29
-2 Subject   Intercept 335   -0.334 12.1     -24.0       23.3 
-
-
-find_typical(lmer_model, probs = c(.1, .9))
-# A tibble: 4 x 8
-  group_var effect    group  value    se lower_2.5 upper_97.5 probs
-  &lt;chr&gt;     &lt;chr&gt;     &lt;fct&gt;  &lt;dbl&gt; &lt;dbl&gt;     &lt;dbl&gt;      &lt;dbl&gt; &lt;chr&gt;
-1 Subject   Days      310    -5.45  2.31     -9.97     -0.931 10%  
-2 Subject   Days      350     6.61  2.31      2.10     11.1   90%  
-3 Subject   Intercept 370   -25.6  12.1     -49.3      -1.96  10%  
-4 Subject   Intercept 331    22.3  12.1      -1.40     45.9   90%  </pre></body></html></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="kw">library</span>(lme4)</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a>lmer_model &lt;-<span class="st"> </span><span class="kw">lmer</span>(Reaction <span class="op">~</span><span class="st"> </span>Days <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">+</span><span class="st"> </span>Days <span class="op">|</span><span class="st"> </span>Subject), <span class="dt">data =</span> sleepstudy)</span>
+<span id="cb1-4"><a href="#cb1-4"></a></span>
+<span id="cb1-5"><a href="#cb1-5"></a><span class="kw">library</span>(mixedup)</span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="kw">find_typical</span>(lmer_model)  <span class="co"># closest RE to zero</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co"># A tibble: 2 x 7</span></span>
+<span id="cb1-9"><a href="#cb1-9"></a>  group_var effect    group  value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="dv">1</span> Subject   Days      <span class="dv">333</span>   <span class="fl">-0.224</span>  <span class="fl">2.31</span>     <span class="fl">-4.74</span>       <span class="fl">4.29</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="dv">2</span> Subject   Intercept <span class="dv">335</span>   <span class="fl">-0.334</span> <span class="fl">12.1</span>     <span class="fl">-24.0</span>       <span class="fl">23.3</span> </span>
+<span id="cb1-13"><a href="#cb1-13"></a></span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="kw">find_typical</span>(lmer_model, <span class="dt">probs =</span> <span class="kw">c</span>(.<span class="dv">1</span>, <span class="fl">.9</span>))</span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="co"># A tibble: 4 x 8</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a>  group_var effect    group  value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span> probs</span>
+<span id="cb1-18"><a href="#cb1-18"></a>  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>chr<span class="op">&gt;</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a><span class="dv">1</span> Subject   Days      <span class="dv">310</span>    <span class="fl">-5.45</span>  <span class="fl">2.31</span>     <span class="fl">-9.97</span>     <span class="fl">-0.931</span> <span class="dv">10</span>%  </span>
+<span id="cb1-20"><a href="#cb1-20"></a><span class="dv">2</span> Subject   Days      <span class="dv">350</span>     <span class="fl">6.61</span>  <span class="fl">2.31</span>      <span class="fl">2.10</span>     <span class="fl">11.1</span>   <span class="dv">90</span>%  </span>
+<span id="cb1-21"><a href="#cb1-21"></a><span class="dv">3</span> Subject   Intercept <span class="dv">370</span>   <span class="fl">-25.6</span>  <span class="fl">12.1</span>     <span class="fl">-49.3</span>      <span class="fl">-1.96</span>  <span class="dv">10</span>%  </span>
+<span id="cb1-22"><a href="#cb1-22"></a><span class="dv">4</span> Subject   Intercept <span class="dv">331</span>    <span class="fl">22.3</span>  <span class="fl">12.1</span>      <span class="fl">-1.40</span>     <span class="fl">45.9</span>   <span class="dv">90</span>%  </span></code></pre></div>
 </div>
 <div id="extract-heterogeneous-variances" class="section level3">
 <h3 class="hasAnchor">
 <a href="#extract-heterogeneous-variances" class="anchor"></a>Extract heterogeneous variances</h3>
 <p>For <code>nlme</code>, only models with <code>varIdent</code> have been tested. For <span class="pack" style="">glmmTMB</span>, this applies to models that use the <span class="func" style="">diag</span> function in the formula.</p>
-<div class="sourceCode" id="cb2"><html><body><pre class="r">library(nlme)
-
-lme_1 &lt;- lme(
-  distance ~ scale(age) + Sex,
-  data = Orthodont,
-  random = ~ 1 | Subject,
-  weights = varIdent(form = ~ 1 | Sex)
-)
-
-extract_het_var(lme_1)
-   Male Female
-1 1.762    0.8</pre></body></html></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(nlme)</span>
+<span id="cb2-2"><a href="#cb2-2"></a></span>
+<span id="cb2-3"><a href="#cb2-3"></a>lme_<span class="dv">1</span> &lt;-<span class="st"> </span><span class="kw">lme</span>(</span>
+<span id="cb2-4"><a href="#cb2-4"></a>  distance <span class="op">~</span><span class="st"> </span><span class="kw">scale</span>(age) <span class="op">+</span><span class="st"> </span>Sex,</span>
+<span id="cb2-5"><a href="#cb2-5"></a>  <span class="dt">data =</span> Orthodont,</span>
+<span id="cb2-6"><a href="#cb2-6"></a>  <span class="dt">random =</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Subject,</span>
+<span id="cb2-7"><a href="#cb2-7"></a>  <span class="dt">weights =</span> <span class="kw">varIdent</span>(<span class="dt">form =</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Sex)</span>
+<span id="cb2-8"><a href="#cb2-8"></a>)</span>
+<span id="cb2-9"><a href="#cb2-9"></a></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="kw">extract_het_var</span>(lme_<span class="dv">1</span>)</span>
+<span id="cb2-11"><a href="#cb2-11"></a>   Male Female</span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="dv">1</span> <span class="fl">3.104</span>   <span class="fl">0.64</span></span></code></pre></div>
 <p>May include <span class="pack" style="">brms</span> at some point, but for these, you can extract any parameters associated with sigma model for distributional models using the <code>component</code> argument of the other standard functions.</p>
 </div>
 <div id="extract-correlation-structure" class="section level3">
 <h3 class="hasAnchor">
 <a href="#extract-correlation-structure" class="anchor"></a>Extract correlation structure</h3>
 <p>With some packages one can estimate the residual correlation structure. Right now this works for <span class="pack" style="">nlme</span>, <span class="pack" style="">glmmTMB</span>, and <span class="pack" style="">brms</span> objects.</p>
-<div class="sourceCode" id="cb3"><html><body><pre class="r">base_model &lt;-
-  lme(Reaction ~ Days,
-      random = ~ 1 + Days | Subject,
-      data = sleepstudy)
-
-lme_corSymm &lt;-
-  update(
-    base_model,
-    corr = corSymm(form = ~ 1 | Subject),
-    data = dplyr::filter(sleepstudy, Days &lt; 5)
-  )
-
-lme_corAR &lt;-
-  update(
-    base_model,
-    corr = corAR1(form = ~ Days),
-    data = dplyr::filter(sleepstudy, Days &lt; 5)
-  )
-
-
-extract_cor_structure(lme_corSymm)
-       V1    V2     V3     V4     V5
-V1  1.000 0.263 -0.460 -0.222 -0.092
-V2  0.263 1.000  0.272  0.356  0.081
-V3 -0.460 0.272  1.000  0.377 -0.417
-V4 -0.222 0.356  0.377  1.000  0.572
-V5 -0.092 0.081 -0.417  0.572  1.000
-
-
-extract_cor_structure(lme_corAR)
-# A tibble: 1 x 1
-    Phi
-  &lt;dbl&gt;
-1 0.662</pre></body></html></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>base_model &lt;-</span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span><span class="kw">lme</span>(Reaction <span class="op">~</span><span class="st"> </span>Days,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>      <span class="dt">random =</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">+</span><span class="st"> </span>Days <span class="op">|</span><span class="st"> </span>Subject,</span>
+<span id="cb3-4"><a href="#cb3-4"></a>      <span class="dt">data =</span> sleepstudy)</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a>lme_corSymm &lt;-</span>
+<span id="cb3-7"><a href="#cb3-7"></a><span class="st">  </span><span class="kw">update</span>(</span>
+<span id="cb3-8"><a href="#cb3-8"></a>    base_model,</span>
+<span id="cb3-9"><a href="#cb3-9"></a>    <span class="dt">corr =</span> <span class="kw">corSymm</span>(<span class="dt">form =</span> <span class="op">~</span><span class="st"> </span><span class="dv">1</span> <span class="op">|</span><span class="st"> </span>Subject),</span>
+<span id="cb3-10"><a href="#cb3-10"></a>    <span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw">filter</span>(sleepstudy, Days <span class="op">&lt;</span><span class="st"> </span><span class="dv">5</span>)</span>
+<span id="cb3-11"><a href="#cb3-11"></a>  )</span>
+<span id="cb3-12"><a href="#cb3-12"></a></span>
+<span id="cb3-13"><a href="#cb3-13"></a>lme_corAR &lt;-</span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="st">  </span><span class="kw">update</span>(</span>
+<span id="cb3-15"><a href="#cb3-15"></a>    base_model,</span>
+<span id="cb3-16"><a href="#cb3-16"></a>    <span class="dt">corr =</span> <span class="kw">corAR1</span>(<span class="dt">form =</span> <span class="op">~</span><span class="st"> </span>Days),</span>
+<span id="cb3-17"><a href="#cb3-17"></a>    <span class="dt">data =</span> dplyr<span class="op">::</span><span class="kw">filter</span>(sleepstudy, Days <span class="op">&lt;</span><span class="st"> </span><span class="dv">5</span>)</span>
+<span id="cb3-18"><a href="#cb3-18"></a>  )</span>
+<span id="cb3-19"><a href="#cb3-19"></a></span>
+<span id="cb3-20"><a href="#cb3-20"></a></span>
+<span id="cb3-21"><a href="#cb3-21"></a><span class="kw">extract_cor_structure</span>(lme_corSymm)</span>
+<span id="cb3-22"><a href="#cb3-22"></a>       V1    V2     V3     V4     V5</span>
+<span id="cb3-23"><a href="#cb3-23"></a>V1  <span class="fl">1.000</span> <span class="fl">0.263</span> <span class="fl">-0.460</span> <span class="fl">-0.222</span> <span class="fl">-0.092</span></span>
+<span id="cb3-24"><a href="#cb3-24"></a>V2  <span class="fl">0.263</span> <span class="fl">1.000</span>  <span class="fl">0.272</span>  <span class="fl">0.356</span>  <span class="fl">0.081</span></span>
+<span id="cb3-25"><a href="#cb3-25"></a>V3 <span class="fl">-0.460</span> <span class="fl">0.272</span>  <span class="fl">1.000</span>  <span class="fl">0.377</span> <span class="fl">-0.417</span></span>
+<span id="cb3-26"><a href="#cb3-26"></a>V4 <span class="fl">-0.222</span> <span class="fl">0.356</span>  <span class="fl">0.377</span>  <span class="fl">1.000</span>  <span class="fl">0.572</span></span>
+<span id="cb3-27"><a href="#cb3-27"></a>V5 <span class="fl">-0.092</span> <span class="fl">0.081</span> <span class="fl">-0.417</span>  <span class="fl">0.572</span>  <span class="fl">1.000</span></span>
+<span id="cb3-28"><a href="#cb3-28"></a></span>
+<span id="cb3-29"><a href="#cb3-29"></a></span>
+<span id="cb3-30"><a href="#cb3-30"></a><span class="kw">extract_cor_structure</span>(lme_corAR)</span>
+<span id="cb3-31"><a href="#cb3-31"></a><span class="co"># A tibble: 1 x 1</span></span>
+<span id="cb3-32"><a href="#cb3-32"></a>    Phi</span>
+<span id="cb3-33"><a href="#cb3-33"></a>  <span class="op">&lt;</span>dbl<span class="op">&gt;</span></span>
+<span id="cb3-34"><a href="#cb3-34"></a><span class="dv">1</span> <span class="fl">0.662</span></span></code></pre></div>
 </div>
 <div id="extract-model-data" class="section level3">
 <h3 class="hasAnchor">
 <a href="#extract-model-data" class="anchor"></a>Extract model data</h3>
 <p>Just a wrapper for <code>model.frame</code>.</p>
-<div class="sourceCode" id="cb4"><html><body><pre class="r">extract_model_data(lmer_model)
-# A tibble: 180 x 3
-   Reaction  Days Subject
-      &lt;dbl&gt; &lt;dbl&gt; &lt;fct&gt;  
- 1     250.     0 308    
- 2     259.     1 308    
- 3     251.     2 308    
- 4     321.     3 308    
- 5     357.     4 308    
- 6     415.     5 308    
- 7     382.     6 308    
- 8     290.     7 308    
- 9     431.     8 308    
-10     466.     9 308    
-# … with 170 more rows</pre></body></html></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="kw">extract_model_data</span>(lmer_model)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># A tibble: 180 x 3</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>   Reaction  Days Subject</span>
+<span id="cb4-4"><a href="#cb4-4"></a>      <span class="op">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>fct<span class="op">&gt;</span><span class="st">  </span></span>
+<span id="cb4-5"><a href="#cb4-5"></a><span class="st"> </span><span class="dv">1</span>     <span class="fl">250.</span>     <span class="dv">0</span> <span class="dv">308</span>    </span>
+<span id="cb4-6"><a href="#cb4-6"></a> <span class="dv">2</span>     <span class="fl">259.</span>     <span class="dv">1</span> <span class="dv">308</span>    </span>
+<span id="cb4-7"><a href="#cb4-7"></a> <span class="dv">3</span>     <span class="fl">251.</span>     <span class="dv">2</span> <span class="dv">308</span>    </span>
+<span id="cb4-8"><a href="#cb4-8"></a> <span class="dv">4</span>     <span class="fl">321.</span>     <span class="dv">3</span> <span class="dv">308</span>    </span>
+<span id="cb4-9"><a href="#cb4-9"></a> <span class="dv">5</span>     <span class="fl">357.</span>     <span class="dv">4</span> <span class="dv">308</span>    </span>
+<span id="cb4-10"><a href="#cb4-10"></a> <span class="dv">6</span>     <span class="fl">415.</span>     <span class="dv">5</span> <span class="dv">308</span>    </span>
+<span id="cb4-11"><a href="#cb4-11"></a> <span class="dv">7</span>     <span class="fl">382.</span>     <span class="dv">6</span> <span class="dv">308</span>    </span>
+<span id="cb4-12"><a href="#cb4-12"></a> <span class="dv">8</span>     <span class="fl">290.</span>     <span class="dv">7</span> <span class="dv">308</span>    </span>
+<span id="cb4-13"><a href="#cb4-13"></a> <span class="dv">9</span>     <span class="fl">431.</span>     <span class="dv">8</span> <span class="dv">308</span>    </span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="dv">10</span>     <span class="fl">466.</span>     <span class="dv">9</span> <span class="dv">308</span>    </span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co"># … with 170 more rows</span></span></code></pre></div>
 </div>
 </div>
   </div>
@@ -240,7 +240,7 @@ extract_cor_structure(lme_corAR)
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

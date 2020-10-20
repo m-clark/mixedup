@@ -75,7 +75,7 @@ glmmTMB, nlme, and brms." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -152,83 +152,83 @@ glmmTMB, nlme, and brms." />
     </div>
 
     <pre class="usage"><span class='fu'>extract_vc</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
-  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  ci_args = <span class='kw'>NULL</span>,
+  ci_scale = <span class='st'>"sd"</span>,
+  show_cor = <span class='fl'>FALSE</span>,
+  digits = <span class='fl'>3</span>,
+  component = <span class='st'>"cond"</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for merMod</span>
 <span class='fu'>extract_vc</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
-  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  ci_args = <span class='kw'>NULL</span>,
+  ci_scale = <span class='st'>"sd"</span>,
+  show_cor = <span class='fl'>FALSE</span>,
+  digits = <span class='fl'>3</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for glmmTMB</span>
 <span class='fu'>extract_vc</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
-  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  ci_args = <span class='kw'>NULL</span>,
+  ci_scale = <span class='st'>"sd"</span>,
+  show_cor = <span class='fl'>FALSE</span>,
+  digits = <span class='fl'>3</span>,
+  component = <span class='st'>"cond"</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for lme</span>
 <span class='fu'>extract_vc</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
-  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  ci_args = <span class='kw'>NULL</span>,
+  ci_scale = <span class='st'>"sd"</span>,
+  show_cor = <span class='fl'>FALSE</span>,
+  digits = <span class='fl'>3</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for brmsfit</span>
 <span class='fu'>extract_vc</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
-  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  ci_args = <span class='kw'>NULL</span>,
+  ci_scale = <span class='st'>"sd"</span>,
+  show_cor = <span class='fl'>FALSE</span>,
+  digits = <span class='fl'>3</span>,
+  component = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for stanreg</span>
 <span class='fu'>extract_vc</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
-  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  ci_args = <span class='kw'>NULL</span>,
+  ci_scale = <span class='st'>"sd"</span>,
+  show_cor = <span class='fl'>FALSE</span>,
+  digits = <span class='fl'>3</span>,
+  component = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for gam</span>
 <span class='fu'>extract_vc</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>ci_args</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>"sd"</span>,
-  <span class='kw'>show_cor</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  ci_args = <span class='kw'>NULL</span>,
+  ci_scale = <span class='st'>"sd"</span>,
+  show_cor = <span class='fl'>FALSE</span>,
+  digits = <span class='fl'>3</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -315,15 +315,17 @@ either.</p>
 <code><a href='extract_random_effects.html'>extract_random_effects</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/lme4/lme4'>lme4</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://m-clark.github.io/mixedup'>mixedup</a></span>)
 
-<span class='no'>lmer_mod</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> + <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
+<span class='kw'>lmer_mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='kw'>Reaction</span> <span class='op'>~</span> <span class='kw'>Days</span> <span class='op'>+</span> (<span class='fl'>1</span> <span class='op'>+</span> <span class='kw'>Days</span> <span class='op'>|</span> <span class='kw'>Subject</span>), data = <span class='kw'>sleepstudy</span>)
 
-<span class='fu'>extract_vc</span>(<span class='no'>lmer_mod</span>)</div><div class='output co'>#&gt; <span class='message'>Computing profile confidence intervals ...</span></div><div class='output co'>#&gt;      group    effect variance     sd sd_2.5 sd_97.5 var_prop
+<span class='fu'>extract_vc</span>(<span class='kw'>lmer_mod</span>)
+</div><div class='output co'>#&gt; <span class='message'>Computing profile confidence intervals ...</span></div><div class='output co'>#&gt;      group    effect variance     sd sd_2.5 sd_97.5 var_prop
 #&gt; 1  Subject Intercept  612.100 24.741 14.381  37.716    0.470
 #&gt; 2  Subject      Days   35.072  5.922  3.801   8.753    0.027
-#&gt; 3 Residual            654.940 25.592 22.898  28.858    0.503</div><div class='input'><span class='fu'>extract_vc</span>(<span class='no'>lmer_mod</span>, <span class='kw'>ci_scale</span> <span class='kw'>=</span> <span class='st'>'var'</span>)</div><div class='output co'>#&gt; <span class='message'>Computing profile confidence intervals ...</span></div><div class='output co'>#&gt;      group    effect variance     sd var_2.5 var_97.5 var_prop
+#&gt; 3 Residual            654.940 25.592 22.898  28.858    0.503</div><div class='input'><span class='fu'>extract_vc</span>(<span class='kw'>lmer_mod</span>, ci_scale = <span class='st'>'var'</span>)
+</div><div class='output co'>#&gt; <span class='message'>Computing profile confidence intervals ...</span></div><div class='output co'>#&gt;      group    effect variance     sd var_2.5 var_97.5 var_prop
 #&gt; 1  Subject Intercept  612.100 24.741 206.825 1422.496    0.470
 #&gt; 2  Subject      Days   35.072  5.922  14.449   76.621    0.027
 #&gt; 3 Residual            654.940 25.592 524.331  832.784    0.503</div><div class='input'>
@@ -343,7 +345,7 @@ either.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

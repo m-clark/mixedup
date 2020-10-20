@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.7</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
       </span>
     </div>
 
@@ -150,76 +150,76 @@
     </div>
 
     <pre class="usage"><span class='fu'>extract_random_effects</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  re = <span class='kw'>NULL</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  digits = <span class='fl'>3</span>,
+  add_group_N = <span class='fl'>FALSE</span>,
+  component = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for merMod</span>
 <span class='fu'>extract_random_effects</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  re = <span class='kw'>NULL</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  digits = <span class='fl'>3</span>,
+  add_group_N = <span class='fl'>FALSE</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for glmmTMB</span>
 <span class='fu'>extract_random_effects</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='st'>"cond"</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  re = <span class='kw'>NULL</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  digits = <span class='fl'>3</span>,
+  add_group_N = <span class='fl'>FALSE</span>,
+  component = <span class='st'>"cond"</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for lme</span>
 <span class='fu'>extract_random_effects</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  re = <span class='kw'>NULL</span>,
+  ci_level = <span class='kw'>NULL</span>,
+  digits = <span class='fl'>3</span>,
+  add_group_N = <span class='fl'>FALSE</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for brmsfit</span>
 <span class='fu'>extract_random_effects</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  re = <span class='kw'>NULL</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  digits = <span class='fl'>3</span>,
+  add_group_N = <span class='fl'>FALSE</span>,
+  component = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for stanreg</span>
 <span class='fu'>extract_random_effects</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>component</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  re = <span class='kw'>NULL</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  digits = <span class='fl'>3</span>,
+  add_group_N = <span class='fl'>FALSE</span>,
+  component = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>
 )
 
 <span class='co'># S3 method for gam</span>
 <span class='fu'>extract_random_effects</span>(
-  <span class='no'>model</span>,
-  <span class='kw'>re</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>ci_level</span> <span class='kw'>=</span> <span class='fl'>0.95</span>,
-  <span class='kw'>digits</span> <span class='kw'>=</span> <span class='fl'>3</span>,
-  <span class='kw'>add_group_N</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='no'>...</span>
+  <span class='kw'>model</span>,
+  re = <span class='kw'>NULL</span>,
+  ci_level = <span class='fl'>0.95</span>,
+  digits = <span class='fl'>3</span>,
+  add_group_N = <span class='fl'>FALSE</span>,
+  <span class='kw'>...</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -271,7 +271,7 @@ parameters of the output (e.g. '__component').</p></td>
     <p>Relative to <code>ranef</code> for the various packages, this just adds the
 standard errors and cluster ids as columns, and uncertainty intervals.</p>
 <p>Current models supported:</p>
-<dl'>
+<dl>
 <dt>merMod</dt><dd><p></p></dd>
 <dt>glmmTMB</dt><dd><p></p></dd>
 <dt>brms</dt><dd><p></p></dd>
@@ -309,11 +309,12 @@ used.</p>
 <code><a href='extract_vc.html'>extract_vc</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>lme4</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='no'>mixedup</span>)
+    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/lme4/lme4'>lme4</a></span>)
+<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://m-clark.github.io/mixedup'>mixedup</a></span>)
 
-<span class='no'>lmer_model</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='no'>Reaction</span> ~ <span class='no'>Days</span> + (<span class='fl'>1</span> + <span class='no'>Days</span> <span class='kw'>|</span> <span class='no'>Subject</span>), <span class='kw'>data</span> <span class='kw'>=</span> <span class='no'>sleepstudy</span>)
-<span class='fu'>extract_random_effects</span>(<span class='no'>lmer_model</span>)</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 36 x 7</span><span>
+<span class='kw'>lmer_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='kw'>Reaction</span> <span class='op'>~</span> <span class='kw'>Days</span> <span class='op'>+</span> (<span class='fl'>1</span> <span class='op'>+</span> <span class='kw'>Days</span> <span class='op'>|</span> <span class='kw'>Subject</span>), data = <span class='kw'>sleepstudy</span>)
+<span class='fu'>extract_random_effects</span>(<span class='kw'>lmer_model</span>)
+</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 36 x 7</span><span>
 #&gt;    group_var effect    group   value    se lower_2.5 upper_97.5
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
 #&gt; </span><span style='color: #555555;'> 1</span><span> Subject   Intercept 308     2.26   12.1   -</span><span style='color: #BB0000;'>21.4</span><span>         25.9
@@ -343,7 +344,7 @@ used.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
