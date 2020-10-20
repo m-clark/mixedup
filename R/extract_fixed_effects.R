@@ -461,7 +461,8 @@ extract_fixed_effects.gam <-
     ...
   ) {
 
-    fe <- data.frame(summary(model)$p.table)
+    # re.test FALSE as uninterested here
+    fe <- data.frame(summary(model, re.test = FALSE)$p.table)
 
     colnames(fe) =  c('value', 'se', 't', 'p_value')
 
