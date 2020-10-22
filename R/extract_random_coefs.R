@@ -39,6 +39,8 @@
 #'   models.  In addition, `nlme` adds all random effects to the fixed effects,
 #'   whereas `lme4` and others only add the effects requested.
 #'
+#'   `extract_coef` and `extract_random_coefficients` are aliases.
+#'
 #' @return A data frame of the random coefficients and their standard errors.
 #'
 #' @family extract
@@ -456,3 +458,12 @@ extract_random_coefs.gam <- function(
 
   coefs
 }
+
+
+#' @rdname extract_random_coefs
+#' @export
+extract_coef <- extract_random_coefs
+
+#' @rdname extract_random_coefs
+#' @export
+extract_random_coefficients <- extract_random_coefs

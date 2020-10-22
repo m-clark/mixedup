@@ -26,6 +26,8 @@
 #'   for either, the relative proportion of variance, and all in a data frame
 #'   with names that are clean and easy to use.
 #'
+#'   `extract_variance_components` and `extract_VarCorr` are aliases.
+#'
 #'
 #' @note Right now, there are several issues with getting confidence intervals
 #'   for `glmmTMB` objects
@@ -680,3 +682,10 @@ extract_vc.gam <- function(
 }
 
 
+#' @rdname extract_vc
+#' @export
+extract_variance_components <- extract_vc
+
+#' @rdname extract_vc
+#' @export
+extract_VarCorr <- extract_vc

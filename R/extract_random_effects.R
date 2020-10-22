@@ -43,6 +43,8 @@
 #' For mgcv, the `Vp` (Bayesian) estimated variance covariance matrix is
 #' used.
 #'
+#' `extract_ranef` is an alias.
+#'
 #' @return data frame of the random effects
 #'
 #' @seealso
@@ -696,3 +698,9 @@ extract_random_effects.gam <- function(
 
   random_effects
 }
+
+
+
+#' @rdname extract_random_effects
+#' @export
+extract_ranef <- extract_random_effects

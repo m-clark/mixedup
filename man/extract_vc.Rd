@@ -8,6 +8,8 @@
 \alias{extract_vc.brmsfit}
 \alias{extract_vc.stanreg}
 \alias{extract_vc.gam}
+\alias{extract_variance_components}
+\alias{extract_VarCorr}
 \title{Extract variance components}
 \usage{
 extract_vc(
@@ -83,6 +85,28 @@ extract_vc(
   digits = 3,
   ...
 )
+
+extract_variance_components(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  ci_scale = "sd",
+  show_cor = FALSE,
+  digits = 3,
+  component = "cond",
+  ...
+)
+
+extract_VarCorr(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  ci_scale = "sd",
+  show_cor = FALSE,
+  digits = 3,
+  component = "cond",
+  ...
+)
 }
 \arguments{
 \item{model}{An lme4, glmmTMB, nlme, mgcv, or brms model.}
@@ -123,6 +147,8 @@ Returns a more usable (my opinion) version of variance components
 estimates including variance, standard deviation, the confidence interval
 for either, the relative proportion of variance, and all in a data frame
 with names that are clean and easy to use.
+
+\code{extract_variance_components} and \code{extract_VarCorr} are aliases.
 }
 \note{
 Right now, there are several issues with getting confidence intervals

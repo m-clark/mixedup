@@ -8,6 +8,8 @@
 \alias{extract_random_coefs.brmsfit}
 \alias{extract_random_coefs.stanreg}
 \alias{extract_random_coefs.gam}
+\alias{extract_coef}
+\alias{extract_random_coefficients}
 \title{Extract random coefficients and their variances}
 \usage{
 extract_random_coefs(
@@ -51,6 +53,24 @@ extract_random_coefs(
 )
 
 \method{extract_random_coefs}{gam}(model, re = NULL, ci_level = 0.95, digits = 3, ...)
+
+extract_coef(
+  model,
+  re = NULL,
+  ci_level = 0.95,
+  digits = 3,
+  component = NULL,
+  ...
+)
+
+extract_random_coefficients(
+  model,
+  re = NULL,
+  ci_level = 0.95,
+  digits = 3,
+  component = NULL,
+  ...
+)
 }
 \arguments{
 \item{model}{A merMod, nlme, brms, or glmmTMB object}
@@ -101,6 +121,8 @@ The \code{nlme} package only provides the coefficients no estimated variance, so
 function doesn't add to what you get from basic functionality for those
 models.  In addition, \code{nlme} adds all random effects to the fixed effects,
 whereas \code{lme4} and others only add the effects requested.
+
+\code{extract_coef} and \code{extract_random_coefficients} are aliases.
 }
 \examples{
 library(lme4)

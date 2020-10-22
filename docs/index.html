@@ -116,14 +116,13 @@
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install mixedup from GitHub with <code>remotes</code>. Use the second approach if you don’t already have <code>rstanarm</code> or <code>brms</code> (they aren’t required to use in general).</p>
 <div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">'m-clark/mixedup'</span>)
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">'m-clark/mixedup'</span><span class="op">)</span>
 
 <span class="co"># if you don't already have rstanarm and/or brms</span>
 
-<span class="kw">withr</span>::<span class="fu"><a href="https://withr.r-lib.org/reference/with_envvar.html">with_envvar</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(R_REMOTES_NO_ERRORS_FROM_WARNINGS = <span class="st">"true"</span>), 
-  <span class="kw">remotes</span>::<span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span>(<span class="st">'m-clark/mixedup'</span>)
-)
-</pre></div>
+<span class="fu">withr</span><span class="fu">::</span><span class="fu"><a href="https://withr.r-lib.org/reference/with_envvar.html">with_envvar</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>R_REMOTES_NO_ERRORS_FROM_WARNINGS <span class="op">=</span> <span class="st">"true"</span><span class="op">)</span>, 
+  <span class="fu">remotes</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">'m-clark/mixedup'</span><span class="op">)</span>
+<span class="op">)</span></pre></div>
 </div>
 <div id="supported-models" class="section level2">
 <h2 class="hasAnchor">
@@ -161,25 +160,25 @@
 <a href="#setup" class="anchor"></a>Setup</h3>
 <p>In the following I suppress the package startup and other information that isn’t necessary for demo.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit">
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/lme4/lme4">lme4</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/">lme4</a></span><span class="op">)</span>
 
-<span class="kw">lmer_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span>(<span class="kw">Reaction</span> <span class="op">~</span> <span class="kw">Days</span> <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> <span class="kw">Days</span> <span class="op">|</span> <span class="kw">Subject</span>), data = <span class="kw">sleepstudy</span>)
+<span class="va">lmer_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span><span class="op">(</span><span class="va">Reaction</span> <span class="op">~</span> <span class="va">Days</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">Days</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">sleepstudy</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/glmmTMB/glmmTMB">glmmTMB</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/glmmTMB/glmmTMB">glmmTMB</a></span><span class="op">)</span>
 
-<span class="kw">tmb_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html">glmmTMB</a></span>(<span class="kw">Reaction</span> <span class="op">~</span> <span class="kw">Days</span> <span class="op">+</span> (<span class="fl">1</span> <span class="op">+</span> <span class="kw">Days</span> <span class="op">|</span> <span class="kw">Subject</span>), data = <span class="kw">sleepstudy</span>)
+<span class="va">tmb_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html">glmmTMB</a></span><span class="op">(</span><span class="va">Reaction</span> <span class="op">~</span> <span class="va">Days</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">Days</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">sleepstudy</span><span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://svn.r-project.org/R-packages/trunk/nlme">nlme</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme/">nlme</a></span><span class="op">)</span>
 
-<span class="kw">nlme_model</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/nlme.html">nlme</a></span>(
-  <span class="kw">height</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/SSasymp.html">SSasymp</a></span>(<span class="kw">age</span>, <span class="kw">Asym</span>, <span class="kw">R0</span>, <span class="kw">lrc</span>),
-  data = <span class="kw">Loblolly</span>,
-  fixed = <span class="kw">Asym</span> <span class="op">+</span> <span class="kw">R0</span> <span class="op">+</span> <span class="kw">lrc</span> <span class="op">~</span> <span class="fl">1</span>,
-  random = <span class="kw">Asym</span> <span class="op">~</span> <span class="fl">1</span>,
-  start = <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span>(Asym = <span class="fl">103</span>, R0 = <span class="op">-</span><span class="fl">8.5</span>, lrc = <span class="op">-</span><span class="fl">3.3</span>)
-)
+<span class="va">nlme_model</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/nlme.html">nlme</a></span><span class="op">(</span>
+  <span class="va">height</span> <span class="op">~</span> <span class="fu"><a href="https://rdrr.io/r/stats/SSasymp.html">SSasymp</a></span><span class="op">(</span><span class="va">age</span>, <span class="va">Asym</span>, <span class="va">R0</span>, <span class="va">lrc</span><span class="op">)</span>,
+  data <span class="op">=</span> <span class="va">Loblolly</span>,
+  fixed <span class="op">=</span> <span class="va">Asym</span> <span class="op">+</span> <span class="va">R0</span> <span class="op">+</span> <span class="va">lrc</span> <span class="op">~</span> <span class="fl">1</span>,
+  random <span class="op">=</span> <span class="va">Asym</span> <span class="op">~</span> <span class="fl">1</span>,
+  start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Asym <span class="op">=</span> <span class="fl">103</span>, R0 <span class="op">=</span> <span class="op">-</span><span class="fl">8.5</span>, lrc <span class="op">=</span> <span class="op">-</span><span class="fl">3.3</span><span class="op">)</span>
+<span class="op">)</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://github.com/paul-buerkner/brms">brms</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms">brms</a></span><span class="op">)</span>
 
 <span class="co"># brm_model = brm(</span>
 <span class="co">#   Reaction ~ Days + (1 + Days | Subject), </span>
@@ -191,7 +190,7 @@
 <span class="co">#   iter = 1000</span>
 <span class="co"># )</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw"><a href="https://mc-stan.org/rstanarm">rstanarm</a></span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://mc-stan.org/rstanarm/">rstanarm</a></span><span class="op">)</span>
 
 <span class="co"># rstanarm_model = stan_glmer(</span>
 <span class="co">#   Reaction ~ Days + (1 + Days | Subject), </span>
@@ -204,16 +203,15 @@
 <span class="co">#   iter = 1000</span>
 <span class="co"># )</span>
 
-<span class="fu"><a href="https://rdrr.io/r/base/library.html">library</a></span>(<span class="kw">mgcv</span>)
+<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">mgcv</span><span class="op">)</span>
 
-<span class="kw">gam_model</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/gam.html">gam</a></span>(
-  <span class="kw">Reaction</span> <span class="op">~</span>  <span class="kw">Days</span> <span class="op">+</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(<span class="kw">Subject</span>, bs = <span class="st">'re'</span>) <span class="op">+</span>
-    <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span>(<span class="kw">Days</span>, <span class="kw">Subject</span>, bs = <span class="st">'re'</span>),
-  data = <span class="kw">lme4</span>::<span class="kw"><a href="https://rdrr.io/pkg/lme4/man/sleepstudy.html">sleepstudy</a></span>,
-  method = <span class="st">'REML'</span>
-)
-</pre></div>
+<span class="va">gam_model</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/gam.html">gam</a></span><span class="op">(</span>
+  <span class="va">Reaction</span> <span class="op">~</span>  <span class="va">Days</span> <span class="op">+</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span><span class="op">(</span><span class="va">Subject</span>, bs <span class="op">=</span> <span class="st">'re'</span><span class="op">)</span> <span class="op">+</span>
+    <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span><span class="op">(</span><span class="va">Days</span>, <span class="va">Subject</span>, bs <span class="op">=</span> <span class="st">'re'</span><span class="op">)</span>,
+  data <span class="op">=</span> <span class="fu">lme4</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lme4/man/sleepstudy.html">sleepstudy</a></span>,
+  method <span class="op">=</span> <span class="st">'REML'</span>
+<span class="op">)</span></pre></div>
 </div>
 <div id="extract-output-from-a-mixed-model" class="section level3">
 <h3 class="hasAnchor">

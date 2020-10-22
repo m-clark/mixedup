@@ -19,6 +19,9 @@
 #'   case, Only the p-value from the process is provide, all other output is
 #'   default provided `lme4` without adjustment.
 #'
+#'   `extract_fixef` is an alias.
+#'
+#'
 #' @note For `nlme`, this is just a multiplier based on the estimated standard
 #'   error and critical value for the `ci_level`.
 #'
@@ -503,3 +506,9 @@ extract_fixed_effects.gam <-
 
     fe
   }
+
+
+
+#' @rdname extract_fixed_effects
+#' @export
+extract_fixef <- extract_fixed_effects

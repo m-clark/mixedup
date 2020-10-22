@@ -8,6 +8,7 @@
 \alias{extract_fixed_effects.brmsfit}
 \alias{extract_fixed_effects.stanreg}
 \alias{extract_fixed_effects.gam}
+\alias{extract_fixef}
 \title{Extract fixed effects}
 \usage{
 extract_fixed_effects(
@@ -76,6 +77,15 @@ extract_fixed_effects(
   exponentiate = FALSE,
   ...
 )
+
+extract_fixef(
+  model,
+  ci_level = 0.95,
+  ci_args = NULL,
+  digits = 3,
+  exponentiate = FALSE,
+  ...
+)
 }
 \arguments{
 \item{model}{An lme4, glmmTMB, nlme, mgcv, or brms model.}
@@ -118,6 +128,8 @@ especially for low N/small numbers of groups.  The Kenward-Roger is also
 available if the \code{pbkrtest} package is installed (experimental). For either
 case, Only the p-value from the process is provide, all other output is
 default provided \code{lme4} without adjustment.
+
+\code{extract_fixef} is an alias.
 }
 \note{
 For \code{nlme}, this is just a multiplier based on the estimated standard

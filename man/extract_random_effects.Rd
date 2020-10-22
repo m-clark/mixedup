@@ -8,6 +8,7 @@
 \alias{extract_random_effects.brmsfit}
 \alias{extract_random_effects.stanreg}
 \alias{extract_random_effects.gam}
+\alias{extract_ranef}
 \title{Extract random effects}
 \usage{
 extract_random_effects(
@@ -76,6 +77,16 @@ extract_random_effects(
   add_group_N = FALSE,
   ...
 )
+
+extract_ranef(
+  model,
+  re = NULL,
+  ci_level = 0.95,
+  digits = 3,
+  add_group_N = FALSE,
+  component = NULL,
+  ...
+)
 }
 \arguments{
 \item{model}{An appropriate model. See details.}
@@ -132,6 +143,8 @@ underestimate relative to brms results.
 
 For mgcv, the \code{Vp} (Bayesian) estimated variance covariance matrix is
 used.
+
+\code{extract_ranef} is an alias.
 }
 \examples{
 library(lme4)

@@ -149,78 +149,88 @@
     <p>Extracts the random effects and their standard errors.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>extract_random_effects</span>(
-  <span class='kw'>model</span>,
-  re = <span class='kw'>NULL</span>,
-  ci_level = <span class='fl'>0.95</span>,
-  digits = <span class='fl'>3</span>,
-  add_group_N = <span class='fl'>FALSE</span>,
-  component = <span class='kw'>NULL</span>,
-  <span class='kw'>...</span>
-)
+    <pre class="usage"><span class='fu'>extract_random_effects</span><span class='op'>(</span>
+  <span class='va'>model</span>,
+  re <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ci_level <span class='op'>=</span> <span class='fl'>0.95</span>,
+  digits <span class='op'>=</span> <span class='fl'>3</span>,
+  add_group_N <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  component <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for merMod</span>
-<span class='fu'>extract_random_effects</span>(
-  <span class='kw'>model</span>,
-  re = <span class='kw'>NULL</span>,
-  ci_level = <span class='fl'>0.95</span>,
-  digits = <span class='fl'>3</span>,
-  add_group_N = <span class='fl'>FALSE</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>extract_random_effects</span><span class='op'>(</span>
+  <span class='va'>model</span>,
+  re <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ci_level <span class='op'>=</span> <span class='fl'>0.95</span>,
+  digits <span class='op'>=</span> <span class='fl'>3</span>,
+  add_group_N <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for glmmTMB</span>
-<span class='fu'>extract_random_effects</span>(
-  <span class='kw'>model</span>,
-  re = <span class='kw'>NULL</span>,
-  ci_level = <span class='fl'>0.95</span>,
-  digits = <span class='fl'>3</span>,
-  add_group_N = <span class='fl'>FALSE</span>,
-  component = <span class='st'>"cond"</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>extract_random_effects</span><span class='op'>(</span>
+  <span class='va'>model</span>,
+  re <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ci_level <span class='op'>=</span> <span class='fl'>0.95</span>,
+  digits <span class='op'>=</span> <span class='fl'>3</span>,
+  add_group_N <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  component <span class='op'>=</span> <span class='st'>"cond"</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for lme</span>
-<span class='fu'>extract_random_effects</span>(
-  <span class='kw'>model</span>,
-  re = <span class='kw'>NULL</span>,
-  ci_level = <span class='kw'>NULL</span>,
-  digits = <span class='fl'>3</span>,
-  add_group_N = <span class='fl'>FALSE</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>extract_random_effects</span><span class='op'>(</span>
+  <span class='va'>model</span>,
+  re <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ci_level <span class='op'>=</span> <span class='cn'>NULL</span>,
+  digits <span class='op'>=</span> <span class='fl'>3</span>,
+  add_group_N <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for brmsfit</span>
-<span class='fu'>extract_random_effects</span>(
-  <span class='kw'>model</span>,
-  re = <span class='kw'>NULL</span>,
-  ci_level = <span class='fl'>0.95</span>,
-  digits = <span class='fl'>3</span>,
-  add_group_N = <span class='fl'>FALSE</span>,
-  component = <span class='kw'>NULL</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>extract_random_effects</span><span class='op'>(</span>
+  <span class='va'>model</span>,
+  re <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ci_level <span class='op'>=</span> <span class='fl'>0.95</span>,
+  digits <span class='op'>=</span> <span class='fl'>3</span>,
+  add_group_N <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  component <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for stanreg</span>
-<span class='fu'>extract_random_effects</span>(
-  <span class='kw'>model</span>,
-  re = <span class='kw'>NULL</span>,
-  ci_level = <span class='fl'>0.95</span>,
-  digits = <span class='fl'>3</span>,
-  add_group_N = <span class='fl'>FALSE</span>,
-  component = <span class='kw'>NULL</span>,
-  <span class='kw'>...</span>
-)
+<span class='fu'>extract_random_effects</span><span class='op'>(</span>
+  <span class='va'>model</span>,
+  re <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ci_level <span class='op'>=</span> <span class='fl'>0.95</span>,
+  digits <span class='op'>=</span> <span class='fl'>3</span>,
+  add_group_N <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  component <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
 
 <span class='co'># S3 method for gam</span>
-<span class='fu'>extract_random_effects</span>(
-  <span class='kw'>model</span>,
-  re = <span class='kw'>NULL</span>,
-  ci_level = <span class='fl'>0.95</span>,
-  digits = <span class='fl'>3</span>,
-  add_group_N = <span class='fl'>FALSE</span>,
-  <span class='kw'>...</span>
-)</pre>
+<span class='fu'>extract_random_effects</span><span class='op'>(</span>
+  <span class='va'>model</span>,
+  re <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ci_level <span class='op'>=</span> <span class='fl'>0.95</span>,
+  digits <span class='op'>=</span> <span class='fl'>3</span>,
+  add_group_N <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span>
+
+<span class='fu'>extract_ranef</span><span class='op'>(</span>
+  <span class='va'>model</span>,
+  re <span class='op'>=</span> <span class='cn'>NULL</span>,
+  ci_level <span class='op'>=</span> <span class='fl'>0.95</span>,
+  digits <span class='op'>=</span> <span class='fl'>3</span>,
+  add_group_N <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  component <span class='op'>=</span> <span class='cn'>NULL</span>,
+  <span class='va'>...</span>
+<span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -291,6 +301,7 @@ conditional variances, i.e. <code>condvar = TRUE</code>.  This is likely an
 underestimate relative to brms results.</p>
 <p>For mgcv, the <code>Vp</code> (Bayesian) estimated variance covariance matrix is
 used.</p>
+<p><code>extract_ranef</code> is an alias.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
     <div class='dont-index'><p><code><a href='https://rdrr.io/pkg/lme4/man/ranef.html'>lme4::ranef()</a></code>,
@@ -309,11 +320,11 @@ used.</p>
 <code><a href='extract_vc.html'>extract_vc</a>()</code></p></div>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://github.com/lme4/lme4'>lme4</a></span>)
-<span class='fu'><a href='https://rdrr.io/r/base/library.html'>library</a></span>(<span class='kw'><a href='https://m-clark.github.io/mixedup'>mixedup</a></span>)
+    <pre class="examples"><div class='input'><span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/lme4/lme4/'>lme4</a></span><span class='op'>)</span>
+<span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://m-clark.github.io/mixedup'>mixedup</a></span><span class='op'>)</span>
 
-<span class='kw'>lmer_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span>(<span class='kw'>Reaction</span> <span class='op'>~</span> <span class='kw'>Days</span> <span class='op'>+</span> (<span class='fl'>1</span> <span class='op'>+</span> <span class='kw'>Days</span> <span class='op'>|</span> <span class='kw'>Subject</span>), data = <span class='kw'>sleepstudy</span>)
-<span class='fu'>extract_random_effects</span>(<span class='kw'>lmer_model</span>)
+<span class='va'>lmer_model</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span><span class='op'>(</span><span class='va'>Reaction</span> <span class='op'>~</span> <span class='va'>Days</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='va'>Days</span> <span class='op'>|</span> <span class='va'>Subject</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>sleepstudy</span><span class='op'>)</span>
+<span class='fu'>extract_random_effects</span><span class='op'>(</span><span class='va'>lmer_model</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 36 x 7</span><span>
 #&gt;    group_var effect    group   value    se lower_2.5 upper_97.5
 #&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;fct&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
