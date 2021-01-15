@@ -16,7 +16,7 @@
     "name": "R",
     "url": "https://r-project.org"
   },
-  "runtimePlatform": "R version 4.0.2 (2020-06-22)",
+  "runtimePlatform": "R version 4.0.3 (2020-10-10)",
   "author": [
     {
       "@type": "Person",
@@ -136,6 +136,18 @@
     },
     {
       "@type": "SoftwareApplication",
+      "identifier": "lmerTest",
+      "name": "lmerTest",
+      "provider": {
+        "@id": "https://cran.r-project.org",
+        "@type": "Organization",
+        "name": "Comprehensive R Archive Network (CRAN)",
+        "url": "https://cran.r-project.org"
+      },
+      "sameAs": "https://CRAN.R-project.org/package=lmerTest"
+    },
+    {
+      "@type": "SoftwareApplication",
       "identifier": "covr",
       "name": "covr",
       "provider": {
@@ -217,7 +229,7 @@
     }
   ],
   "releaseNotes": "https://github.com/m-clark/mixedup/blob/master/NEWS.md",
-  "fileSize": "40467.364KB",
+  "fileSize": "40533.875KB",
   "contIntegration": "https://codecov.io/gh/m-clark/mixedup?branch=master",
   "developmentStatus": "https://www.tidyverse.org/lifecycle/#maturing",
   "keywords": [

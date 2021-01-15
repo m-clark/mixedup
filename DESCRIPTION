@@ -27,6 +27,7 @@ Suggests:
   rstanarm,
   brms,
   pbkrtest,
+  lmerTest,
   covr,
   knitr,
   rmarkdown

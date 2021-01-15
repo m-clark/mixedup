@@ -82,6 +82,10 @@ test_that('extract_fixed_effects.merMod is null if no covariates', {
   expect_null(extract_fixed_effects(lme4::lmer(Reaction ~ -1 + (1|Subject), lme4::sleepstudy)))
 })
 
+test_that('extract_fixed_effects.merMod fails with lmerTest model', {
+  expect_error(extract_fixed_effects(lmerTest::lmer(Reaction ~ Days + (1|Subject), lme4::sleepstudy)))
+})
+
 
 # Test glmmTMB ------------------------------------------------------------
 

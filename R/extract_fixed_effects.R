@@ -79,11 +79,14 @@ extract_fixed_effects.merMod <-
     p_value = 'Wald'
   ) {
 
+    if (class(model) == "lmerModLmerTest")
+      stop('Only some functions work with lmerTest. This is not one of them.
+           Rerun your model with lme4::lmer instead.')
+
     if (!p_value %in% c('Wald', 'Satterthwaite', 'KR')) {
       warning("p_value must be one of 'Wald' or 'KR', switching to 'Wald'")
       p_value = 'Wald'
     }
-
 
     # do term now otherwise you can lose rownames if ci_level = 0
     fe <- data.frame(stats::coef(summary(model))) %>%

@@ -1,3 +1,7 @@
+# mixedup 0.3.8
+
+* Minor bug fixes (issues #14-15), enhancements (#16-17), and other issues (e.g. #18).
+
 # mixedup 0.3.7
 
 * Extend exponentiate to summarize_model, extend extract_random_effects to multivariate models, minor fixes (e.g. issue #12).
