@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.9</span>
       </span>
     </div>
 
@@ -75,13 +75,13 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/m-clark">
-    <span class="fa fa-github-alt"></span>
+    <span class="fas fa-github-alt"></span>
      
   </a>
 </li>
 <li>
   <a href="https://m-clark.github.io">
-    <span class="fa fa-empire"></span>
+    <span class="fas fa-empire"></span>
      
   </a>
 </li>
@@ -95,14 +95,13 @@
 
       
 
-      </header><script src="fixed_effects_files/header-attrs-2.5/header-attrs.js"></script><script src="fixed_effects_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="fixed_effects_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="fixed_effects_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="fixed_effects_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Extracting Fixed Effects</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-10-22</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2021-03-14</span></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/fixed_effects.Rmd"><code>vignettes/fixed_effects.Rmd</code></a></small>
       <div class="hidden name"><code>fixed_effects.Rmd</code></div>
@@ -114,13 +113,13 @@
 <div id="intro" class="section level2">
 <h2 class="hasAnchor">
 <a href="#intro" class="anchor"></a>Intro</h2>
-<p>This creates a standard regression table for the fixed effects, mostly in keeping with the <code><a href="https://rdrr.io/pkg/generics/man/tidy.html">broom::tidy</a></code> approach.</p>
+<p>This creates a standard regression table for the fixed effects, mostly in keeping with the <code><a href="https://generics.r-lib.org/reference/tidy.html">broom::tidy</a></code> approach.</p>
 </div>
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/">lme4</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/">lme4</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/glmmTMB/glmmTMB">glmmTMB</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme/">nlme</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms">brms</a></span><span class="op">)</span>
@@ -152,85 +151,85 @@
       <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span><span class="op">(</span><span class="va">Days</span>, <span class="va">Subject</span>, bs <span class="op">=</span> <span class="st">'re'</span><span class="op">)</span>,
     data <span class="op">=</span> <span class="fu">lme4</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lme4/man/sleepstudy.html">sleepstudy</a></span>,
     method <span class="op">=</span> <span class="st">'REML'</span>
-  <span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(mixedup)</span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">extract_fixed_effects</span>(lmer_model)</span>
-<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># A tibble: 2 x 7</span></span>
-<span id="cb2-5"><a href="#cb2-5"></a>  term      value    se     t p_value lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a>  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.82</span> <span class="fl">36.8</span>        <span class="dv">0</span>    <span class="fl">238.</span>        <span class="fl">265.</span> </span>
-<span id="cb2-8"><a href="#cb2-8"></a><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.55</span>  <span class="fl">6.77</span>       <span class="dv">0</span>      <span class="fl">7.44</span>       <span class="fl">13.5</span></span>
-<span id="cb2-9"><a href="#cb2-9"></a></span>
-<span id="cb2-10"><a href="#cb2-10"></a></span>
-<span id="cb2-11"><a href="#cb2-11"></a><span class="kw">extract_fixed_effects</span>(lme_model)</span>
-<span id="cb2-12"><a href="#cb2-12"></a><span class="co"># A tibble: 2 x 7</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a>  term      value    se     z p_value lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a>  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.82</span> <span class="fl">36.8</span>        <span class="dv">0</span>    <span class="fl">238.</span>        <span class="fl">265.</span> </span>
-<span id="cb2-16"><a href="#cb2-16"></a><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.55</span>  <span class="fl">6.77</span>       <span class="dv">0</span>      <span class="fl">7.42</span>       <span class="fl">13.5</span></span>
-<span id="cb2-17"><a href="#cb2-17"></a></span>
-<span id="cb2-18"><a href="#cb2-18"></a></span>
-<span id="cb2-19"><a href="#cb2-19"></a><span class="kw">extract_fixed_effects</span>(tmb_model)</span>
-<span id="cb2-20"><a href="#cb2-20"></a><span class="co"># A tibble: 2 x 7</span></span>
-<span id="cb2-21"><a href="#cb2-21"></a>  term      value    se     z p_value lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></span>
-<span id="cb2-22"><a href="#cb2-22"></a>  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
-<span id="cb2-23"><a href="#cb2-23"></a><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.63</span> <span class="fl">37.9</span>        <span class="dv">0</span>    <span class="fl">238.</span>        <span class="fl">264.</span> </span>
-<span id="cb2-24"><a href="#cb2-24"></a><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.50</span>  <span class="fl">6.97</span>       <span class="dv">0</span>      <span class="fl">7.52</span>       <span class="fl">13.4</span></span>
-<span id="cb2-25"><a href="#cb2-25"></a></span>
-<span id="cb2-26"><a href="#cb2-26"></a></span>
-<span id="cb2-27"><a href="#cb2-27"></a><span class="kw">extract_fixed_effects</span>(brms_model)</span>
-<span id="cb2-28"><a href="#cb2-28"></a><span class="co"># A tibble: 2 x 5</span></span>
-<span id="cb2-29"><a href="#cb2-29"></a>  term      value    se lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></span>
-<span id="cb2-30"><a href="#cb2-30"></a>  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
-<span id="cb2-31"><a href="#cb2-31"></a><span class="dv">1</span> Intercept <span class="fl">250.</span>   <span class="fl">7.13</span>    <span class="fl">234.</span>        <span class="fl">262.</span> </span>
-<span id="cb2-32"><a href="#cb2-32"></a><span class="dv">2</span> Days       <span class="fl">10.6</span>  <span class="fl">1.44</span>      <span class="fl">8.03</span>       <span class="fl">13.5</span></span>
-<span id="cb2-33"><a href="#cb2-33"></a></span>
-<span id="cb2-34"><a href="#cb2-34"></a></span>
-<span id="cb2-35"><a href="#cb2-35"></a><span class="kw">extract_fixed_effects</span>(mgcv_model)</span>
-<span id="cb2-36"><a href="#cb2-36"></a><span class="co"># A tibble: 2 x 7</span></span>
-<span id="cb2-37"><a href="#cb2-37"></a>  term      value    se     t p_value lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></span>
-<span id="cb2-38"><a href="#cb2-38"></a>  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
-<span id="cb2-39"><a href="#cb2-39"></a><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.88</span> <span class="fl">36.5</span>        <span class="dv">0</span>    <span class="fl">238.</span>        <span class="fl">265.</span> </span>
-<span id="cb2-40"><a href="#cb2-40"></a><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.56</span>  <span class="fl">6.71</span>       <span class="dv">0</span>      <span class="fl">7.39</span>       <span class="fl">13.5</span></span></code></pre></div>
+  <span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mixedup)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_fixed_effects</span>(lmer_model)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 2 x 7</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  term      value    se     t p_value lower_2<span class="fl">.5</span> upper_97<span class="fl">.5</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="sc">&lt;</span>chr<span class="sc">&gt;</span>     <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>   <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>     <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>      <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.82</span> <span class="fl">36.8</span>        <span class="dv">0</span>    <span class="fl">238.</span>        <span class="fl">265.</span> </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.55</span>  <span class="fl">6.77</span>       <span class="dv">0</span>      <span class="fl">7.44</span>       <span class="fl">13.5</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_fixed_effects</span>(lme_model)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 2 x 7</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  term      value    se     z p_value lower_2<span class="fl">.5</span> upper_97<span class="fl">.5</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>  <span class="sc">&lt;</span>chr<span class="sc">&gt;</span>     <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>   <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>     <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>      <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.82</span> <span class="fl">36.8</span>        <span class="dv">0</span>    <span class="fl">238.</span>        <span class="fl">265.</span> </span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.55</span>  <span class="fl">6.77</span>       <span class="dv">0</span>      <span class="fl">7.42</span>       <span class="fl">13.5</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_fixed_effects</span>(tmb_model)</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 2 x 7</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>  term      value    se     z p_value lower_2<span class="fl">.5</span> upper_97<span class="fl">.5</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  <span class="sc">&lt;</span>chr<span class="sc">&gt;</span>     <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>   <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>     <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>      <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.63</span> <span class="fl">37.9</span>        <span class="dv">0</span>    <span class="fl">238.</span>        <span class="fl">264.</span> </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.50</span>  <span class="fl">6.97</span>       <span class="dv">0</span>      <span class="fl">7.52</span>       <span class="fl">13.4</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_fixed_effects</span>(brms_model)</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 2 x 5</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>  term      value    se lower_2<span class="fl">.5</span> upper_97<span class="fl">.5</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>  <span class="sc">&lt;</span>chr<span class="sc">&gt;</span>     <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>     <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>      <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> Intercept <span class="fl">250.</span>   <span class="fl">7.13</span>    <span class="fl">234.</span>        <span class="fl">262.</span> </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> Days       <span class="fl">10.6</span>  <span class="fl">1.44</span>      <span class="fl">8.03</span>       <span class="fl">13.5</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_fixed_effects</span>(mgcv_model)</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 2 x 7</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  term      value    se     t p_value lower_2<span class="fl">.5</span> upper_97<span class="fl">.5</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="sc">&lt;</span>chr<span class="sc">&gt;</span>     <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>   <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>     <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>      <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.88</span> <span class="fl">36.5</span>        <span class="dv">0</span>    <span class="fl">238.</span>        <span class="fl">265.</span> </span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.56</span>  <span class="fl">6.71</span>       <span class="dv">0</span>      <span class="fl">7.39</span>       <span class="fl">13.5</span></span></code></pre></div>
 </div>
 <div id="options" class="section level2">
 <h2 class="hasAnchor">
 <a href="#options" class="anchor"></a>Options</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="kw">extract_fixed_effects</span>(</span>
-<span id="cb3-2"><a href="#cb3-2"></a>  lmer_model,</span>
-<span id="cb3-3"><a href="#cb3-3"></a>  <span class="dt">ci_level =</span> <span class="fl">.9</span>,</span>
-<span id="cb3-4"><a href="#cb3-4"></a>  <span class="dt">ci_args =</span> <span class="kw">list</span>(<span class="dt">method =</span> <span class="st">'boot'</span>, <span class="dt">nsim =</span> <span class="dv">50</span>),</span>
-<span id="cb3-5"><a href="#cb3-5"></a>  <span class="dt">digits =</span> <span class="dv">2</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a>)</span>
-<span id="cb3-7"><a href="#cb3-7"></a><span class="co"># A tibble: 2 x 7</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a>  term      value    se     t p_value lower_<span class="dv">5</span> upper_<span class="dv">95</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">    </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.82</span> <span class="fl">36.8</span>        <span class="dv">0</span>  <span class="fl">240.</span>      <span class="fl">262.</span> </span>
-<span id="cb3-11"><a href="#cb3-11"></a><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.55</span>  <span class="fl">6.77</span>       <span class="dv">0</span>    <span class="fl">8.15</span>     <span class="fl">13.2</span></span></code></pre></div>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>tmb_zip &lt;-<span class="st"> </span><span class="kw">glmmTMB</span>(</span>
-<span id="cb4-2"><a href="#cb4-2"></a>  count <span class="op">~</span><span class="st"> </span>spp <span class="op">+</span><span class="st"> </span>mined <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>site),</span>
-<span id="cb4-3"><a href="#cb4-3"></a>  <span class="dt">zi =</span>  <span class="op">~</span><span class="st"> </span>spp <span class="op">+</span><span class="st"> </span>mined <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>site),</span>
-<span id="cb4-4"><a href="#cb4-4"></a>  <span class="dt">family =</span> truncated_poisson,</span>
-<span id="cb4-5"><a href="#cb4-5"></a>  <span class="dt">data =</span> Salamanders</span>
-<span id="cb4-6"><a href="#cb4-6"></a>)</span>
-<span id="cb4-7"><a href="#cb4-7"></a></span>
-<span id="cb4-8"><a href="#cb4-8"></a><span class="kw">extract_fixed_effects</span>(</span>
-<span id="cb4-9"><a href="#cb4-9"></a>  tmb_zip,</span>
-<span id="cb4-10"><a href="#cb4-10"></a>  <span class="dt">cond =</span> <span class="st">'zi'</span>,</span>
-<span id="cb4-11"><a href="#cb4-11"></a>  <span class="dt">exponentiate =</span> <span class="ot">TRUE</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a>)</span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="co"># A tibble: 8 x 7</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a>  term      value    se      z p_value lower_<span class="fl">2.5</span> upper_<span class="fl">97.5</span></span>
-<span id="cb4-15"><a href="#cb4-15"></a>  <span class="op">&lt;</span>chr<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st"> </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">  </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">   </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">     </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span><span class="st">      </span><span class="er">&lt;</span>dbl<span class="op">&gt;</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a><span class="dv">1</span> Intercept <span class="fl">0.935</span> <span class="fl">0.193</span> <span class="fl">-0.325</span>   <span class="fl">0.745</span>     <span class="fl">0.624</span>       <span class="fl">1.4</span> </span>
-<span id="cb4-17"><a href="#cb4-17"></a><span class="dv">2</span> sppPR     <span class="fl">0.594</span> <span class="fl">0.166</span> <span class="fl">-1.87</span>    <span class="fl">0.062</span>     <span class="fl">0.344</span>       <span class="fl">1.03</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a><span class="dv">3</span> sppDM     <span class="fl">1.25</span>  <span class="fl">0.181</span>  <span class="fl">1.55</span>    <span class="fl">0.121</span>     <span class="fl">0.942</span>       <span class="fl">1.66</span></span>
-<span id="cb4-19"><a href="#cb4-19"></a><span class="dv">4</span> sppEC<span class="op">-</span>A   <span class="fl">0.822</span> <span class="fl">0.165</span> <span class="fl">-0.972</span>   <span class="fl">0.331</span>     <span class="fl">0.554</span>       <span class="fl">1.22</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a><span class="dv">5</span> sppEC<span class="op">-</span>L   <span class="fl">1.91</span>  <span class="fl">0.253</span>  <span class="fl">4.89</span>    <span class="dv">0</span>         <span class="fl">1.47</span>        <span class="fl">2.47</span></span>
-<span id="cb4-21"><a href="#cb4-21"></a><span class="dv">6</span> sppDES<span class="op">-</span>L  <span class="fl">1.83</span>  <span class="fl">0.239</span>  <span class="fl">4.64</span>    <span class="dv">0</span>         <span class="fl">1.42</span>        <span class="fl">2.36</span></span>
-<span id="cb4-22"><a href="#cb4-22"></a><span class="dv">7</span> sppDF     <span class="fl">1.05</span>  <span class="fl">0.161</span>  <span class="fl">0.299</span>   <span class="fl">0.765</span>     <span class="fl">0.774</span>       <span class="fl">1.42</span></span>
-<span id="cb4-23"><a href="#cb4-23"></a><span class="dv">8</span> minedno   <span class="fl">2.76</span>  <span class="fl">0.516</span>  <span class="fl">5.42</span>    <span class="dv">0</span>         <span class="fl">1.91</span>        <span class="fl">3.98</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_fixed_effects</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  lmer_model,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci_level =</span> .<span class="dv">9</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci_args =</span> <span class="fu">list</span>(<span class="at">method =</span> <span class="st">'boot'</span>, <span class="at">nsim =</span> <span class="dv">50</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">2</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 2 x 7</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  term      value    se     t p_value lower_5 upper_95</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="sc">&lt;</span>chr<span class="sc">&gt;</span>     <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>   <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>   <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>    <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> Intercept <span class="fl">251.</span>   <span class="fl">6.82</span> <span class="fl">36.8</span>        <span class="dv">0</span>  <span class="fl">242.</span>      <span class="fl">264.</span> </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> Days       <span class="fl">10.5</span>  <span class="fl">1.55</span>  <span class="fl">6.77</span>       <span class="dv">0</span>    <span class="fl">8.23</span>     <span class="fl">12.7</span></span></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>tmb_zip <span class="ot">&lt;-</span> <span class="fu">glmmTMB</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  count <span class="sc">~</span> spp <span class="sc">+</span> mined <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> site),</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">zi =</span>  <span class="sc">~</span> spp <span class="sc">+</span> mined <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> site),</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> truncated_poisson,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Salamanders</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_fixed_effects</span>(</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>  tmb_zip,</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">cond =</span> <span class="st">'zi'</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">exponentiate =</span> <span class="cn">TRUE</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># A tibble: 8 x 7</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>  term      value    se      z p_value lower_2<span class="fl">.5</span> upper_97<span class="fl">.5</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>  <span class="sc">&lt;</span>chr<span class="sc">&gt;</span>     <span class="er">&lt;</span>dbl<span class="sc">&gt;</span> <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>  <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>   <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>     <span class="er">&lt;</span>dbl<span class="sc">&gt;</span>      <span class="er">&lt;</span>dbl<span class="sc">&gt;</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> Intercept <span class="fl">0.935</span> <span class="fl">0.193</span> <span class="sc">-</span><span class="fl">0.325</span>   <span class="fl">0.745</span>     <span class="fl">0.624</span>       <span class="fl">1.4</span> </span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> sppPR     <span class="fl">0.594</span> <span class="fl">0.166</span> <span class="sc">-</span><span class="fl">1.87</span>    <span class="fl">0.062</span>     <span class="fl">0.344</span>       <span class="fl">1.03</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> sppDM     <span class="fl">1.25</span>  <span class="fl">0.181</span>  <span class="fl">1.55</span>    <span class="fl">0.121</span>     <span class="fl">0.942</span>       <span class="fl">1.66</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> sppEC<span class="sc">-</span>A   <span class="fl">0.822</span> <span class="fl">0.165</span> <span class="sc">-</span><span class="fl">0.972</span>   <span class="fl">0.331</span>     <span class="fl">0.554</span>       <span class="fl">1.22</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a><span class="dv">5</span> sppEC<span class="sc">-</span>L   <span class="fl">1.91</span>  <span class="fl">0.253</span>  <span class="fl">4.89</span>    <span class="dv">0</span>         <span class="fl">1.47</span>        <span class="fl">2.47</span></span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span> sppDES<span class="sc">-</span>L  <span class="fl">1.83</span>  <span class="fl">0.239</span>  <span class="fl">4.64</span>    <span class="dv">0</span>         <span class="fl">1.42</span>        <span class="fl">2.36</span></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a><span class="dv">7</span> sppDF     <span class="fl">1.05</span>  <span class="fl">0.161</span>  <span class="fl">0.299</span>   <span class="fl">0.765</span>     <span class="fl">0.774</span>       <span class="fl">1.42</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a><span class="dv">8</span> minedno   <span class="fl">2.76</span>  <span class="fl">0.516</span>  <span class="fl">5.42</span>    <span class="dv">0</span>         <span class="fl">1.91</span>        <span class="fl">3.98</span></span></code></pre></div>
 </div>
   </div>
 

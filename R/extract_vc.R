@@ -34,7 +34,7 @@
 #'   (\href{https://github.com/glmmTMB/glmmTMB/issues/571}{for example}).  If
 #'   you get an error, you should check by running `confint(my_tmb_model)` before
 #'   posting an issue.  While I've attempted some minor hacks to deal with some
-#'   of them, if the `glmmTMB` function doesn't work, this function won't
+#'   of them, if the `glmmTMB` functionality doesn't work, this function won't
 #'   either.
 #'
 #'
@@ -219,22 +219,40 @@ extract_vc.glmmTMB <- function(
 
   vc <- data.frame(variance, sd = sqrt(variance$variance))
 
-  # TODO: confint will not work for some tmb objects, e.g. with ar, so need a trycatch
+  # NOTE: confint will not work for some tmb objects
+  # see glmmTMB:::getCorSD (constructed within formatVC) for how to extract ar
+  # sd, but basically just grabs the first value of diag for sd and second value
+  # for cor
 
   if (ci_level > 0) {
-    ci <- do.call(
-      confint,
-      c(
-        list(
-          object = model,
-          # parm = 'theta_',  # this has been problematic in the past and doesn't work properly now https://github.com/bbolker/broom.mixed/issues/31
-          level = ci_level,
-          # component = component,    # will also throw an error
-          estimate = FALSE
+    ci <-
+      tryCatch(
+        do.call(
+          confint,
+          c(
+            list(
+              object = model,
+              # parm = 'theta_',  # this has been problematic in the past and doesn't work properly now https://github.com/bbolker/broom.mixed/issues/31
+              level = ci_level,
+              # component = component,    # will also throw an error
+              estimate = FALSE
+            ),
+            ci_args
+          )
         ),
-        ci_args
+        error = function(c) {
+          msg <- conditionMessage(c)
+          invisible(structure(msg, class = "try-error"))
+        }
       )
-    )
+    if (inherits(ci, 'try-error')) {
+      warning('Intervals could not be computed. Returning basic result.')
+
+      ci <- data.frame(
+        lower = NA,
+        upper = NA
+      )
+    }
 
     if (ci_scale == 'var') {
       ci <- ci^2
@@ -258,13 +276,17 @@ extract_vc.glmmTMB <- function(
     # the ci doesn't return anything for residual var, if it exists, so this is
     # an attempt to deal with it
     if (nrow(ci) < nrow(vc)) {
-      vc_ci = vc %>%
-        dplyr::slice(-nrow(vc)) %>%    # remove residual
-        dplyr::bind_cols(ci)
+      # deal with try-error result
+      if (nrow(ci) == 0) {
+        vc <- vc
+      } else {
+        vc_ci = vc %>%
+          dplyr::slice(-nrow(vc)) %>%    # remove residual
+          dplyr::bind_cols(ci)
 
-      vc = dplyr::bind_rows(vc_ci, vc %>% dplyr::filter(group == 'Residual'))
-    }
-    else {
+        vc <- dplyr::bind_rows(vc_ci, vc %>% dplyr::filter(group == 'Residual'))
+      }
+    } else {
       vc <- cbind(vc, ci)
     }
   }
@@ -293,6 +315,14 @@ extract_vc.glmmTMB <- function(
     return(list(`Variance Components` = vc, Cor = cormats))
   }
 
+  # simplify output if possible (add models as needed)
+  if (any(grepl(model$modelInfo$allForm$formula, pattern = 'ar1\\(|gau\\(|exp\\(|mat\\(|ou\\('))) {
+    vc = vc %>% dplyr::select(-effect) %>% dplyr::distinct()
+    warning('Output has been simplified. You may have additional information with `show_cor = TRUE`.')
+  }
+
+
+  rownames(vc) = NULL  # will likely only confuse
   vc
 }
 
@@ -624,7 +654,7 @@ extract_vc.gam <- function(
   ) {
 
   if (!grepl(model$method, pattern = "REML")) {
-    stop("REML required. Rerun model with method = 'REML' for appropriate results.")
+    stop("REML required. Rerun model with method = 'REML' for appropriate confidence interval results.")
   }
 
   # keep from printing result

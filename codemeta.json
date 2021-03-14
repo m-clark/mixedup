@@ -10,7 +10,7 @@
   "codeRepository": "https://github.com/m-clark/mixedup",
   "issueTracker": "https://github.com/m-clark/mixedup/issues",
   "license": "https://spdx.org/licenses/MIT",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "programmingLanguage": {
     "@type": "ComputerLanguage",
     "name": "R",
@@ -229,7 +229,7 @@
     }
   ],
   "releaseNotes": "https://github.com/m-clark/mixedup/blob/master/NEWS.md",
-  "fileSize": "40533.875KB",
+  "fileSize": "42939.489KB",
   "contIntegration": "https://codecov.io/gh/m-clark/mixedup?branch=master",
   "developmentStatus": "https://www.tidyverse.org/lifecycle/#maturing",
   "keywords": [

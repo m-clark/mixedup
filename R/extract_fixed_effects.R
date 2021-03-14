@@ -231,8 +231,10 @@ extract_fixed_effects.glmmTMB <-
       )
 
       if (inherits(ci, 'try-error')) {
-        warning('Intervals could not be computed. Returning ci based on se.
-                \nIf se is NaN, check random effects for zero variance estimates.')
+        warning(
+          'Intervals could not be computed for fixed effects. Returning CI based on SE.\n  If Fixed Effect SE is NaN, check random effects for zero variance estimates.'
+        )
+
         mult <- stats::qnorm(upper)
 
         ci <- data.frame(

@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.9</span>
       </span>
     </div>
 
@@ -75,13 +75,13 @@
 <ul class="nav navbar-nav navbar-right">
 <li>
   <a href="https://github.com/m-clark">
-    <span class="fa fa-github-alt"></span>
+    <span class="fas fa-github-alt"></span>
      
   </a>
 </li>
 <li>
   <a href="https://m-clark.github.io">
-    <span class="fa fa-empire"></span>
+    <span class="fas fa-empire"></span>
      
   </a>
 </li>
@@ -95,14 +95,13 @@
 
       
 
-      </header><script src="variance_components_files/header-attrs-2.5/header-attrs.js"></script><script src="variance_components_files/accessible-code-block-0.0.1/empty-anchor.js"></script><link href="variance_components_files/anchor-sections-1.0/anchor-sections.css" rel="stylesheet">
-<script src="variance_components_files/anchor-sections-1.0/anchor-sections.js"></script><div class="row">
+      </header><script src="variance_components_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Extracting Variance Components</h1>
                         <h4 class="author">Michael Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2020-10-22</span></h4>
+            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2021-03-14</span></h4>
       
       <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/variance_components.Rmd"><code>vignettes/variance_components.Rmd</code></a></small>
       <div class="hidden name"><code>variance_components.Rmd</code></div>
@@ -119,8 +118,8 @@
 <div id="examples" class="section level2">
 <h2 class="hasAnchor">
 <a href="#examples" class="anchor"></a>Examples</h2>
-<div class="sourceCode" id="cb1"><pre class="downlit">
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/">lme4</a></span><span class="op">)</span>
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/">lme4</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/glmmTMB/glmmTMB">glmmTMB</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme/">nlme</a></span><span class="op">)</span>
 <span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms">brms</a></span><span class="op">)</span>
@@ -152,59 +151,59 @@
       <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span><span class="op">(</span><span class="va">Days</span>, <span class="va">Subject</span>, bs <span class="op">=</span> <span class="st">'re'</span><span class="op">)</span>,
     data <span class="op">=</span> <span class="fu">lme4</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lme4/man/sleepstudy.html">sleepstudy</a></span>,
     method <span class="op">=</span> <span class="st">'REML'</span>
-  <span class="op">)</span></pre></div>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="kw">library</span>(mixedup)</span>
-<span id="cb2-2"><a href="#cb2-2"></a></span>
-<span id="cb2-3"><a href="#cb2-3"></a><span class="kw">extract_vc</span>(lmer_model)</span>
-<span id="cb2-4"><a href="#cb2-4"></a>     group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</span>
-<span id="cb2-5"><a href="#cb2-5"></a><span class="dv">1</span>  Subject Intercept  <span class="fl">612.100</span> <span class="fl">24.741</span> <span class="fl">14.381</span>  <span class="fl">37.716</span>    <span class="fl">0.470</span></span>
-<span id="cb2-6"><a href="#cb2-6"></a><span class="dv">2</span>  Subject      Days   <span class="fl">35.072</span>  <span class="fl">5.922</span>  <span class="fl">3.801</span>   <span class="fl">8.753</span>    <span class="fl">0.027</span></span>
-<span id="cb2-7"><a href="#cb2-7"></a><span class="dv">3</span> Residual            <span class="fl">654.940</span> <span class="fl">25.592</span> <span class="fl">22.898</span>  <span class="fl">28.858</span>    <span class="fl">0.503</span></span>
-<span id="cb2-8"><a href="#cb2-8"></a></span>
-<span id="cb2-9"><a href="#cb2-9"></a></span>
-<span id="cb2-10"><a href="#cb2-10"></a><span class="kw">extract_vc</span>(lme_model)</span>
-<span id="cb2-11"><a href="#cb2-11"></a>     group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</span>
-<span id="cb2-12"><a href="#cb2-12"></a><span class="dv">1</span>  Subject Intercept  <span class="fl">612.080</span> <span class="fl">24.740</span> <span class="fl">15.518</span>  <span class="fl">39.444</span>    <span class="fl">0.470</span></span>
-<span id="cb2-13"><a href="#cb2-13"></a><span class="dv">2</span>  Subject      Days   <span class="fl">35.071</span>  <span class="fl">5.922</span>  <span class="fl">3.904</span>   <span class="fl">8.983</span>    <span class="fl">0.027</span></span>
-<span id="cb2-14"><a href="#cb2-14"></a><span class="dv">3</span> Residual            <span class="fl">654.942</span> <span class="fl">25.592</span> <span class="fl">22.797</span>  <span class="fl">28.729</span>    <span class="fl">0.503</span></span>
-<span id="cb2-15"><a href="#cb2-15"></a></span>
-<span id="cb2-16"><a href="#cb2-16"></a></span>
-<span id="cb2-17"><a href="#cb2-17"></a><span class="kw">extract_vc</span>(tmb_model)</span>
-<span id="cb2-18"><a href="#cb2-18"></a>     group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</span>
-<span id="cb2-19"><a href="#cb2-19"></a><span class="dv">1</span>  Subject Intercept  <span class="fl">565.516</span> <span class="fl">23.781</span> <span class="fl">15.017</span>  <span class="fl">37.658</span>    <span class="fl">0.451</span></span>
-<span id="cb2-20"><a href="#cb2-20"></a><span class="dv">2</span>  Subject      Days   <span class="fl">32.682</span>  <span class="fl">5.717</span>  <span class="fl">3.805</span>   <span class="fl">8.588</span>    <span class="fl">0.026</span></span>
-<span id="cb2-21"><a href="#cb2-21"></a><span class="dv">3</span> Residual            <span class="fl">654.942</span> <span class="fl">25.592</span>     <span class="ot">NA</span>      <span class="ot">NA</span>    <span class="fl">0.523</span></span>
-<span id="cb2-22"><a href="#cb2-22"></a></span>
-<span id="cb2-23"><a href="#cb2-23"></a></span>
-<span id="cb2-24"><a href="#cb2-24"></a><span class="kw">extract_vc</span>(brms_model)</span>
-<span id="cb2-25"><a href="#cb2-25"></a>     group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</span>
-<span id="cb2-26"><a href="#cb2-26"></a><span class="dv">1</span>  Subject Intercept  <span class="fl">695.259</span> <span class="fl">26.368</span> <span class="fl">16.608</span>  <span class="fl">44.489</span>    <span class="fl">0.487</span></span>
-<span id="cb2-27"><a href="#cb2-27"></a><span class="dv">2</span>  Subject      Days   <span class="fl">39.950</span>  <span class="fl">6.321</span>  <span class="fl">4.104</span>   <span class="fl">9.264</span>    <span class="fl">0.028</span></span>
-<span id="cb2-28"><a href="#cb2-28"></a><span class="dv">3</span> Residual            <span class="fl">692.387</span> <span class="fl">26.313</span> <span class="fl">23.257</span>  <span class="fl">29.863</span>    <span class="fl">0.485</span></span>
-<span id="cb2-29"><a href="#cb2-29"></a></span>
-<span id="cb2-30"><a href="#cb2-30"></a></span>
-<span id="cb2-31"><a href="#cb2-31"></a><span class="kw">extract_vc</span>(mgcv_model)</span>
-<span id="cb2-32"><a href="#cb2-32"></a>     group    effect variance     sd sd_<span class="fl">2.5</span> sd_<span class="fl">97.5</span> var_prop</span>
-<span id="cb2-33"><a href="#cb2-33"></a><span class="dv">1</span>  Subject Intercept  <span class="fl">627.571</span> <span class="fl">25.051</span> <span class="fl">16.085</span>  <span class="fl">39.015</span>    <span class="fl">0.477</span></span>
-<span id="cb2-34"><a href="#cb2-34"></a><span class="dv">2</span>  Subject      Days   <span class="fl">35.858</span>  <span class="fl">5.988</span>  <span class="fl">4.025</span>   <span class="fl">8.908</span>    <span class="fl">0.027</span></span>
-<span id="cb2-35"><a href="#cb2-35"></a><span class="dv">3</span> Residual            <span class="fl">653.582</span> <span class="fl">25.565</span> <span class="fl">22.792</span>  <span class="fl">28.676</span>    <span class="fl">0.496</span></span></code></pre></div>
+  <span class="op">)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mixedup)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_vc</span>(lmer_model)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>                          group    effect variance     sd sd_2<span class="fl">.5</span> sd_97<span class="fl">.5</span> var_prop</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">sd_</span>(Intercept)<span class="sc">|</span>Subject  Subject Intercept  <span class="fl">612.100</span> <span class="fl">24.741</span> <span class="fl">14.381</span>  <span class="fl">37.716</span>    <span class="fl">0.470</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>sd_Days<span class="sc">|</span>Subject         Subject      Days   <span class="fl">35.072</span>  <span class="fl">5.922</span>  <span class="fl">3.801</span>   <span class="fl">8.753</span>    <span class="fl">0.027</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>sigma                  Residual            <span class="fl">654.940</span> <span class="fl">25.592</span> <span class="fl">22.898</span>  <span class="fl">28.858</span>    <span class="fl">0.503</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_vc</span>(lme_model)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>                           group    effect variance     sd sd_2<span class="fl">.5</span> sd_97<span class="fl">.5</span> var_prop</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="fu">Subject.sd</span>((Intercept))  Subject Intercept  <span class="fl">612.080</span> <span class="fl">24.740</span> <span class="fl">15.518</span>  <span class="fl">39.444</span>    <span class="fl">0.470</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">Subject.sd</span>(Days)         Subject      Days   <span class="fl">35.071</span>  <span class="fl">5.922</span>  <span class="fl">3.904</span>   <span class="fl">8.983</span>    <span class="fl">0.027</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>                       Residual            <span class="fl">654.942</span> <span class="fl">25.592</span> <span class="fl">22.797</span>  <span class="fl">28.729</span>    <span class="fl">0.503</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_vc</span>(tmb_model)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>     group    effect variance     sd sd_2<span class="fl">.5</span> sd_97<span class="fl">.5</span> var_prop</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>  Subject Intercept  <span class="fl">565.516</span> <span class="fl">23.781</span> <span class="fl">15.017</span>  <span class="fl">37.658</span>    <span class="fl">0.451</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>  Subject      Days   <span class="fl">32.682</span>  <span class="fl">5.717</span>  <span class="fl">3.805</span>   <span class="fl">8.588</span>    <span class="fl">0.026</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> Residual            <span class="fl">654.942</span> <span class="fl">25.592</span>     <span class="cn">NA</span>      <span class="cn">NA</span>    <span class="fl">0.523</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_vc</span>(brms_model)</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>                     group    effect variance     sd sd_2<span class="fl">.5</span> sd_97<span class="fl">.5</span> var_prop</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>Subject.Intercept  Subject Intercept  <span class="fl">695.259</span> <span class="fl">26.368</span> <span class="fl">16.608</span>  <span class="fl">44.489</span>    <span class="fl">0.487</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>Subject.Days       Subject      Days   <span class="fl">39.950</span>  <span class="fl">6.321</span>  <span class="fl">4.104</span>   <span class="fl">9.264</span>    <span class="fl">0.028</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>residual__        Residual            <span class="fl">692.387</span> <span class="fl">26.313</span> <span class="fl">23.257</span>  <span class="fl">29.863</span>    <span class="fl">0.485</span></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_vc</span>(mgcv_model)</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>                   group    effect variance     sd sd_2<span class="fl">.5</span> sd_97<span class="fl">.5</span> var_prop</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a><span class="fu">s</span>(Subject)       Subject Intercept  <span class="fl">627.571</span> <span class="fl">25.051</span> <span class="fl">16.085</span>  <span class="fl">39.015</span>    <span class="fl">0.477</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a><span class="fu">s</span>(Days,Subject)  Subject      Days   <span class="fl">35.858</span>  <span class="fl">5.988</span>  <span class="fl">4.025</span>   <span class="fl">8.908</span>    <span class="fl">0.027</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>scale           Residual            <span class="fl">653.582</span> <span class="fl">25.565</span> <span class="fl">22.792</span>  <span class="fl">28.676</span>    <span class="fl">0.496</span></span></code></pre></div>
 </div>
 <div id="options" class="section level2">
 <h2 class="hasAnchor">
 <a href="#options" class="anchor"></a>Options</h2>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>tmb_model &lt;-</span>
-<span id="cb3-2"><a href="#cb3-2"></a><span class="st">  </span><span class="kw">glmmTMB</span>(y <span class="op">~</span><span class="st"> </span>service <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>d) <span class="op">+</span><span class="st"> </span>(<span class="dv">1</span> <span class="op">|</span><span class="st"> </span>s), <span class="dt">data =</span> InstEval[<span class="dv">1</span><span class="op">:</span><span class="dv">5000</span>,])</span>
-<span id="cb3-3"><a href="#cb3-3"></a></span>
-<span id="cb3-4"><a href="#cb3-4"></a><span class="kw">extract_vc</span>(</span>
-<span id="cb3-5"><a href="#cb3-5"></a>  tmb_model,</span>
-<span id="cb3-6"><a href="#cb3-6"></a>  <span class="dt">ci_level =</span> <span class="fl">.9</span>,</span>
-<span id="cb3-7"><a href="#cb3-7"></a>  <span class="dt">ci_scale =</span> <span class="st">'var'</span>,</span>
-<span id="cb3-8"><a href="#cb3-8"></a>  <span class="dt">digits =</span> <span class="dv">2</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>)</span>
-<span id="cb3-10"><a href="#cb3-10"></a>     group    effect variance   sd var_<span class="dv">5</span> var_<span class="dv">95</span> var_prop</span>
-<span id="cb3-11"><a href="#cb3-11"></a><span class="dv">1</span>        d Intercept     <span class="fl">0.26</span> <span class="fl">0.51</span>  <span class="fl">0.22</span>   <span class="fl">0.31</span>     <span class="fl">0.15</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a><span class="dv">2</span>        s Intercept     <span class="fl">0.11</span> <span class="fl">0.33</span>  <span class="fl">0.08</span>   <span class="fl">0.14</span>     <span class="fl">0.06</span></span>
-<span id="cb3-13"><a href="#cb3-13"></a><span class="dv">3</span> Residual               <span class="fl">1.36</span> <span class="fl">1.17</span>    <span class="ot">NA</span>     <span class="ot">NA</span>     <span class="fl">0.79</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>tmb_model <span class="ot">&lt;-</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glmmTMB</span>(y <span class="sc">~</span> service <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> d) <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">|</span> s), <span class="at">data =</span> InstEval[<span class="dv">1</span><span class="sc">:</span><span class="dv">5000</span>,])</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">extract_vc</span>(</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  tmb_model,</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci_level =</span> .<span class="dv">9</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci_scale =</span> <span class="st">'var'</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">2</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>     group    effect variance   sd var_5 var_95 var_prop</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span>        d Intercept     <span class="fl">0.26</span> <span class="fl">0.51</span>  <span class="fl">0.22</span>   <span class="fl">0.31</span>     <span class="fl">0.15</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span>        s Intercept     <span class="fl">0.11</span> <span class="fl">0.33</span>  <span class="fl">0.08</span>   <span class="fl">0.14</span>     <span class="fl">0.06</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> Residual               <span class="fl">1.36</span> <span class="fl">1.17</span>    <span class="cn">NA</span>     <span class="cn">NA</span>     <span class="fl">0.79</span></span></code></pre></div>
 </div>
   </div>
 
