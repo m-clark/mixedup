@@ -219,22 +219,40 @@ extract_vc.glmmTMB <- function(
 
   vc <- data.frame(variance, sd = sqrt(variance$variance))
 
-  # TODO: confint will not work for some tmb objects, e.g. with ar, so need a trycatch
+  # TODO: confint will not work for some tmb objects, e.g. with ar, so probably
+  # need a trycatch;
+  # see glmmTMB:::getCorSD (constructed within formatVC) for how to extract ar sd; basically just grabs the first
+  # value of diag for sd and second value for cor
 
   if (ci_level > 0) {
-    ci <- do.call(
-      confint,
-      c(
-        list(
-          object = model,
-          # parm = 'theta_',  # this has been problematic in the past and doesn't work properly now https://github.com/bbolker/broom.mixed/issues/31
-          level = ci_level,
-          # component = component,    # will also throw an error
-          estimate = FALSE
+    ci <-
+      tryCatch(
+        do.call(
+          confint,
+          c(
+            list(
+              object = model,
+              # parm = 'theta_',  # this has been problematic in the past and doesn't work properly now https://github.com/bbolker/broom.mixed/issues/31
+              level = ci_level,
+              # component = component,    # will also throw an error
+              estimate = FALSE
+            ),
+            ci_args
+          )
         ),
-        ci_args
+        error = function(c) {
+          msg <- conditionMessage(c)
+          invisible(structure(msg, class = "try-error"))
+        }
       )
-    )
+    if (inherits(ci, 'try-error')) {
+      warning('Intervals could not be computed. Returning basic result.')
+
+      ci <- data.frame(
+        lower = NA,
+        upper = NA
+      )
+    }
 
     if (ci_scale == 'var') {
       ci <- ci^2
@@ -258,13 +276,17 @@ extract_vc.glmmTMB <- function(
     # the ci doesn't return anything for residual var, if it exists, so this is
     # an attempt to deal with it
     if (nrow(ci) < nrow(vc)) {
-      vc_ci = vc %>%
-        dplyr::slice(-nrow(vc)) %>%    # remove residual
-        dplyr::bind_cols(ci)
+      # deal with try-error result
+      if (nrow(ci) == 0) {
+        vc <- vc
+      } else{
+        vc_ci = vc %>%
+          dplyr::slice(-nrow(vc)) %>%    # remove residual
+          dplyr::bind_cols(ci)
 
-      vc = dplyr::bind_rows(vc_ci, vc %>% dplyr::filter(group == 'Residual'))
-    }
-    else {
+        vc <- dplyr::bind_rows(vc_ci, vc %>% dplyr::filter(group == 'Residual'))
+      }
+    } else {
       vc <- cbind(vc, ci)
     }
   }

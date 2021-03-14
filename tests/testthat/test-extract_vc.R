@@ -126,19 +126,41 @@ test_that('extract_vc.glmmTMB basic functionality: ints/slopes with multiple gro
   expect_s3_class(extract_vc(tmb_4, ci_level = 0), 'data.frame')
 })
 
-test_that('extract_vc.glmmTMB basic functionality: ints/slopes with multiple grouping factors', {
+test_that('extract_vc.glmmTMB basic functionality: zero-inflated', {
   expect_s3_class(extract_vc(tmb_zip, component = 'zi'), 'data.frame')
+})
+
+### ar and related
+
+test_that('extract_vc.glmmTMB basic functionality: ar', {
+  expect_s3_class(extract_vc(tmb_ar), 'data.frame')
+  expect_s3_class(extract_vc(tmb_ar_2grp, ci_level = F), 'data.frame')
+})
+
+test_that('extract_vc.glmmTMB basic functionality: ar-related', {
+  expect_s3_class(extract_vc(tmb_cs), 'data.frame')
+  expect_warning(extract_vc(tmb_diag))
+  expect_warning(extract_vc(tmb_diag_2grp))
+  expect_s3_class(extract_vc(tmb_ou), 'data.frame')
+  expect_s3_class(extract_vc(tmb_toep), 'data.frame')
+  expect_warning(extract_vc(tmb_us))
+  expect_s3_class(extract_vc(tmb_gau), 'data.frame')
+  expect_warning(extract_vc(tmb_gau_2grp))
+  expect_s3_class(extract_vc(tmb_exp), 'data.frame')
+  expect_s3_class(extract_vc(tmb_mat), 'data.frame')
 })
 
 
 test_that('extract_vc.glmmTMB basic functionality: correct results', {
-  raw_output = c(attr(glmmTMB::VarCorr(tmb_1)[['cond']][[1]], 'stddev'), attr(glmmTMB::VarCorr(tmb_1)[['cond']], 'sc'))
+  raw_output = c(attr(glmmTMB::VarCorr(tmb_1)[['cond']][[1]], 'stddev'),
+                 attr(glmmTMB::VarCorr(tmb_1)[['cond']], 'sc'))
   names(raw_output) = NULL
   expect_equal(extract_vc(tmb_1, ci_level = 0, digits = 10)$sd, raw_output)
 })
 
 test_that('extract_vc.glmmTMB basic functionality: correct results', {
-  raw_output = c(attr(glmmTMB::VarCorr(tmb_2)[['cond']][[1]], 'stddev'), attr(glmmTMB::VarCorr(tmb_2)[['cond']], 'sc'))
+  raw_output = c(attr(glmmTMB::VarCorr(tmb_2)[['cond']][[1]], 'stddev'),
+                 attr(glmmTMB::VarCorr(tmb_2)[['cond']], 'sc'))
   names(raw_output) = NULL
   expect_equal(extract_vc(tmb_2, ci_level = 0, digits = 10)$sd, raw_output)
 })
