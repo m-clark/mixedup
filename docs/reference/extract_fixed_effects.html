@@ -74,7 +74,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.9</span>
       </span>
     </div>
 
@@ -117,13 +117,13 @@
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/m-clark">
-    <span class="fa fa-github-alt"></span>
+    <span class="fas fa-github-alt"></span>
      
   </a>
 </li>
 <li>
   <a href="https://m-clark.github.io">
-    <span class="fa fa-empire"></span>
+    <span class="fas fa-empire"></span>
      
   </a>
 </li>
@@ -283,7 +283,7 @@ of the output.</p></td>
     <p>A data.frame with the fixed effects and associated statistics.</p>
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>Essentially duplicates the <code><a href='https://rdrr.io/pkg/generics/man/tidy.html'>broom::tidy</a></code> approach with minor
+    <p>Essentially duplicates the <code><a href='https://generics.r-lib.org/reference/tidy.html'>broom::tidy</a></code> approach with minor
 name changes.  For <code>lme4</code>, 'Wald' p-values are provided lmer models for
 consistency with others, but there is <a href='https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#what-are-the-p-values-listed-by-summaryglmerfit-etc.-are-they-reliable'>much issue with them</a>,
 especially for low N/small numbers of groups.  The Kenward-Roger is also
@@ -316,11 +316,11 @@ error and critical value for the <code>ci_level</code>.</p>
 <span class='va'>lmer_mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span><span class='op'>(</span><span class='va'>Reaction</span> <span class='op'>~</span> <span class='va'>Days</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='va'>Days</span> <span class='op'>|</span> <span class='va'>Subject</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>sleepstudy</span><span class='op'>)</span>
 
 <span class='fu'>extract_fixed_effects</span><span class='op'>(</span><span class='va'>lmer_mod</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 2 x 7</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 2 x 7</span><span>
 #&gt;   term      value    se     t p_value lower_2.5 upper_97.5
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Intercept 251.   6.82 36.8        0    238.        265. 
-#&gt; </span><span style='color: #555555;'>2</span><span> Days       10.5  1.55  6.77       0      7.44       13.5</div><div class='input'>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Intercept 251.   6.82 36.8        0    238.        265. 
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> Days       10.5  1.55  6.77       0      7.44       13.5</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

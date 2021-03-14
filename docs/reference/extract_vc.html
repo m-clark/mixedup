@@ -75,7 +75,7 @@ glmmTMB, nlme, and brms." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.9</span>
       </span>
     </div>
 
@@ -118,13 +118,13 @@ glmmTMB, nlme, and brms." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/m-clark">
-    <span class="fa fa-github-alt"></span>
+    <span class="fas fa-github-alt"></span>
      
   </a>
 </li>
 <li>
   <a href="https://m-clark.github.io">
-    <span class="fa fa-empire"></span>
+    <span class="fas fa-empire"></span>
      
   </a>
 </li>
@@ -317,7 +317,7 @@ for <code>glmmTMB</code> objects
 (<a href='https://github.com/glmmTMB/glmmTMB/issues/571'>for example</a>).  If
 you get an error, you should check by running <code><a href='https://rdrr.io/r/stats/confint.html'>confint(my_tmb_model)</a></code> before
 posting an issue.  While I've attempted some minor hacks to deal with some
-of them, if the <code>glmmTMB</code> function doesn't work, this function won't
+of them, if the <code>glmmTMB</code> functionality doesn't work, this function won't
 either.</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
@@ -344,14 +344,22 @@ either.</p>
 <span class='va'>lmer_mod</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span><span class='op'>(</span><span class='va'>Reaction</span> <span class='op'>~</span> <span class='va'>Days</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='va'>Days</span> <span class='op'>|</span> <span class='va'>Subject</span><span class='op'>)</span>, data <span class='op'>=</span> <span class='va'>sleepstudy</span><span class='op'>)</span>
 
 <span class='fu'>extract_vc</span><span class='op'>(</span><span class='va'>lmer_mod</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Computing profile confidence intervals ...</span></div><div class='output co'>#&gt;      group    effect variance     sd sd_2.5 sd_97.5 var_prop
-#&gt; 1  Subject Intercept  612.100 24.741 14.381  37.716    0.470
-#&gt; 2  Subject      Days   35.072  5.922  3.801   8.753    0.027
-#&gt; 3 Residual            654.940 25.592 22.898  28.858    0.503</div><div class='input'><span class='fu'>extract_vc</span><span class='op'>(</span><span class='va'>lmer_mod</span>, ci_scale <span class='op'>=</span> <span class='st'>'var'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>Computing profile confidence intervals ...</span></div><div class='output co'>#&gt;      group    effect variance     sd var_2.5 var_97.5 var_prop
-#&gt; 1  Subject Intercept  612.100 24.741 206.825 1422.496    0.470
-#&gt; 2  Subject      Days   35.072  5.922  14.449   76.621    0.027
-#&gt; 3 Residual            654.940 25.592 524.331  832.784    0.503</div><div class='input'>
+</div><div class='output co'>#&gt; <span class='message'>Computing profile confidence intervals ...</span></div><div class='output co'>#&gt;                           group    effect variance     sd sd_2.5 sd_97.5
+#&gt; sd_(Intercept)|Subject  Subject Intercept  612.100 24.741 14.381  37.716
+#&gt; sd_Days|Subject         Subject      Days   35.072  5.922  3.801   8.753
+#&gt; sigma                  Residual            654.940 25.592 22.898  28.858
+#&gt;                        var_prop
+#&gt; sd_(Intercept)|Subject    0.470
+#&gt; sd_Days|Subject           0.027
+#&gt; sigma                     0.503</div><div class='input'><span class='fu'>extract_vc</span><span class='op'>(</span><span class='va'>lmer_mod</span>, ci_scale <span class='op'>=</span> <span class='st'>'var'</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>Computing profile confidence intervals ...</span></div><div class='output co'>#&gt;                           group    effect variance     sd var_2.5 var_97.5
+#&gt; sd_(Intercept)|Subject  Subject Intercept  612.100 24.741 206.825 1422.496
+#&gt; sd_Days|Subject         Subject      Days   35.072  5.922  14.449   76.621
+#&gt; sigma                  Residual            654.940 25.592 524.331  832.784
+#&gt;                        var_prop
+#&gt; sd_(Intercept)|Subject    0.470
+#&gt; sd_Days|Subject           0.027
+#&gt; sigma                     0.503</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

@@ -75,7 +75,7 @@ models." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.9</span>
       </span>
     </div>
 
@@ -118,13 +118,13 @@ models." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/m-clark">
-    <span class="fa fa-github-alt"></span>
+    <span class="fas fa-github-alt"></span>
      
   </a>
 </li>
 <li>
   <a href="https://m-clark.github.io">
-    <span class="fa fa-empire"></span>
+    <span class="fas fa-empire"></span>
      
   </a>
 </li>
@@ -248,7 +248,7 @@ It's unclear how well it will work with other model complications added.</p>
 
 <span class='fu'><a href='https://rdrr.io/r/base/summary.html'>summary</a></span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; Linear mixed-effects model fit by REML
-#&gt;  Data: Orthodont 
+#&gt;   Data: Orthodont 
 #&gt;        AIC      BIC    logLik
 #&gt;   432.3567 448.2805 -210.1784
 #&gt; 
@@ -263,7 +263,7 @@ It's unclear how well it will work with other model complications added.</p>
 #&gt;  Parameter estimates:
 #&gt;      Male    Female 
 #&gt; 1.0000000 0.4541324 
-#&gt; Fixed effects: distance ~ age + Sex 
+#&gt; Fixed effects:  distance ~ age + Sex 
 #&gt;                 Value Std.Error DF   t-value p-value
 #&gt; (Intercept) 18.919992 0.7285568 80 25.969138  0.0000
 #&gt; age          0.549887 0.0473096 80 11.623168  0.0000
@@ -289,7 +289,7 @@ It's unclear how well it will work with other model complications added.</p>
 <span class='va'>model</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html'>glmmTMB</a></span><span class='op'>(</span><span class='va'>distance</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>Sex</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>|</span> <span class='va'>Subject</span><span class='op'>)</span> <span class='op'>+</span> <span class='fu'><a href='https://rdrr.io/r/base/diag.html'>diag</a></span><span class='op'>(</span><span class='va'>Sex</span> <span class='op'>+</span> <span class='fl'>0</span> <span class='op'>|</span> <span class='va'>Subject</span><span class='op'>)</span>,
           data <span class='op'>=</span> <span class='va'>Orthodont</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Model convergence problem; non-positive-definite Hessian matrix. See vignette('troubleshooting')</span></div><div class='input'>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: 'giveCsparse' has been deprecated; setting 'repr = "T"' for you</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'giveCsparse' has been deprecated; setting 'repr = "T"' for you</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'giveCsparse' has been deprecated; setting 'repr = "T"' for you</span></div><div class='output co'>#&gt; <span class='warning'>Warning: Model convergence problem; non-positive-definite Hessian matrix. See vignette('troubleshooting')</span></div><div class='input'>
 <span class='fu'>extract_het_var</span><span class='op'>(</span><span class='va'>model</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;       group SexMale SexFemale
 #&gt; 1 Subject.1   2.072     2.964</div><div class='input'>
@@ -297,15 +297,14 @@ It's unclear how well it will work with other model complications added.</p>
 <span class='va'>model</span> <span class='op'>&lt;-</span>
   <span class='fu'><a href='https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html'>glmmTMB</a></span><span class='op'>(</span><span class='va'>distance</span> <span class='op'>~</span> <span class='va'>age</span> <span class='op'>+</span> <span class='va'>Sex</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>|</span> <span class='va'>Subject</span><span class='op'>)</span>, dispformula <span class='op'>=</span> <span class='op'>~</span> <span class='va'>Sex</span>,
           data <span class='op'>=</span> <span class='va'>Orthodont</span><span class='op'>)</span>
-
+</div><div class='output co'>#&gt; <span class='warning'>Warning: 'giveCsparse' has been deprecated; setting 'repr = "T"' for you</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'giveCsparse' has been deprecated; setting 'repr = "T"' for you</span></div><div class='output co'>#&gt; <span class='warning'>Warning: 'giveCsparse' has been deprecated; setting 'repr = "T"' for you</span></div><div class='input'>
 <span class='fu'><a href='extract_fixed_effects.html'>extract_fixed_effects</a></span><span class='op'>(</span><span class='va'>model</span>, component <span class='op'>=</span> <span class='st'>'disp'</span>, exponentiate <span class='op'>=</span> <span class='cn'>TRUE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='warning'>Warning: Intervals could not be computed. Returning ci based on se.</span>
-#&gt; <span class='warning'>                </span>
-#&gt; <span class='warning'>If se is NaN, check random effects for zero variance estimates.</span></div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 2 x 7</span><span>
+</div><div class='output co'>#&gt; <span class='warning'>Warning: Intervals could not be computed for fixed effects. Returning CI based on SE.</span>
+#&gt; <span class='warning'>  If Fixed Effect SE is NaN, check random effects for zero variance estimates.</span></div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 2 x 7</span><span>
 #&gt;   term      value    se     z p_value lower_2.5 upper_97.5
-#&gt;   </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #555555;font-style: italic;'>&lt;dbl&gt;</span><span>
-#&gt; </span><span style='color: #555555;'>1</span><span> Intercept 3.09  0.639  5.45       0     2.06       4.63 
-#&gt; </span><span style='color: #555555;'>2</span><span> SexFemale 0.202 0.069 -</span><span style='color: #BB0000;'>4.68</span><span>       0     0.103      0.395</div><div class='input'>
+#&gt;   </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>   </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>      </span><span style='color: #949494;font-style: italic;'>&lt;dbl&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'>1</span><span> Intercept 3.09  0.639  5.45       0     2.06       4.63 
+#&gt; </span><span style='color: #BCBCBC;'>2</span><span> SexFemale 0.202 0.069 -</span><span style='color: #BB0000;'>4.68</span><span>       0     0.103      0.395</div><div class='input'>
 <span class='kw'>if</span> <span class='op'>(</span><span class='cn'>FALSE</span><span class='op'>)</span> <span class='op'>{</span>
 <span class='kw'><a href='https://rdrr.io/r/base/library.html'>library</a></span><span class='op'>(</span><span class='va'><a href='https://github.com/paul-buerkner/brms'>brms</a></span><span class='op'>)</span>
 

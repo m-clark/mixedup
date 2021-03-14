@@ -105,7 +105,7 @@ load('tmb_cor_struct_results.RData')
 #   tmb_disp,
 #   file = 'tests/testthat/tmb_results.RData'
 # )
-
+#
 # couldn't get corresponding brms model to run. This follows the vignette
 # example.
 # set.seed(1234)
@@ -263,7 +263,7 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #   thin  = 40
 # )
 #
-
+#
 #
 # brm_0 <-
 #   brm(
@@ -330,7 +330,7 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 # brm_corAR <- update(
 #   brm_2,
 #   autocor = cor_ar( ~ Days | Subject),
-#   save_ranef = FALSE,
+#   save_pars = save_pars(group = FALSE),
 #   cores = 4,
 #   thin = 40
 # )
@@ -339,7 +339,7 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #   update(
 #     brm_2,
 #     autocor = cor_arma(~ Days | Subject, p = 1, q = 2),
-#     save_ranef = FALSE,
+#     save_pars = save_pars(group = FALSE),
 #     cores = 4,
 #     thin = 40
 #   )
@@ -348,14 +348,15 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #   update(
 #     brm_2,
 #     autocor = cor_cosy(~ Days | Subject),
-#     save_ranef = FALSE,
+#     save_pars = save_pars(group = FALSE),
 #     cores = 4,
 #     thin = 40
 #   )
 #
-
-### spatial
-# generate some spatial data
+#
+## spatial
+#
+# # generate some spatial data
 # east <- north <- 1:10
 # Grid <- expand.grid(east, north)
 # K <- nrow(Grid)
@@ -377,14 +378,13 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 # size <- rep(50, K)
 # y <- rbinom(n = K, size = size, prob = prob)
 # dat <- data.frame(y, size, x1, x2)
-
-# fit a CAR model
+#
+# # fit a CAR model
 #
 # brm_corCAR <- brm(
-#   y | trials(size) ~ x1 + x2,
+#   y | trials(size) ~ x1 + x2 + car(W),
 #   data = dat,
 #   family = binomial(),
-#   autocor = cor_car(W),
 #   cores = 2,  # very large file
 #   chains = 2,
 #   file = 'tests/testthat/brm_car_results',
@@ -392,18 +392,19 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 # )
 #
 # data(oldcol, package = "spdep")
+#
 # brm_corSarLag <- brm(
-#   CRIME ~ INC + HOVAL,
+#   CRIME ~ INC + HOVAL + sar(COL.nb, type = "lag"),
 #   data = COL.OLD,
-#   autocor = cor_lagsar(COL.nb),
+#   data2 = list(COL.nb = COL.nb),
 #   cores = 4,
 #   thin = 40
 # )
 #
 # brm_corSarError <- brm(
-#   CRIME ~ INC + HOVAL,
+#   CRIME ~ INC + HOVAL + sar(COL.nb, type = "error"),
 #   data = COL.OLD,
-#   autocor = cor_errorsar(COL.nb),
+#   data2 = list(COL.nb = COL.nb),
 #   cores = 4,
 #   thin = 40
 # )
@@ -431,13 +432,13 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #   file = 'tests/testthat/brm_cor_struct_results.RData'
 # )
 #
-
+#
 ### misc other models
-
+#
 # group <- rep(c("treat", "placebo"), each = 30)
 # symptom_post <- c(rnorm(30, mean = 1, sd = 2), rnorm(30, mean = 0, sd = 1))
 # dat1 <- data.frame(group, symptom_post)
-
+#
 # brm_sigma_simple <-
 #   brm(
 #     bf(symptom_post ~ group, sigma ~ group),
@@ -464,15 +465,15 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #   thin = 40
 # )
 #
-# # # data("BTdata", package = "MCMCglmm")
+# data("BTdata", package = "MCMCglmm")
 #
 # brm_mv <- brm(
 #   mvbind(tarsus, back) ~ sex + hatchdate + (1 | p | fosternest) + (1 | q | dam),
-#   rescor = TRUE,
 #   data = BTdata,
 #   cores = 4,
 #   thin = 40,
 # )
+#
 # brm_ordinal <- brm(
 #   rating ~ period + carry + cs(treat) + (1|subject),
 #   data  = inhaler,
@@ -502,13 +503,13 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #   file = 'tests/testthat/brm_extended_results.RData'
 # )
 
+
+
 # Run rstanarm models ---------------------------------------------------------
 
 
 load('rstanarm_results.RData')
 
-
-#
 # library(rstanarm)
 #
 #
@@ -547,7 +548,7 @@ load('rstanarm_results.RData')
 # stan_glmer_5 <-
 #   stan_glmer(
 #     giniPercap ~ math + year + (1 + year + math | country) ,
-#     data = dplyr::mutate(noiris::pisa, year = year-min(year), math = scale(math)[,1]),
+#     data  = dplyr::mutate(noiris::pisa, year = year-min(year), math = scale(math)[,1]),
 #     prior = normal(0, 10),
 #     cores = 4,
 #     thin  = 40
@@ -555,11 +556,11 @@ load('rstanarm_results.RData')
 #
 # stan_glmer_glm <- stan_glmer(
 #   count ~ zAge + zBase * Trt + (1 | patient),
-#   data = epilepsy,
+#   data   = brms::epilepsy,
 #   family = poisson(),
-#   prior = student_t(5,0,10),
-#   cores = 4,
-#   thin  = 40
+#   prior  = student_t(5,0,10),
+#   cores  = 4,
+#   thin   = 40
 # )
 #
 # stan_glmer_mv <-
@@ -571,7 +572,7 @@ load('rstanarm_results.RData')
 #     thin = 40
 #   )
 #
-# not a good sign, this first example from helpfile has problems converging
+# # not a good sign, this first example from helpfile has problems converging
 # stan_glmer_jm <- stan_jm(
 #   formulaLong = list(logBili ~ year + (1 | id),
 #                      albumin ~ sex + year + (year | id)),
@@ -586,7 +587,8 @@ load('rstanarm_results.RData')
 #   seed = 12345
 # )
 #
-
+#
+#
 #
 #
 # save(
@@ -606,7 +608,7 @@ load('rstanarm_results.RData')
 
 load('mgcv_results.RData')
 
-library(mgcv)
+# library(mgcv)
 #
 # gam_0 = gam(Reaction ~  s(Subject, bs = 're'),
 #                   data = lme4::sleepstudy,
@@ -633,9 +635,10 @@ library(mgcv)
 # )
 #
 # gam_glm = gam(
-#   count ~ spp + mined + (1 | site),
+#   count ~ spp + mined + s(site, bs = 're'),
 #   family = poisson,
-#   data = glmmTMB::Salamanders
+#   data = glmmTMB::Salamanders,
+#   method = 'REML'
 # )
 #
 # gam_cat_slope <-
@@ -660,7 +663,7 @@ library(mgcv)
 # )
 #
 #
-# bam objects are very large to save even for small models
+# # bam objects are very large to save even for small models
 # bam_1 = bam(
 #   y ~ service +
 #     s(d, bs = 're') +

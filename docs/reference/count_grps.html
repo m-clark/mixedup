@@ -75,7 +75,7 @@ results." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.8</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.9</span>
       </span>
     </div>
 
@@ -118,13 +118,13 @@ results." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/m-clark">
-    <span class="fa fa-github-alt"></span>
+    <span class="fas fa-github-alt"></span>
      
   </a>
 </li>
 <li>
   <a href="https://m-clark.github.io">
-    <span class="fa fa-empire"></span>
+    <span class="fas fa-empire"></span>
      
   </a>
 </li>
@@ -207,27 +207,27 @@ count the respective group sizes.  This is not meant to be used directly.</p>
 <span class='va'>mod</span> <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/pkg/lme4/man/lmer.html'>lmer</a></span><span class='op'>(</span><span class='va'>Reaction</span> <span class='op'>~</span> <span class='va'>Days</span> <span class='op'>+</span> <span class='op'>(</span><span class='fl'>1</span> <span class='op'>+</span> <span class='va'>Days</span> <span class='op'>|</span> <span class='va'>Subject</span><span class='op'>)</span>, <span class='va'>sleepstudy</span><span class='op'>)</span>
 
 <span class='fu'>count_grps</span><span class='op'>(</span><span class='va'>mod</span>, <span class='st'>'Subject'</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'># A tibble: 18 x 3</span><span>
+</div><div class='output co'>#&gt; <span style='color: #949494;'># A tibble: 18 x 3</span><span>
 #&gt;    group_var group     n
-#&gt;    </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #555555;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #555555;font-style: italic;'>&lt;int&gt;</span><span>
-#&gt; </span><span style='color: #555555;'> 1</span><span> Subject   308      10
-#&gt; </span><span style='color: #555555;'> 2</span><span> Subject   309      10
-#&gt; </span><span style='color: #555555;'> 3</span><span> Subject   310      10
-#&gt; </span><span style='color: #555555;'> 4</span><span> Subject   330      10
-#&gt; </span><span style='color: #555555;'> 5</span><span> Subject   331      10
-#&gt; </span><span style='color: #555555;'> 6</span><span> Subject   332      10
-#&gt; </span><span style='color: #555555;'> 7</span><span> Subject   333      10
-#&gt; </span><span style='color: #555555;'> 8</span><span> Subject   334      10
-#&gt; </span><span style='color: #555555;'> 9</span><span> Subject   335      10
-#&gt; </span><span style='color: #555555;'>10</span><span> Subject   337      10
-#&gt; </span><span style='color: #555555;'>11</span><span> Subject   349      10
-#&gt; </span><span style='color: #555555;'>12</span><span> Subject   350      10
-#&gt; </span><span style='color: #555555;'>13</span><span> Subject   351      10
-#&gt; </span><span style='color: #555555;'>14</span><span> Subject   352      10
-#&gt; </span><span style='color: #555555;'>15</span><span> Subject   369      10
-#&gt; </span><span style='color: #555555;'>16</span><span> Subject   370      10
-#&gt; </span><span style='color: #555555;'>17</span><span> Subject   371      10
-#&gt; </span><span style='color: #555555;'>18</span><span> Subject   372      10</div><div class='input'>
+#&gt;    </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span>     </span><span style='color: #949494;font-style: italic;'>&lt;chr&gt;</span><span> </span><span style='color: #949494;font-style: italic;'>&lt;int&gt;</span><span>
+#&gt; </span><span style='color: #BCBCBC;'> 1</span><span> Subject   308      10
+#&gt; </span><span style='color: #BCBCBC;'> 2</span><span> Subject   309      10
+#&gt; </span><span style='color: #BCBCBC;'> 3</span><span> Subject   310      10
+#&gt; </span><span style='color: #BCBCBC;'> 4</span><span> Subject   330      10
+#&gt; </span><span style='color: #BCBCBC;'> 5</span><span> Subject   331      10
+#&gt; </span><span style='color: #BCBCBC;'> 6</span><span> Subject   332      10
+#&gt; </span><span style='color: #BCBCBC;'> 7</span><span> Subject   333      10
+#&gt; </span><span style='color: #BCBCBC;'> 8</span><span> Subject   334      10
+#&gt; </span><span style='color: #BCBCBC;'> 9</span><span> Subject   335      10
+#&gt; </span><span style='color: #BCBCBC;'>10</span><span> Subject   337      10
+#&gt; </span><span style='color: #BCBCBC;'>11</span><span> Subject   349      10
+#&gt; </span><span style='color: #BCBCBC;'>12</span><span> Subject   350      10
+#&gt; </span><span style='color: #BCBCBC;'>13</span><span> Subject   351      10
+#&gt; </span><span style='color: #BCBCBC;'>14</span><span> Subject   352      10
+#&gt; </span><span style='color: #BCBCBC;'>15</span><span> Subject   369      10
+#&gt; </span><span style='color: #BCBCBC;'>16</span><span> Subject   370      10
+#&gt; </span><span style='color: #BCBCBC;'>17</span><span> Subject   371      10
+#&gt; </span><span style='color: #BCBCBC;'>18</span><span> Subject   372      10</div><div class='input'>
 </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

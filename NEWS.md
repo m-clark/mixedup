@@ -1,3 +1,7 @@
+# mixedup 0.3.9
+
+* This update was primarily to make sure the package continues to work with able to model objects created by recent versions of the modeling packages (e.g. lme4, glmmTMB, etc.).  Some functionality was modified for extract_vc regarding glmmTMB extended objects (e.g. with `ar1`), and some clarification in some error/warning messages.
+
 # mixedup 0.3.8
 
 * Minor bug fixes (issues #14-15), enhancements (#16-17), and other issues (e.g. #18).
