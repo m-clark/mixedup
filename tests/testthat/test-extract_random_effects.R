@@ -49,6 +49,8 @@ test_that('extract_random_effects.merMod errors with bad re name', {
   expect_error(extract_random_effects(lmer_2, re = 'subject'))
 })
 
+
+
 # glmmTMB -----------------------------------------------------------------
 
 context('test extract_random_effects.glmmTMB')

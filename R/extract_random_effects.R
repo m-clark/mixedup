@@ -105,7 +105,9 @@ extract_random_effects.merMod <- function(
     stop('lme4 package required', call. = FALSE)
 
   # add check on re name
-  all_re_names <- names(lme4::ranef(model))
+  lmer_re <- lme4::ranef(model, condVar = TRUE)
+
+  all_re_names <- names(lmer_re)
 
   if (!is.null(re) && !re %in% all_re_names)
     stop(
@@ -114,7 +116,7 @@ extract_random_effects.merMod <- function(
       )
     )
 
-  random_effects <- as.data.frame(lme4::ranef(model, condVar = TRUE))
+  random_effects <- as.data.frame(lmer_re)
   colnames(random_effects) <- c('group_var', 'effect', 'group', 'value', 'se')
 
   if (add_group_N) {
