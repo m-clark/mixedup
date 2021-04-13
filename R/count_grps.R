@@ -39,17 +39,22 @@ count_grps <- function(model, grp_vars) {
 count_grps.default <- function(model, grp_vars) {
 
   gv <- purrr::map(grp_vars, dplyr::sym)
+  df <- extract_model_data(model)
 
+  # note on mutate_if: across(where) is not only needlessly verbose, there are
+  # issues using where in a package that haven't been resolved for a year. See
+  # for example: https://github.com/r-lib/tidyselect/issues/201; as mutate_if is
+  # not deprecated, only superceded
   purrr::map2_df(
     gv,
     grp_vars,
     function(grp, name)
-      extract_model_data(model) %>%
+      df %>%
       dplyr::count(!!grp) %>%
-      dplyr::mutate(group_var = name) %>%
       dplyr::rename(group = !!grp) %>%
+      dplyr::mutate(group_var = name,
+                    group = as.character(group)) %>%
       dplyr::mutate_if(is.factor, as.character) %>%
-      dplyr::mutate(group = as.character(group)) %>%
       dplyr::select(group_var, group, n)
   )
 }
@@ -120,9 +125,9 @@ count_grps.stanmvreg <-  function(model, grp_vars) {
 
   purrr::pmap_df(
     list(
-    extract_model_data(model),
-    gv,
-    grp_vars
+      extract_model_data(model),
+      gv,
+      grp_vars
     ),
     function(data, grp, name)
       data %>%
