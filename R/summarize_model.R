@@ -57,27 +57,67 @@ summarize_model <- function(
   vc <-
     extract_vc(
       model,
-      ci_level = ifelse(ci | inherits(model, 'gam'), .95, 0),
-      digits = digits,
-      show_cor = cor_re,
+      ci_level  = ifelse(ci | inherits(model, 'gam'), .95, 0),
+      digits    = digits,
+      show_cor  = cor_re,
       component = component
     )
 
-  if (cor_re == TRUE) {
-    if (inherits(model, 'gam')) {
-      cors <- 'Not estimated for gam.'
-    } else {
-      cors <- vc$Cor
-      vc   <- vc$`Variance Components`
+  if (!is.null(vc)) {
+
+    if (cor_re == TRUE) {
+      if (inherits(model, 'gam')) {
+        cors <- 'Not estimated for gam.'
+      } else {
+        cors <- vc$Cor
+        vc   <- vc$`Variance Components`
+      }
+    }
+
+    vc <- vc %>%
+      dplyr::rename_at(
+        dplyr::vars(dplyr::matches('group|effect|^var')),
+        totitle
+      ) %>%
+      dplyr::rename_at(dplyr::vars(dplyr::matches('^sd')), toupper)
+
+
+
+    ### Print re part ----
+
+    message("\nVariance Components:\n")
+
+    print(format(data.frame(vc), nsmall = digits), row.names = FALSE)
+
+    if (cor_re == TRUE) {
+      # correlations
+      message("\nCorrelation of Random Effects:\n")
+
+      if (inherits(model, 'gam'))
+        print(cors)
+      else
+        if (length(cors) == 1){
+
+          print(format(data.frame(cors[[1]]), nsmall = digits))
+
+        } else {
+          # pretty printing of multiple matrices
+          nams = names(cors)
+          nams[1] = paste0(nams[1], '\n')
+          nams[-1] = paste0('\n', nams[-1], '\n')
+
+          purrr::map2(cors, nams, function(mat, name) {
+            # cat('\n\n')
+            message(name)
+            print(format(data.frame(mat), nsmall = digits))
+          })
+        }
+
     }
   }
 
-  vc <- vc %>%
-    dplyr::rename_at(
-      dplyr::vars(dplyr::matches('group|effect|^var')),
-      totitle
-    ) %>%
-    dplyr::rename_at(dplyr::vars(dplyr::matches('^sd')), toupper)
+
+  ### Print fe part ----
 
   fe <-
     extract_fixed_effects(
@@ -91,40 +131,6 @@ summarize_model <- function(
       totitle
     ) %>%
     dplyr::rename_at(dplyr::vars(dplyr::matches('se')), toupper)
-
-  ### Print re part ----
-
-  message("\nVariance Components:\n")
-
-  print(format(data.frame(vc), nsmall = digits), row.names = FALSE)
-
-  if (cor_re == TRUE) {
-    # correlations
-    message("\nCorrelation of Random Effects:\n")
-
-    if (inherits(model, 'gam'))
-      print(cors)
-    else
-      if (length(cors) == 1){
-
-        print(format(data.frame(cors[[1]]), nsmall = digits))
-
-      } else {
-        # pretty printing of multiple matrices
-        nams = names(cors)
-        nams[1] = paste0(nams[1], '\n')
-        nams[-1] = paste0('\n', nams[-1], '\n')
-
-        purrr::map2(cors, nams, function(mat, name) {
-          # cat('\n\n')
-          message(name)
-          print(format(data.frame(mat), nsmall = digits))
-        })
-      }
-
-  }
-
-  ### Print fe part ----
 
   message("\nFixed Effects:\n")
 

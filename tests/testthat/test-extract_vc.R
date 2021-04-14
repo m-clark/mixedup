@@ -126,8 +126,14 @@ test_that('extract_vc.glmmTMB basic functionality: ints/slopes with multiple gro
   expect_s3_class(extract_vc(tmb_4, ci_level = 0), 'data.frame')
 })
 
+## zi
+
 test_that('extract_vc.glmmTMB basic functionality: zero-inflated', {
   expect_s3_class(extract_vc(tmb_zip, component = 'zi'), 'data.frame')
+})
+
+test_that('extract_vc.glmmTMB basic functionality: zero-inflated', {
+  expect_message(extract_vc(tmb_zip_no_zi_re, component = 'zi'))
 })
 
 ### ar and related
