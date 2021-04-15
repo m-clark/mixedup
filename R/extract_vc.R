@@ -67,11 +67,11 @@
 #' @export
 extract_vc <- function(
   model,
-  ci_level = .95,
-  ci_args = NULL,
-  ci_scale = 'sd',
-  show_cor = FALSE,
-  digits = 3,
+  ci_level  = .95,
+  ci_args   = NULL,
+  ci_scale  = 'sd',
+  show_cor  = FALSE,
+  digits    = 3,
   component = 'cond',
   ...
 ) {
@@ -92,11 +92,10 @@ extract_vc <- function(
 extract_vc.merMod <- function(
   model,
   ci_level = .95,
-  ci_args = NULL,
+  ci_args  = NULL,
   ci_scale = 'sd',
   show_cor = FALSE,
-  digits = 3,
-  # component,
+  digits   = 3,
   ...
 ) {
 
@@ -183,20 +182,25 @@ extract_vc.merMod <- function(
 #' @rdname extract_vc
 extract_vc.glmmTMB <- function(
   model,
-  ci_level = .95,
-  ci_args = NULL,
-  ci_scale = 'sd',
-  show_cor = FALSE,
-  digits = 3,
+  ci_level  = .95,
+  ci_args   = NULL,
+  ci_scale  = 'sd',
+  show_cor  = FALSE,
+  digits    = 3,
   component = 'cond',
   ...
 ) {
-  vc_mat <- glmmTMB::VarCorr(model)[[component]]
 
-  # no re allowed for dispersion formula
+  # note: disp formula doesn't allow re
   if (!component %in% c('cond', 'zi')) {
     stop('component must be one of "cond" or "zi".')
   }
+
+  vc_mat <- glmmTMB::VarCorr(model)[[component]]
+
+  if(is.null(vc_mat))
+    return(message(paste('No VarCorr for', component, 'component.')))
+
 
   # make dataframe and add names
   variance <- purrr::map(vc_mat, diag)
@@ -332,11 +336,10 @@ extract_vc.glmmTMB <- function(
 extract_vc.lme <- function(
   model,
   ci_level = .95,
-  ci_args = NULL,
+  ci_args  = NULL,
   ci_scale = 'sd',
   show_cor = FALSE,
-  digits = 3,
-  # component,
+  digits   = 3,
   ...
 ) {
   re_struct <- model$modelStruct$reStruct
@@ -469,11 +472,11 @@ extract_vc.lme <- function(
 #' @export
 extract_vc.brmsfit <- function(
   model,
-  ci_level = .95,
-  ci_args = NULL,
-  ci_scale = 'sd',
-  show_cor = FALSE,
-  digits = 3,
+  ci_level  = .95,
+  ci_args   = NULL,
+  ci_scale  = 'sd',
+  show_cor  = FALSE,
+  digits    = 3,
   component = NULL,
   ...
 ) {
@@ -559,11 +562,11 @@ extract_vc.brmsfit <- function(
 #' @rdname extract_vc
 extract_vc.stanreg <- function(
   model,
-  ci_level = .95,
-  ci_args = NULL,
-  ci_scale = 'sd',
-  show_cor = FALSE,
-  digits = 3,
+  ci_level  = .95,
+  ci_args   = NULL,
+  ci_scale  = 'sd',
+  show_cor  = FALSE,
+  digits    = 3,
   component = NULL,
   ...
 ) {
@@ -645,11 +648,10 @@ extract_vc.stanreg <- function(
 extract_vc.gam <- function(
   model,
   ci_level = .95,
-  ci_args = NULL,
+  ci_args  = NULL,
   ci_scale = 'sd',
   show_cor = FALSE,
-  digits = 3,
-  # component = 'cond',
+  digits   = 3,
   ...
   ) {
 

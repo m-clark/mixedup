@@ -93,6 +93,13 @@ load('tmb_cor_struct_results.RData')
 #   data = Salamanders
 # )
 #
+# tmb_zip_no_zi_re <- glmmTMB(
+#   count ~ spp + mined + (1 | site),
+#   zi =  ~ spp + mined,
+#   family = truncated_poisson,
+#   data = Salamanders
+# )
+#
 # tmb_disp <- update(tmb_2, . ~ ., dispformula =  ~Days)
 #
 # save(
@@ -102,6 +109,7 @@ load('tmb_cor_struct_results.RData')
 #   tmb_3,
 #   tmb_4,
 #   tmb_zip,
+#   tmb_zip_no_zi_re,
 #   tmb_disp,
 #   file = 'tests/testthat/tmb_results.RData'
 # )
