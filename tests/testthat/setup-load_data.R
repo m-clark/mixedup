@@ -71,9 +71,11 @@ data("sleepstudy", package = 'lme4')
 
 # Run TMB models ----------------------------------------------------------
 
-load('tmb_results.RData')
-load('tmb_cor_struct_results.RData')
-
+# suppress warnings about matrx/TMB versions
+suppressWarnings({
+  load('tmb_results.RData')
+  load('tmb_cor_struct_results.RData')
+})
 # library(glmmTMB)
 #
 # tmb_0 <- glmmTMB(Reaction ~ (1 | Subject), data = sleepstudy)

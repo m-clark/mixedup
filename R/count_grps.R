@@ -25,10 +25,11 @@
 #' @export
 count_grps <- function(model, grp_vars) {
 
-  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit',
-                         'gam', 'stanreg')))
-    stop('This only works for model objects from lme4, glmmTMB, brms, rstanarm,
-    mgcv, and nlme.') #
+  assertthat::assert_that(
+    inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit', 'gam', 'stanreg')),
+    msg = 'This only works for model objects from lme4, glmmTMB, brms, rstanarm,
+    mgcv, and nlme.'
+  )
 
   UseMethod('count_grps')
 
