@@ -188,7 +188,7 @@ load('nlme_results.RData')
 #                 random = Asym ~ 1,
 #                 start = c(Asym = 103, R0 = -8.5, lrc = -3.3))
 #
-# Just run these at test time?
+# # Just run these at test time?
 #
 # lme_het_var <- lme(
 #   distance ~ scale(age) + Sex,
@@ -329,7 +329,7 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #     thin  = 40
 #   )
 #
-# probably problematic models but fine for testing
+# # probably problematic models but fine for testing
 #
 #
 #
@@ -580,7 +580,7 @@ load('rstanarm_results.RData')
 #     thin = 40
 #   )
 #
-# # not a good sign, this first example from helpfile has problems converging
+# # not a good sign, this example from helpfile has problems converging
 # stan_glmer_jm <- stan_jm(
 #   formulaLong = list(logBili ~ year + (1 | id),
 #                      albumin ~ sex + year + (year | id)),
