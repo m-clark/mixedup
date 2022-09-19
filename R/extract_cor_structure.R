@@ -60,8 +60,10 @@ extract_cor_structure <- function(
   digits = 3,
   ...
 ) {
-  if (!inherits(model, c('lme', 'brmsfit', 'glmmTMB')))
-    stop('This only works for model objects from nlme, brms, and glmmTMB.')
+  assertthat::assert_that(
+    inherits(model, c('lme', 'brmsfit', 'glmmTMB')),
+    msg = 'This only works for model objects from nlme, brms, and glmmTMB.'
+  )
 
   UseMethod('extract_cor_structure')
 }
@@ -125,17 +127,17 @@ extract_cor_structure.glmmTMB <- function(
   full_matrix = FALSE
 ) {
 
-  if (
-    purrr::is_empty(which_cor) |
-    !which_cor %in% c('ar1', 'ou', 'cs', 'toep', 'us', 'diag', 'mat', 'exp', 'gau')
+  assertthat::assert_that(
+    !purrr::is_empty(which_cor) |
+    which_cor %in% c('ar1', 'ou', 'cs', 'toep', 'us', 'diag', 'mat', 'exp', 'gau'),
+    msg = 'which_cor must be one of ar1, ou, cs, toep, us, or diag.'
   )
-    stop('which_cor must be one of ar1, ou, cs, toep, us, or diag.')
 
   cor_init  <- glmmTMB::VarCorr(model)[[component]]
 
   if (which_cor == 'diag')
     cor_mats <-
-    purrr::map(cor_init, function(x) attr(x, 'stddev') ^ 2 + glmmTMB::sigma(model) ^ 2)
+    purrr::map(cor_init, function(x) attr(x, 'stddev')^2 + glmmTMB::sigma(model)^2)
   else
     cor_mats <- purrr::map(cor_init, function(x) attr(x, 'correlation'))
 
@@ -184,7 +186,7 @@ extract_cor_structure.brmsfit <- function(
   ci_level = .95
 ) {
 
-  cor_par <- summary(model, prob = ci_level)$cor_par
+  cor_par <- summary(model, prob = ci_level)$cor_pars
 
   lower <- (1 - ci_level)/2
   upper <- 1 - lower
@@ -192,9 +194,9 @@ extract_cor_structure.brmsfit <- function(
   # rename intervals
   cor_par <- dplyr::as_tibble(cor_par, rownames = 'parameter') %>%
     dplyr::rename_at(dplyr::vars(dplyr::matches('l-')), function(x)
-      paste0('lower_', lower*100)) %>%
+      paste0('lower_', lower * 100)) %>%
     dplyr::rename_at(dplyr::vars(dplyr::matches('u-')), function(x)
-      paste0('upper_', upper*100))
+      paste0('upper_', upper * 100))
 
   # more cleanup/return
   cor_par %>%

@@ -76,6 +76,7 @@ suppressWarnings({
   load('tmb_results.RData')
   load('tmb_cor_struct_results.RData')
 })
+
 # library(glmmTMB)
 #
 # tmb_0 <- glmmTMB(Reaction ~ (1 | Subject), data = sleepstudy)
@@ -116,8 +117,8 @@ suppressWarnings({
 #   file = 'tests/testthat/tmb_results.RData'
 # )
 #
-# couldn't get corresponding brms model to run. This follows the vignette
-# example.
+# # couldn't get corresponding brms model to run. This follows the vignette
+# # example.
 # set.seed(1234)
 # simGroup <- function(g, n = 6) {
 #   x <- MASS::mvrnorm(mu = rep(0, n),
@@ -134,7 +135,7 @@ suppressWarnings({
 #
 # tmb_ar <- glmmTMB(y ~ ar1(times + 0 | group), data = dat1)
 # tmb_us <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + us(times + 0 | group))
-# tmb_toep <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + toep(times + 0 | group))
+# tmb_toep <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + toep(times + 0 | group), dispformula = ~0)
 # tmb_cs <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + cs(times + 0 | group))
 # tmb_diag <- suppressWarnings(update(tmb_ar, . ~ . - ar1(times + 0 | group) + diag(times + 0 | group)))
 # tmb_ou <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + ou(times_coord + 0 | group))
@@ -161,7 +162,7 @@ suppressWarnings({
 #   tmb_gau_2grp,
 #   file = 'tests/testthat/tmb_cor_struct_results.RData'
 # )
-
+#
 
 # Run nlme models ---------------------------------------------------------
 
@@ -339,8 +340,15 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #
 # brm_corAR <- update(
 #   brm_2,
-#   autocor = cor_ar( ~ Days | Subject),
-#   save_pars = save_pars(group = FALSE),
+#   . ~. + ar(time = Days, gr = Subject),
+#   save_pars = save_pars(all = TRUE),
+#   cores = 4,
+#   thin = 40
+# )
+# brm_corAR <- brm(
+#   Reaction ~ Days + ar(time = Days, gr = Subject) + (1  + Days | Subject),
+#   data = lme4::sleepstudy,
+#   save_pars = save_pars(all = TRUE, manual = 'ar'),
 #   cores = 4,
 #   thin = 40
 # )
