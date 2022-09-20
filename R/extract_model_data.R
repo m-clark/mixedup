@@ -4,7 +4,7 @@
 #'
 #' @param model The mixed model.
 #'
-#' @return A tibble/dataframe of the data used in the model.
+#' @return A tibble of the data used in the model.
 #'
 #' @note For whatever reason, `nlme` class objects do not save the model data,
 #'   so this will throw an error stating as much. `lme` objects do save the data
@@ -24,12 +24,13 @@
 #'
 #' @export
 extract_model_data <- function(model) {
-  if (!inherits(model,
-                c('merMod', 'glmmTMB', 'lme', 'gam', 'stanreg', 'brmsfit')))
-    stop('This is not a supported model class.')
 
+  assertthat::assert_that(
+    inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'stanreg', 'brmsfit')),
+    msg = 'This is not a supported model class.'
+  )
 
-  # eventually break out into methods, but right now, these are just one-liners
+  # could break out into methods, but this seems enough
   if (inherits(model, 'nlme')) {
     # seriously wtf?
     stop("nlme doesn't save the data for models of class nlme. Sorry.")
