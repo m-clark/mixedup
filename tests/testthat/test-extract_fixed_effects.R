@@ -301,19 +301,13 @@ test_that('extract_fixed_effects.stanreg exponentiates', {
   expect_equal(exp_res$term[1],  'Intercept')
 })
 
-# Not yet implemented. Check error if attempted, and warning about component,
-# which will eventually be used to pull out a specific outcome.
-# test_that('extract_fixed_effects.stanreg basic functionality: multivariate model', {
-#   init = extract_fixed_effects(stan_glmer_mv, component = 'back', ci_level = .8, digits = 2)
-#   expect_match(init$term, 'back')
-# })
-
 test_that('extract_fixed_effects.stanreg basic functionality: multivariate model', {
-  expect_error(extract_fixed_effects(stan_glmer_mv))
+  init = extract_fixed_effects(stan_glmer_mv, component = 'y2', ci_level = .8, digits = 2)
+  expect_match(init$term, 'y2')
 })
 
 test_that('extract_fixed_effects.stanreg basic functionality: multivariate model', {
-  expect_warning(extract_fixed_effects(stan_glmer_2, component = 'flag'))
+  expect_true(any(stringr::str_detect(extract_fixed_effects(stan_glmer_mv)[['term']], 'y1|y2')))
 })
 
 

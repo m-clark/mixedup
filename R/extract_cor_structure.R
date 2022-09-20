@@ -16,7 +16,7 @@
 #'
 #' @details This function applies to models with residual correlation, i.e. that
 #'   contain something like `corAR1(form = ~time)` for nlme, or brms
-#'   models with an `autocor` argument.  This functions extracts the
+#'   models with an something like `ar()` in the formula.  This functions extracts the
 #'   associated parameters (e.g. `Phi` in nlme, `ar[1]` in brms, etc.)
 #'
 #'   For glmmTMB objects, rather than the full matrix, simplified output is
@@ -206,7 +206,7 @@ extract_cor_structure.brmsfit <- function(
       value = Estimate,
       se = Est.Error
     ) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
 }
 

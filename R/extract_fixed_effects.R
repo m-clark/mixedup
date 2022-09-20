@@ -19,7 +19,8 @@
 #'   case, Only the p-value from the process is provide, all other output is
 #'   default provided `lme4` without adjustment.
 #'
-#'   `extract_fixef` is an alias.
+#'
+#' @note `extract_fixef` is an alias.
 #'
 #'
 #' @note For `nlme`, this is just a multiplier based on the estimated standard
@@ -49,18 +50,20 @@
 extract_fixed_effects <- function(
   model,
   ci_level = .95,
-  ci_args = NULL,
-  digits = 3,
+  ci_args  = NULL,
+  digits   = 3,
   exponentiate = FALSE,
   ...
 ) {
-  if (!inherits(model,
-                c('merMod', 'glmmTMB', 'lme', 'gam', 'stanreg', 'brmsfit'))
+  assertthat::assert_that(
+    inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'stanreg', 'brmsfit')),
+    msg = 'This is not a supported model class.'
   )
-    stop('This is not a supported model class.')
 
-  if (ci_level < 0 | ci_level >= 1)
-    stop('Nonsensical confidence level for ci_level. Must be between 0 and 1.')
+  assertthat::assert_that(
+    ci_level >= 0 & ci_level < 1,
+    msg = 'Nonsensical confidence level for ci_level. Must be between 0 and 1.'
+  )
 
   UseMethod('extract_fixed_effects')
 }
@@ -72,8 +75,8 @@ extract_fixed_effects.merMod <-
   function(
     model,
     ci_level = .95,
-    ci_args = list(method = 'Wald'),
-    digits = 3,
+    ci_args  = list(method = 'Wald'),
+    digits   = 3,
     exponentiate = FALSE,
     ...,
     p_value = 'Wald'
@@ -85,7 +88,7 @@ extract_fixed_effects.merMod <-
 
     if (!p_value %in% c('Wald', 'Satterthwaite', 'KR')) {
       warning("p_value must be one of 'Wald' or 'KR', switching to 'Wald'")
-      p_value = 'Wald'
+      p_value <- 'Wald'
     }
 
     # do term now otherwise you can lose rownames if ci_level = 0
@@ -141,9 +144,9 @@ extract_fixed_effects.merMod <-
         confint,
         c(
           list(
-            object = model,
-            parm = 'beta_',
-            level = ci_level,
+            object   = model,
+            parm     = 'beta_',
+            level    = ci_level,
             oldNames = FALSE
           ),
           ci_args
@@ -157,16 +160,13 @@ extract_fixed_effects.merMod <-
 
     if (exponentiate) {
       fe <- fe %>%
-        dplyr::mutate_at(
-          dplyr::vars(dplyr::matches('^value|^low|^upp')),
-          exp
-        ) %>%
+        dplyr::mutate(dplyr::across(dplyr::matches('^value|^low|^upp'), exp)) %>%
         dplyr::mutate(se = se * value)
     }
 
     # cleanup names, round, etc.
     fe <- fe %>%
-      dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+      dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%  #until they export where use lambda
       dplyr::mutate(term = gsub(term,
                                 pattern = '[\\(,\\)]',
                                 replacement = '')) %>%
@@ -188,9 +188,11 @@ extract_fixed_effects.glmmTMB <-
     component = 'cond'
   ) {
 
-    if (!component %in% c('cond', 'zi', 'disp')) {
-      stop('component must be one of "cond", "zi", "disp".')
-    }
+    assertthat::assert_that(
+      component %in% c('cond', 'zi', 'disp'),
+      msg =  'component must be one of "cond", "zi", "disp".'
+    )
+
 
     # if don't use summary.glmmTMB, will fail if glmmTMB not loaded, but it's
     # not exported, requiring ::: which isn't good.  will work around at some
@@ -251,16 +253,15 @@ extract_fixed_effects.glmmTMB <-
 
     if (exponentiate) {
       fe <- fe %>%
-        dplyr::mutate_at(
-          dplyr::vars(dplyr::matches('^value|^low|^upp')),
-          exp
+        dplyr::mutate(
+          dplyr::across(dplyr::matches('^value|^low|^upp'), exp)
         ) %>%
         dplyr::mutate(se = se * value)
     }
 
     # cleanup names, round, etc.
     fe <- fe %>%
-      dplyr::mutate_if(is.numeric,round, digits = digits) %>%
+      dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
       dplyr::mutate(term = gsub(term,
                                 pattern = '[\\(,\\)]',
                                 replacement = '')) %>%
@@ -275,8 +276,8 @@ extract_fixed_effects.lme <-
   function(
     model,
     ci_level = .95,
-    ci_args = list(method = 'Wald'),
-    digits = 3,
+    ci_args  = list(method = 'Wald'),
+    digits   = 3,
     exponentiate = FALSE,
     ...
   ) {
@@ -293,8 +294,8 @@ extract_fixed_effects.lme <-
 
     if (ci_level > 0) {
 
-      lower = (1 - ci_level)/2
-      upper = 1 - lower
+      lower <- (1 - ci_level)/2
+      upper <- 1 - lower
 
       # nlme does not have a confint method
       mult <- stats::qt(upper, dfs)
@@ -311,16 +312,16 @@ extract_fixed_effects.lme <-
 
     if (exponentiate) {
       fe <- fe %>%
-        dplyr::mutate_at(
-          dplyr::vars(dplyr::matches('^value|^low|^upp')),
+        dplyr::mutate(
+          dplyr::across(dplyr::matches('^value|^low|^upp'),
           exp
-        ) %>%
+        )) %>%
         dplyr::mutate(se = se * value)
     }
 
     # cleanup names, round, etc.
     fe <- fe %>%
-      dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+      dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
       dplyr::mutate(term = gsub(term,
                                 pattern = '[\\(,\\)]',
                                 replacement = '')) %>%
@@ -364,16 +365,16 @@ extract_fixed_effects.brmsfit <-
 
     if (exponentiate) {
       fe <- fe %>%
-        dplyr::mutate_at(
-          dplyr::vars(dplyr::matches('^value|^low|^upp')),
+        dplyr::mutate(
+          dplyr::across(dplyr::matches('^value|^low|^upp'),
           exp
-        ) %>%
+        )) %>%
         dplyr::mutate(se = se * value)
     }
 
     # cleanup names, round, etc.
     fe <- fe %>%
-      dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+      dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
       dplyr::mutate(term = gsub(term,
                                 pattern = '[\\(,\\)]',
                                 replacement = '')) %>%
@@ -401,8 +402,11 @@ extract_fixed_effects.stanreg <-
     component = NULL
   ) {
 
-    if (inherits(model, 'stanmvreg'))
-      stop('Multivariate models not supported yet.') # note pull y_vars attr from summary object as well as y* names
+    # note pull y_vars attr from summary object as well as y* names
+    assertthat::validate_that(
+      !inherits(model, 'stanmvreg'),
+      msg = 'Multivariate models experimental!'
+    )
 
     if (ci_level == 0) {
       message('ci automatically provided for rstanarm fixed effects. Setting ci_level to .95.')
@@ -415,7 +419,6 @@ extract_fixed_effects.stanreg <-
 
     model_summary <-
       summary(model, pars = c('alpha', 'beta'), probs = probs)
-
 
     fe <- data.frame(model_summary) %>%
       dplyr::select(-mcse, -n_eff, -Rhat)
@@ -431,28 +434,25 @@ extract_fixed_effects.stanreg <-
 
     if (exponentiate) {
       fe <- fe %>%
-        dplyr::mutate_at(
-          dplyr::vars(dplyr::matches('^value|^low|^upp')),
+        dplyr::mutate(
+          dplyr::across(dplyr::matches('^value|^low|^upp'),
           exp
-        ) %>%
+        )) %>%
         dplyr::mutate(se = se * value)
     }
 
     fe <- fe %>%
-      dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+      dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
       dplyr::mutate(term = gsub(term,
                                 pattern = '[\\(,\\)]',
                                 replacement = '')) %>%
       dplyr::select(term, dplyr::everything()) %>%
       dplyr::as_tibble()
 
+    if (!is.null(component))
+       fe <- fe %>%
+         dplyr::filter(grepl(term, pattern = paste0('^', component)))
 
-
-    if (!is.null(component)) {
-      warning('component not yet implemented for stanreg objects. Ignoring.')
-      # fe <- fe %>%
-      #   dplyr::filter(grepl(term, pattern = paste0('^', component)))
-    }
 
     fe
   }
@@ -472,15 +472,15 @@ extract_fixed_effects.gam <-
     # re.test FALSE as uninterested here
     fe <- data.frame(summary(model, re.test = FALSE)$p.table)
 
-    colnames(fe) =  c('value', 'se', 't', 'p_value')
+    colnames(fe) <- c('value', 'se', 't', 'p_value')
 
     # no confint.gam
     if (ci_level > 0) {
 
       lower <- (1 - ci_level)/2
       upper <- 1 - lower
-      nu <- model$df.residual
-      mult <- stats::qt(upper, nu)
+      nu    <- model$df.residual
+      mult  <- stats::qt(upper, nu)
 
       ci <- data.frame(
         lower = fe$value - mult * fe$se,
@@ -494,14 +494,14 @@ extract_fixed_effects.gam <-
 
     fe <- fe %>%
       dplyr::mutate(term = remove_parens(rownames(.))) %>%
-      dplyr::mutate_if(is.numeric, round, digits = digits)
+      dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
     if (exponentiate) {
       fe <- fe %>%
-        dplyr::mutate_at(
-          dplyr::vars(dplyr::matches('^value|^low|^upp')),
+        dplyr::mutate(
+          dplyr::across(dplyr::matches('^value|^low|^upp'),
           exp
-        ) %>%
+        )) %>%
         dplyr::mutate(se = se * value)
     }
 
