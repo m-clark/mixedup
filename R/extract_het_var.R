@@ -85,11 +85,13 @@
 extract_het_var <- function(
   model,
   digits = 3,
-  scale = 'var',
+  scale  = 'var',
   ...
 ) {
-  if (!inherits(model, c('lme', 'glmmTMB', 'brmsfit')))
-    stop('This only works for model objects from nlme, glmmTMB, and brms.')
+  assertthat::assert_that(
+    inherits(model, c('lme', 'glmmTMB', 'brmsfit')),
+    msg = 'This only works for model objects from nlme, glmmTMB, and brms.'
+  )
 
   UseMethod('extract_het_var')
 }
@@ -100,22 +102,22 @@ extract_het_var <- function(
 extract_het_var.lme <- function(
   model,
   digits = 3,
-  scale = 'var',
+  scale  = 'var',
   ...
 ) {
 
-  init = coef(model$modelStruct$varStruct, unconstrained = FALSE)
+  init <- coef(model$modelStruct$varStruct, unconstrained = FALSE)
 
-  sigmas = (c(1.0, init) * model$sigma)
+  sigmas <- (c(1.0, init) * model$sigma)
 
   if (scale == 'var') sigmas <- sigmas^2
 
-  reflev = attributes(model$modelStruct$varStruct)$groupNames[1]
+  reflev <- attributes(model$modelStruct$varStruct)$groupNames[1]
 
-  names(sigmas)[1] = reflev
+  names(sigmas)[1] <- reflev
 
-  data.frame(as.list(sigmas)) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+  dplyr::as_tibble(as.list(sigmas)) %>%
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 }
 
 
@@ -125,16 +127,16 @@ extract_het_var.lme <- function(
 extract_het_var.glmmTMB <- function(
   model,
   digits = 3,
-  scale = 'var',
+  scale  = 'var',
   ...
 ) {
   sigmas <- extract_cor_structure(model, digits = digits, which_cor = 'diag', ...)
 
   # by default, the result is var
   if (scale == 'sd')
-    sigmas <- sigmas %>% dplyr::mutate_if(is.numeric, sqrt)
+    sigmas <- sigmas %>% dplyr::mutate(dplyr::across(\(x) is.numeric(x), sqrt))
 
-  sigmas
+  dplyr::as_tibble(sigmas)
 }
 
 
@@ -144,21 +146,20 @@ extract_het_var.glmmTMB <- function(
 extract_het_var.brmsfit <- function(
   model,
   digits = 3,
-  scale = 'var',
+  scale  = 'var',
   ...,
-  ci_level = .95,
+  ci_level   = .95,
   return_all = FALSE
 ) {
 
-  if (ci_level < 0 | ci_level >= 1)
-    stop('Nonsensical confidence level for ci_level. Must be between 0 and 1.')
+  assertthat::assert_that(
+    ci_level >= 0 & ci_level < 1,
+    msg = 'Nonsensical confidence level for ci_level. Must be between 0 and 1.'
+  )
 
   lower <- (1 - ci_level)/2
   upper <- 1 - lower
   probs <- c(lower, upper)
-
-  # no longer need, but left as a reminder of how to pull target variable
-  # response <- attr(terms(as.formula(model$formula)), 'response')
 
   # get all predictor vars
   covariates <- all.vars(model$formula$pforms$sigma)
@@ -182,7 +183,7 @@ extract_het_var.brmsfit <- function(
   sigma_fits <- extract_model_data(model)[, covariates] %>%
     dplyr::bind_cols(sigma_fits) %>%
     dplyr::rename(value = Estimate, se = Est.Error) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
   if (!return_all)
     sigma_fits <- dplyr::distinct(sigma_fits)

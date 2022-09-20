@@ -64,12 +64,8 @@ test_that('extract_het_var.brmsfit returns a data.frame', {
   expect_s3_class(extract_het_var(brm_sigma_simple), 'data.frame')
 })
 
-test_that('extract_het_var.brmsfit returns a data.frame', {
-  expect_s3_class(extract_het_var(brm_sigma_simple), 'data.frame')
-})
-
-test_that('extract_het_var.brmsfit returns a data.frame', {
-  expect_s3_class(extract_het_var(brm_sigma_simple), 'data.frame')
+test_that('extract_het_var.brmsfit returns appropriate values', {
+  expect_equal(extract_het_var(brm_sigma_simple)$group, c('treat', 'placebo'))
 })
 
 test_that('extract_het_var.brmsfit errors with wrong ci_level', {
