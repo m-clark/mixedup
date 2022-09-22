@@ -126,10 +126,11 @@ element. Default is \code{FALSE}.}
 \item{digits}{Rounding. Default is 3.}
 
 \item{component}{For glmmTMB objects, which of the three components 'cond' or
-'zi' to select. Default is 'cond'.  For brmsfit objects, this can filter
-results to a certain part of the output, e.g. 'sigma' or 'zi' of
-distributional models, or a specific outcome of a multivariate model.  In
-this case \code{component} is a regular expression that begins parameters
+'zi' to select. Default is 'cond'.  For brmsfit (and experimentally,
+rstanarm) objects, this can filter results to a certain part of the output,
+e.g. 'sigma' or 'zi' of distributional models, or a specific outcome of a
+multivariate model.  In this case \code{component} is a regular expression
+that begins parameters
 of the output.}
 
 \item{...}{Other stuff to pass to the corresponding function. Unused/tested}

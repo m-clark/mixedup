@@ -300,7 +300,7 @@ test_that('extract_vc.brmsfit basic functionality: ints/slopes with multiple gro
 })
 
 test_that('extract_vc.merMod basic functionality: correct results', {
-  raw_output = purrr::map_dbl(brms::VarCorr(brm_1), function(x) x[[1]][,'Estimate'])
+  raw_output = purrr::map_dbl(brms::VarCorr(brm_1), \(x) x[[1]][,'Estimate'])
   names(raw_output) = NULL
   expect_equal(extract_vc(brm_1, ci_level = 0, digits = 10)$sd, raw_output)
 })

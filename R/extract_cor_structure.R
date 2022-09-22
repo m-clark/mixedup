@@ -137,11 +137,11 @@ extract_cor_structure.glmmTMB <- function(
 
   if (which_cor == 'diag')
     cor_mats <-
-    purrr::map(cor_init, function(x) attr(x, 'stddev')^2 + glmmTMB::sigma(model)^2)
+    purrr::map(cor_init, \(x) attr(x, 'stddev')^2 + glmmTMB::sigma(model)^2)
   else
-    cor_mats <- purrr::map(cor_init, function(x) attr(x, 'correlation'))
+    cor_mats <- purrr::map(cor_init, \(x) attr(x, 'correlation'))
 
-  cor_types <- purrr::map(cor_init, function(x) names(attr(x, 'blockCode')))
+  cor_types <- purrr::map(cor_init, \(x) names(attr(x, 'blockCode')))
 
   extract <- which(unlist(cor_types) == which_cor)
 
@@ -155,19 +155,19 @@ extract_cor_structure.glmmTMB <- function(
   # extact first value when rest are determined
   if (!full_matrix) {
     if (which_cor %in% c('ar1', 'ou', 'cs')) {
-      cor_par <- purrr::map_df(cor_par, function(x)
+      cor_par <- purrr::map_df(cor_par, \(x)
         round(x[1, 2], digits = digits)) %>%
         dplyr::mutate(parameter = which_cor) %>%
         dplyr::select(parameter, dplyr::everything())
     }
     # similar for diagonal
     else if (which_cor ==  'diag') {
-      cor_par <- purrr::map_df(cor_par, function(x)
+      cor_par <- purrr::map_df(cor_par, \(x)
         data.frame(t(round(x, digits = digits))), .id = 'group')
     }
     # and toeplitz/spatial
     else if (which_cor %in%  c('toep', 'exp', 'mat', 'gau')) {
-      cor_par <- purrr::map_df(cor_par, function(x)
+      cor_par <- purrr::map_df(cor_par, \(x)
         round(data.frame(x[1, , drop = FALSE]), digits = digits), .id = 'group')
     }
   }
@@ -193,9 +193,9 @@ extract_cor_structure.brmsfit <- function(
 
   # rename intervals
   cor_par <- dplyr::as_tibble(cor_par, rownames = 'parameter') %>%
-    dplyr::rename_at(dplyr::vars(dplyr::matches('l-')), function(x)
+    dplyr::rename_at(dplyr::vars(dplyr::matches('l-')), \(x)
       paste0('lower_', lower * 100)) %>%
-    dplyr::rename_at(dplyr::vars(dplyr::matches('u-')), function(x)
+    dplyr::rename_at(dplyr::vars(dplyr::matches('u-')), \(x)
       paste0('upper_', upper * 100))
 
   # more cleanup/return

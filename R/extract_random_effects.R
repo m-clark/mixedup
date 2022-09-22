@@ -9,11 +9,12 @@
 #'   value of 0 will not report it. Default is .95. Not applicable to nlme
 #'   objects.
 #' @param component For `glmmTMB` objects, which of the two components 'cond' or
-#' 'zi' to select. Default is 'cond'. For `brmsfit` objects, this can filter
-#' results to a certain part of the output, e.g. 'sigma' or 'zi' of
-#' distributional models, or a specific outcome name of a multivariate model.
-#' In this case `component` is a regular expression that ends the name of the
-#' parameters of the output (e.g. '__component').
+#'   'zi' to select. Default is 'cond'. For `brmsfit` objects, this can filter
+#'   results to a certain part of the output, e.g. 'sigma' or 'zi' of
+#'   distributional models, or a specific outcome name of a multivariate model.
+#'   In this case `component` is a regular expression that ends the name of the
+#'   parameters of the output (e.g. '__component'). For `stanreg` objects, this
+#'   could be the
 #' @param digits  Rounding. Default is 3.
 #' @param add_group_N  Add group sample sizes to output? Default is `FALSE`.
 #' @param ... Other arguments specific to the method. Unused at present.
@@ -21,7 +22,7 @@
 #' @details Relative to `ranef` for the various packages, this just adds the
 #'   standard errors and cluster ids as columns, and uncertainty intervals.
 #'
-#'  Current models supported:
+#'   Current models supported:
 #'
 #' \describe{
 #'  \item{merMod}{}
@@ -43,7 +44,7 @@
 #' For mgcv, the `Vp` (Bayesian) estimated variance covariance matrix is
 #' used.
 #'
-#' `extract_ranef` is an alias.
+#'@aliases `extract_ranef` is an alias.
 #'
 #' @return data frame of the random effects
 #'
@@ -75,14 +76,16 @@ extract_random_effects <- function(
   component   = NULL,
   ...
 ) {
-  if (!inherits(model,
-                c('merMod', 'glmmTMB', 'lme', 'gam', 'stanreg', 'brmsfit'))
+  assertthat::assert_that(
+    inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'stanreg', 'brmsfit')),
+    msg = 'This only works for model objects from lme4, glmmTMB, rstanarm, brms,
+         mgcv, and nlme.'
   )
-    stop('This only works for model objects from lme4, glmmTMB, rstanarm, brms,
-         mgcv, and nlme.')
 
-  if (ci_level < 0 | ci_level >= 1)
-    stop('Nonsensical confidence level for ci_level.  Must be between 0 and 1.')
+  assertthat::assert_that(
+    ci_level >= 0 & ci_level < 1,
+    msg = 'Nonsensical confidence level for ci_level.  Must be between 0 and 1.'
+  )
 
   UseMethod('extract_random_effects')
 }
@@ -100,9 +103,10 @@ extract_random_effects.merMod <- function(
   # component = 'cond',
 ) {
 
-
-  if (!is_package_installed('lme4'))
-    stop('lme4 package required', call. = FALSE)
+  assertthat::assert_that(
+    rlang::is_installed('lme4'),
+    msg = 'lme4 package required'
+  )
 
   # add check on re name
   lmer_re <- lme4::ranef(model, condVar = TRUE)
@@ -157,7 +161,7 @@ extract_random_effects.merMod <- function(
                     pattern = '[\\(, \\)]',
                     replacement = '')
     ) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
     dplyr::as_tibble()
 
   if (add_group_N) {
@@ -179,12 +183,15 @@ extract_random_effects.glmmTMB <- function(
   ...
 ) {
 
-  if (!is_package_installed('glmmTMB'))
-    stop('glmmTMB package required', call. = FALSE)
+  assertthat::assert_that(
+    rlang::is_installed('glmmTMB'),
+    msg = 'glmmTMB package required'
+  )
 
-  if (!component %in% c('cond', 'zi')) {
-    stop('component must be one of "cond" or "zi".')
-  }
+  assertthat::assert_that(
+    component %in% c('cond', 'zi'),
+    msg = 'component must be one of "cond" or "zi".'
+  )
 
   # add check on re name
   all_re_names <- names(glmmTMB::ranef(model)[[component]])
@@ -240,7 +247,7 @@ extract_random_effects.glmmTMB <- function(
                     pattern = '[\\(, \\)]',
                     replacement = '')
     ) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
     dplyr::as_tibble()
 
   if (add_group_N) {
@@ -295,7 +302,7 @@ extract_random_effects.lme <- function(
   }
   else {
     random_effects <- re0 %>%
-      purrr::map(function(x)
+      purrr::map(\(x)
         dplyr::mutate(
           x,
           group = rownames(x))
@@ -315,7 +322,7 @@ extract_random_effects.lme <- function(
   }
 
   random_effects <-   random_effects %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
     dplyr::select(group_var, effect, group, value) %>%
     dplyr::mutate(
       effect = gsub(
@@ -356,8 +363,10 @@ extract_random_effects.brmsfit <- function(
   ...
 ) {
 
-  if (!is_package_installed('brms'))
-    stop('brms package required', call. = FALSE)
+  assertthat::assert_that(
+    rlang::is_installed('brms'),
+    msg = 'brms package required'
+  )
 
   # add check on re name
   all_re_names <- names(brms::ranef(model))
@@ -371,7 +380,13 @@ extract_random_effects.brmsfit <- function(
 
   # more or less following broom, but note that brms offers both pars and groups
   # args that might be better to use, if not less computation
-  re0 <- brms::posterior_samples(model, pars = '^r_')
+  # suppress warning about metadata
+  suppressWarnings({
+    re0 <-
+      brms::as_draws_df(model, variable = '^r_', regex = TRUE) %>%
+      dplyr::select(-(.chain:.draw))
+  })
+  # re0 <- brms::posterior_samples(model, pars = '^r_')
 
   # not sure this is necessary, would only happen if something very wrong with
   # model or no random effects.
@@ -379,16 +394,16 @@ extract_random_effects.brmsfit <- function(
     stop("No parameter name matches the specified pattern.", call. = FALSE)
   }
 
-  random_effects <- data.frame(effect = names(re0), stringsAsFactors = FALSE)
+  random_effects <- tibble::tibble(effect = names(re0))
 
   random_effects <- random_effects %>%
     dplyr::mutate(
-      effect = gsub("^r_", "", effect),
+      effect    = gsub("^r_", "", effect),
       group_var = gsub("\\[.*", "", effect),
-      group = gsub(".*\\[|,.*", "", effect),
-      effect = gsub(".*,|\\]", "", effect),
-      value = base::colMeans(re0),
-      se = purrr::map_dbl(re0, stats::sd)
+      group     = gsub(".*\\[|,.*", "", effect),
+      effect    = gsub(".*,|\\]", "", effect),
+      value     = base::colMeans(re0),
+      se        = purrr::map_dbl(re0, stats::sd)
     ) %>%
     dplyr::select(group_var, dplyr::everything())
 
@@ -446,7 +461,7 @@ extract_random_effects.brmsfit <- function(
   }
 
   random_effects <- random_effects %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
     dplyr::as_tibble()
 
   if (add_group_N) {
@@ -469,8 +484,10 @@ extract_random_effects.stanreg <- function(
   ...
 ) {
 
-  if (!is_package_installed('rstanarm'))
-    stop('rstanarm package required', call. = FALSE)
+  assertthat::assert_that(
+    rlang::is_installed('rstanarm'),
+    msg = 'rstanarm package required'
+  )
 
   # Structure is the same as lme4 if just a standard stanreg object
   if (!inherits(model, c('stanmvreg',' stanjm'))) {
@@ -495,7 +512,8 @@ extract_random_effects.stanreg <- function(
     random_effects <- random_effects %>%
       dplyr::mutate(
         effect =  gsub(effect, pattern = "b\\[|\\]", replacement = ''),
-        effect = remove_parens(effect)) %>%
+        effect = remove_parens(effect)
+      ) %>%
       tidyr::separate(effect, into = c('component', 'effect', 'group_var', 'group')) %>%
       dplyr::select(-mcse, -n_eff,  -Rhat) %>%
       dplyr::select(component, group_var, dplyr::everything()) %>%
@@ -526,7 +544,7 @@ extract_random_effects.stanreg <- function(
 
     if (!is.null(component)) {
       random_effects <- random_effects %>%
-        dplyr::filter(group_var == component)
+        dplyr::filter(component == {{component}})
     }
 
 
@@ -553,17 +571,19 @@ extract_random_effects.gam <- function(
   ...
 ) {
   # get the re variables and their levels
-  re_terms <- purrr::map_lgl(model$smooth,
-                             function(x)
-                               inherits(x, "random.effect"))
+  re_terms <- purrr::map_lgl(model$smooth, \(x) inherits(x, "random.effect"))
 
   re_smooths <- model$smooth[re_terms]
 
-  re_names <- purrr::map_chr(model$smooth[re_terms],
-                             function(x)
-                               ifelse(length(x$vn) == 1,
-                                      x$vn,
-                                      x$vn[length(x$vn)]))
+  re_names <- purrr::map_chr(
+    model$smooth[re_terms],
+    \(x)
+    ifelse(
+      length(x$vn) == 1,
+      x$vn,
+      x$vn[length(x$vn)]
+    )
+  )
 
   re_levels <- vector("list", length(re_names))
 
@@ -604,7 +624,7 @@ extract_random_effects.gam <- function(
       )
     )
 
-  re_labels <- purrr::map(re_smooths[re_idx], function(x) x$label)
+  re_labels <- purrr::map(re_smooths[re_idx], \(x) x$label)
 
   gam_coef <- stats::coef(model)
 
@@ -633,7 +653,7 @@ extract_random_effects.gam <- function(
   names(re0) <- gsub(names(re0), pattern = "\\.[0-9]+", replacement = '')
 
   re_names   <- names(re0)
-  re_effects <- purrr::map_chr(re_smooths, function(x) x$term[1])
+  re_effects <- purrr::map_chr(re_smooths, \(x) x$term[1])
   re_effects <- rep(re_effects, times = purrr::map_int(re_coef, length))
 
   # check to see if factors are the smooth terms (i.e. random cat slope), and
@@ -651,11 +671,11 @@ extract_random_effects.gam <- function(
   random_effects <- dplyr::tibble(group_var = re_names) %>%
     dplyr::mutate(
       group_var = split_group_effect(group_var, which = 2),
-      effect = re_effects,
-      effect = ifelse(effect ==  group_var, 'Intercept', effect),
-      group  = unlist(re_levels),
-      value  = re0,
-      se     = gam_se
+      effect    = re_effects,
+      effect    = ifelse(effect ==  group_var, 'Intercept', effect),
+      group     = unlist(re_levels),
+      value     = re0,
+      se        = gam_se
     )
 
   if (add_group_N) {
@@ -673,7 +693,7 @@ extract_random_effects.gam <- function(
 
     lower <- (1 - ci_level)/2
     upper <- 1 - lower
-    mult <- stats::qnorm(upper)
+    mult  <- stats::qnorm(upper)
 
     random_effects <- random_effects %>%
       dplyr::mutate(
@@ -692,7 +712,7 @@ extract_random_effects.gam <- function(
 
   random_effects <- random_effects %>%
     dplyr::select(group_var, effect, dplyr::everything()) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
   if (add_group_N) {
     random_effects <- random_effects %>% dplyr::select(-n, dplyr::everything())

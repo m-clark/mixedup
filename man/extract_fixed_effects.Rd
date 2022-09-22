@@ -108,10 +108,11 @@ the new scale.}
 \item{p_value}{For \code{lme4} models, one of 'Wald' or 'KR'. See details.}
 
 \item{component}{For glmmTMB objects, which of the three components 'cond' or
-'zi' to select. Default is 'cond'.  For brmsfit objects, this can filter
-results to a certain part of the output, e.g. 'sigma' or 'zi' of
-distributional models, or a specific outcome of a multivariate model.  In
-this case \code{component} is a regular expression that begins parameters
+'zi' to select. Default is 'cond'.  For brmsfit (and experimentally,
+rstanarm) objects, this can filter results to a certain part of the output,
+e.g. 'sigma' or 'zi' of distributional models, or a specific outcome of a
+multivariate model.  In this case \code{component} is a regular expression
+that begins parameters
 of the output.}
 }
 \value{
@@ -128,10 +129,10 @@ especially for low N/small numbers of groups.  The Kenward-Roger is also
 available if the \code{pbkrtest} package is installed (experimental). For either
 case, Only the p-value from the process is provide, all other output is
 default provided \code{lme4} without adjustment.
-
-\code{extract_fixef} is an alias.
 }
 \note{
+\code{extract_fixef} is an alias.
+
 For \code{nlme}, this is just a multiplier based on the estimated standard
 error and critical value for the \code{ci_level}.
 }

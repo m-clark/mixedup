@@ -55,7 +55,7 @@ glmmTMB models.
 \details{
 This function applies to models with residual correlation, i.e. that
 contain something like \code{corAR1(form = ~time)} for nlme, or brms
-models with an \code{autocor} argument.  This functions extracts the
+models with an something like \code{ar()} in the formula.  This functions extracts the
 associated parameters (e.g. \code{Phi} in nlme, \code{ar[1]} in brms, etc.)
 
 For glmmTMB objects, rather than the full matrix, simplified output is

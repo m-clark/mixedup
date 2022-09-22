@@ -62,18 +62,23 @@
 #' @export
 extract_random_coefs <- function(
   model,
-  re = NULL,
-  ci_level = .95,
-  digits = 3,
+  re        = NULL,
+  ci_level  = .95,
+  digits    = 3,
   component = NULL,
   ...
 ) {
 
-  if (!inherits(model, c('merMod', 'glmmTMB', 'gam', 'lme', 'brmsfit', 'stanreg')))
-    stop('This is not a supported model class.')
+  assertthat::assert_that(
+    inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'stanreg', 'brmsfit')),
+    msg = 'This only works for model objects from lme4, glmmTMB, rstanarm, brms,
+         mgcv, and nlme.'
+  )
 
-  if (ci_level < 0 | ci_level >= 1)
-    stop('Nonsensical confidence level for ci_level. Must be between 0 and 1.')
+  assertthat::assert_that(
+    ci_level >= 0 & ci_level < 1,
+    msg = 'Nonsensical confidence level for ci_level.  Must be between 0 and 1.'
+  )
 
   UseMethod('extract_random_coefs')
 }
@@ -82,18 +87,17 @@ extract_random_coefs <- function(
 #' @export
 extract_random_coefs.merMod <- function(
   model,
-  re = NULL,
+  re       = NULL,
   ci_level = .95,
-  digits = 3,
-  # component = NULL,
+  digits   = 3,
   ...
 ) {
 
   random_effects <- extract_random_effects(model, re = re)
 
   fixed_effects  <- extract_fixed_effects(model) %>%
-    dplyr::rename(effect = term,
-                  se_fe = se,
+    dplyr::rename(effect   = term,
+                  se_fe    = se,
                   value_fe = value)
 
   coefs_init <- random_effects %>%
@@ -121,7 +125,7 @@ extract_random_coefs.merMod <- function(
   }
 
   coefs <- coefs %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
   coefs
 }
@@ -130,9 +134,9 @@ extract_random_coefs.merMod <- function(
 #' @export
 extract_random_coefs.glmmTMB <- function(
   model,
-  re = NULL,
-  ci_level = .95,
-  digits = 3,
+  re        = NULL,
+  ci_level  = .95,
+  digits    = 3,
   component = 'cond',
   ...
   ) {
@@ -144,8 +148,8 @@ extract_random_coefs.glmmTMB <- function(
 
   fixed_effects <-
     extract_fixed_effects(model, component = component) %>%
-    dplyr::rename(effect = term,
-                  se_fe = se,
+    dplyr::rename(effect   = term,
+                  se_fe    = se,
                   value_fe = value)
 
   coefs_init <- random_effects %>%
@@ -173,7 +177,7 @@ extract_random_coefs.glmmTMB <- function(
   }
 
   coefs <- coefs %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
   coefs
 }
@@ -182,18 +186,17 @@ extract_random_coefs.glmmTMB <- function(
 #' @export
 extract_random_coefs.lme <- function(
   model,
-  re = NULL,
+  re       = NULL,
   ci_level = NULL,
-  digits = 3,
-  # component = NULL,
+  digits   = 3,
   ...
 ) {
 
   random_effects <- extract_random_effects(model, re = re)
 
   fixed_effects  <- extract_fixed_effects(model) %>%
-    dplyr::rename(effect = term,
-                  se_fe = se,
+    dplyr::rename(effect   = term,
+                  se_fe    = se,
                   value_fe = value)
 
   coefs <- random_effects %>%
@@ -204,7 +207,7 @@ extract_random_coefs.lme <- function(
     dplyr::select(group_var, effect, group, value)
 
   coefs %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
 }
 
@@ -212,43 +215,55 @@ extract_random_coefs.lme <- function(
 #' @export
 extract_random_coefs.brmsfit <- function(
   model,
-  re = NULL,
-  ci_level = .95,
-  digits = 3,
+  re        = NULL,
+  ci_level  = .95,
+  digits    = 3,
   component = NULL,
   ...
 ) {
 
-  if (!is_package_installed('brms'))
-    stop('brms package required', call. = FALSE)
+  assertthat::assert_that(
+    rlang::is_installed('brms'),
+    msg = 'brms package required'
+  )
 
   # we don't call the extract* functions here as they already summarize the
   # results, and we need the draws to estimate the variance
 
   # do re
-  re0 <- brms::posterior_samples(model, pars = '^r_')
+  # suppress warning about metadata
+  suppressWarnings({
+    re0 <-
+      brms::as_draws_df(model, variable = '^r_', regex = TRUE) %>%
+      dplyr::select(-(.chain:.draw))
+  })
 
-  random_effects <- data.frame(effect = names(re0), stringsAsFactors = FALSE)
+  random_effects <- tibble::tibble(effect = names(re0))
 
   random_effects <- random_effects %>%
     dplyr::mutate(
-      effect = gsub("^r_", "", effect),
+      effect    = gsub("^r_", "", effect),
       group_var = gsub("\\[.*", "", effect),
-      group = gsub(".*\\[|,.*", "", effect),
-      effect = gsub(".*,|\\]", "", effect)) %>%
+      group     = gsub(".*\\[|,.*", "", effect),
+      effect    = gsub(".*,|\\]", "", effect)
+    ) %>%
     cbind(t(re0))
 
   # do fe
-  fe0 <- brms::posterior_samples(model, pars = '^b_')
+  suppressWarnings({
+    fe0 <- brms::as_draws_df(model, variable = '^b_', regex = TRUE) %>%
+      dplyr::select(-(.chain:.draw))
+  })
 
-  fixed_effects <- data.frame(effect = names(fe0), stringsAsFactors = FALSE)
+  fixed_effects <- tibble::tibble(effect = names(fe0))
 
   fixed_effects <- fixed_effects %>%
     dplyr::mutate(
-      effect = gsub("^b_", "", effect),
+      effect    = gsub("^b_", "", effect),
       group_var = gsub("\\[.*", "", effect),
-      group = gsub(".*\\[|,.*", "", effect),
-      effect = gsub(".*,|\\]", "", effect)) %>%
+      group     = gsub(".*\\[|,.*", "", effect),
+      effect    = gsub(".*,|\\]", "", effect)
+    ) %>%
     cbind(t(fe0))
 
   # previous is done to ensure samples are accurately matched, now combine
@@ -257,7 +272,7 @@ extract_random_coefs.brmsfit <- function(
       fixed_effects,
       by = 'effect',
       suffix = c('_re', '_fe')
-      )
+    )
 
   fe_samples <- coefs_init %>%
     dplyr::select(dplyr::matches('^[0-9]+_fe'))
@@ -270,7 +285,7 @@ extract_random_coefs.brmsfit <- function(
   coefs <- random_effects %>%
     dplyr::select(group_var, group, effect) %>%
     dplyr::mutate(value = rowMeans(coef_samples),
-                  se = apply(coef_samples, 1, sd))
+                  se    = apply(coef_samples, 1, sd))
 
   if (ci_level > 0) {
 
@@ -301,7 +316,7 @@ extract_random_coefs.brmsfit <- function(
   coefs %>%
     dplyr::as_tibble() %>%
     dplyr::select(group_var, effect, dplyr::everything()) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
 }
 
@@ -310,9 +325,9 @@ extract_random_coefs.brmsfit <- function(
 #' @export
 extract_random_coefs.stanreg <- function(
   model,
-  re = NULL,
-  ci_level = .95,
-  digits = 3,
+  re        = NULL,
+  ci_level  = .95,
+  digits    = 3,
   component = NULL,
   ...
 ) {
@@ -407,7 +422,7 @@ extract_random_coefs.stanreg <- function(
   coefs %>%
     dplyr::as_tibble() %>%
     dplyr::select(group_var, effect, dplyr::everything()) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
 }
 
@@ -418,14 +433,13 @@ extract_random_coefs.gam <- function(
   re = NULL,
   ci_level = .95,
   digits = 3,
-  # component = NULL,
   ...
 ) {
   random_effects <- extract_random_effects(model, re = re)
 
   fixed_effects  <- extract_fixed_effects(model) %>%
-    dplyr::rename(effect = term,
-                  se_fe = se,
+    dplyr::rename(effect   = term,
+                  se_fe    = se,
                   value_fe = value)
 
   # given that these aren't blups, not sure what to do here, but to keep consistent.
@@ -433,7 +447,7 @@ extract_random_coefs.gam <- function(
     dplyr::left_join(fixed_effects, by = 'effect') %>%
     dplyr::mutate(
       value = value + value_fe,
-      se = sqrt(se^2 + se_fe^2)
+      se    = sqrt(se^2 + se_fe^2)
     ) %>%
     dplyr::select(group_var, effect, group, value, se)
 
@@ -454,7 +468,7 @@ extract_random_coefs.gam <- function(
   }
 
   coefs <- coefs %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
   coefs
 }
