@@ -4,7 +4,8 @@
 #' @param value The random effect values
 #' @param probs Desired probabilities passed to \code{quantile}
 
-#' @details Finds indices of random effect values closest to a specific quantile
+#' @details Finds indices of random effect values closest to a specific
+#'   quantile. Used internally by `find_typical`.
 
 #' @return A vector of the observed values closest to the desired quantiles.
 

@@ -46,13 +46,13 @@
 #' @export
 find_typical <- function(
   model,
-  re = NULL,
+  re    = NULL,
   probs = NULL,
   ...
 ) {
 
   if (!is.null(probs) && is.numeric(probs)) {
-    if (range(probs)[1] < 0 | range(probs)[2] > 1)
+    if (min(probs) < 0 | max(probs) > 1)
       stop('probs must be between 0 and 1.')
   }
 
@@ -61,7 +61,7 @@ find_typical <- function(
   if (is.null(probs)) {
     re <- re %>%
       dplyr::group_by(group_var, effect) %>%
-      dplyr::slice(which.min(abs(value))) %>%
+      dplyr::slice(which.min(abs(value))) %>% # get closest to zero
       dplyr::ungroup()
   }
   else {
