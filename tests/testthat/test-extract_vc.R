@@ -29,7 +29,7 @@ test_that('extract_vc.merMod basic functionality: random intercept only', {
 })
 
 test_that('extract_vc.merMod basic functionality: random intercept only with no residual', {
-  init = extract_vc(glmer_1, ci_args = list(method = 'Wald'))
+  init <-  extract_vc(glmer_1, ci_args = list(method = 'Wald'))
   expect_equal(nrow(init), 1)
 
   # check that ci columns are appropriately attached
@@ -93,13 +93,13 @@ test_that('extract_vc.merMod works with ci_scale = var', {
 })
 
 # test_that('extract_vc.merMod works with ci fail', {
-  # find some model that will fail
-  # d = data.frame(y = rnorm(50), g1 = sample(1:5, 50, replace = T), g2 = sample(1:2, 50, replace = T))
-  #
-  # confint(lmer(y ~ (1|g1) + (1|g2), data=d[-sample(1:50, 10),]), method = 'Wald')
-  # mod = lmer(y ~ (1|s) + (1|d) + (1|dept), data = InstEval[1:500,])
-  #
-  # expect_(extract_vc(mod))
+#   # find some model that will fail
+#   d = data.frame(y = rnorm(50), g1 = sample(1:5, 50, replace = T), g2 = sample(1:2, 50, replace = T))
+#
+#   confint(lmer(y ~ (1|g1) + (1|g2), data=d[-sample(1:50, 10),]), method = 'Wald')
+#   mod = lmer(y ~ (1|s) + (1|d) + (1|dept), data = InstEval[1:500,])
+#
+#   expect_(extract_vc(mod))
 # })
 
 
@@ -264,9 +264,10 @@ test_that('extract_vc.lme returns correlation', {
 })
 
 
-test_that('extract_vc.lme warns with no ci', {
-  expect_warning(extract_vc(lme_4))
-})
+# this model apparently calculates ci now.
+# test_that('extract_vc.lme warns with no ci', {
+#   expect_warning(extract_vc(lme_4))
+# })
 
 
 # maybe change names for consistency to other objects in the future

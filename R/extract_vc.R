@@ -11,10 +11,11 @@
 #' @param ci_scale A character string of 'sd' or 'var' to note the scale of the
 #'   interval estimate.  Default is 'sd'. at present.
 #' @param component For glmmTMB objects, which of the three components 'cond' or
-#'   'zi' to select. Default is 'cond'.  For brmsfit objects, this can filter
-#'   results to a certain part of the output, e.g. 'sigma' or 'zi' of
-#'   distributional models, or a specific outcome of a multivariate model.  In
-#'   this case \code{component} is a regular expression that begins parameters
+#'   'zi' to select. Default is 'cond'.  For brmsfit (and experimentally,
+#'   rstanarm) objects, this can filter results to a certain part of the output,
+#'   e.g. 'sigma' or 'zi' of distributional models, or a specific outcome of a
+#'   multivariate model.  In this case \code{component} is a regular expression
+#'   that begins parameters
 #'   of the output.
 #' @param show_cor Return the intercept/slope correlations as a separate list
 #'   element. Default is \code{FALSE}.
@@ -31,11 +32,11 @@
 #'
 #' @note Right now, there are several issues with getting confidence intervals
 #'   for `glmmTMB` objects
-#'   (\href{https://github.com/glmmTMB/glmmTMB/issues/571}{for example}).  If
-#'   you get an error, you should check by running `confint(my_tmb_model)` before
-#'   posting an issue.  While I've attempted some minor hacks to deal with some
-#'   of them, if the `glmmTMB` functionality doesn't work, this function won't
-#'   either.
+#'   (\href{https://github.com/glmmTMB/glmmTMB/issues/571}{for example, which is
+#'   actually not resolved}).  If you get an error, you should check by running
+#'   `confint(my_tmb_model)` before posting an issue.  While I've attempted some
+#'   minor hacks to deal with some of them, it stands to reason that if the
+#'   `glmmTMB` functionality doesn't work, this function won't either.
 #'
 #'
 #' @return A data frame with output for variance components, or list that also
@@ -75,14 +76,20 @@ extract_vc <- function(
   component = 'cond',
   ...
 ) {
-  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'brmsfit', 'stanreg')))
-    stop('This is not a supported model class.')
+  assertthat::assert_that(
+    inherits(model, c('merMod', 'glmmTMB', 'lme', 'gam', 'brmsfit', 'stanreg')),
+    msg = 'This is not a supported model class.'
+  )
 
-  if (ci_level < 0 | ci_level >= 1)
-    stop('Nonsensical confidence level for ci_level.  Must be between 0 and 1.')
+  assertthat::assert_that(
+    ci_level >= 0 & ci_level < 1,
+    msg = 'Nonsensical confidence level for ci_level.  Must be between 0 and 1.'
+  )
 
-  if (!ci_scale %in% c('var', 'sd'))
-    stop("ci_scale must be 'var' or 'sd'")
+  assertthat::assert_that(
+    ci_scale %in% c('var', 'sd'),
+    msg = "ci_scale must be 'var' or 'sd'"
+  )
 
   UseMethod('extract_vc')
 }
@@ -115,18 +122,18 @@ extract_vc.merMod <- function(
       confint,
       c(
         list(
-          object = model,
-          parm = 'theta_',
-          level = ci_level,
+          object   = model,
+          parm     = 'theta_',
+          level    = ci_level,
           oldNames = FALSE
-          ),
-          ci_args
-        )
-      ),
-      error = function(c) {
-        msg <- conditionMessage(c)
-        invisible(structure(msg, class = "try-error"))
-      })
+        ),
+        ci_args
+      )
+    ),
+    error = function(c) {
+      msg <- conditionMessage(c)
+      invisible(structure(msg, class = "try-error"))
+    })
 
     if (inherits(ci, 'try-error')) {
       warning('Intervals could not be computed')
@@ -153,7 +160,6 @@ extract_vc.merMod <- function(
 
   # cleanup/add to results
   vc <- vc %>%
-    # dplyr::filter(is.na(effect) | is.na(effect_2)) %>%
     dplyr::mutate(
       var_prop = variance / sum(variance),
       effect   = gsub(effect, pattern = '[\\(,\\)]', replacement = ''),
@@ -162,7 +168,7 @@ extract_vc.merMod <- function(
 
   vc <- dplyr::select(vc, -effect_2)
 
-  vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)
+  vc <- dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
   # deal with correlations
   if (show_cor) {
@@ -192,13 +198,14 @@ extract_vc.glmmTMB <- function(
 ) {
 
   # note: disp formula doesn't allow re
-  if (!component %in% c('cond', 'zi')) {
-    stop('component must be one of "cond" or "zi".')
-  }
+  assertthat::assert_that(
+    component %in% c('cond', 'zi'),
+    msg = 'component must be one of "cond" or "zi".'
+  )
 
   vc_mat <- glmmTMB::VarCorr(model)[[component]]
 
-  if(is.null(vc_mat))
+  if (is.null(vc_mat))
     return(message(paste('No VarCorr for', component, 'component.')))
 
 
@@ -223,7 +230,10 @@ extract_vc.glmmTMB <- function(
 
   vc <- data.frame(variance, sd = sqrt(variance$variance))
 
-  # NOTE: confint will not work for some tmb objects
+  # NOTE: as of Q4 2022, confint will still fail if both parm and component are
+  # passed. Also, confint will not return as many groups with parm = '' as it
+  # will with nothing.  At this point, I can only suggest to use confint with
+  # neither parm or cond args and filter them out.
   # see glmmTMB:::getCorSD (constructed within formatVC) for how to extract ar
   # sd, but basically just grabs the first value of diag for sd and second value
   # for cor
@@ -238,7 +248,7 @@ extract_vc.glmmTMB <- function(
               object = model,
               # parm = 'theta_',  # this has been problematic in the past and doesn't work properly now https://github.com/bbolker/broom.mixed/issues/31
               level = ci_level,
-              # component = component,    # will also throw an error
+              # component = component,    # will throw an error with parm = 'theta'
               estimate = FALSE
             ),
             ci_args
@@ -283,7 +293,8 @@ extract_vc.glmmTMB <- function(
       # deal with try-error result
       if (nrow(ci) == 0) {
         vc <- vc
-      } else {
+      }
+      else {
         vc_ci = vc %>%
           dplyr::slice(-nrow(vc)) %>%    # remove residual
           dplyr::bind_cols(ci)
@@ -297,15 +308,15 @@ extract_vc.glmmTMB <- function(
 
   # cleanup/add to results
 
-  vc <- dplyr::mutate(
-    vc,
+  vc <- vc %>%
+    dplyr::mutate(
     var_prop = variance / sum(variance),
     effect   = gsub(effect, pattern = '[\\(,\\)]', replacement = ''),
-    effect   = ifelse(is.na(effect), '', effect)
+    effect   = ifelse(is.na(effect), NA_character_, effect)
   )
 
   vc <- vc %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits) %>%
+dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
     dplyr::mutate_if(is.factor, as.character)
 
 
@@ -316,18 +327,30 @@ extract_vc.glmmTMB <- function(
       purrr::map(attr, 'correlation') %>% purrr::map(remove_parens) %>%
       purrr::map(round, digits = digits)
 
+    vc = tibble::as_tibble(vc) %>%
+      dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
+
     return(list(`Variance Components` = vc, Cor = cormats))
   }
 
   # simplify output if possible (add models as needed)
   if (any(grepl(model$modelInfo$allForm$formula, pattern = 'ar1\\(|gau\\(|exp\\(|mat\\(|ou\\('))) {
-    vc = vc %>% dplyr::select(-effect) %>% dplyr::distinct()
+    vc = vc %>%
+      dplyr::select(-effect) %>%
+      dplyr::distinct()
+
     warning('Output has been simplified. You may have additional information with `show_cor = TRUE`.')
+
+    rownames(vc) = NULL  # will likely only confuse
+
+    return(tibble::as_tibble(vc))
   }
 
 
   rownames(vc) = NULL  # will likely only confuse
-  vc
+
+  tibble::as_tibble(vc) %>%
+    dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
 }
 
 
@@ -352,23 +375,23 @@ extract_vc.lme <- function(
   vc <- data.frame(vc_mat)
 
   if (length(re_names) == 1) {
-    vc <- dplyr::mutate(
-      vc,
-      effect = rownames(vc_mat0),
-      group  = re_names,
-      group  = ifelse(effect == 'Residual', 'Residual', group),
-      effect = ifelse(effect == 'Residual', '', effect)
-    )
+    vc <- vc %>%
+      dplyr::mutate(
+        effect = rownames(vc_mat0),
+        group  = re_names,
+        group  = ifelse(effect == 'Residual', 'Residual', group),
+        effect = ifelse(effect == 'Residual', '', effect)
+      )
   }
   else {
-    vc <- dplyr::mutate(
-      vc,
-      effect = rownames(vc_mat0),
-      group  = ifelse(is.na(Variance), effect, NA),
-      group  = ifelse(effect == 'Residual', 'Residual', group),
-      group  = sapply(strsplit(group, ' '), function(x) x[1]),
-      effect = ifelse(effect == 'Residual', '', effect)
-    )
+    vc <- vc %>%
+      dplyr::mutate(
+        effect = rownames(vc_mat0),
+        group  = ifelse(is.na(Variance), effect, NA),
+        group  = ifelse(effect == 'Residual', 'Residual', group),
+        group  = sapply(strsplit(group, ' '), \(x) x[1]),
+        effect = ifelse(effect == 'Residual', '', effect)
+      )
   }
 
   vc <- tidyr::fill(vc, group)
@@ -451,19 +474,25 @@ extract_vc.lme <- function(
       )
   }
 
-  vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits)
-  vc$corr = NULL # leave to show_cor if it exists
+  vc <- dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits))
+  vc$corr <- NULL # leave to show_cor if it exists
 
   if (show_cor) {
     cormats <- re_struct %>%
-      purrr::map(function(x) stats::cov2cor(as.matrix(x))) %>%
+      purrr::map(\(x) stats::cov2cor(as.matrix(x))) %>%
       purrr::map(remove_parens) %>%
       purrr::map(round, digits = digits)
+
+    vc <-   vc %>%
+      tibble::as_tibble() %>%
+      dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
 
     return(list(`Variance Components` = vc, Cor = cormats))
   }
 
-  vc
+  vc %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
 }
 
 
@@ -484,7 +513,7 @@ extract_vc.brmsfit <- function(
   lower <-  (1 - ci_level)/2
   vc_0  <- brms::VarCorr(model, probs = c(lower, 1 - lower))
 
-  vc_mat  <- purrr::map(vc_0, function(x) data.frame(x$sd))
+  vc_mat  <- purrr::map(vc_0, \(x) data.frame(x$sd))
 
   # make prettier names
   effect_names <- unlist(purrr::map(vc_mat, rownames))
@@ -510,7 +539,7 @@ extract_vc.brmsfit <- function(
   if (ci_level > 0) {
     vc <-
       vc %>%
-      dplyr::rename_at(dplyr::vars(dplyr::starts_with('Q')), function(x)
+      dplyr::rename_at(dplyr::vars(dplyr::starts_with('Q')), \(x)
         gsub(x, pattern = 'Q', replacement = paste0(ci_scale, '_')))
     if (ci_scale == 'var') {
       vc <-
@@ -522,7 +551,7 @@ extract_vc.brmsfit <- function(
   vc <- vc %>%
     dplyr::select(group, effect, variance, sd, dplyr::matches('\\_')) %>%
     dplyr::mutate(var_prop = variance / sum(variance)) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
   if (!is.null(component)) {
     vc <- vc %>%
@@ -547,7 +576,7 @@ extract_vc.brmsfit <- function(
 
     # get mean matrix
     cormats <-
-      purrr::map(cormats, function(x)
+      purrr::map(cormats, \(x)
         round(apply(x, 2:3, mean), digits = digits))
 
 
@@ -620,10 +649,10 @@ extract_vc.stanreg <- function(
 
   vc <- vc %>%
     dplyr::select(-effect_2) %>%
-    dplyr::mutate_if(is.character, function(x) ifelse(is.na(x), '', x)) %>%
+    dplyr::mutate_if(is.character, \(x) ifelse(is.na(x), '', x)) %>%
     dplyr::left_join(vc_ci_clean, by = c('group', 'effect'))
 
-  vc <- dplyr::mutate_if(vc, is.numeric, round, digits = digits) %>%
+  vc <- dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
     dplyr::select(-var_prop, dplyr::everything())
 
   # deal with correlations
@@ -710,7 +739,7 @@ extract_vc.gam <- function(
 
   vc %>%
     dplyr::select(group, effect, variance, dplyr::everything())  %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits))
 }
 
 
