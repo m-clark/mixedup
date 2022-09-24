@@ -297,7 +297,7 @@ test_that('extract_vc.brmsfit basic functionality: multiple grouping factors', {
 
 test_that('extract_vc.brmsfit basic functionality: ints/slopes with multiple grouping factors', {
   expect_equivalent(unique(extract_vc(brm_4)$group), c('continent', 'country', 'Residual'))
-  expect_equivalent(unique(extract_vc(brm_4)$effect), c('Intercept', 'year', ''))
+  expect_equivalent(unique(extract_vc(brm_4)$effect), c('Intercept', 'year', NA_character_))
 })
 
 test_that('extract_vc.merMod basic functionality: correct results', {
@@ -332,8 +332,15 @@ test_that('extract_vc.brmsfit returns correlation', {
 
 test_that('extract_vc.brmsfit works with ci_scale = var', {
 
-  expect_type(extract_vc(brm_1, ci_scale = 'var')$var_2.5, 'double')
-  expect_type(extract_vc(brm_1, ci_scale = 'sd')$sd_2.5, 'double')
+  init  = extract_vc(brm_1, ci_scale = 'var')$var_2.5
+  init2 = extract_vc(brm_1, ci_scale = 'sd')$sd_2.5
+
+
+  expect_type(init, 'double')
+  expect_type(init2, 'double')
+
+  expect_lt(init2[1], init[1])
+  expect_lt(init2[2], init[2])
 })
 
 
@@ -349,7 +356,7 @@ test_that('extract_vc.brmsfit basic functionality: multivariate model', {
 # corAR and other models will throw an error unless brms is loaded
 
 test_that('extract_vc.brmsfit basic functionality: autocor model', {
-  require(brms)
+  # require(brms)
   expect_s3_class(extract_vc(brm_corAR, ci_level = .8, digits = 2), 'data.frame')
 })
 
@@ -383,7 +390,7 @@ test_that('extract_vc.stanreg basic functionality: multiple grouping factors', {
 
 test_that('extract_vc.stanreg basic functionality: ints/slopes with multiple grouping factors', {
   expect_equivalent(unique(extract_vc(stan_glmer_4)$group), c('country', 'continent', 'Residual'))
-  expect_equivalent(unique(extract_vc(stan_glmer_4)$effect), c('Intercept', 'year', ''))
+  expect_equivalent(unique(extract_vc(stan_glmer_4)$effect), c('Intercept', 'year', NA_character_))
 })
 
 test_that('extract_vc.merMod basic functionality: correct results', {
@@ -418,8 +425,13 @@ test_that('extract_vc.stanreg returns correlation', {
 
 test_that('extract_vc.stanreg works with ci_scale = var', {
 
-  expect_type(extract_vc(stan_glmer_1, ci_scale = 'var')$var_2.5, 'double')
-  expect_type(extract_vc(stan_glmer_1, ci_scale = 'sd')$sd_2.5, 'double')
+  init  = extract_vc(stan_glmer_1, ci_scale = 'var')$var_2.5
+  init2 = extract_vc(stan_glmer_1, ci_scale = 'sd')$sd_2.5
+
+  expect_type(init, 'double')
+  expect_type(init2, 'double')
+
+  expect_lt(init2[1], init[1])
 })
 
 
@@ -427,15 +439,14 @@ test_that('extract_vc.stanreg basic functionality: non-gaussian', {
   expect_equal(nrow(extract_vc(stan_glmer_glm)), 1)  # no residual var
 })
 
-# Not yet implemented.
-# test_that('extract_vc.stanreg basic functionality: multivariate model', {
-#   init = extract_vc(stan_glmer_mv, component = 'back', ci_level = .8, digits = 2)
-#   expect_match(init$effect, 'back')
-# })
+test_that('extract_vc.stanreg basic functionality: multivariate model', {
+  init = extract_vc(stan_glmer_mv, component = 'y2', ci_level = .8, digits = 2)
+  expect_match(init$effect, 'y2')
+})
 
 
 test_that('extract_vc.stanreg basic functionality: multivariate model', {
-  expect_message(extract_vc(stan_glmer_mv, component = 'flag'))
+  expect_warning(extract_vc(stan_glmer_mv, component = 'flag'))
 })
 
 
@@ -465,10 +476,21 @@ test_that('extract_vc.gam basic functionality: bam', {
   expect_s3_class(extract_vc(bam_1), 'data.frame')
 })
 
+test_that('extract_vc.gam basic functionality: cat slope', {
+  expect_s3_class(extract_vc(gam_cat_slope), 'data.frame')
+})
+
+test_that('extract_vc.gam basic functionality: other smooth', {
+  init = extract_vc(gam_other_smooth)
+  expect_equal(init$group[1], 'x')
+})
+
 
 test_that('extract_vc.gam fails with non-REML', {
-  ga_model_noREML = mgcv::gam(Reaction ~  Days + s(Subject, bs='re') + s(Days, Subject, bs='re'),
-                              data = lme4::sleepstudy)
+  ga_model_noREML = mgcv::gam(
+    Reaction ~  Days + s(Subject, bs = 're') + s(Days, Subject, bs = 're'),
+    data = lme4::sleepstudy
+)
   expect_error(extract_vc(ga_model_noREML))
 })
 
@@ -505,8 +527,14 @@ test_that('extract_vc.gam works with ci_scale = var and alternate ci_level', {
 
 
 test_that('extract_vc.gam works with ci_scale = var', {
-  expect_type(extract_vc(gam_1, ci_scale = 'var')$var_2.5, 'double')
-  expect_type(extract_vc(gam_1, ci_scale = 'sd')$sd_2.5, 'double')
+
+  init  = extract_vc(gam_1, ci_scale = 'var')$var_2.5
+  init2 = extract_vc(gam_1, ci_scale = 'sd')$sd_2.5
+
+  expect_type(init, 'double')
+  expect_type(init2, 'double')
+
+  expect_lt(init2[1], init[1])
 })
 
 

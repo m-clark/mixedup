@@ -42,10 +42,6 @@ count_grps.default <- function(model, grp_vars) {
   gv <- purrr::map(grp_vars, dplyr::sym)
   df <- extract_model_data(model)
 
-  # note on mutate_if: across(where) is not only needlessly verbose, there are
-  # issues using where in a package that haven't been resolved for a year. See
-  # for example: https://github.com/r-lib/tidyselect/issues/201; as mutate_if is
-  # not deprecated, only superceded
   purrr::map2_df(
     gv,
     grp_vars,
@@ -55,7 +51,7 @@ count_grps.default <- function(model, grp_vars) {
       dplyr::rename(group = !!grp) %>%
       dplyr::mutate(group_var = name,
                     group = as.character(group)) %>%
-      dplyr::mutate_if(is.factor, as.character) %>%
+      dplyr::mutate(dplyr::across(\(x) is.factor(x), as.character)) %>%
       dplyr::select(group_var, group, n)
   )
 }
@@ -95,7 +91,7 @@ count_grps.lme <- function(model, grp_vars) {
       dplyr::count(!!grp) %>%
       dplyr::mutate(group_var = name) %>%
       dplyr::rename(group = !!grp) %>%
-      dplyr::mutate_if(is.factor, as.character) %>%
+      dplyr::mutate(dplyr::across(\(x) is.factor(x), as.character)) %>%
       dplyr::select(group_var, group, n)
   )
 }
@@ -135,7 +131,7 @@ count_grps.stanmvreg <-  function(model, grp_vars) {
       dplyr::count(!!grp) %>%
       dplyr::mutate(group_var = name) %>%
       dplyr::rename(group = !!grp) %>%
-      dplyr::mutate_if(is.factor, as.character) %>%
+      dplyr::mutate(dplyr::across(\(x) is.factor(x), as.character)) %>%
       dplyr::select(group_var, group, n),
     .id = 'component'
   )

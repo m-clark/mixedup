@@ -307,7 +307,7 @@ test_that('extract_fixed_effects.stanreg basic functionality: multivariate model
 })
 
 test_that('extract_fixed_effects.stanreg basic functionality: multivariate model', {
-  expect_true(any(stringr::str_detect(extract_fixed_effects(stan_glmer_mv)[['term']], 'y1|y2')))
+  expect_true(any(grepl(extract_fixed_effects(stan_glmer_mv)[['term']], pattern = 'y1|y2')))
 })
 
 

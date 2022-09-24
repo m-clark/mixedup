@@ -154,11 +154,11 @@ with names that are clean and easy to use.
 \note{
 Right now, there are several issues with getting confidence intervals
 for \code{glmmTMB} objects
-(\href{https://github.com/glmmTMB/glmmTMB/issues/571}{for example}).  If
-you get an error, you should check by running \code{confint(my_tmb_model)} before
-posting an issue.  While I've attempted some minor hacks to deal with some
-of them, if the \code{glmmTMB} functionality doesn't work, this function won't
-either.
+(\href{https://github.com/glmmTMB/glmmTMB/issues/571}{for example, which is
+actually not resolved}).  If you get an error, you should check by running
+\code{confint(my_tmb_model)} before posting an issue.  While I've attempted some
+minor hacks to deal with some of them, it stands to reason that if the
+\code{glmmTMB} functionality doesn't work, this function won't either.
 }
 \examples{
 library(lme4)

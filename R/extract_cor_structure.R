@@ -10,19 +10,19 @@
 #'   'gau', 'exp'.
 #' @param full_matrix For glmmTMB correlation, return the full residual
 #'   covariance/correlation matrix (`TRUE`), or simplified output where possible
-#'   (`FALSE`). Default is `FALSE`. See details.
+#' (`FALSE`). Default is `FALSE`. See details.
 #' @param component For glmmTMB objects, which of the three components 'cond',
 #'   'zi' or 'disp' to select. Default is 'cond'.
 #'
 #' @details This function applies to models with residual correlation, i.e. that
-#'   contain something like `corAR1(form = ~time)` for nlme, or brms
-#'   models with an something like `ar()` in the formula.  This functions extracts the
+#'   contain something like `corAR1(form = ~time)` for nlme, or brms models with
+#'   an something like `ar()` in the formula.  This functions extracts the
 #'   associated parameters (e.g. `Phi` in nlme, `ar[1]` in brms, etc.)
 #'
 #'   For glmmTMB objects, rather than the full matrix, simplified output is
 #'   provided by default. For `ar1`, `ou`, `cs`, a single value; for `toep`
-#'   (toeplitz) a single row/column; for `diag` structures just the diagonal.
-#'   In addition, for `diag` the residual variance is added to the estimates.
+#'   (toeplitz) a single row/column; for `diag` structures just the diagonal. In
+#'   addition, for `diag` the residual variance is added to the estimates.
 #'
 #'   For more detail, see this \href{https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html}{'braindump'
 #' from Ben Bolker}, and the

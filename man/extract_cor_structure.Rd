@@ -54,14 +54,14 @@ glmmTMB models.
 }
 \details{
 This function applies to models with residual correlation, i.e. that
-contain something like \code{corAR1(form = ~time)} for nlme, or brms
-models with an something like \code{ar()} in the formula.  This functions extracts the
+contain something like \code{corAR1(form = ~time)} for nlme, or brms models with
+an something like \code{ar()} in the formula.  This functions extracts the
 associated parameters (e.g. \code{Phi} in nlme, \code{ar[1]} in brms, etc.)
 
 For glmmTMB objects, rather than the full matrix, simplified output is
 provided by default. For \code{ar1}, \code{ou}, \code{cs}, a single value; for \code{toep}
-(toeplitz) a single row/column; for \code{diag} structures just the diagonal.
-In addition, for \code{diag} the residual variance is added to the estimates.
+(toeplitz) a single row/column; for \code{diag} structures just the diagonal. In
+addition, for \code{diag} the residual variance is added to the estimates.
 
 For more detail, see this \href{https://bbolker.github.io/mixedmodels-misc/notes/corr_braindump.html}{'braindump'
 from Ben Bolker}, and the

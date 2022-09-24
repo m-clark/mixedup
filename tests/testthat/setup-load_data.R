@@ -668,14 +668,14 @@ load('mgcv_results.RData')
 #                   Days < 5 ~ "y",
 #                   TRUE ~ "z")
 #       )
-#       )
+#       ),
+#   method = 'REML'
 #   )
 #
 # gam_other_smooth <- gam(
 #     Reaction ~  Days +
 #       s(x) +
-#       s(Subject, bs = 're') +
-#       s(Days),
+#       s(Subject, bs = 're'),
 #     data = data.frame(lme4::sleepstudy, x = rnorm(nrow(lme4::sleepstudy))),
 #     method = 'REML'
 # )
@@ -687,7 +687,7 @@ load('mgcv_results.RData')
 #     s(d, bs = 're') +
 #     s(dept, bs = 're'),
 #   data = lme4::InstEval[1:1000, ],
-#   nthreads = 10
+#   nthreads = 8
 #   )
 #
 #

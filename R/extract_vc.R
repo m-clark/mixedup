@@ -295,7 +295,7 @@ extract_vc.glmmTMB <- function(
         vc <- vc
       }
       else {
-        vc_ci = vc %>%
+        vc_ci <- vc %>%
           dplyr::slice(-nrow(vc)) %>%    # remove residual
           dplyr::bind_cols(ci)
 
@@ -310,14 +310,14 @@ extract_vc.glmmTMB <- function(
 
   vc <- vc %>%
     dplyr::mutate(
-    var_prop = variance / sum(variance),
-    effect   = gsub(effect, pattern = '[\\(,\\)]', replacement = ''),
-    effect   = ifelse(is.na(effect), NA_character_, effect)
-  )
+      var_prop = variance / sum(variance),
+      effect   = gsub(effect, pattern = '[\\(,\\)]', replacement = ''),
+      effect   = ifelse(is.na(effect), NA_character_, effect)
+    )
 
   vc <- vc %>%
-dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
-    dplyr::mutate_if(is.factor, as.character)
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
+    dplyr::mutate(dplyr::across(\(x) is.factor(x), as.character))
 
 
   # deal with correlations
@@ -327,7 +327,7 @@ dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
       purrr::map(attr, 'correlation') %>% purrr::map(remove_parens) %>%
       purrr::map(round, digits = digits)
 
-    vc = tibble::as_tibble(vc) %>%
+    vc <- tibble::as_tibble(vc) %>%
       dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
 
     return(list(`Variance Components` = vc, Cor = cormats))
@@ -335,19 +335,19 @@ dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
 
   # simplify output if possible (add models as needed)
   if (any(grepl(model$modelInfo$allForm$formula, pattern = 'ar1\\(|gau\\(|exp\\(|mat\\(|ou\\('))) {
-    vc = vc %>%
+    vc <- vc %>%
       dplyr::select(-effect) %>%
       dplyr::distinct()
 
     warning('Output has been simplified. You may have additional information with `show_cor = TRUE`.')
 
-    rownames(vc) = NULL  # will likely only confuse
+    rownames(vc) <- NULL  # will likely only confuse
 
     return(tibble::as_tibble(vc))
   }
 
 
-  rownames(vc) = NULL  # will likely only confuse
+  rownames(vc) <- NULL  # will likely only confuse
 
   tibble::as_tibble(vc) %>%
     dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
@@ -511,6 +511,7 @@ extract_vc.brmsfit <- function(
 ) {
 
   lower <-  (1 - ci_level)/2
+  # VarCorr returns list; maybe change to posterior_interval, but okay for now?
   vc_0  <- brms::VarCorr(model, probs = c(lower, 1 - lower))
 
   vc_mat  <- purrr::map(vc_0, \(x) data.frame(x$sd))
@@ -544,27 +545,34 @@ extract_vc.brmsfit <- function(
     if (ci_scale == 'var') {
       vc <-
         vc %>%
-        dplyr::mutate_at(dplyr::vars(dplyr::starts_with('var_')), `^`, 2)
+        dplyr::mutate(dplyr::across(dplyr::starts_with('var_'), `^`, 2))
     }
   }
 
   vc <- vc %>%
     dplyr::select(group, effect, variance, sd, dplyr::matches('\\_')) %>%
     dplyr::mutate(var_prop = variance / sum(variance)) %>%
-    dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits))
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
   if (!is.null(component)) {
     vc <- vc %>%
       dplyr::filter(grepl(effect, pattern = paste0('^', component)))
   }
 
+  vc <- vc %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect)) %>%
+    dplyr::select(-dplyr::matches('Est.Error'))
+
   if (show_cor) {
     # rerun with VarCorr with summary FALSE and extract array of cor matrices
+    # could use vc_0 but redundancies probably it more difficult to work
+    # with, though we do lose the interval estimate
     cormats <-
       purrr::map(
         brms::VarCorr(
           model,
-          probs = c(lower, lower + ci_level),
+          probs = c(lower, 1 - lower),
           summary = FALSE
         ),
         `[[`,
@@ -602,10 +610,10 @@ extract_vc.stanreg <- function(
 
   vc_mat <- rstanarm::VarCorr(model)
 
-  if (inherits(model, 'stanmvreg')) {
-    message("Multivariate models not yet supported. VarCorr object returned.")
-    return(vc_mat)
-  }
+  # if (inherits(model, 'stanmvreg')) {
+  #   message("Multivariate models not yet supported. VarCorr object returned.")
+  #   return(vc_mat)
+  # }
 
   # make dataframe and add names
   vc <- data.frame(vc_mat)
@@ -632,12 +640,12 @@ extract_vc.stanreg <- function(
   )
 
   # the horror of name cleaning/matching
-  vc_ci_clean = clean_rstanarm_vc(vc_ci, ci_level, ci_scale) %>%
+  vc_ci_clean <- clean_rstanarm_vc(vc_ci, ci_level, ci_scale) %>%
     dplyr::as_tibble()
 
   if (ci_scale != 'var') {
     vc_ci_clean <- vc_ci_clean %>%
-      dplyr::mutate_if(is.numeric, `^`, .5)
+      dplyr::mutate(dplyr::across(\(x) is.numeric(x), sqrt))
   }
 
   # cleanup/add to results
@@ -649,11 +657,24 @@ extract_vc.stanreg <- function(
 
   vc <- vc %>%
     dplyr::select(-effect_2) %>%
-    dplyr::mutate_if(is.character, \(x) ifelse(is.na(x), '', x)) %>%
+    dplyr::mutate(dplyr::across(\(x) is.character(x), \(x) ifelse(is.na(x), NA_character_, x))) %>%
     dplyr::left_join(vc_ci_clean, by = c('group', 'effect'))
 
-  vc <- dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
-    dplyr::select(-var_prop, dplyr::everything())
+  vc <- vc %>%
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
+    dplyr::select(-var_prop, dplyr::everything()) %>%
+    tibble::as_tibble()
+
+  if (!is.null(component)) {
+
+    # assertthat fails to provide appropriate warning with this
+    if (!any(grepl(vc$effect, pattern = component)))
+      warning('Component not found among effects')
+
+    vc <- vc %>%
+    dplyr::filter(grepl(effect, pattern = component))
+
+  }
 
   # deal with correlations
   if (show_cor) {
@@ -684,9 +705,10 @@ extract_vc.gam <- function(
   ...
   ) {
 
-  if (!grepl(model$method, pattern = "REML")) {
-    stop("REML required. Rerun model with method = 'REML' for appropriate confidence interval results.")
-  }
+  assertthat::assert_that(
+    grepl(model$method, pattern = "REML"),
+    msg = "REML required. Rerun model with method = 'REML' for appropriate confidence interval results."
+  )
 
   # keep from printing result
   invisible(
@@ -707,8 +729,8 @@ extract_vc.gam <- function(
   # if more two after split, suggests random slope
   vc <- vc %>%
     dplyr::mutate(
-      group = split_group_effect(effect, which = 2),
-      group = ifelse(group == 'scale', 'Residual', group),
+      group  = split_group_effect(effect, which = 2),
+      group  = ifelse(group == 'scale', 'Residual', group),
       effect = split_group_effect(effect, which = 1),
       effect = ifelse(effect == 'scale', '', effect),
       effect = ifelse(effect ==  group, 'Intercept', effect)
@@ -738,8 +760,12 @@ extract_vc.gam <- function(
   }
 
   vc %>%
+    tibble::as_tibble() %>%
     dplyr::select(group, effect, variance, dplyr::everything())  %>%
-dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits))
+    dplyr::mutate(
+      dplyr::across(\(x) is.numeric(x), round, digits = digits),
+      dplyr::across(\(x) is.character(x), \(x) ifelse(x == '', NA_character_, x))
+    )
 }
 
 

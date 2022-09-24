@@ -82,7 +82,7 @@ extract_fixed_effects.merMod <-
     p_value = 'Wald'
   ) {
 
-    if (class(model) == "lmerModLmerTest")
+    if ("lmerModLmerTest" %in% is(model))
       stop('Only some functions work with lmerTest. This is not one of them.
            Rerun your model with lme4::lmer instead.')
 
