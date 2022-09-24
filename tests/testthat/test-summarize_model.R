@@ -12,7 +12,7 @@ context('test summarize_model')
 test_that('summarize_model.merMod basic functionality: no covariates', {
   expect_output(suppressMessages(summarize_model(
     lmer_0,
-    ci = FALSE,
+    ci     = FALSE,
     cor_re = TRUE,
     cor_fe = TRUE
   )))
@@ -51,7 +51,14 @@ test_that('summarize_model.merMod does ci', {
 })
 
 test_that('summarize_model.merMod does exponentiate', {
-  expect_output(summarize_model(glmer_1, ci = FALSE, exponentiate = T))
+  expect_output(summarize_model(glmer_1, ci = FALSE, exponentiate = TRUE))
+  invisible(
+    utils::capture.output(
+      init <- suppressMessages(summarize_model(lmer_2, ci = FALSE))
+    )
+  )
+
+
 })
 
 test_that('summarize_model.merMod does cor_re', {
@@ -116,16 +123,23 @@ test_that('summarize_model.glmmTMB invisibly returns results', {
 })
 
 
-test_that('summarize_model.glmmTMb does ci', {
+test_that('summarize_model.glmmTMB does ci', {
   expect_output(suppressMessages(summarize_model(tmb_2)))
 })
 
-test_that('summarize_model.merMod does exponentiate', {
-  expect_output(summarize_model(tmb_zip, exponentiate = T))
+test_that('summarize_model.glmmTMB does exponentiate', {
+  invisible(
+    utils::capture.output(
+      init <- suppressMessages(summarize_model(tmb_zip, exponentiate = TRUE))
+    )
+  )
+
+  expect_output(summarize_model(tmb_zip, exponentiate = TRUE))
+  expect_true(all(init$fe$Value > 0))
 })
 
 
-test_that('summarize_model.glmmTMb does cor_re', {
+test_that('summarize_model.glmmTMB does cor_re', {
   expect_output(suppressMessages(summarize_model(
     tmb_1, ci = FALSE, cor_re = TRUE
   )))
@@ -134,7 +148,7 @@ test_that('summarize_model.glmmTMb does cor_re', {
   )))
 })
 
-test_that('summarize_model.glmmTMb does cor_fe', {
+test_that('summarize_model.glmmTMB does cor_fe', {
   expect_output(suppressMessages(summarize_model(
     tmb_0, ci = FALSE, cor_fe = TRUE
   )))
@@ -143,11 +157,13 @@ test_that('summarize_model.glmmTMb does cor_fe', {
   )))
 })
 
-test_that('summarize_model.glmmTMB zip', {
+test_that('summarize_model.glmmTMB does zip component', {
   expect_output(suppressWarnings(suppressMessages(
     summarize_model(tmb_zip, ci = FALSE, component = 'zi')
   )))
 })
+
+
 
 # nlme --------------------------------------------------------------------
 
@@ -210,6 +226,7 @@ test_that('summarize_model.lme does cor_fe', {
   expect_output(suppressMessages(summarize_model(
     lme_0, ci = FALSE, cor_fe = TRUE
   )))
+
   expect_output(suppressMessages(summarize_model(
     lme_1, ci = FALSE, cor_fe = TRUE
   )))
@@ -271,8 +288,16 @@ test_that('summarize_model.brmsfit does ci', {
   expect_true(all(c("SD_2.5", "SD_97.5") %in% cn))
 })
 
-test_that('summarize_model.merMod does exponentiate', {
-  expect_output(suppressMessages(summarize_model(brm_glm, exponentiate = T)))
+test_that('summarize_model.brmsfit does exponentiate', {
+
+  invisible(
+    utils::capture.output(
+      init <- suppressMessages(summarize_model(brm_glm, exponentiate = TRUE))
+    )
+  )
+
+  expect_output(suppressMessages(summarize_model(brm_glm, exponentiate = TRUE)))
+  expect_true(all(init$fe$Value > 0))
 })
 
 
@@ -298,7 +323,7 @@ test_that('summarize_model.brmsfit does cor_fe', {
 
 # rstanarm ----------------------------------------------------------------
 
-test_that('summarize_modelstanreg basic functionality: no covariates', {
+test_that('summarize_model.stanreg basic functionality: no covariates', {
   expect_output(suppressMessages(summarize_model(
     stan_glmer_0,
     ci = FALSE,
@@ -307,27 +332,27 @@ test_that('summarize_modelstanreg basic functionality: no covariates', {
   )))
 })
 
-test_that('summarize_modelstanreg basic functionality: random intercept only', {
+test_that('summarize_model.stanreg basic functionality: random intercept only', {
   expect_output(suppressMessages(summarize_model(stan_glmer_1, ci = FALSE)))
 })
 
-test_that('summarize_modelstanreg basic functionality: random slopes', {
+test_that('summarize_model.stanreg basic functionality: random slopes', {
   expect_output(suppressMessages(summarize_model(stan_glmer_2, ci = FALSE)))
 })
 
-test_that('summarize_modelstanreg basic functionality: multiple grouping factors', {
+test_that('summarize_model.stanreg basic functionality: multiple grouping factors', {
   expect_output(suppressMessages(summarize_model(stan_glmer_3, ci = FALSE)))
 })
 
-test_that('summarize_modelstanreg basic functionality: ints/slopes with multiple grouping factors', {
+test_that('summarize_model.stanreg basic functionality: ints/slopes with multiple grouping factors', {
   expect_output(suppressMessages(summarize_model(stan_glmer_4, ci = FALSE)))
 })
 
-test_that('summarize_modelstanreg basic functionality: ints/slopes with multiple grouping factors', {
+test_that('summarize_model.stanreg basic functionality: ints/slopes with multiple grouping factors', {
   expect_output(suppressMessages(summarize_model(stan_glmer_glm)))
 })
 
-test_that('summarize_modelstanreg invisibly returns results', {
+test_that('summarize_model.stanreg invisibly returns results', {
   invisible(
     utils::capture.output(
       init <- suppressMessages(summarize_model(stan_glmer_2, ci = FALSE))
@@ -344,17 +369,27 @@ test_that('summarize_model.stanreg does ci', {
 })
 
 test_that('summarize_model.stanreg does exponentiate', {
-  expect_output(suppressMessages(summarize_model(stan_glmer_glm, exponentiate = T)))
+
+  invisible(
+    utils::capture.output(
+      init <- suppressMessages(summarize_model(stan_glmer_glm, exponentiate = TRUE))
+    )
+  )
+
+  expect_output(suppressMessages(summarize_model(stan_glmer_glm, exponentiate = TRUE)))
+  expect_true(all(init$fe$Value > 0))
+
 })
 
-# Not implemented yet
-# test_that('summarize_model.merMod does mv', {
-#   expect_output(suppressMessages(summarize_model(stan_glmer_mv)))
-# })
-#
-# test_that('summarize_model.merMod does jm', {
-#   expect_output(suppressMessages(summarize_model(stan_glmer_jm)))
-# })
+test_that('summarize_model.stanreg does mv', {
+  expect_output(suppressMessages(summarize_model(stan_glmer_mv)))
+})
+
+test_that('summarize_model.stanreg does jm', {
+  expect_output(suppressMessages(summarize_model(stan_glmer_jm)))
+})
+
+
 
 # mgcv --------------------------------------------------------------------
 
@@ -407,5 +442,14 @@ test_that('summarize_model.gam handles cor', {
 
 # Problem::removes Term names somehow
 test_that('summarize_model.gam does exponentiate', {
-  expect_output(suppressMessages(summarize_model(gam_glm, exponentiate = T)))
+
+  invisible(
+    utils::capture.output(
+      init <- suppressMessages(summarize_model(gam_glm, exponentiate = TRUE))
+    )
+  )
+
+  expect_output(suppressMessages(summarize_model(gam_glm, exponentiate = TRUE)))
+  expect_true(all(init$fe$Value > 0))
+
 })
