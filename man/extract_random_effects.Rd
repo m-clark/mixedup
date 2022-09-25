@@ -2,6 +2,10 @@
 % Please edit documentation in R/extract_random_effects.R
 \name{extract_random_effects}
 \alias{extract_random_effects}
+\alias{`extract_ranef`}
+\alias{is}
+\alias{an}
+\alias{alias.}
 \alias{extract_random_effects.merMod}
 \alias{extract_random_effects.glmmTMB}
 \alias{extract_random_effects.lme}
@@ -107,7 +111,8 @@ objects.}
 results to a certain part of the output, e.g. 'sigma' or 'zi' of
 distributional models, or a specific outcome name of a multivariate model.
 In this case \code{component} is a regular expression that ends the name of the
-parameters of the output (e.g. '__component').}
+parameters of the output (e.g. '__component'). For \code{stanreg} objects, this
+could be the}
 
 \item{...}{Other arguments specific to the method. Unused at present.}
 }
@@ -143,8 +148,6 @@ underestimate relative to brms results.
 
 For mgcv, the \code{Vp} (Bayesian) estimated variance covariance matrix is
 used.
-
-\code{extract_ranef} is an alias.
 }
 \examples{
 library(lme4)

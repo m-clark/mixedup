@@ -87,6 +87,24 @@ test_that('extract_fixed_effects.merMod fails with lmerTest model', {
 })
 
 
+# the documentation of both mockr/mockery doesn't give insight on how to test
+# package install, and it may be they are too limited to do it (see issue 30 for
+# closest). mockr is specifically for package functions and requires wrapping to
+# test outside package functions so already limited. Unfortunately that have
+# deprecated the testthat functionality without actually replacing it with
+# functions that work in the same way. I will leave the testthat approach until
+# something better comes along or just remove them if they are removed.
+
+# test_that("pbrktest installation is checked", {
+#   # mockery::stub(mixedup::extract_fixed_effects, 'rlang::is_installed',  FALSE, depth = 2) # doesn't work
+#   # mockery::stub(extract_fixed_effects, 'requireNamespace',  FALSE, depth = 1) # this was from the issue and it still doesn't work
+#
+#   expect_warning(extract_fixed_effects(lmer_2, p_value = 'KR'))
+# })
+
+
+
+
 # Test glmmTMB ------------------------------------------------------------
 
 context('test extract_fixed_effects.glmmTMB')
@@ -301,19 +319,13 @@ test_that('extract_fixed_effects.stanreg exponentiates', {
   expect_equal(exp_res$term[1],  'Intercept')
 })
 
-# Not yet implemented. Check error if attempted, and warning about component,
-# which will eventually be used to pull out a specific outcome.
-# test_that('extract_fixed_effects.stanreg basic functionality: multivariate model', {
-#   init = extract_fixed_effects(stan_glmer_mv, component = 'back', ci_level = .8, digits = 2)
-#   expect_match(init$term, 'back')
-# })
-
 test_that('extract_fixed_effects.stanreg basic functionality: multivariate model', {
-  expect_error(extract_fixed_effects(stan_glmer_mv))
+  init = extract_fixed_effects(stan_glmer_mv, component = 'y2', ci_level = .8, digits = 2)
+  expect_match(init$term, 'y2')
 })
 
 test_that('extract_fixed_effects.stanreg basic functionality: multivariate model', {
-  expect_warning(extract_fixed_effects(stan_glmer_2, component = 'flag'))
+  expect_true(any(grepl(extract_fixed_effects(stan_glmer_mv)[['term']], pattern = 'y1|y2')))
 })
 
 

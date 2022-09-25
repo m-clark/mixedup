@@ -1,8 +1,9 @@
-#' @importFrom dplyr %>% mutate mutate_at mutate_if select filter rename rename_at
+#' @importFrom dplyr %>% across mutate mutate_at select filter rename rename_at
 #' rename_all slice group ungroup matches starts_with vars everything
-#' @importFrom tibble rownames_to_column
+#' @importFrom tibble rownames_to_column as_tibble
 #' @importFrom purrr map map_int map2 map2_df
 #' @importFrom tidyr pivot_longer drop_na fill
+#' @importFrom rlang is_installed
 
 # to work around glmmTMB:::summary.glmmTMB, which if not used will fail to
 # provide fixed effects; plucked straight from the package with no alteration

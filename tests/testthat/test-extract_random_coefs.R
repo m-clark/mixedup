@@ -212,6 +212,13 @@ test_that('extract_random_coefs.brmsfit basic functionality: zi model', {
 
 context('test extract_random_coef.stanreg')
 
+test_that("rstanarm installation is checked", {
+  with_mock(
+    'rlang::is_installed' = function() FALSE,
+    expect_error(extract_random_effects('rstanarm'))
+  )
+})
+
 test_that('extract_random_coef.stanreg basic functionality', {
   expect_s3_class(extract_random_coefs(stan_glmer_1), 'data.frame')
 })

@@ -71,8 +71,11 @@ data("sleepstudy", package = 'lme4')
 
 # Run TMB models ----------------------------------------------------------
 
-load('tmb_results.RData')
-load('tmb_cor_struct_results.RData')
+# suppress warnings about matrx/TMB versions
+suppressWarnings({
+  load('tmb_results.RData')
+  load('tmb_cor_struct_results.RData')
+})
 
 # library(glmmTMB)
 #
@@ -114,8 +117,8 @@ load('tmb_cor_struct_results.RData')
 #   file = 'tests/testthat/tmb_results.RData'
 # )
 #
-# couldn't get corresponding brms model to run. This follows the vignette
-# example.
+# # couldn't get corresponding brms model to run. This follows the vignette
+# # example.
 # set.seed(1234)
 # simGroup <- function(g, n = 6) {
 #   x <- MASS::mvrnorm(mu = rep(0, n),
@@ -132,7 +135,7 @@ load('tmb_cor_struct_results.RData')
 #
 # tmb_ar <- glmmTMB(y ~ ar1(times + 0 | group), data = dat1)
 # tmb_us <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + us(times + 0 | group))
-# tmb_toep <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + toep(times + 0 | group))
+# tmb_toep <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + toep(times + 0 | group), dispformula = ~0)
 # tmb_cs <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + cs(times + 0 | group))
 # tmb_diag <- suppressWarnings(update(tmb_ar, . ~ . - ar1(times + 0 | group) + diag(times + 0 | group)))
 # tmb_ou <- update(tmb_ar, . ~ . - ar1(times + 0 | group) + ou(times_coord + 0 | group))
@@ -159,7 +162,7 @@ load('tmb_cor_struct_results.RData')
 #   tmb_gau_2grp,
 #   file = 'tests/testthat/tmb_cor_struct_results.RData'
 # )
-
+#
 
 # Run nlme models ---------------------------------------------------------
 
@@ -337,8 +340,15 @@ brm_corCAR <- readRDS('brm_car_results.rds')
 #
 # brm_corAR <- update(
 #   brm_2,
-#   autocor = cor_ar( ~ Days | Subject),
-#   save_pars = save_pars(group = FALSE),
+#   . ~. + ar(time = Days, gr = Subject),
+#   save_pars = save_pars(all = TRUE),
+#   cores = 4,
+#   thin = 40
+# )
+# brm_corAR <- brm(
+#   Reaction ~ Days + ar(time = Days, gr = Subject) + (1  + Days | Subject),
+#   data = lme4::sleepstudy,
+#   save_pars = save_pars(all = TRUE, manual = 'ar'),
 #   cores = 4,
 #   thin = 40
 # )
@@ -658,14 +668,14 @@ load('mgcv_results.RData')
 #                   Days < 5 ~ "y",
 #                   TRUE ~ "z")
 #       )
-#       )
+#       ),
+#   method = 'REML'
 #   )
 #
 # gam_other_smooth <- gam(
 #     Reaction ~  Days +
 #       s(x) +
-#       s(Subject, bs = 're') +
-#       s(Days),
+#       s(Subject, bs = 're'),
 #     data = data.frame(lme4::sleepstudy, x = rnorm(nrow(lme4::sleepstudy))),
 #     method = 'REML'
 # )
@@ -677,7 +687,7 @@ load('mgcv_results.RData')
 #     s(d, bs = 're') +
 #     s(dept, bs = 're'),
 #   data = lme4::InstEval[1:1000, ],
-#   nthreads = 10
+#   nthreads = 8
 #   )
 #
 #

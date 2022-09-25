@@ -8,8 +8,8 @@
 summarize_model(
   model,
   ci = TRUE,
-  cor_re = FALSE,
-  cor_fe = FALSE,
+  show_cor_re = FALSE,
+  show_cor_fe = FALSE,
   exponentiate = FALSE,
   digits = 2,
   component = NULL,
@@ -19,8 +19,8 @@ summarize_model(
 summarise_model(
   model,
   ci = TRUE,
-  cor_re = FALSE,
-  cor_fe = FALSE,
+  show_cor_re = FALSE,
+  show_cor_fe = FALSE,
   exponentiate = FALSE,
   digits = 2,
   component = NULL,
@@ -33,16 +33,16 @@ summarise_model(
 \item{ci}{Whether to include a 95\% uncertainty interval for the variance
 components. Default is TRUE.}
 
-\item{cor_re}{Whether to include the correlations of the random effects.
+\item{show_cor_re}{Whether to include the correlations of the random effects.
 Default is FALSE.}
 
-\item{cor_fe}{Whether to include the correlations of the fixed effects.
+\item{show_cor_fe}{Whether to include the correlations of the fixed effects.
 Default is FALSE.}
 
 \item{exponentiate}{Exponentiate the fixed-effect coefficient estimates and
-confidence intervals (common for logistic regression). If \code{TRUE}, also scales
-the standard errors by the exponentiated coefficient, transforming them to
-the new scale.}
+confidence intervals (common for logistic regression). If \code{TRUE}, also
+scales the standard errors by the exponentiated coefficient, transforming
+them to the new scale.}
 
 \item{digits}{Digits to display.}
 
@@ -57,7 +57,8 @@ Prints the variance components, fixed effects, etc. Invisibly, a list
 of those.
 }
 \description{
-This function prints fixed effects and variance components for a mixed model.
+This function prints fixed effects and variance components for a
+mixed model.
 }
 \details{
 This basically does pretty printing of the results of \code{\link[=extract_vc]{extract_vc()}}

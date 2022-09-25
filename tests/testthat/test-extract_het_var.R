@@ -22,8 +22,8 @@ test_that('extract_het_var.lme returns a data.frame of appropriate length', {
 })
 
 test_that('extract_het_var.nlme can do variance scale', {
-  initsd = extract_het_var(lme_het_var, scale = 'sd')
-  initvar = extract_het_var(lme_het_var, scale = 'var')
+  initsd  = as.data.frame(extract_het_var(lme_het_var, scale = 'sd'))
+  initvar = as.data.frame(extract_het_var(lme_het_var, scale = 'var'))
 
   expect_equal(round(initvar, 2), round(initsd^2, 2))
 })
@@ -40,15 +40,15 @@ test_that('extract_het_var.glmmTMB returns a data.frame', {
 })
 
 test_that('extract_het_var.glmTMB can do variance scale', {
-  initsd  = extract_het_var(tmb_diag, scale = 'sd')[-1]
-  initvar = extract_het_var(tmb_diag, scale = 'var')[-1]
+  initsd  = as.data.frame(extract_het_var(tmb_diag, scale = 'sd'))[-1]
+  initvar = as.data.frame(extract_het_var(tmb_diag, scale = 'var'))[-1]
 
 
   expect_equal(round(initvar, 2), round(initsd^2, 2))
 })
 
 test_that('extract_het_var.glmTMB gives correct result', {
-  inittmb = attr(VarCorr(tmb_diag)$cond$group, 'stddev')^2 + glmmTMB::sigma(tmb_diag)^2
+  inittmb   = attr(VarCorr(tmb_diag)$cond$group, 'stddev')^2 + glmmTMB::sigma(tmb_diag)^2
   initmixed = extract_het_var(tmb_diag, scale = 'var')[-1] # remove 'group' identifier
 
   expect_equal(round(inittmb, 2), round(unlist(initmixed), 2), tolerance = .01)
@@ -64,12 +64,8 @@ test_that('extract_het_var.brmsfit returns a data.frame', {
   expect_s3_class(extract_het_var(brm_sigma_simple), 'data.frame')
 })
 
-test_that('extract_het_var.brmsfit returns a data.frame', {
-  expect_s3_class(extract_het_var(brm_sigma_simple), 'data.frame')
-})
-
-test_that('extract_het_var.brmsfit returns a data.frame', {
-  expect_s3_class(extract_het_var(brm_sigma_simple), 'data.frame')
+test_that('extract_het_var.brmsfit returns appropriate values', {
+  expect_equal(extract_het_var(brm_sigma_simple)$group, c('treat', 'placebo'))
 })
 
 test_that('extract_het_var.brmsfit errors with wrong ci_level', {
@@ -84,7 +80,7 @@ test_that('extract_het_var.brmsfit can return all fits', {
 })
 
 test_that('extract_het_var.brmsfit can do variance scale', {
-  initsd = extract_het_var(brm_sigma_simple, scale = 'sd')
+  initsd  = extract_het_var(brm_sigma_simple, scale = 'sd')
   initvar = extract_het_var(brm_sigma_simple, scale = 'var')
 
   expect_equal(round(initvar$value, 2), round(initsd$value^2, 2))

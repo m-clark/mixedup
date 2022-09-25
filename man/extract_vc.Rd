@@ -126,10 +126,11 @@ element. Default is \code{FALSE}.}
 \item{digits}{Rounding. Default is 3.}
 
 \item{component}{For glmmTMB objects, which of the three components 'cond' or
-'zi' to select. Default is 'cond'.  For brmsfit objects, this can filter
-results to a certain part of the output, e.g. 'sigma' or 'zi' of
-distributional models, or a specific outcome of a multivariate model.  In
-this case \code{component} is a regular expression that begins parameters
+'zi' to select. Default is 'cond'.  For brmsfit (and experimentally,
+rstanarm) objects, this can filter results to a certain part of the output,
+e.g. 'sigma' or 'zi' of distributional models, or a specific outcome of a
+multivariate model.  In this case \code{component} is a regular expression
+that begins parameters
 of the output.}
 
 \item{...}{Other stuff to pass to the corresponding function. Unused/tested}
@@ -153,11 +154,11 @@ with names that are clean and easy to use.
 \note{
 Right now, there are several issues with getting confidence intervals
 for \code{glmmTMB} objects
-(\href{https://github.com/glmmTMB/glmmTMB/issues/571}{for example}).  If
-you get an error, you should check by running \code{confint(my_tmb_model)} before
-posting an issue.  While I've attempted some minor hacks to deal with some
-of them, if the \code{glmmTMB} functionality doesn't work, this function won't
-either.
+(\href{https://github.com/glmmTMB/glmmTMB/issues/571}{for example, which is
+actually not resolved}).  If you get an error, you should check by running
+\code{confint(my_tmb_model)} before posting an issue.  While I've attempted some
+minor hacks to deal with some of them, it stands to reason that if the
+\code{glmmTMB} functionality doesn't work, this function won't either.
 }
 \examples{
 library(lme4)

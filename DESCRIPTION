@@ -2,35 +2,44 @@ Package: mixedup
 Title: Miscellaneous functions for mixed models
 Version: 0.3.9
 Authors@R: 
-    person(given = "Michael",
-           family = "Clark",
-           role = c("aut", "cre"),
-           email = "micl@umich.edu")
-Description: This provides tools for extracting various parts of mixed model output from commonly used packages in a consistent fashion. Results are produced in a usable form for visualization and table presentation. It currently provides a wide variety of support for lme4, nlme, glmmTMB, mgcv, brms, and rstanarm.
+    person("Michael", "Clark", , "micl@umich.edu", role = c("aut", "cre"))
+Description: This package provides tools for extracting various parts of mixed
+    model output from commonly used packages in a consistent fashion.
+    Results are produced in a usable form for visualization and table
+    presentation. It currently provides a wide variety of support for
+    lme4, nlme, glmmTMB, mgcv, brms, and rstanarm.
 License: MIT + file LICENSE
-Encoding: UTF-8
-LazyData: true
 URL: https://m-clark.github.io/mixedup
 BugReports: https://github.com/m-clark/mixedup/issues
 Depends:
-  R (>= 3.6.0)
+    R (>= 3.6.0)
 Imports:
-  dplyr,
-  tidyr (>= 1.0.0),
-  purrr
+    dplyr,
+    purrr,
+    stats,
+    tibble,
+    tidyr (>= 1.0.0),
+    utils
 Suggests:
-  testthat (>= 2.1.0),
-  lme4,
-  glmmTMB,
-  mgcv,
-  nlme,
-  rstanarm,
-  brms,
-  pbkrtest,
-  lmerTest,
-  covr,
-  knitr,
-  rmarkdown
+    assertthat,
+    brms,
+    covr,
+    glmmTMB,
+    knitr,
+    lme4,
+    lmerTest,
+    mgcv,
+    nlme,
+    pbkrtest,
+    pkgdown,
+    rlang,
+    rmarkdown,
+    rstanarm,
+    testthat (>= 2.1.0),
+    tidyselect
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
+LazyData: true
 Roxygen: list(markdown = TRUE, roclets = c("rd", "namespace", "collate"))
-RoxygenNote: 7.1.1
-VignetteBuilder: knitr
+RoxygenNote: 7.2.1

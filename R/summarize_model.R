@@ -1,18 +1,19 @@
 #' Summarize a mixed model
 #'
-#' @description This function prints fixed effects and variance components for a mixed model.
+#' @description This function prints fixed effects and variance components for a
+#'   mixed model.
 #'
 #' @param model A supported model.
 #' @param ci Whether to include a 95% uncertainty interval for the variance
 #'   components. Default is TRUE.
-#' @param cor_re Whether to include the correlations of the random effects.
+#' @param show_cor_re Whether to include the correlations of the random effects.
 #'   Default is FALSE.
-#' @param cor_fe Whether to include the correlations of the fixed effects.
+#' @param show_cor_fe Whether to include the correlations of the fixed effects.
 #'   Default is FALSE.
 #' @param exponentiate Exponentiate the fixed-effect coefficient estimates and
-#'   confidence intervals (common for logistic regression). If `TRUE`, also scales
-#'   the standard errors by the exponentiated coefficient, transforming them to
-#'   the new scale.
+#'   confidence intervals (common for logistic regression). If `TRUE`, also
+#'   scales the standard errors by the exponentiated coefficient, transforming
+#'   them to the new scale.
 #' @param digits Digits to display.
 #' @param component For glmmTMB objects, which of the three components 'cond',
 #'   'zi' or 'other' to select. Default is cond. Minimal testing on other
@@ -42,12 +43,12 @@
 #' @export
 summarize_model <- function(
   model,
-  ci = TRUE,
-  cor_re = FALSE,
-  cor_fe = FALSE,
+  ci           = TRUE,
+  show_cor_re  = FALSE,
+  show_cor_fe  = FALSE,
   exponentiate = FALSE,
-  digits = 2,
-  component = NULL,
+  digits       = 2,
+  component    = NULL,
   ...
 ) {
 
@@ -59,13 +60,13 @@ summarize_model <- function(
       model,
       ci_level  = ifelse(ci | inherits(model, 'gam'), .95, 0),
       digits    = digits,
-      show_cor  = cor_re,
+      show_cor  = show_cor_re,
       component = component
     )
 
   if (!is.null(vc)) {
 
-    if (cor_re == TRUE) {
+    if (show_cor_re == TRUE) {
       if (inherits(model, 'gam')) {
         cors <- 'Not estimated for gam.'
       } else {
@@ -82,14 +83,13 @@ summarize_model <- function(
       dplyr::rename_at(dplyr::vars(dplyr::matches('^sd')), toupper)
 
 
-
     ### Print re part ----
 
     message("\nVariance Components:\n")
 
     print(format(data.frame(vc), nsmall = digits), row.names = FALSE)
 
-    if (cor_re == TRUE) {
+    if (show_cor_re == TRUE) {
       # correlations
       message("\nCorrelation of Random Effects:\n")
 
@@ -102,8 +102,8 @@ summarize_model <- function(
 
         } else {
           # pretty printing of multiple matrices
-          nams = names(cors)
-          nams[1] = paste0(nams[1], '\n')
+          nams     = names(cors)
+          nams[1]  = paste0(nams[1], '\n')
           nams[-1] = paste0('\n', nams[-1], '\n')
 
           purrr::map2(cors, nams, function(mat, name) {
@@ -122,21 +122,21 @@ summarize_model <- function(
   fe <-
     extract_fixed_effects(
       model,
-      digits = digits,
-      component = component,
+      digits       = digits,
+      component    = component,
       exponentiate = exponentiate
     ) %>%
-    dplyr::rename_at(
-      dplyr::vars(dplyr::matches('term|value|^z$|p_value|^low|^up')),
-      totitle
+    dplyr::rename_with(
+      totitle,
+      .cols = dplyr::matches('term|value|^z$|p_value|^low|^up')
     ) %>%
-    dplyr::rename_at(dplyr::vars(dplyr::matches('se')), toupper)
+    dplyr::rename_with(toupper, .cols = dplyr::matches('se'))
 
   message("\nFixed Effects:\n")
 
   print(format(data.frame(fe), nsmall = digits), row.names = FALSE)
 
-  if (cor_fe == TRUE) {
+  if (show_cor_fe == TRUE) {
     # re part
     message("\nCorrelation of Fixed Effects:\n")
 
@@ -146,7 +146,9 @@ summarize_model <- function(
     # mgcv: indexing to only include non-smooth terms for gam
 
     fe_vc_init <- stats::vcov(model)
-    if (is.list(fe_vc_init)) fe_vc_init <- fe_vc_init[[component]]
+
+    if (is.list(fe_vc_init))
+      fe_vc_init <- fe_vc_init[[component]]
 
     fe_vc <- as.matrix(
       fe_vc_init[seq_along(fe$Term), seq_along(fe$Term), drop = FALSE]
@@ -167,7 +169,6 @@ summarize_model <- function(
     )
 
   }
-
 
   invisible(list(vc = vc, fe = fe))
 }
