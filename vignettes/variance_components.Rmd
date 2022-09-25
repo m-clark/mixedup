@@ -15,20 +15,20 @@ vignette: >
 
 ```{r setup, include=FALSE, cache=FALSE}
 knitr::opts_chunk$set(
-  echo = T,
-  message = F,
-  warning = F,
-  error = F,
-  collapse = TRUE,
-  comment = NA,
+  echo      = TRUE,
+  message   = FALSE,
+  warning   = FALSE,
+  error     = FALSE,
+  collapse  = TRUE,
+  comment   = NA,
   R.options = list(width = 220),
-  dev.args = list(bg = 'transparent'),
-  dev = 'png',
+  dev.args  = list(bg = 'transparent'),
+  dev       = 'png',
   fig.align = 'center',
   out.width = '75%',
-  fig.asp = .75,
-  cache.rebuild = F,
-  cache = F
+  fig.asp   = .75,
+  cache.rebuild = FALSE,
+  cache         = FALSE
 )
 ```
 
@@ -40,7 +40,9 @@ brms_model <- mixedup:::brms_model
 
 ## Intro
 
-This creates a standard table of variance components. Includes the estimated variance and standard deviation of the random effects, a confidence interval for either, and the relative proportion of variance for each component.
+This creates a standard table of variance components. Includes the estimated
+variance and standard deviation of the random effects, a confidence interval for
+either, and the relative proportion of variance for each component.
 
 ## Examples
 

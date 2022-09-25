@@ -1,19 +1,19 @@
 ## ----setup, include=FALSE, cache=FALSE----------------------------------------
 knitr::opts_chunk$set(
-  echo = T,
-  message = F,
-  warning = F,
-  error = F,
-  collapse = TRUE,
-  comment = NA,
+  echo      = TRUE,
+  message   = FALSE,
+  warning   = FALSE,
+  error     = FALSE,
+  collapse  = TRUE,
+  comment   = NA,
   R.options = list(width = 220),
-  dev.args = list(bg = 'transparent'),
-  dev = 'png',
+  dev.args  = list(bg = 'transparent'),
+  dev       = 'png',
   fig.align = 'center',
   out.width = '75%',
-  fig.asp = .75,
-  cache.rebuild = F,
-  cache = F
+  fig.asp   = .75,
+  cache.rebuild = FALSE,
+  cache         = FALSE
 )
 
 ## ----loadbrms, echo=FALSE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -50,31 +50,31 @@ mgcv_model <-
     Reaction ~  Days +
       s(Subject, bs = 're') +
       s(Days, Subject, bs = 're'),
-    data = lme4::sleepstudy,
+    data   = lme4::sleepstudy,
     method = 'REML'
   )
 
 ## ----results--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 library(mixedup)
 
-extract_random_coefs(lmer_model)
+head(extract_random_coefs(lmer_model))
 
 
-extract_random_coefs(lme_model)
+head(extract_random_coefs(lme_model)) # different order
 
 
-extract_random_coefs(tmb_model)
+head(extract_random_coefs(tmb_model))
 
 
-extract_random_coefs(brms_model)
+head(extract_random_coefs(brms_model))
 
 
-extract_random_coefs(mgcv_model)
+head(extract_random_coefs(mgcv_model))
 
 ## ----options--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 extract_random_coefs(
   lmer_model,
   ci_level = .9,
-  digits = 2
+  digits   = 2
 )
 
