@@ -25,6 +25,14 @@ test_that("lme4 installation is checked", {
   )
 })
 
+# does nothing
+# test_that("lme4 installation is checked", {
+#   mockery::stub(mixedup::extract_random_effects, 'rlang::is_installed',  FALSE) # doesn't work
+#   expect_error(extract_random_effects(lmer_1))
+# })
+
+
+
 test_that('extract_random_effects.merMod basic functionality', {
   expect_s3_class(extract_random_effects(lmer_1), 'data.frame')
 })

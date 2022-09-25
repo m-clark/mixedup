@@ -82,9 +82,11 @@ extract_fixed_effects.merMod <-
     p_value = 'Wald'
   ) {
 
-    if ("lmerModLmerTest" %in% is(model))
-      stop('Only some functions work with lmerTest. This is not one of them.
-           Rerun your model with lme4::lmer instead.')
+    assertthat::assert_that(
+      !"lmerModLmerTest" %in% is(model),
+      msg = 'Only some functions work with lmerTest. This is not one of them.
+           Rerun your model with lme4::lmer instead.'
+    )
 
     if (!p_value %in% c('Wald', 'Satterthwaite', 'KR')) {
       warning("p_value must be one of 'Wald' or 'KR', switching to 'Wald'")
@@ -109,7 +111,7 @@ extract_fixed_effects.merMod <-
       # historical issues being used inside other functions that are still
       # evidently present, so left out for now.
       # if (p_value == 'Satterthwaite') {
-        # if (!is_package_installed('lmerTest')) {
+        # if (!rlang::is_installed('lmerTest')) {
         #   p_value <- 'Wald'
         #   warning('lmerTest package not installed. Switching p_value to Wald.')
         # } else {
@@ -118,7 +120,7 @@ extract_fixed_effects.merMod <-
         # }
       # }
       if (p_value == 'KR') {
-        if (!is_package_installed('pbkrtest')) {
+        if (!rlang::is_installed('pbkrtest')) {
           p_value <- 'Wald'
           warning('pbkrtest required for Kenward-Roger. Switching p_value to Wald.')
         } else {

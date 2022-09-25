@@ -332,8 +332,10 @@ extract_random_coefs.stanreg <- function(
   ...
 ) {
 
-  if (!is_package_installed('rstanarm'))
-    stop('rstanarm package required', call. = FALSE)
+  assertthat::assert_that(
+    rlang::is_installed('rstanarm'),
+    msg = 'rstanarm package required'
+  )
 
   # we don't call the extract* functions here as they already summarize the
   # results, and we need the draws to estimate the variance. However, since they
