@@ -58,6 +58,11 @@ test_that('extract_random_effects.merMod errors with bad re name', {
 })
 
 
+test_that('extract_random_effects.merMod errors will not return ci with condvar', {
+  expect_false('se' %in% colnames(extract_random_effects(lmer_2, re = 'Subject', condvar = FALSE)))
+})
+
+
 
 # glmmTMB -----------------------------------------------------------------
 
