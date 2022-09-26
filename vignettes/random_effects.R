@@ -1,19 +1,19 @@
 ## ----setup, include=FALSE, cache=FALSE----------------------------------------
 knitr::opts_chunk$set(
-  echo = T,
-  message = F,
-  warning = F,
-  error = F,
-  collapse = TRUE,
-  comment = NA,
+  echo      = TRUE,
+  message   = FALSE,
+  warning   = FALSE,
+  error     = FALSE,
+  collapse  = TRUE,
+  comment   = NA,
   R.options = list(width = 220),
-  dev.args = list(bg = 'transparent'),
-  dev = 'png',
+  dev.args  = list(bg = 'transparent'),
+  dev       = 'png',
   fig.align = 'center',
   out.width = '75%',
-  fig.asp = .75,
-  cache.rebuild = F,
-  cache = F
+  fig.asp   = .75,
+  cache.rebuild = FALSE,
+  cache         = FALSE
 )
 
 ## ----loadbayes, echo=FALSE------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -21,6 +21,8 @@ brms_model <- mixedup:::brms_model
 rstanarm_model <- mixedup:::rstanarm_model
 
 ## ----mods-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+library(dplyr)
+
 library(lme4)
 library(glmmTMB)
 library(nlme)
@@ -60,7 +62,7 @@ mgcv_model <-
     Reaction ~  Days +
       s(Subject, bs = 're') +
       s(Days, Subject, bs = 're'),
-    data = lme4::sleepstudy,
+    data   = lme4::sleepstudy,
     method = 'REML'
   )
 
@@ -90,19 +92,21 @@ lmer_model <-
 extract_random_effects(
   lmer_model,
   ci_level = .9,
-  digits = 2
-)
+  digits   = 2
+) %>% 
+  head()
 
 ## ----tmb_zip--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 tmb_zip <- glmmTMB(
   count ~ spp + mined + (1 | site),
   zi =  ~ spp + mined + (1 | site),
   family = truncated_poisson,
-  data = Salamanders
+  data   = Salamanders
 )
 
 extract_random_effects(
   tmb_zip,
   cond = 'zi'
-)
+) %>% 
+  head()
 
