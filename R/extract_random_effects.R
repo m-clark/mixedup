@@ -123,8 +123,9 @@ extract_random_effects.merMod <- function(
     )
 
   random_effects <- as.data.frame(lmer_re)
+
   if (!condvar) {
-    ci_level = 0
+    ci_level <- 0
     colnames(random_effects) <- c('group_var', 'effect', 'group', 'value')
   }
   else {
@@ -188,6 +189,7 @@ extract_random_effects.glmmTMB <- function(
   digits = 3,
   add_group_N = FALSE,
   component = 'cond',
+  condvar = TRUE,
   ...
 ) {
 
@@ -211,11 +213,17 @@ extract_random_effects.glmmTMB <- function(
       )
     )
 
-  random_effects <- as.data.frame(glmmTMB::ranef(model, condVar = TRUE)) %>%
+  random_effects <- as.data.frame(glmmTMB::ranef(model, condVar = condvar)) %>%
     dplyr::filter(component == component) %>%
     dplyr::select(-component)
 
-  colnames(random_effects) <- c('group_var', 'effect', 'group', 'value', 'se')
+  if (!condvar) {
+    ci_level <- 0
+    colnames(random_effects) <- c('group_var', 'effect', 'group', 'value')
+  }
+  else {
+    colnames(random_effects) <- c('group_var', 'effect', 'group', 'value', 'se')
+  }
 
   if (add_group_N) {
     grp_vars <- unique(random_effects$group_var)
