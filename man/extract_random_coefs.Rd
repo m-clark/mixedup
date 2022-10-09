@@ -89,7 +89,8 @@ distributional models, or a specific outcome of a multivariate model.  In
 this case \code{component} is a regular expression that ends the name of the
 parameters of the output (e.g. '__component').}
 
-\item{...}{Other arguments specific to the method. Unused at present.}
+\item{...}{Other arguments specific to the method. For example \code{add_group_N}
+for \code{extract_random_effects}. Experimental.}
 }
 \value{
 A data frame of the random coefficients and their standard errors.
@@ -106,9 +107,9 @@ for the respective fixed and random effects. See Bolker's demo
 \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}
 and additional discussion at the
 \href{https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#confidence-intervals-on-conditional-meansblupsrandom-effects}{GLMM
-FAQ}. As noted there, this assumption may not be appropriate, and if you
-are really interested in an accurate uncertainty estimate you should
-probably use \code{brms}.
+FAQ}. As noted there, this assumption may not be, and likely is not,
+appropriate, and if you are really interested in an accurate uncertainty
+estimate you should probably use \code{brms}.
 
 For more complex models that include multiple outcomes/categories or have
 other anomalies, this function likely will not work at present, even if the
@@ -117,10 +118,14 @@ naming conventions are not consistent enough to deal with this without a
 lot of tedium that still may not satisfy every situation. I will possibly
 be able to update this in the future.
 
-The \code{nlme} package only provides the coefficients no estimated variance, so this
-function doesn't add to what you get from basic functionality for those
-models.  In addition, \code{nlme} adds all random effects to the fixed effects,
-whereas \code{lme4} and others only add the effects requested.
+The \code{nlme} package only provides the coefficients with no estimated
+variance, so this function doesn't add to what you get from basic
+functionality for those models.  In addition, \code{nlme} adds all random
+effects to the fixed effects, whereas \code{lme4} and others only add the
+effects requested.
+
+For multicomponent \code{glmmTMB} models, e.g. zip, please specify the component
+argument.
 
 \code{extract_coef} and \code{extract_random_coefficients} are aliases.
 }

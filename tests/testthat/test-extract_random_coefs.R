@@ -171,6 +171,8 @@ test_that('extract_random_coefs.glmmTMB takes dots', {
 
 })
 
+
+
 # brms --------------------------------------------------------------------
 
 context('test extract_random_coef.brmsfit')
@@ -350,4 +352,38 @@ test_that('extract_random_coefs.gam takes ci_level', {
   expect_identical(
     c("lower_10", "upper_90"),
     grep(cn, pattern = '[0-9]+', value =T))
+})
+
+
+
+test_that('extract_random_coefs.gam2 takes dots', {
+  init  = extract_random_coefs(gam_glm,  exponentiate = FALSE)
+  init2 = extract_random_coefs(gam_glm,  exponentiate = TRUE)
+  expect_false(identical(init, init2))
+
+  init2 = extract_random_coefs(gam_cat_slope, add_group_N = TRUE)
+  expect_false(identical(init, init2))
+  expect_true('n' %in% colnames(init2))
+
+})
+
+
+
+# Compare outputs ---------------------------------------------------------
+
+# note that brms/rstan were run for very few post-wu draws
+test_that('results for similar models are similar', {
+  vals = data.frame(
+    mod_mer = extract_random_coefs(lmer_1)$value,
+    mod_tmb = extract_random_coefs(tmb_1)$value,
+    mod_lme = extract_random_coefs(lme_1)$value,
+    mod_brm = extract_random_coefs(brm_1)$value,
+    mod_rs  = extract_random_coefs(stan_glmer_1)$value,
+    mod_gam = extract_random_coefs(gam_1)$value
+  )
+
+
+  expect_true(max(dist(t(vals))) < 10)
+  expect_equal(min(dist(t(vals))), 0)
+
 })
