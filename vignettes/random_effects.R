@@ -106,7 +106,7 @@ tmb_zip <- glmmTMB(
 
 extract_random_effects(
   tmb_zip,
-  cond = 'zi'
+  component = 'zi'
 ) %>% 
   head()
 

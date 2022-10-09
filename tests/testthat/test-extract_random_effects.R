@@ -75,15 +75,15 @@ test_that("glmmTMB installation is checked", {
   )
 })
 
-test_that('extract_random_effects basic functionality', {
+test_that('extract_random_effects.glmmTMB basic functionality', {
   expect_s3_class(extract_random_effects(tmb_1, re = 'Subject'), 'data.frame')
 })
 
-test_that('extract_random_effects basic functionality', {
+test_that('extract_random_effects.glmmTMB basic functionality', {
   expect_s3_class(extract_random_effects(tmb_2, re = 'Subject'), 'data.frame')
 })
 
-test_that('extract_random_effects correct output', {
+test_that('extract_random_effects.glmmTMB correct output', {
   expect_equal(
     nrow(extract_random_effects(tmb_4, re = 'dept')),
     nlevels(tmb_4$frame$dept)
@@ -91,7 +91,7 @@ test_that('extract_random_effects correct output', {
 })
 
 
-test_that('extract_random_effects can do zip', {
+test_that('extract_random_effects.glmmTMB can do zip', {
   expect_s3_class(
     extract_random_effects(tmb_zip, re = 'site', component = 'zi'),
     'data.frame'
@@ -106,14 +106,17 @@ test_that('extract_random_effects.glmmTMB add_group_N for zip', {
   expect_s3_class(extract_random_effects(tmb_zip, add_group_N = TRUE), 'data.frame')
 })
 
-test_that('extract_random_effects errors with bad re name', {
+test_that('extract_random_effects.glmmTMB errors with bad re name', {
   expect_error(extract_random_effects(tmb_zip, re = 'Site'))
 })
 
-test_that('extract_random_effects errors with wrong cond', {
+test_that('extract_random_effects.glmmTMB errors with wrong cond', {
   expect_error(extract_random_effects(tmb_disp, re = 'site', component = 'disp'))
 })
 
+test_that('extract_random_effects.glmmTMB errors will not return ci without condvar', {
+  expect_false('se' %in% colnames(extract_random_effects(tmb_2, re = 'Subject', condvar = FALSE)))
+})
 
 
 # nlme --------------------------------------------------------------------

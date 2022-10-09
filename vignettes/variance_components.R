@@ -50,7 +50,7 @@ mgcv_model <-
     Reaction ~  Days +
       s(Subject, bs = 're') +
       s(Days, Subject, bs = 're'),
-    data = lme4::sleepstudy,
+    data   = lme4::sleepstudy,
     method = 'REML'
   )
 
@@ -79,6 +79,6 @@ extract_vc(
   tmb_model,
   ci_level = .9,
   ci_scale = 'var',
-  digits = 2
+  digits   = 2
 )
 

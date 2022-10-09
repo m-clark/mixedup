@@ -8,6 +8,9 @@
 #' @param ci_level Where possible, confidence level < 1, typically above 0.90. A
 #'   value of 0 will not report it. Default is .95. Not applicable to nlme
 #'   objects.
+#' @param digits  Rounding. Default is 3.
+#' @param add_group_N  Add group sample sizes to output? Default is `FALSE`.
+#' @param ... Other arguments specific to the method. Unused at present.
 #' @param component For `glmmTMB` objects, which of the two components 'cond' or
 #'   'zi' to select. Default is 'cond'. For `brmsfit` objects, this can filter
 #'   results to a certain part of the output, e.g. 'sigma' or 'zi' of
@@ -15,10 +18,7 @@
 #'   In this case `component` is a regular expression that ends the name of the
 #'   parameters of the output (e.g. '__component'). For `stanreg` objects, this
 #'   could be the
-#' @param digits  Rounding. Default is 3.
-#' @param add_group_N  Add group sample sizes to output? Default is `FALSE`.
-#' @param ... Other arguments specific to the method. Unused at present.
-#'
+#' @param condvar Include conditional variance. Used in `lme4` and `glmmTMB` objects.
 #' @details Relative to `ranef` for the various packages, this just adds the
 #'   standard errors and cluster ids as columns, and uncertainty intervals.
 #'
@@ -73,7 +73,6 @@ extract_random_effects <- function(
   ci_level = .95,
   digits   = 3,
   add_group_N = FALSE,
-  component   = NULL,
   ...
 ) {
   assertthat::assert_that(

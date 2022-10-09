@@ -155,7 +155,7 @@ extract_random_coefs.merMod <- function(
 
   coefs <- coefs %>%
     dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
-    dplyr::select(-matches('_fe$|p_value|^z$|^t$')) # remove fe related columns
+    dplyr::select(-dplyr::matches('_fe$|p_value|^z$|^t$')) # remove fe related columns
 
   coefs
 }
@@ -210,7 +210,7 @@ extract_random_coefs.glmmTMB <- function(
 
   coefs <- coefs %>%
     dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
-    dplyr::select(-matches('_fe$|p_value|^z$|^t$')) # remove fe related columns
+    dplyr::select(-dplyr::matches('_fe$|p_value|^z$|^t$')) # remove fe related columns
 
   coefs
 }
@@ -240,7 +240,7 @@ extract_random_coefs.lme <- function(
 
   coefs %>%
     dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
-    dplyr::select(-matches('_fe$|p_value|^z$')) # remove fe related columns
+    dplyr::select(-dplyr::matches('_fe$|p_value|^z$')) # remove fe related columns
 
 }
 
@@ -503,7 +503,7 @@ extract_random_coefs.gam <- function(
 
   coefs <- coefs %>%
     dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
-    dplyr::select(-matches('_fe$|p_value|^z$|^t$')) # remove fe related columns
+    dplyr::select(-dplyr::matches('_fe$|p_value|^z$|^t$')) # remove fe related columns
 
   coefs
 }

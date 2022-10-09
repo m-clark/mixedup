@@ -21,7 +21,6 @@ extract_random_effects(
   ci_level = 0.95,
   digits = 3,
   add_group_N = FALSE,
-  component = NULL,
   ...
 )
 
@@ -90,7 +89,6 @@ extract_ranef(
   ci_level = 0.95,
   digits = 3,
   add_group_N = FALSE,
-  component = NULL,
   ...
 )
 }
@@ -108,6 +106,10 @@ objects.}
 
 \item{add_group_N}{Add group sample sizes to output? Default is \code{FALSE}.}
 
+\item{...}{Other arguments specific to the method. Unused at present.}
+
+\item{condvar}{Include conditional variance. Used in \code{lme4} and \code{glmmTMB} objects.}
+
 \item{component}{For \code{glmmTMB} objects, which of the two components 'cond' or
 'zi' to select. Default is 'cond'. For \code{brmsfit} objects, this can filter
 results to a certain part of the output, e.g. 'sigma' or 'zi' of
@@ -115,8 +117,6 @@ distributional models, or a specific outcome name of a multivariate model.
 In this case \code{component} is a regular expression that ends the name of the
 parameters of the output (e.g. '__component'). For \code{stanreg} objects, this
 could be the}
-
-\item{...}{Other arguments specific to the method. Unused at present.}
 }
 \value{
 data frame of the random effects
