@@ -77,8 +77,9 @@ extract_random_coefficients(
 
 \item{re}{The name of the grouping variable for the random effects.}
 
-\item{ci_level}{Where possible, confidence level < 1, typically above 0.90. A value of 0 will
-not report it. Default is .95. Not applicable to nlme objects.}
+\item{ci_level}{Where possible, confidence level < 1, typically above 0.90. A
+value of 0 will not report it. Default is .95. Not applicable to nlme
+objects.}
 
 \item{digits}{Rounding. Default is 3.}
 
@@ -90,7 +91,8 @@ this case \code{component} is a regular expression that ends the name of the
 parameters of the output (e.g. '__component').}
 
 \item{...}{Other arguments specific to the method. For example \code{add_group_N}
-for \code{extract_random_effects}. Experimental.}
+for \code{extract_random_effects}. Will not apply to brmsfit or stanreg models.
+Experimental.}
 }
 \value{
 A data frame of the random coefficients and their standard errors.
@@ -99,11 +101,13 @@ A data frame of the random coefficients and their standard errors.
 Fixed effect + random effects.
 }
 \details{
-Returns a data frame with random coefficients, a.k.a. random
-intercepts and random slopes, and their standard errors. Note that the
-standard errors assume independence of the conditional variance and the
-fixed-effects variance, thus the standard errors are the sum of variances
-for the respective fixed and random effects. See Bolker's demo
+Returns a data frame with \emph{random coefficients}, a.k.a. random
+intercepts and random slopes, and their standard errors.
+r
+Note that the standard errors assume independence of the conditional
+variance and the fixed-effects variance, thus the standard errors are the
+sum of variances for the respective fixed and random effects. See Bolker's
+demo
 \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}
 and additional discussion at the
 \href{https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#confidence-intervals-on-conditional-meansblupsrandom-effects}{GLMM
@@ -111,13 +115,17 @@ FAQ}. As noted there, this assumption may not be, and likely is not,
 appropriate, and if you are really interested in an accurate uncertainty
 estimate you should probably use \code{brms}.
 
-For more complex models that include multiple outcomes/categories or have
-other anomalies, this function likely will not work at present, even if the
-underlying \code{extract_fixed_effects} and \code{extract_random_effects} do, as
-naming conventions are not consistent enough to deal with this without a
-lot of tedium that still may not satisfy every situation. I will possibly
-be able to update this in the future.
-
+Please realize that this functionality is likely only appropriate for
+simpler GLMM type models, and is mostly just a shortcut for those settings.
+It may work for more complicated situations also, but I don't make any
+guarantees. For more complex models that include multiple
+outcomes/categories or have other anomalies, this function likely will not
+work even if the underlying \code{extract_fixed_effects} and
+\code{extract_random_effects} do, as naming conventions are not consistent
+enough within the relative packages to deal with this in a general way. I
+will continue to look into its feasibility, but don't expect much.
+}
+\note{
 The \code{nlme} package only provides the coefficients with no estimated
 variance, so this function doesn't add to what you get from basic
 functionality for those models.  In addition, \code{nlme} adds all random
