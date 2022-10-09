@@ -13,7 +13,8 @@
 #'   distributional models, or a specific outcome of a multivariate model.  In
 #'   this case `component` is a regular expression that ends the name of the
 #'   parameters of the output (e.g. '__component').
-#' @param ... Other arguments specific to the method. Unused at present.
+#' @param ... Other arguments specific to the method. For example `add_group_N`
+#'   for `extract_random_effects`. Experimental.
 #'
 #' @details Returns a data frame with random coefficients, a.k.a. random
 #'   intercepts and random slopes, and their standard errors. Note that the
@@ -21,11 +22,11 @@
 #'   fixed-effects variance, thus the standard errors are the sum of variances
 #'   for the respective fixed and random effects. See Bolker's demo
 #'   \href{https://stackoverflow.com/questions/26198958/extracting-coefficients-and-their-standard-error-from-lme}{here}
-#'   and additional discussion at the
+#'    and additional discussion at the
 #'   \href{https://bbolker.github.io/mixedmodels-misc/glmmFAQ.html#confidence-intervals-on-conditional-meansblupsrandom-effects}{GLMM
-#'   FAQ}. As noted there, this assumption may not be appropriate, and if you
-#'   are really interested in an accurate uncertainty estimate you should
-#'   probably use `brms`.
+#'    FAQ}. As noted there, this assumption may not be, and likely is not,
+#'   appropriate, and if you are really interested in an accurate uncertainty
+#'   estimate you should probably use `brms`.
 #'
 #'   For more complex models that include multiple outcomes/categories or have
 #'   other anomalies, this function likely will not work at present, even if the
@@ -34,10 +35,14 @@
 #'   lot of tedium that still may not satisfy every situation. I will possibly
 #'   be able to update this in the future.
 #'
-#'   The `nlme` package only provides the coefficients no estimated variance, so this
-#'   function doesn't add to what you get from basic functionality for those
-#'   models.  In addition, `nlme` adds all random effects to the fixed effects,
-#'   whereas `lme4` and others only add the effects requested.
+#'   The `nlme` package only provides the coefficients with no estimated
+#'   variance, so this function doesn't add to what you get from basic
+#'   functionality for those models.  In addition, `nlme` adds all random
+#'   effects to the fixed effects, whereas `lme4` and others only add the
+#'   effects requested.
+#'
+#'   For multicomponent `glmmTMB` models, e.g. zip, please specify the component
+#'   argument.
 #'
 #'   `extract_coef` and `extract_random_coefficients` are aliases.
 #'
@@ -93,20 +98,37 @@ extract_random_coefs.merMod <- function(
   ...
 ) {
 
-  random_effects <- extract_random_effects(model, re = re)
+  ze_dots = rlang::dots_list(...)
 
-  fixed_effects  <- extract_fixed_effects(model) %>%
+  # don't want/need cis calculated here, just values
+  random_effects <- extract_random_effects(model, re = re, ci_level = 0, ...)
+
+  fixed_effects  <- extract_fixed_effects(model, ci_level = 0, ...) %>%
     dplyr::rename(effect   = term,
                   se_fe    = se,
                   value_fe = value)
 
   coefs_init <- random_effects %>%
-    dplyr::left_join(fixed_effects, by = 'effect') %>%
-    dplyr::mutate(
-      value = value + value_fe,
-      se = sqrt(se^2 + se_fe^2)
-    ) %>%
-    dplyr::select(group_var, effect, group, value, se)
+    dplyr::left_join(fixed_effects, by = 'effect')
+
+  # if condvar is true or there is no condvar, add variances
+  if ((any(names(ze_dots) == 'condvar') && ze_dots$condvar) |
+      ! 'condvar' %in% names(ze_dots) ) {
+    coefs_init <- coefs_init %>%
+      dplyr::mutate(
+        value = value + value_fe,
+        se = sqrt(se^2 + se_fe^2)
+      )
+  }
+  else {
+    coefs_init <- coefs_init %>%
+      dplyr::mutate(
+        value = value + value_fe
+      )
+
+    ci_level <- 0
+  }
+
 
   if (ci_level > 0) {
 
@@ -125,7 +147,8 @@ extract_random_coefs.merMod <- function(
   }
 
   coefs <- coefs %>%
-    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
+    dplyr::select(-matches('_fe$|p_value|^z$')) # remove fe related columns
 
   coefs
 }
@@ -141,13 +164,16 @@ extract_random_coefs.glmmTMB <- function(
   ...
   ) {
 
-  if (is.null(component)) component <- 'cond'
+  if (is.null(component)) {
+    component <- 'cond'
+    message("component argument not specified, setting to 'cond'")
+  }
 
   random_effects <-
-    extract_random_effects(model, re = re, component = component)
+    extract_random_effects(model, re = re, component = component, ci_level = 0, ...)
 
   fixed_effects <-
-    extract_fixed_effects(model, component = component) %>%
+    extract_fixed_effects(model, component = component, ci_level = 0, ...) %>%
     dplyr::rename(effect   = term,
                   se_fe    = se,
                   value_fe = value)
@@ -157,8 +183,7 @@ extract_random_coefs.glmmTMB <- function(
     dplyr::mutate(
       value = value + value_fe,
       se = sqrt(se^2 + se_fe^2)
-    ) %>%
-    dplyr::select(group_var, effect, group, value, se)
+    )
 
   if (ci_level > 0) {
 
@@ -177,7 +202,8 @@ extract_random_coefs.glmmTMB <- function(
   }
 
   coefs <- coefs %>%
-    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
+    dplyr::select(-matches('_fe$|p_value|^z$')) # remove fe related columns
 
   coefs
 }
@@ -192,9 +218,9 @@ extract_random_coefs.lme <- function(
   ...
 ) {
 
-  random_effects <- extract_random_effects(model, re = re)
+  random_effects <- extract_random_effects(model, re = re, ...)
 
-  fixed_effects  <- extract_fixed_effects(model) %>%
+  fixed_effects  <- extract_fixed_effects(model, ...) %>%
     dplyr::rename(effect   = term,
                   se_fe    = se,
                   value_fe = value)
@@ -203,11 +229,11 @@ extract_random_coefs.lme <- function(
     dplyr::left_join(fixed_effects, by = 'effect') %>%
     dplyr::mutate(
       value = value + value_fe,
-    ) %>%
-    dplyr::select(group_var, effect, group, value)
+    )
 
   coefs %>%
-    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
+    dplyr::select(-matches('_fe$|p_value|^z$')) # remove fe related columns
 
 }
 

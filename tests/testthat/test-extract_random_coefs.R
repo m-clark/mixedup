@@ -36,7 +36,7 @@ test_that('extract_random_coefs.merMod basic functionality', {
 test_that('extract_random_coefs.merMod correct output', {
   expect_equal(
     nrow(extract_random_coefs(lmer_2)),
-    nlevels(sleepstudy$Subject)*2
+    nlevels(lme4::sleepstudy$Subject)*2
   )
 })
 
@@ -53,6 +53,18 @@ test_that('extract_random_coefs.merMod takes ci_level', {
     c("lower_10", "upper_90"),
     grep(cn, pattern = '[0-9]+', value =T))
 })
+
+test_that('extract_random_coefs.merMod takes dots', {
+  init  = extract_random_coefs(glmer_1, exponentiate = FALSE)
+  init2 = extract_random_coefs(glmer_1, exponentiate = TRUE)
+  expect_false(identical(init, init2))
+
+  init2 = extract_random_coefs(glmer_1, add_group_N = TRUE)
+  expect_false(identical(init, init2))
+  expect_true('n' %in% colnames(init2))
+
+})
+
 
 
 # glmmTMB -----------------------------------------------------------------
@@ -83,9 +95,10 @@ test_that('extract_random_coefs.glmmTMB correct output', {
   )
 })
 
-test_that('extract_random_coefs.glmmTMB warns if interval problem', {
-  expect_warning(extract_random_coefs(tmb_4, re = 'dept'))
-})
+# apparently not a problem any more
+# test_that('extract_random_coefs.glmmTMB warns if interval problem', {
+#   expect_warning(extract_random_coefs(tmb_4, re = 'dept'))
+# })
 
 test_that('extract_random_coefs.glmmTMB takes re', {
   expect_equal(
@@ -109,6 +122,17 @@ test_that('extract_random_coefs.glmmTMB takes component', {
   )
 })
 
+
+test_that('extract_random_coefs.glmmTMB takes dots', {
+  init  = extract_random_coefs(tmb_zip, component = 'cond', exponentiate = FALSE)
+  init2 = extract_random_coefs(tmb_zip, component = 'cond', exponentiate = TRUE)
+  expect_false(identical(init, init2))
+
+  init2 = extract_random_coefs(tmb_zip, component = 'cond', add_group_N = TRUE)
+  expect_false(identical(init, init2))
+  expect_true('n' %in% colnames(init2))
+
+})
 
 
 
@@ -140,6 +164,12 @@ test_that('extract_random_coefs correct output', {
   )
 })
 
+
+test_that('extract_random_coefs.glmmTMB takes dots', {
+  init2 = extract_random_coefs(lme_2, component = 'cond', add_group_N = TRUE)
+  expect_true('n' %in% colnames(init2))
+
+})
 
 # brms --------------------------------------------------------------------
 
