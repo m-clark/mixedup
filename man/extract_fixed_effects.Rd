@@ -103,7 +103,7 @@ confidence intervals (common for logistic regression). If \code{TRUE}, also scal
 the standard errors by the exponentiated coefficient, transforming them to
 the new scale.}
 
-\item{...}{Other stuff to pass to the corresponding function. Unused/tested}
+\item{...}{Other stuff to pass to the corresponding method.}
 
 \item{p_value}{For \code{lme4} models, one of 'Wald' or 'KR'. See details.}
 

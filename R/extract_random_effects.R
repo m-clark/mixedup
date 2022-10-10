@@ -472,7 +472,7 @@ extract_random_effects.brmsfit <- function(
 
   if (!is.null(component)) {
     random_effects <- random_effects %>%
-      dplyr::filter(grepl(component, pattern = !!component))
+      dplyr::filter(grepl(component, pattern = {{component}}))
   }
 
   random_effects <- random_effects %>%

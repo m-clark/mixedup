@@ -47,8 +47,8 @@ count_grps.default <- function(model, grp_vars) {
     grp_vars,
     function(grp, name)
       df %>%
-      dplyr::count(!!grp) %>%
-      dplyr::rename(group = !!grp) %>%
+      dplyr::count({{grp}}) %>%
+      dplyr::rename(group = {{grp}}) %>%
       dplyr::mutate(group_var = name,
                     group = as.character(group)) %>%
       dplyr::mutate(dplyr::across(\(x) is.factor(x), as.character)) %>%
@@ -88,9 +88,9 @@ count_grps.lme <- function(model, grp_vars) {
     grp_vars,
     function(grp, name)
       model$groups %>%
-      dplyr::count(!!grp) %>%
+      dplyr::count({{grp}}) %>%
       dplyr::mutate(group_var = name) %>%
-      dplyr::rename(group = !!grp) %>%
+      dplyr::rename(group = {{grp}}) %>%
       dplyr::mutate(dplyr::across(\(x) is.factor(x), as.character)) %>%
       dplyr::select(group_var, group, n)
   )
@@ -128,9 +128,9 @@ count_grps.stanmvreg <-  function(model, grp_vars) {
     ),
     function(data, grp, name)
       data %>%
-      dplyr::count(!!grp) %>%
+      dplyr::count({{grp}}) %>%
       dplyr::mutate(group_var = name) %>%
-      dplyr::rename(group = !!grp) %>%
+      dplyr::rename(group = {{grp}}) %>%
       dplyr::mutate(dplyr::across(\(x) is.factor(x), as.character)) %>%
       dplyr::select(group_var, group, n),
     .id = 'component'
