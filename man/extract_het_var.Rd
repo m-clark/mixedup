@@ -35,8 +35,8 @@ variance ('var'), the default.}
 \item{ci_level}{For brms objects, confidence level < 1, typically above
 0.90. A value of 0 will not report it. Default is .95.}
 
-\item{return_all}{For brms class objects, return all fitted values (\code{TRUE}) or only
-the distinct ones. Default is \code{FALSE}.}
+\item{return_all}{For brms class objects, return all fitted values (\code{TRUE})
+or only the distinct ones. Default is \code{FALSE}.}
 }
 \value{
 A vector of the estimates on the variance scale
