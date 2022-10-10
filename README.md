@@ -1,5 +1,5 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+<!-- README.md is generated from README.Rmd. Please edit here -->
 
 <img src="man/figures/package_logo.png" style="margin: 0 auto; width: 120px; valign: top" align = 'right'  alt="mixedup Logo" width = 120><br>
 
@@ -15,8 +15,7 @@
 experimental](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Codecov test
 coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](https://codecov.io/gh/m-clark/mixedup?branch=master)
-[![R build
-status](https://github.com/m-clark/mixedup/workflows/R-CMD-check/badge.svg)](https://github.com/m-clark/mixedup/actions)
+[![R-CMD-check](https://github.com/m-clark/mixedup/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/m-clark/mixedup/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 This package provides extended functionality for mixed models. The goal
@@ -52,24 +51,24 @@ withr::with_envvar(c(R_REMOTES_NO_ERRORS_FROM_WARNINGS = "true"),
 
 ## Supported models
 
-  - `lme4`
-  - `glmmTMB`
-  - `nlme`
-  - `mgcv`
-  - `rstanarm`
-  - `brms`
+-   `lme4`
+-   `glmmTMB`
+-   `nlme`
+-   `mgcv`
+-   `rstanarm`
+-   `brms`
 
 ## Feature list
 
-  - Extract Variance Components
-  - Extract Random Effects
-  - Extract Fixed Effects
-  - Extract Random Coefficients
-  - Extract Heterogeneous Variances
-  - Extract Correlation Structure
-  - Extract Model Data
-  - Summarize Model
-  - Find Typical
+-   Extract Variance Components
+-   Extract Random Effects
+-   Extract Fixed Effects
+-   Extract Random Coefficients
+-   Extract Heterogeneous Variances
+-   Extract Correlation Structure
+-   Extract Model Data
+-   Summarize Model
+-   Find Typical
 
 Not all features are available to the various modeling packages
 (e.g. autocorrelation for `lme4`), and some functionality may just not
@@ -144,7 +143,7 @@ gam_model = gam(
 library(mixedup)
 
 extract_random_effects(tmb_model)
-# A tibble: 36 x 7
+# A tibble: 36 × 7
    group_var effect    group  value    se lower_2.5 upper_97.5
    <chr>     <chr>     <fct>  <dbl> <dbl>     <dbl>      <dbl>
  1 Subject   Intercept 308     2.82  13.7    -23.9        29.6
@@ -160,7 +159,7 @@ extract_random_effects(tmb_model)
 # … with 26 more rows
 
 extract_fixed_effects(nlme_model)
-# A tibble: 3 x 7
+# A tibble: 3 × 7
   term   value    se     z p_value lower_2.5 upper_97.5
   <chr>  <dbl> <dbl> <dbl>   <dbl>     <dbl>      <dbl>
 1 Asym  101.   2.46   41.2       0     96.5      106.  
@@ -168,7 +167,7 @@ extract_fixed_effects(nlme_model)
 3 lrc    -3.23 0.034 -94.4       0     -3.30      -3.16
 
 extract_random_coefs(lmer_model)
-# A tibble: 36 x 7
+# A tibble: 36 × 7
    group_var effect    group value    se lower_2.5 upper_97.5
    <chr>     <chr>     <fct> <dbl> <dbl>     <dbl>      <dbl>
  1 Subject   Intercept 308    254.  13.9      226.       281.
@@ -184,10 +183,12 @@ extract_random_coefs(lmer_model)
 # … with 26 more rows
 
 extract_vc(brm_model, ci_level = .8)
-     group    effect variance     sd  sd_10  sd_90 var_prop
-1  Subject Intercept  680.180 26.080 18.482 34.451    0.488
-2  Subject      Days   44.483  6.670  4.867  8.544    0.032
-3 Residual            669.604 25.877 24.171 27.862    0.480
+# A tibble: 3 × 7
+  group    effect    variance    sd sd_10 sd_90 var_prop
+  <chr>    <chr>        <dbl> <dbl> <dbl> <dbl>    <dbl>
+1 Subject  Intercept    793.  28.2  18.7   38.3    0.527
+2 Subject  Days          42.2  6.50  4.73   8.1    0.028
+3 Residual <NA>         669.  25.9  23.6   28.0    0.445
 
 summarize_model(lmer_model, cor_re = TRUE, digits = 1)
 Computing profile confidence intervals ...
@@ -198,18 +199,13 @@ Variance Components:
   Subject      Days     35.1  5.9    3.8     8.8      0.0
  Residual              654.9 25.6   22.9    28.9      0.5
 
-Correlation of Random Effects:
-          Intercept Days
-Intercept       1.0  0.1
-Days            0.1  1.0
-
 Fixed Effects:
       Term Value  SE    t P_value Lower_2.5 Upper_97.5
  Intercept 251.4 6.8 36.8     0.0     238.0      264.8
       Days  10.5 1.5  6.8     0.0       7.4       13.5
 
 find_typical(gam_model, probs = c(.25, .50, .75))
-# A tibble: 6 x 8
+# A tibble: 6 × 8
   group_var effect    group   value    se lower_2.5 upper_97.5 probs
   <chr>     <chr>     <chr>   <dbl> <dbl>     <dbl>      <dbl> <chr>
 1 Subject   Days      331    -3.19   2.67     -8.43       2.04 25%  
@@ -233,22 +229,24 @@ mods = list(
 
 purrr::map_df(mods, extract_vc, .id = 'model') 
 Computing profile confidence intervals ...
-   model    group    effect variance     sd sd_2.5 sd_97.5 var_prop
-1    tmb  Subject Intercept  565.516 23.781 15.017  37.658    0.451
-2    tmb  Subject      Days   32.682  5.717  3.805   8.588    0.026
-3    tmb Residual            654.942 25.592     NA      NA    0.523
-4   lmer  Subject Intercept  612.100 24.741 14.381  37.716    0.470
-5   lmer  Subject      Days   35.072  5.922  3.801   8.753    0.027
-6   lmer Residual            654.940 25.592 22.898  28.858    0.503
-7    brm  Subject Intercept  680.180 26.080 16.324  37.155    0.488
-8    brm  Subject      Days   44.483  6.670  4.424  10.270    0.032
-9    brm Residual            669.604 25.877 23.519  28.958    0.480
-10  stan  Subject Intercept  596.717 24.428 12.255  35.737    0.448
-11  stan  Subject      Days   45.829  6.770  4.374   9.755    0.034
-12  stan Residual            688.537 26.240  4.790   5.382    0.517
-13   gam  Subject Intercept  627.571 25.051 16.085  39.015    0.477
-14   gam  Subject      Days   35.858  5.988  4.025   8.908    0.027
-15   gam Residual            653.582 25.565 22.792  28.676    0.496
+# A tibble: 15 × 8
+   model group    effect      variance    sd sd_2.5 sd_97.5 var_prop
+ * <chr> <chr>    <chr>          <dbl> <dbl>  <dbl>   <dbl>    <dbl>
+ 1 tmb   Subject  "Intercept"    566.  23.8   15.0    37.7     0.451
+ 2 tmb   Subject  "Days"          32.7  5.72   3.80    8.59    0.026
+ 3 tmb   Residual  <NA>          655.  25.6   NA      NA       0.523
+ 4 lmer  Subject  "Intercept"    612.  24.7   14.4    37.7     0.47 
+ 5 lmer  Subject  "Days"          35.1  5.92   3.80    8.75    0.027
+ 6 lmer  Residual ""             655.  25.6   22.9    28.9     0.503
+ 7 brm   Subject  "Intercept"    793.  28.2   15.8    46.3     0.527
+ 8 brm   Subject  "Days"          42.2  6.50   4.32    9.28    0.028
+ 9 brm   Residual  <NA>          669.  25.9   22.5    29.6     0.445
+10 stan  Subject  "Intercept"    585.  24.2   12.3    36.3     0.447
+11 stan  Subject  "Days"          44.0  6.64   4.00    9.98    0.034
+12 stan  Residual  <NA>          680.  26.1   NA      NA       0.519
+13 gam   Subject  "Intercept"    628.  25.1   16.1    39.0     0.477
+14 gam   Subject  "Days"          35.9  5.99   4.03    8.91    0.027
+15 gam   Residual  <NA>          654.  25.6   22.8    28.7     0.496
 ```
 
 ## Code of Conduct
