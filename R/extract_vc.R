@@ -14,7 +14,7 @@
 #'   element. Default is \code{FALSE}.
 #' @param digits Rounding. Default is 3.
 #' @param ... Other stuff to pass to the corresponding method.
-#' @param include_het_var For models for which extract_het_var can be applied,
+#' @param include_het_var For models for which `extract_het_var` can be applied,
 #'   this will return a list object including it.
 #' @param component For glmmTMB objects, which of the three components 'cond' or
 #'   'zi' to select. Default is 'cond'.  For brmsfit (and experimentally,
@@ -34,14 +34,16 @@
 #' @note Right now, there are several issues with getting confidence intervals
 #'   for `glmmTMB` objects
 #'   (\href{https://github.com/glmmTMB/glmmTMB/issues/571}{for example, which is
-#'   actually not resolved}).  If you get an error, you should check by running
-#'   `confint(my_tmb_model)` before posting an issue.  While I've attempted some
-#'   minor hacks to deal with some of them, it stands to reason that if the
-#'   `glmmTMB` functionality doesn't work, this function won't either.
+#'   actually not resolved}).  If you get an error or unexpected results, you
+#'   should check by running `confint(my_tmb_model)` before posting an issue.
+#'   While I've attempted some minor hacks to deal with some of them, it stands
+#'   to reason that if the `glmmTMB` functionality doesn't work, this function
+#'   won't either. You should be fine for standard mixed models
 #'
 #'
 #' @return A data frame with output for variance components, or list that also
-#' contains the correlations of the random effects, or list that includes the heterogeneous variances.
+#'   contains the correlations of the random effects and/or the heterogeneous
+#'   variances.
 #'
 #' @seealso
 #'   [lme4::confint.merMod()],
@@ -320,19 +322,8 @@ extract_vc.glmmTMB <- function(
     dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
     dplyr::mutate(dplyr::across(\(x) is.factor(x), as.character))
 
-
-  # deal with correlations
-  if (show_cor) {
-
-    cormats <- vc_mat %>%
-      purrr::map(attr, 'correlation') %>% purrr::map(remove_parens) %>%
-      purrr::map(round, digits = digits)
-
-    vc <- tibble::as_tibble(vc) %>%
-      dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
-
-    return(list(`Variance Components` = vc, Cor = cormats))
-  }
+  vc <- tibble::as_tibble(vc) %>%
+    dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
 
   # simplify output if possible (add models as needed)
   if (any(grepl(model$modelInfo$allForm$formula, pattern = 'ar1\\(|gau\\(|exp\\(|mat\\(|ou\\('))) {
@@ -342,22 +333,30 @@ extract_vc.glmmTMB <- function(
 
     warning('Output has been simplified. You may have additional information with `show_cor = TRUE`.')
 
-    rownames(vc) <- NULL  # will likely only confuse
-
-    return(tibble::as_tibble(vc))
   }
-
 
   rownames(vc) <- NULL  # will likely only confuse
 
-  vc <- tibble::as_tibble(vc) %>%
-    dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
+  out <- list(`Variance Components` = vc)
+
+  # deal with correlations
+  if (show_cor) {
+
+    cormats <- vc_mat %>%
+      purrr::map(attr, 'correlation') %>% purrr::map(remove_parens) %>%
+      purrr::map(round, digits = digits)
+
+     out <- append(out, list(Cor = cormats))
+  }
+
 
   if (include_het_var)
-    list(`Variance Components` = vc,
-         `Heterogeneous Variances` = extract_het_var(model))
+    out <- append(out, list(`Heterogeneous Variances` = extract_het_var(model)))
+
+  if (length(out) == 1)
+    return(out[[1]])
   else
-    vc
+    out
 }
 
 
@@ -485,28 +484,30 @@ extract_vc.lme <- function(
   vc <- dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits))
   vc$corr <- NULL # leave to show_cor if it exists
 
+  vc <- vc %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
+
+  out <- list(`Variance Components` = vc)
+
   if (show_cor) {
     cormats <- re_struct %>%
       purrr::map(\(x) stats::cov2cor(as.matrix(x))) %>%
       purrr::map(remove_parens) %>%
       purrr::map(round, digits = digits)
 
-    vc <-   vc %>%
-      tibble::as_tibble() %>%
-      dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
 
-    return(list(`Variance Components` = vc, Cor = cormats))
+    out <- append(out, list(Cor = cormats))
   }
 
-  vc <- vc %>%
-    tibble::as_tibble() %>%
-    dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
 
   if (include_het_var)
-    list(`Variance Components` = vc,
-         `Heterogeneous Variances` = extract_het_var(model))
+    out <- append(out, list(`Heterogeneous Variances` = extract_het_var(model)))
+
+  if (length(out) == 1)
+    return(out[[1]])
   else
-    vc
+    out
 }
 
 
@@ -579,6 +580,8 @@ extract_vc.brmsfit <- function(
     dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect)) %>%
     dplyr::select(-dplyr::matches('Est.Error'))
 
+  out <- list(`Variance Components` = vc)
+
   if (show_cor) {
     # rerun with VarCorr with summary FALSE and extract array of cor matrices
     # could use vc_0 but redundancies probably it more difficult to work
@@ -603,15 +606,17 @@ extract_vc.brmsfit <- function(
         round(apply(x, 2:3, mean), digits = digits))
 
 
-    vc <- list(`Variance Components` = vc, Cor = cormats)
+    out <- append(out, list(Cor = cormats))
   }
 
 
   if (include_het_var)
-    list(`Variance Components` = vc,
-         `Heterogeneous Variances` = extract_het_var(model))
+    out <- append(out, list(`Heterogeneous Variances` = extract_het_var(model)))
+
+  if (length(out) == 1)
+    return(out[[1]])
   else
-    vc
+    out
 }
 
 

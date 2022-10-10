@@ -214,6 +214,9 @@ test_that('extract_vc.glmmTMB can return heterogenous variances', {
   hv = suppressWarnings({extract_vc(tmb_diag, include_het_var = TRUE)})
   expect_type(hv, 'list')
   expect_equal(length(hv), 2)
+
+  hv = suppressWarnings({extract_vc(tmb_diag, show_cor = TRUE, include_het_var = TRUE)})
+  expect_equal(length(hv), 3) # cor is diag but still should work
 })
 
 
@@ -387,7 +390,12 @@ test_that('extract_vc.brmsfit can return heterogenous variances', {
   hv = extract_vc(brm_sigma, include_het_var = TRUE)
   expect_type(hv, 'list')
   expect_equal(length(hv), 2)
+
+  hv = suppressWarnings({extract_vc(brm_sigma, show_cor = TRUE, include_het_var = TRUE)})
+  expect_equal(length(hv), 3)
 })
+
+
 
 
 # Test rstanarm ---------------------------------------------------------------

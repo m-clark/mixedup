@@ -106,6 +106,12 @@ extract_het_var.lme <- function(
   ...
 ) {
 
+  # check if there is a variance structure
+  assertthat::assert_that(
+    !is.null(model$modelStruct$varStruct),
+    msg = 'No variance structure to extract.'
+  )
+
   init <- coef(model$modelStruct$varStruct, unconstrained = FALSE)
 
   sigmas <- (c(1.0, init) * model$sigma)
@@ -135,6 +141,15 @@ extract_het_var.glmmTMB <- function(
   scale  = 'var',
   ...
 ) {
+
+  # check for diag structure
+  init <- purrr::map(model$call$formula, \(x) grepl(x, pattern = 'diag\\((.)*\\)'))
+
+  assertthat::assert_that(
+    any(unlist(init)),
+    msg = 'No variance structure to extract.'
+  )
+
   sigmas <- extract_cor_structure(model, digits = digits, which_cor = 'diag', ...)
 
   # by default, the result is var
@@ -159,6 +174,7 @@ extract_het_var.brmsfit <- function(
 ) {
 
 
+
   assertthat::assert_that(
     ci_level >= 0 & ci_level < 1,
     msg = 'Nonsensical confidence level for ci_level. Must be between 0 and 1.'
@@ -170,6 +186,17 @@ extract_het_var.brmsfit <- function(
 
   # get all predictor vars
   covariates <- all.vars(model$formula$pforms$sigma)
+
+  # note unlike others, if there isn't anything specific for a sigma model, this
+  # would just return the result for the residual sigma, or other variances,
+  # which is okay but not necessary and might be confusing. If a non-gaussian
+  # glm, it will error. Here we will error if there is no sigma model.
+
+  assertthat::assert_that(
+    length(covariates) != 0,
+    msg = 'No variance structure to extract.'
+  )
+
   covariates <- covariates[covariates != 'sigma']
 
   sigma_fits <-

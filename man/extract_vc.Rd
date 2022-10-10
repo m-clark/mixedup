@@ -135,12 +135,13 @@ multivariate model.  In this case \code{component} is a regular expression
 that begins parameters
 of the output.}
 
-\item{include_het_var}{For models for which extract_het_var can be applied,
+\item{include_het_var}{For models for which \code{extract_het_var} can be applied,
 this will return a list object including it.}
 }
 \value{
 A data frame with output for variance components, or list that also
-contains the correlations of the random effects, or list that includes the heterogeneous variances.
+contains the correlations of the random effects and/or the heterogeneous
+variances.
 }
 \description{
 This has functionality for simpler models from \code{lme4},
@@ -158,10 +159,11 @@ with names that are clean and easy to use.
 Right now, there are several issues with getting confidence intervals
 for \code{glmmTMB} objects
 (\href{https://github.com/glmmTMB/glmmTMB/issues/571}{for example, which is
-actually not resolved}).  If you get an error, you should check by running
-\code{confint(my_tmb_model)} before posting an issue.  While I've attempted some
-minor hacks to deal with some of them, it stands to reason that if the
-\code{glmmTMB} functionality doesn't work, this function won't either.
+actually not resolved}).  If you get an error or unexpected results, you
+should check by running \code{confint(my_tmb_model)} before posting an issue.
+While I've attempted some minor hacks to deal with some of them, it stands
+to reason that if the \code{glmmTMB} functionality doesn't work, this function
+won't either. You should be fine for standard mixed models
 }
 \examples{
 library(lme4)

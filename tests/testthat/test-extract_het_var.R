@@ -17,6 +17,10 @@ test_that('extract_het_var.lme returns a data.frame', {
   expect_s3_class(extract_het_var(lme_het_var), 'data.frame')
 })
 
+test_that('extract_het_var.lme errors with no varstruct', {
+  expect_error(extract_het_var(lme_2))
+})
+
 test_that('extract_het_var.lme returns a data.frame of appropriate length', {
   expect_equal(ncol(extract_het_var(lme_het_var)), 2)
 })
@@ -38,6 +42,11 @@ context('test extract_het_var.glmmTMB')
 test_that('extract_het_var.glmmTMB returns a data.frame', {
   expect_s3_class(extract_het_var(tmb_diag), 'data.frame')
 })
+
+test_that('extract_het_var.glmmTMB errors with no varstruct', {
+  expect_error(extract_het_var(tmb_2))
+})
+
 
 test_that('extract_het_var.glmTMB can do variance scale', {
   initsd  = extract_het_var(tmb_diag, scale = 'sd')$sd
@@ -63,6 +72,12 @@ context('test extract_het_var.brmsfit')
 test_that('extract_het_var.brmsfit returns a data.frame', {
   expect_s3_class(extract_het_var(brm_sigma_simple), 'data.frame')
 })
+
+
+test_that('extract_het_var.lme errors with no varstruct', {
+  expect_error(extract_het_var(brm_glm))
+})
+
 
 test_that('extract_het_var.brmsfit returns appropriate values', {
   expect_equal(extract_het_var(brm_sigma_simple)$group, c('treat', 'placebo'))
