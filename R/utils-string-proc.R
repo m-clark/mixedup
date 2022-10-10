@@ -7,7 +7,7 @@ totitle <- function(string) {
        perl = T)
 }
 
-remove_parens <- function(x) {
+remove_parens <- \(x) {
   if (inherits(x, c('data.frame', 'matrix'))) {
     colnames(x) <- gsub(colnames(x), pattern = '[\\(,\\)]', replacement = '')
     rownames(x) <- colnames(x)
@@ -18,7 +18,7 @@ remove_parens <- function(x) {
   x
 }
 
-# remove_brackets <- function(x) {
+# remove_brackets <- \(x) {
 #   if (inherits(x, c('data.frame', 'matrix'))) {
 #     colnames(x) <- gsub(colnames(x), pattern = '[\\[,\\]', replacement = '')
 #     rownames(x) <- colnames(x)
@@ -32,7 +32,7 @@ remove_parens <- function(x) {
 
 split_group_effect <- function(x, which = 1) {
   init = strsplit(x, split = ",")
-  purrr::map_chr(init, function(x) x[min(which, length(x))])
+  purrr::map_chr(init, \(x) x[min(which, length(x))])
 }
 
 clean_rstanarm_vc <- function(vc_interval, ci_level, ci_scale){
@@ -58,12 +58,12 @@ clean_rstanarm_vc <- function(vc_interval, ci_level, ci_scale){
   covvars = sapply(separate_group_from_covvar, `[`, 2)
 
   # cleanup
-  effects = sapply(covvars, function(x) strsplit(x, split = ',')[[1]][1])
+  effects = sapply(covvars, \(x) strsplit(x, split = ',')[[1]][1])
 
   effects = gsub(effects, pattern = "\\(|\\)", replacement = '')
 
   # get var indices e.g. "[x,x]" -> one distinct value
-  varidx = sapply(strsplit(covvars, split = ','), function(x) dplyr::n_distinct(x)==1)
+  varidx = sapply(strsplit(covvars, split = ','), \(x) dplyr::n_distinct(x)==1)
   varidx = which(varidx)
 
   # clean interval names

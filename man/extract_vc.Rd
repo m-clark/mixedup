@@ -19,7 +19,6 @@ extract_vc(
   ci_scale = "sd",
   show_cor = FALSE,
   digits = 3,
-  component = "cond",
   ...
 )
 
@@ -41,6 +40,7 @@ extract_vc(
   show_cor = FALSE,
   digits = 3,
   component = "cond",
+  include_het_var = FALSE,
   ...
 )
 
@@ -51,6 +51,7 @@ extract_vc(
   ci_scale = "sd",
   show_cor = FALSE,
   digits = 3,
+  include_het_var = FALSE,
   ...
 )
 
@@ -62,6 +63,7 @@ extract_vc(
   show_cor = FALSE,
   digits = 3,
   component = NULL,
+  include_het_var = FALSE,
   ...
 )
 
@@ -93,7 +95,6 @@ extract_variance_components(
   ci_scale = "sd",
   show_cor = FALSE,
   digits = 3,
-  component = "cond",
   ...
 )
 
@@ -104,7 +105,6 @@ extract_VarCorr(
   ci_scale = "sd",
   show_cor = FALSE,
   digits = 3,
-  component = "cond",
   ...
 )
 }
@@ -125,18 +125,23 @@ element. Default is \code{FALSE}.}
 
 \item{digits}{Rounding. Default is 3.}
 
+\item{...}{Other stuff to pass to the corresponding method.}
+
 \item{component}{For glmmTMB objects, which of the three components 'cond' or
-'zi' to select. Default is 'cond'.  For brmsfit objects, this can filter
-results to a certain part of the output, e.g. 'sigma' or 'zi' of
-distributional models, or a specific outcome of a multivariate model.  In
-this case \code{component} is a regular expression that begins parameters
+'zi' to select. Default is 'cond'.  For brmsfit (and experimentally,
+rstanarm) objects, this can filter results to a certain part of the output,
+e.g. 'sigma' or 'zi' of distributional models, or a specific outcome of a
+multivariate model.  In this case \code{component} is a regular expression
+that begins parameters
 of the output.}
 
-\item{...}{Other stuff to pass to the corresponding function. Unused/tested}
+\item{include_het_var}{For models for which \code{extract_het_var} can be applied,
+this will return a list object including it.}
 }
 \value{
 A data frame with output for variance components, or list that also
-contains the correlations of the random effects.
+contains the correlations of the random effects and/or the heterogeneous
+variances.
 }
 \description{
 This has functionality for simpler models from \code{lme4},
@@ -153,11 +158,12 @@ with names that are clean and easy to use.
 \note{
 Right now, there are several issues with getting confidence intervals
 for \code{glmmTMB} objects
-(\href{https://github.com/glmmTMB/glmmTMB/issues/571}{for example}).  If
-you get an error, you should check by running \code{confint(my_tmb_model)} before
-posting an issue.  While I've attempted some minor hacks to deal with some
-of them, if the \code{glmmTMB} functionality doesn't work, this function won't
-either.
+(\href{https://github.com/glmmTMB/glmmTMB/issues/571}{for example, which is
+actually not resolved}).  If you get an error or unexpected results, you
+should check by running \code{confint(my_tmb_model)} before posting an issue.
+While I've attempted some minor hacks to deal with some of them, it stands
+to reason that if the \code{glmmTMB} functionality doesn't work, this function
+won't either. You should be fine for standard mixed models
 }
 \examples{
 library(lme4)

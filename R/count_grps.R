@@ -25,10 +25,11 @@
 #' @export
 count_grps <- function(model, grp_vars) {
 
-  if (!inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit',
-                         'gam', 'stanreg')))
-    stop('This only works for model objects from lme4, glmmTMB, brms, rstanarm,
-    mgcv, and nlme.') #
+  assertthat::assert_that(
+    inherits(model, c('merMod', 'glmmTMB', 'lme', 'brmsfit', 'gam', 'stanreg')),
+    msg = 'This only works for model objects from lme4, glmmTMB, brms, rstanarm,
+    mgcv, and nlme.'
+  )
 
   UseMethod('count_grps')
 
@@ -41,20 +42,16 @@ count_grps.default <- function(model, grp_vars) {
   gv <- purrr::map(grp_vars, dplyr::sym)
   df <- extract_model_data(model)
 
-  # note on mutate_if: across(where) is not only needlessly verbose, there are
-  # issues using where in a package that haven't been resolved for a year. See
-  # for example: https://github.com/r-lib/tidyselect/issues/201; as mutate_if is
-  # not deprecated, only superceded
   purrr::map2_df(
     gv,
     grp_vars,
     function(grp, name)
       df %>%
-      dplyr::count(!!grp) %>%
-      dplyr::rename(group = !!grp) %>%
+      dplyr::count({{grp}}) %>%
+      dplyr::rename(group = {{grp}}) %>%
       dplyr::mutate(group_var = name,
                     group = as.character(group)) %>%
-      dplyr::mutate_if(is.factor, as.character) %>%
+      dplyr::mutate(dplyr::across(\(x) is.factor(x), as.character)) %>%
       dplyr::select(group_var, group, n)
   )
 }
@@ -91,10 +88,10 @@ count_grps.lme <- function(model, grp_vars) {
     grp_vars,
     function(grp, name)
       model$groups %>%
-      dplyr::count(!!grp) %>%
+      dplyr::count({{grp}}) %>%
       dplyr::mutate(group_var = name) %>%
-      dplyr::rename(group = !!grp) %>%
-      dplyr::mutate_if(is.factor, as.character) %>%
+      dplyr::rename(group = {{grp}}) %>%
+      dplyr::mutate(dplyr::across(\(x) is.factor(x), as.character)) %>%
       dplyr::select(group_var, group, n)
   )
 }
@@ -131,10 +128,10 @@ count_grps.stanmvreg <-  function(model, grp_vars) {
     ),
     function(data, grp, name)
       data %>%
-      dplyr::count(!!grp) %>%
+      dplyr::count({{grp}}) %>%
       dplyr::mutate(group_var = name) %>%
-      dplyr::rename(group = !!grp) %>%
-      dplyr::mutate_if(is.factor, as.character) %>%
+      dplyr::rename(group = {{grp}}) %>%
+      dplyr::mutate(dplyr::across(\(x) is.factor(x), as.character)) %>%
       dplyr::select(group_var, group, n),
     .id = 'component'
   )

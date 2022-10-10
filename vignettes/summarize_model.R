@@ -1,19 +1,19 @@
 ## ----setup, include=FALSE, cache=FALSE----------------------------------------
 knitr::opts_chunk$set(
-  echo = T,
-  message = T,
-  warning = F,
-  error = F,
-  collapse = TRUE,
-  comment = NA,
+  echo      = TRUE,
+  message   = TRUE,
+  warning   = FALSE,
+  error     = FALSE,
+  collapse  = TRUE,
+  comment   = NA,
   R.options = list(width = 220),
-  dev.args = list(bg = 'transparent'),
-  dev = 'png',
+  dev.args  = list(bg = 'transparent'),
+  dev       = 'png',
   fig.align = 'center',
   out.width = '75%',
-  fig.asp = .75,
-  cache.rebuild = F,
-  cache = F
+  fig.asp   = .75,
+  cache.rebuild = FALSE,
+  cache         = FALSE
 )
 
 ## ----loadbrms, echo=FALSE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ mgcv_model <-
     Reaction ~  Days +
       s(Subject, bs = 're') +
       s(Days, Subject, bs = 're'),
-    data = lme4::sleepstudy,
+    data   = lme4::sleepstudy,
     method = 'REML'
   )
 
@@ -74,7 +74,7 @@ summarize_model(mgcv_model)
 ## ----options--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 summarize_model(
   lmer_model,
-  ci = FALSE,
+  ci     = FALSE,
   cor_re = TRUE,
   cor_fe = TRUE,
   digits = 3
@@ -84,12 +84,18 @@ summarize_model(
 summarise_model(lmer_model, ci = FALSE)
 
 ## ----convergence, warning=FALSE-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# for some reason this example apparently only works interactively, not when knit
+ss2 = sleepstudy
+ss2$Days = ss2$Days * 10
+
 lmer_not_converged <- lmer(
-  score ~ Machine + (1 + Machine | Worker),
-  data = nlme::Machines
+  Reaction ~ Days + (Days|Subject),
+  data = ss2
 )
+
+# lmer_not_converged
 
 lmer_converged <- converge_it(lmer_not_converged) # final result is a converged model
 
-summarize_model(lmer_converged, ci = FALSE)
+lmer_converged
 

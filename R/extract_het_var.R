@@ -6,9 +6,9 @@
 #' @param model An appropriate mixed model.
 #' @param digits Rounding. Default is 3.
 #' @param ci_level  For brms objects, confidence level < 1, typically above
-#'   0.90. A value of 0 will not report it. Default is .95.
-#' @param return_all For brms class objects, return all fitted values (`TRUE`) or only
-#'   the distinct ones. Default is `FALSE`.
+#' 0.90. A value of 0 will not report it. Default is .95.
+#' @param return_all For brms class objects, return all fitted values (`TRUE`)
+#'   or only the distinct ones. Default is `FALSE`.
 #' @param scale Return result on original standard deviation scale ('sd') or as
 #'   variance ('var'), the default.
 #' @param ... Other arguments specific to the method. Unused at present.
@@ -85,11 +85,13 @@
 extract_het_var <- function(
   model,
   digits = 3,
-  scale = 'var',
+  scale  = 'var',
   ...
 ) {
-  if (!inherits(model, c('lme', 'glmmTMB', 'brmsfit')))
-    stop('This only works for model objects from nlme, glmmTMB, and brms.')
+  assertthat::assert_that(
+    inherits(model, c('lme', 'glmmTMB', 'brmsfit')),
+    msg = 'This only works for model objects from nlme, glmmTMB, and brms.'
+  )
 
   UseMethod('extract_het_var')
 }
@@ -100,22 +102,33 @@ extract_het_var <- function(
 extract_het_var.lme <- function(
   model,
   digits = 3,
-  scale = 'var',
+  scale  = 'var',
   ...
 ) {
 
-  init = coef(model$modelStruct$varStruct, unconstrained = FALSE)
+  # check if there is a variance structure
+  assertthat::assert_that(
+    !is.null(model$modelStruct$varStruct),
+    msg = 'No variance structure to extract.'
+  )
 
-  sigmas = (c(1.0, init) * model$sigma)
+  init <- coef(model$modelStruct$varStruct, unconstrained = FALSE)
+
+  sigmas <- (c(1.0, init) * model$sigma)
 
   if (scale == 'var') sigmas <- sigmas^2
 
-  reflev = attributes(model$modelStruct$varStruct)$groupNames[1]
+  reflev <- attributes(model$modelStruct$varStruct)$groupNames[1]
 
-  names(sigmas)[1] = reflev
+  names(sigmas)[1] <- reflev
 
-  data.frame(as.list(sigmas)) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+  dplyr::as_tibble(as.list(sigmas)) %>%
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
+    tidyr::pivot_longer(
+      dplyr::everything(),
+      names_to = 'group',
+      values_to = ifelse(scale == 'var', 'variance', 'sd')
+    )
 }
 
 
@@ -125,16 +138,26 @@ extract_het_var.lme <- function(
 extract_het_var.glmmTMB <- function(
   model,
   digits = 3,
-  scale = 'var',
+  scale  = 'var',
   ...
 ) {
+
+  # check for diag structure
+  init <- purrr::map(model$call$formula, \(x) grepl(x, pattern = 'diag\\((.)*\\)'))
+
+  assertthat::assert_that(
+    any(unlist(init)),
+    msg = 'No variance structure to extract.'
+  )
+
   sigmas <- extract_cor_structure(model, digits = digits, which_cor = 'diag', ...)
 
   # by default, the result is var
   if (scale == 'sd')
-    sigmas <- sigmas %>% dplyr::mutate_if(is.numeric, sqrt)
+    sigmas <- sigmas %>% dplyr::mutate(dplyr::across(\(x) is.numeric(x), sqrt))
 
-  sigmas
+  sigmas %>%
+    tidyr::pivot_longer(-group, values_to = ifelse(scale == 'var', 'variance', 'sd'))
 }
 
 
@@ -144,24 +167,36 @@ extract_het_var.glmmTMB <- function(
 extract_het_var.brmsfit <- function(
   model,
   digits = 3,
-  scale = 'var',
+  scale  = 'var',
   ...,
-  ci_level = .95,
+  ci_level   = .95,
   return_all = FALSE
 ) {
 
-  if (ci_level < 0 | ci_level >= 1)
-    stop('Nonsensical confidence level for ci_level. Must be between 0 and 1.')
+
+
+  assertthat::assert_that(
+    ci_level >= 0 & ci_level < 1,
+    msg = 'Nonsensical confidence level for ci_level. Must be between 0 and 1.'
+  )
 
   lower <- (1 - ci_level)/2
   upper <- 1 - lower
   probs <- c(lower, upper)
 
-  # no longer need, but left as a reminder of how to pull target variable
-  # response <- attr(terms(as.formula(model$formula)), 'response')
-
   # get all predictor vars
   covariates <- all.vars(model$formula$pforms$sigma)
+
+  # note unlike others, if there isn't anything specific for a sigma model, this
+  # would just return the result for the residual sigma, or other variances,
+  # which is okay but not necessary and might be confusing. If a non-gaussian
+  # glm, it will error. Here we will error if there is no sigma model.
+
+  assertthat::assert_that(
+    length(covariates) != 0,
+    msg = 'No variance structure to extract.'
+  )
+
   covariates <- covariates[covariates != 'sigma']
 
   sigma_fits <-
@@ -176,13 +211,13 @@ extract_het_var.brmsfit <- function(
   if (scale == 'var') {
     sigma_fits <- sigma_fits %>%
       dplyr::mutate(Est.Error = 2*Estimate*Est.Error) %>%
-      dplyr::mutate_at(c(1,3,4), `^`, 2)
+      dplyr::mutate(dplyr::across(-Est.Error, \(x) x^2))
   }
 
   sigma_fits <- extract_model_data(model)[, covariates] %>%
     dplyr::bind_cols(sigma_fits) %>%
     dplyr::rename(value = Estimate, se = Est.Error) %>%
-    dplyr::mutate_if(is.numeric, round, digits = digits)
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
   if (!return_all)
     sigma_fits <- dplyr::distinct(sigma_fits)

@@ -2,6 +2,10 @@
 % Please edit documentation in R/extract_random_effects.R
 \name{extract_random_effects}
 \alias{extract_random_effects}
+\alias{`extract_ranef`}
+\alias{is}
+\alias{an}
+\alias{alias.}
 \alias{extract_random_effects.merMod}
 \alias{extract_random_effects.glmmTMB}
 \alias{extract_random_effects.lme}
@@ -17,7 +21,6 @@ extract_random_effects(
   ci_level = 0.95,
   digits = 3,
   add_group_N = FALSE,
-  component = NULL,
   ...
 )
 
@@ -27,6 +30,7 @@ extract_random_effects(
   ci_level = 0.95,
   digits = 3,
   add_group_N = FALSE,
+  condvar = TRUE,
   ...
 )
 
@@ -37,6 +41,7 @@ extract_random_effects(
   digits = 3,
   add_group_N = FALSE,
   component = "cond",
+  condvar = TRUE,
   ...
 )
 
@@ -84,7 +89,6 @@ extract_ranef(
   ci_level = 0.95,
   digits = 3,
   add_group_N = FALSE,
-  component = NULL,
   ...
 )
 }
@@ -102,14 +106,17 @@ objects.}
 
 \item{add_group_N}{Add group sample sizes to output? Default is \code{FALSE}.}
 
+\item{...}{Other arguments specific to the method. Unused at present.}
+
+\item{condvar}{Include conditional variance. Used in \code{lme4} and \code{glmmTMB} objects.}
+
 \item{component}{For \code{glmmTMB} objects, which of the two components 'cond' or
 'zi' to select. Default is 'cond'. For \code{brmsfit} objects, this can filter
 results to a certain part of the output, e.g. 'sigma' or 'zi' of
 distributional models, or a specific outcome name of a multivariate model.
 In this case \code{component} is a regular expression that ends the name of the
-parameters of the output (e.g. '__component').}
-
-\item{...}{Other arguments specific to the method. Unused at present.}
+parameters of the output (e.g. '__component'). For \code{stanreg} objects, this
+could be the}
 }
 \value{
 data frame of the random effects
@@ -143,8 +150,6 @@ underestimate relative to brms results.
 
 For mgcv, the \code{Vp} (Bayesian) estimated variance covariance matrix is
 used.
-
-\code{extract_ranef} is an alias.
 }
 \examples{
 library(lme4)

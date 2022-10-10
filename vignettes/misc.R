@@ -1,19 +1,19 @@
 ## ----setup, include=FALSE, cache=FALSE----------------------------------------
 knitr::opts_chunk$set(
-  echo = T,
-  message = F,
-  warning = F,
-  error = F,
-  collapse = TRUE,
-  comment = NA,
+  echo      = TRUE,
+  message   = FALSE,
+  warning   = FALSE,
+  error     = FALSE,
+  collapse  = TRUE,
+  comment   = NA,
   R.options = list(width = 220),
-  dev.args = list(bg = 'transparent'),
-  dev = 'png',
+  dev.args  = list(bg = 'transparent'),
+  dev       = 'png',
   fig.align = 'center',
   out.width = '75%',
-  fig.asp = .75,
-  cache.rebuild = F,
-  cache = F
+  fig.asp   = .75,
+  cache.rebuild = FALSE,
+  cache         = FALSE
 )                                                    
 
 ## ----typical--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -67,5 +67,5 @@ extract_cor_structure(lme_corSymm)
 extract_cor_structure(lme_corAR)
 
 ## ----model-data-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-extract_model_data(lmer_model)
+head(extract_model_data(lmer_model))
 

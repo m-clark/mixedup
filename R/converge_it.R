@@ -73,8 +73,8 @@ converge_it.merMod <- function(model) {
 
   # update will call these under the hood, so this avoids having to actually
   # load the library.  Not sure which is the better approach relative to above.
-  lmer  = lme4::lmer
-  glmer = lme4::glmer
+  lmer  <- lme4::lmer
+  glmer <- lme4::glmer
 
   count <- 0
 

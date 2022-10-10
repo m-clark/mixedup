@@ -20,10 +20,18 @@ context('test extract_random_effects.merMod')
 
 test_that("lme4 installation is checked", {
   with_mock(
-    'mixedup::is_package_installed' = function() FALSE,
+    'rlang::is_installed' = function() FALSE,
     expect_error(extract_random_effects(lmer_1))
   )
 })
+
+# does nothing
+# test_that("lme4 installation is checked", {
+#   mockery::stub(mixedup::extract_random_effects, 'rlang::is_installed',  FALSE) # doesn't work
+#   expect_error(extract_random_effects(lmer_1))
+# })
+
+
 
 test_that('extract_random_effects.merMod basic functionality', {
   expect_s3_class(extract_random_effects(lmer_1), 'data.frame')
@@ -50,6 +58,11 @@ test_that('extract_random_effects.merMod errors with bad re name', {
 })
 
 
+test_that('extract_random_effects.merMod errors will not return ci with condvar', {
+  expect_false('se' %in% colnames(extract_random_effects(lmer_2, re = 'Subject', condvar = FALSE)))
+})
+
+
 
 # glmmTMB -----------------------------------------------------------------
 
@@ -57,20 +70,20 @@ context('test extract_random_effects.glmmTMB')
 
 test_that("glmmTMB installation is checked", {
   with_mock(
-    'mixedup::is_package_installed' = function() FALSE,
+    'rlang::is_installed' = function() FALSE,
     expect_error(extract_random_effects(tmb_1, re = 'Subject'))
   )
 })
 
-test_that('extract_random_effects basic functionality', {
+test_that('extract_random_effects.glmmTMB basic functionality', {
   expect_s3_class(extract_random_effects(tmb_1, re = 'Subject'), 'data.frame')
 })
 
-test_that('extract_random_effects basic functionality', {
+test_that('extract_random_effects.glmmTMB basic functionality', {
   expect_s3_class(extract_random_effects(tmb_2, re = 'Subject'), 'data.frame')
 })
 
-test_that('extract_random_effects correct output', {
+test_that('extract_random_effects.glmmTMB correct output', {
   expect_equal(
     nrow(extract_random_effects(tmb_4, re = 'dept')),
     nlevels(tmb_4$frame$dept)
@@ -78,7 +91,7 @@ test_that('extract_random_effects correct output', {
 })
 
 
-test_that('extract_random_effects can do zip', {
+test_that('extract_random_effects.glmmTMB can do zip', {
   expect_s3_class(
     extract_random_effects(tmb_zip, re = 'site', component = 'zi'),
     'data.frame'
@@ -93,14 +106,17 @@ test_that('extract_random_effects.glmmTMB add_group_N for zip', {
   expect_s3_class(extract_random_effects(tmb_zip, add_group_N = TRUE), 'data.frame')
 })
 
-test_that('extract_random_effects errors with bad re name', {
+test_that('extract_random_effects.glmmTMB errors with bad re name', {
   expect_error(extract_random_effects(tmb_zip, re = 'Site'))
 })
 
-test_that('extract_random_effects errors with wrong cond', {
+test_that('extract_random_effects.glmmTMB errors with wrong cond', {
   expect_error(extract_random_effects(tmb_disp, re = 'site', component = 'disp'))
 })
 
+test_that('extract_random_effects.glmmTMB errors will not return ci without condvar', {
+  expect_false('se' %in% colnames(extract_random_effects(tmb_2, re = 'Subject', condvar = FALSE)))
+})
 
 
 # nlme --------------------------------------------------------------------
@@ -155,7 +171,7 @@ context('test extract_random_effects.brmsfit')
 
 test_that("brms installation is checked", {
   with_mock(
-    'mixedup::is_package_installed' = function() FALSE,
+    'rlang::is_installed' = function() FALSE,
     expect_error(extract_random_effects(brm_1, re = 'Subject'))
   )
 })
@@ -222,7 +238,7 @@ context('test extract_random_effects.stanreg')
 
 test_that("rstanarm installation is checked", {
   with_mock(
-    'mixedup::is_package_installed' = function() FALSE,
+    'rlang::is_installed' = function() FALSE,
     expect_error(extract_random_effects('rstanarm'))
   )
 })
@@ -248,8 +264,9 @@ test_that('extract_random_effects.stanreg errors with bad re name', {
 })
 
 test_that('extract_random_effects.stanreg add_group_N', {
-  expect_s3_class(extract_random_effects(stan_glmer_2, add_group_N = TRUE),
-                  'data.frame')
+  init = extract_random_effects(stan_glmer_2, add_group_N = TRUE)
+  expect_s3_class(init, 'data.frame')
+  expect_equal(unique(init$n), 10)
 })
 
 test_that('extract_random_effects.stanreg add_group_N', {
@@ -258,10 +275,13 @@ test_that('extract_random_effects.stanreg add_group_N', {
 })
 
 test_that('extract_random_effects.stanreg returns output with multivariate', {
-  expect_s3_class(extract_random_effects(stan_glmer_mv), 'data.frame')
+  init = extract_random_effects(stan_glmer_mv)
+
+  expect_s3_class(init, 'data.frame')
+  expect_equal(dplyr::n_distinct(init$component), 2)
 })
 
-test_that('extract_random_effects.stanreg returns output with multivariate', {
+test_that('extract_random_effects.stanreg multivariate accepts re input', {
   expect_s3_class(extract_random_effects(stan_glmer_mv, re = 'id'), 'data.frame')
 })
 
@@ -275,25 +295,29 @@ test_that('extract_random_effects.stanreg returns output with multivariate
 
 test_that('extract_random_effects.stanreg returns output with multivariate
           and group N', {
-  init = extract_random_effects(stan_glmer_mv,  add_group_N = T)
+  init = extract_random_effects(stan_glmer_mv,  add_group_N = TRUE)
   expect_true('n' %in% colnames(init))
+})
+
+test_that('extract_random_effects.stanreg works with jm', {
+  expect_s3_class(extract_random_effects(stan_glmer_jm, re = 'id'), 'data.frame')
+})
+
+test_that('extract_random_effects.stanreg returns output with jm and add group', {
+  init = extract_random_effects(
+    stan_glmer_jm,
+    re = 'id',
+    add_group_N = TRUE,
+    component = 'Long1'
+  )
+  expect_equal(unique(init$component), 'Long1')
 })
 
 
 
-# test_that('extract_random_effects.stanreg warns with jm', {
-#   expect_warning(extract_random_effects(stan_glmer_jm, re = 'subject'))
-# })
-#
-# test_that('extract_random_effects.stanreg returns output with jm and add group', {
-#   expect_s3_class(extract_random_effects(stan_glmer_jm, re = 'subject', add_group_N = T), 'data.frame')
-# })
-
 # mgcv --------------------------------------------------------------------
 
-
 context('test extract_random_effects.gam')
-
 
 test_that('extract_random_effects.gam basic functionality', {
   init = extract_random_effects(gam_1)
