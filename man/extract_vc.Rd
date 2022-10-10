@@ -19,7 +19,6 @@ extract_vc(
   ci_scale = "sd",
   show_cor = FALSE,
   digits = 3,
-  component = "cond",
   ...
 )
 
@@ -41,6 +40,7 @@ extract_vc(
   show_cor = FALSE,
   digits = 3,
   component = "cond",
+  include_het_var = FALSE,
   ...
 )
 
@@ -51,6 +51,7 @@ extract_vc(
   ci_scale = "sd",
   show_cor = FALSE,
   digits = 3,
+  include_het_var = FALSE,
   ...
 )
 
@@ -62,6 +63,7 @@ extract_vc(
   show_cor = FALSE,
   digits = 3,
   component = NULL,
+  include_het_var = FALSE,
   ...
 )
 
@@ -93,7 +95,6 @@ extract_variance_components(
   ci_scale = "sd",
   show_cor = FALSE,
   digits = 3,
-  component = "cond",
   ...
 )
 
@@ -104,7 +105,6 @@ extract_VarCorr(
   ci_scale = "sd",
   show_cor = FALSE,
   digits = 3,
-  component = "cond",
   ...
 )
 }
@@ -125,6 +125,8 @@ element. Default is \code{FALSE}.}
 
 \item{digits}{Rounding. Default is 3.}
 
+\item{...}{Other stuff to pass to the corresponding method.}
+
 \item{component}{For glmmTMB objects, which of the three components 'cond' or
 'zi' to select. Default is 'cond'.  For brmsfit (and experimentally,
 rstanarm) objects, this can filter results to a certain part of the output,
@@ -133,11 +135,12 @@ multivariate model.  In this case \code{component} is a regular expression
 that begins parameters
 of the output.}
 
-\item{...}{Other stuff to pass to the corresponding function. Unused/tested}
+\item{include_het_var}{For models for which extract_het_var can be applied,
+this will return a list object including it.}
 }
 \value{
 A data frame with output for variance components, or list that also
-contains the correlations of the random effects.
+contains the correlations of the random effects, or list that includes the heterogeneous variances.
 }
 \description{
 This has functionality for simpler models from \code{lme4},

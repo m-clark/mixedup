@@ -6,9 +6,9 @@
 #' @param model An appropriate mixed model.
 #' @param digits Rounding. Default is 3.
 #' @param ci_level  For brms objects, confidence level < 1, typically above
-#'   0.90. A value of 0 will not report it. Default is .95.
-#' @param return_all For brms class objects, return all fitted values (`TRUE`) or only
-#'   the distinct ones. Default is `FALSE`.
+#' 0.90. A value of 0 will not report it. Default is .95.
+#' @param return_all For brms class objects, return all fitted values (`TRUE`)
+#'   or only the distinct ones. Default is `FALSE`.
 #' @param scale Return result on original standard deviation scale ('sd') or as
 #'   variance ('var'), the default.
 #' @param ... Other arguments specific to the method. Unused at present.
@@ -117,7 +117,12 @@ extract_het_var.lme <- function(
   names(sigmas)[1] <- reflev
 
   dplyr::as_tibble(as.list(sigmas)) %>%
-    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits)) %>%
+    tidyr::pivot_longer(
+      dplyr::everything(),
+      names_to = 'group',
+      values_to = ifelse(scale == 'var', 'variance', 'sd')
+    )
 }
 
 
@@ -136,7 +141,8 @@ extract_het_var.glmmTMB <- function(
   if (scale == 'sd')
     sigmas <- sigmas %>% dplyr::mutate(dplyr::across(\(x) is.numeric(x), sqrt))
 
-  dplyr::as_tibble(sigmas)
+  sigmas %>%
+    tidyr::pivot_longer(-group, values_to = ifelse(scale == 'var', 'variance', 'sd'))
 }
 
 
@@ -151,6 +157,7 @@ extract_het_var.brmsfit <- function(
   ci_level   = .95,
   return_all = FALSE
 ) {
+
 
   assertthat::assert_that(
     ci_level >= 0 & ci_level < 1,
@@ -177,7 +184,7 @@ extract_het_var.brmsfit <- function(
   if (scale == 'var') {
     sigma_fits <- sigma_fits %>%
       dplyr::mutate(Est.Error = 2*Estimate*Est.Error) %>%
-      dplyr::mutate_at(c(1,3,4), `^`, 2)
+      dplyr::mutate(dplyr::across(-Est.Error, \(x) x^2))
   }
 
   sigma_fits <- extract_model_data(model)[, covariates] %>%

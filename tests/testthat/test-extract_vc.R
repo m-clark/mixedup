@@ -210,6 +210,12 @@ test_that('extract_vc.glmmTMB errors with wrong component', {
   expect_error(extract_vc(tmb_disp, component = 'disp'))
 })
 
+test_that('extract_vc.glmmTMB can return heterogenous variances', {
+  hv = suppressWarnings({extract_vc(tmb_diag, include_het_var = TRUE)})
+  expect_type(hv, 'list')
+  expect_equal(length(hv), 2)
+})
+
 
 # Test nlme ---------------------------------------------------------------
 
@@ -274,6 +280,13 @@ test_that('extract_vc.lme returns correlation', {
 test_that('extract_vc.lme works with ci_scale = var', {
   expect_type(extract_vc(lme_1, ci_scale = 'var')$var_2.5, 'double')
   expect_type(extract_vc(lme_1, ci_scale = 'sd')$sd_2.5, 'double')
+})
+
+
+test_that('extract_vc.glmmTMB can return heterogenous variances', {
+  hv = extract_vc(lme_het_var, include_het_var = TRUE)
+  expect_type(hv, 'list')
+  expect_equal(length(hv), 2)
 })
 
 
@@ -368,6 +381,12 @@ test_that('extract_vc.brmsfit basic functionality: zi model', {
 test_that('extract_vc.brmsfit basic functionality: sigma model', {
   init = extract_vc(brm_sigma, component = 'sigma', ci_level = .8, digits = 2)
   expect_match(init$effect, 'sigma_Intercept')
+})
+
+test_that('extract_vc.brmsfit can return heterogenous variances', {
+  hv = extract_vc(brm_sigma, include_het_var = TRUE)
+  expect_type(hv, 'list')
+  expect_equal(length(hv), 2)
 })
 
 

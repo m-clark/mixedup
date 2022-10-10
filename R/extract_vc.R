@@ -10,6 +10,12 @@
 #' @param ci_args Additional arguments to the corresponding confint method.
 #' @param ci_scale A character string of 'sd' or 'var' to note the scale of the
 #'   interval estimate.  Default is 'sd'. at present.
+#' @param show_cor Return the intercept/slope correlations as a separate list
+#'   element. Default is \code{FALSE}.
+#' @param digits Rounding. Default is 3.
+#' @param ... Other stuff to pass to the corresponding method.
+#' @param include_het_var For models for which extract_het_var can be applied,
+#'   this will return a list object including it.
 #' @param component For glmmTMB objects, which of the three components 'cond' or
 #'   'zi' to select. Default is 'cond'.  For brmsfit (and experimentally,
 #'   rstanarm) objects, this can filter results to a certain part of the output,
@@ -17,11 +23,6 @@
 #'   multivariate model.  In this case \code{component} is a regular expression
 #'   that begins parameters
 #'   of the output.
-#' @param show_cor Return the intercept/slope correlations as a separate list
-#'   element. Default is \code{FALSE}.
-#' @param digits Rounding. Default is 3.
-#' @param ... Other stuff to pass to the corresponding function. Unused/tested
-#'
 #' @details Returns a more usable (my opinion) version of variance components
 #'   estimates including variance, standard deviation, the confidence interval
 #'   for either, the relative proportion of variance, and all in a data frame
@@ -40,7 +41,7 @@
 #'
 #'
 #' @return A data frame with output for variance components, or list that also
-#' contains the correlations of the random effects.
+#' contains the correlations of the random effects, or list that includes the heterogeneous variances.
 #'
 #' @seealso
 #'   [lme4::confint.merMod()],
@@ -73,7 +74,6 @@ extract_vc <- function(
   ci_scale  = 'sd',
   show_cor  = FALSE,
   digits    = 3,
-  component = 'cond',
   ...
 ) {
   assertthat::assert_that(
@@ -194,6 +194,7 @@ extract_vc.glmmTMB <- function(
   show_cor  = FALSE,
   digits    = 3,
   component = 'cond',
+  include_het_var = FALSE,
   ...
 ) {
 
@@ -349,8 +350,14 @@ extract_vc.glmmTMB <- function(
 
   rownames(vc) <- NULL  # will likely only confuse
 
-  tibble::as_tibble(vc) %>%
+  vc <- tibble::as_tibble(vc) %>%
     dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
+
+  if (include_het_var)
+    list(`Variance Components` = vc,
+         `Heterogeneous Variances` = extract_het_var(model))
+  else
+    vc
 }
 
 
@@ -363,6 +370,7 @@ extract_vc.lme <- function(
   ci_scale = 'sd',
   show_cor = FALSE,
   digits   = 3,
+  include_het_var = FALSE,
   ...
 ) {
   re_struct <- model$modelStruct$reStruct
@@ -490,9 +498,15 @@ extract_vc.lme <- function(
     return(list(`Variance Components` = vc, Cor = cormats))
   }
 
-  vc %>%
+  vc <- vc %>%
     tibble::as_tibble() %>%
     dplyr::mutate(effect = ifelse(effect == '', NA_character_, effect))
+
+  if (include_het_var)
+    list(`Variance Components` = vc,
+         `Heterogeneous Variances` = extract_het_var(model))
+  else
+    vc
 }
 
 
@@ -507,6 +521,7 @@ extract_vc.brmsfit <- function(
   show_cor  = FALSE,
   digits    = 3,
   component = NULL,
+  include_het_var = FALSE,
   ...
 ) {
 
@@ -588,10 +603,15 @@ extract_vc.brmsfit <- function(
         round(apply(x, 2:3, mean), digits = digits))
 
 
-    return(list(`Variance Components` = vc, Cor = cormats))
+    vc <- list(`Variance Components` = vc, Cor = cormats)
   }
 
-  vc
+
+  if (include_het_var)
+    list(`Variance Components` = vc,
+         `Heterogeneous Variances` = extract_het_var(model))
+  else
+    vc
 }
 
 
