@@ -12,7 +12,7 @@ License: MIT + file LICENSE
 URL: https://m-clark.github.io/mixedup
 BugReports: https://github.com/m-clark/mixedup/issues
 Depends:
-    R (>= 4.0.0)
+    R (>= 4.1.0)
 Imports:
     dplyr,
     purrr,
