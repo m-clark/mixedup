@@ -128,7 +128,7 @@ extract_random_coefs.merMod <- function(
       )
   }
   else {
-    coefs_init <- coefs_init %>%
+    coefs <- coefs_init %>%
       dplyr::mutate(
         value = value + value_fe
       )

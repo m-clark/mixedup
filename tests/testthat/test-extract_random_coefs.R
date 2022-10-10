@@ -63,6 +63,10 @@ test_that('extract_random_coefs.merMod takes dots', {
   expect_false(identical(init, init2))
   expect_true('n' %in% colnames(init2))
 
+  # no ci should be created
+  init2 = extract_random_coefs(lmer_2, condvar = FALSE)
+  expect_false('lower' %in% names(init2))
+
 })
 
 
