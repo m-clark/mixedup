@@ -1,0 +1,546 @@
+@import url("https://fonts.googleapis.com/css?family=Roboto|Roboto:300|Roboto+Mono|Roboto+Condensed|Open+Sans|Stalemate");
+@import url("pygment_highlights.css");
+
+
+/* latin-ext */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'), url(https://fonts.gstatic.com/s/opensans/v13/u-WUoqrET9fUeobQW7jkRRJtnKITppOI_IvcXXDNrsc.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin-ext */
+@font-face {
+  font-family: 'Open Sans Condensed';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Cond Light'), local('OpenSans-CondensedLight'), url(https://fonts.gstatic.com/s/opensanscondensed/v10/gk5FxslNkTTHtojXrkp-xC8hAQ4ocbp44gFQt8tMfcH3rGVtsTkPsbDajuO5ueQw.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Open Sans Condensed';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Cond Light'), local('OpenSans-CondensedLight'), url(https://fonts.gstatic.com/s/opensanscondensed/v10/gk5FxslNkTTHtojXrkp-xBEur64QvLD-0IbiAdTUNXE.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2212, U+2215;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Libre Baskerville';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Libre Baskerville'),
+  local('LibreBaskerville-Regular'),
+  url(https://fonts.gstatic.com/s/librebaskerville/v4/pR0sBQVcY0JZc_ciXjFsKwHlCYWexZJCPRz1QQ0uKVU.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+
+/* latin-ext */
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Roboto'), local('Roboto-Regular'), url('https://fonts.googleapis.com/css?family=Roboto') format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Roboto'), local('Roboto-Regular'), url('https://fonts.googleapis.com/css?family=Roboto:300') format('woff2');
+  unicode-range: U+0100-024F, U+1E00-1EFF, U+20A0-20AB, U+20AD-20CF, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* latin */
+@font-face {
+  font-family: 'Questrial';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Questrial'), local('Questrial-Regular'), url('https://fonts.googleapis.com/css?family=Questrial') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+
+
+/* Sticky footer */
+
+/**
+ * Basic idea: https://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/
+ * Details: https://github.com/philipwalton/solved-by-flexbox/blob/master/assets/css/components/site.css
+ *
+ * .Site -> body > .container
+ * .Site-content -> body > .container .row
+ * .footer -> footer
+ *
+ * Key idea seems to be to ensure that .container and __all its parents__
+ * have height set to 100%
+ *
+ */
+
+
+
+body {
+  font-family: Roboto, 'Libre Baskerville', sans-serif;
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.5;
+  color: #404040;        /* #404040*/
+  position: relative;
+  background: #FFFFF8;
+}
+
+
+p {
+  font-family: Roboto, 'Helvetica Neue', 'Libre Baskerville', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 300;
+  color: #404040;
+  margin: 30px 0;
+}
+
+/* link effects */
+p a {
+    color: #03b3ff;
+    background-image: linear-gradient(180deg,transparent 90%, #FF4F03 0);
+    background-size: 0 100%;
+    background-repeat: no-repeat;
+    text-decoration: none;
+    -webkit-transition: background-size .4s ease;
+    -moz-transition: background-size .4s ease;
+    -ms-transition: background-size .4s ease;
+    -o-transition: background-size .4s ease;
+    transition: background-size .4s ease;
+    border-bottom: 0px solid;
+}
+
+p a:hover {
+  text-decoration: none;
+  background-size: 100% 100%;
+  cursor: pointer;
+}
+
+p a:hover,
+p a:focus {
+  color: #03b3ff;  /*keep para links with no change*/
+}
+
+
+h1 {
+  font-family: 'Open Sans Condensed';
+  font-weight: 200;
+  font-size: 175%;
+  color: #ff5500;
+  margin-top: 4rem;
+  margin-bottom: 1.5rem;
+  line-height: 1;
+}
+
+h2 {
+  font-family: 'Open Sans Condensed';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 150%;
+  color: #ff5500;
+  margin-top: 2.1rem;
+  margin-bottom: 1.2rem;
+  line-height: 1;
+}
+
+h3 {
+  font-family: 'Open Sans Condensed';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 125%;
+  color: #ff5500;
+  opacity: .9;
+  margin-top: 2rem;
+  margin-bottom: 1.2rem;
+  line-height: 1;
+}
+
+h4 {
+  font-family: 'Open Sans Condensed';
+  font-variant: normal;
+  font-weight: 400;
+  font-size: 110%;
+  color: #ff5500;
+  opacity: .9;
+  margin-top: 1.9rem;
+  margin-bottom: 1.2rem;
+  line-height: 1;
+}
+
+
+
+blockquote {
+  color: #808080;
+  font-style: italic;
+}
+
+hr.small {
+  max-width: 100px;
+  margin: 15px auto;
+  border-width: 4px;
+  border-color: inherit;
+  border-radius: 3px;
+}
+
+li::before {
+  /*content: "• ";  Currently can't separate li::before from other 'before', nor can get to the style for this button specifically. This works but adds another button, and for a lot of nonlist objects as well
+  color: #ff5500;  /* color of list button https://stackoverflow.com/questions/5306640/how-to-set-bullet-colors-in-ul-li-html-lists-via-css-without-using-any-images-or*/
+}
+
+
+pre, code {
+  font-family: 'Roboto Mono', Monaco, Menlo, Consolas, monospace;
+
+}
+
+
+
+
+/* --- Sidebar --- */
+
+#sidebar {
+  /*margin-top: 30px;*/
+  padding-top: 1%;
+}
+
+/* --- Navbar --- */
+
+.navbar {
+  background: #d9edf7; /*#f2f2c7 #F5F5F5*/
+  border-bottom: 1px solid #EAEAEA;
+  font-family: 'Helvetica Neue', Helvetica, 'Open Sans', Arial, sans-serif;
+  line-height: 22.5px;   /* Avoid bigger than rest of site */
+  min-height: 50px;
+  height: 75px;   /* Avoid bigger than rest of site */
+  /* width: 70%;
+  padding-left: 15%; */ /*maybe change later*/
+}
+
+.navbar-link {
+  color: #ff5500;
+}
+
+
+.navbar-inverse .navbar-link:hover {
+    color: #fff;
+}
+
+.navbar .nav li a {
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+
+
+.navbar-inverse .navbar-nav > .active > a,
+.navbar-inverse .navbar-nav > .active > a:focus,
+.navbar-inverse .navbar-nav > .active > a:hover {
+    color: #404040;
+    background-color: inherit;
+}
+
+.navbar-inverse .navbar-nav > .open > a,
+.navbar-inverse .navbar-nav > .open > a:focus,
+.navbar-inverse .navbar-nav > .open > a:hover {
+    color: #404040;
+    background-color: inherit;
+}
+
+.navbar .navbar-nav > .active > a,
+.navbar .navbar-nav > .active > a:focus,
+.navbar .navbar-nav > .active > a:hover {
+    color: #404040;
+    background-color: inherit;
+}
+
+.navbar .navbar-nav > .open > a,
+.navbar .navbar-nav > .open > a:focus,
+.navbar .navbar-nav > .open > a:hover {
+    color: #404040;
+    background-color: inherit;
+}
+
+/* navbar-brand is the package name/home link */
+.navbar .navbar-brand,
+.navbar .nav li a {
+  font-weight: 500;
+  color: #404040;
+}
+
+.navbar-brand .navbar-link {
+  color: #ff5500;
+  background-image: linear-gradient(180deg,transparent 90%, #FF4F03 0);
+  background-size: 0 100%;
+  background-repeat: no-repeat;
+  text-decoration: none;
+  -webkit-transition: background-size .4s ease;
+  -moz-transition: background-size .4s ease;
+  -ms-transition: background-size .4s ease;
+  -o-transition: background-size .4s ease;
+  transition: background-size .4s ease;
+  border-bottom: 0px solid;
+}
+
+.navbar-brand .navbar-link:hover {
+  text-decoration: none;
+  background-size: 100% 100%;
+  cursor: pointer;
+}
+
+.navbar-brand .navbar-link:hover,
+.navbar-brand .navbar-link:focus {
+  color: #03b3ff;  /*keep para links with no change*/
+}
+
+
+
+.navbar:hover,
+.navbar:focus ,
+.navbar .nav li a:hover,
+.navbar .nav li a:focus {
+  color: #0085a1;
+}
+
+@media only screen and (min-width: 768px) {
+  .navbar {
+    padding: 20px 0;
+    -webkit-transition: background .5s ease-in-out,padding .5s ease-in-out;
+    -moz-transition: background .5s ease-in-out,padding .5s ease-in-out;
+    transition: background .5s ease-in-out,padding .5s ease-in-out;
+  }
+
+  .navbar.top-nav-short {
+    padding: 0;
+  }
+}
+
+.navbar .avatar-container {
+  opacity: 1;
+  position: absolute;
+  -webkit-transition: opacity 0.5s ease-in-out;
+  -moz-transition: opacity 0.5s ease-in-out;
+  transition: opacity 0.5s ease-in-out;
+  left: 50%;
+  width: 50px;
+  margin-top: -25px;
+}
+.navbar .avatar-container  .avatar-img-border {
+  width: 100%;
+  border-radius: 50%;
+  margin-left: -50%;
+  display: inline-block;
+  box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+  -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .8);
+  -moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+}
+.navbar .avatar-container  .avatar-img {
+  width: 100%;
+  border-radius: 50%;
+  display: block;
+}
+
+.navbar.top-nav-short .avatar-container{
+  opacity: 0;
+}
+
+.navbar.top-nav-expanded .avatar-container  {
+  display: none;
+}
+
+@media only screen and (min-width: 768px) {
+  .navbar .avatar-container {
+    width: 100px;
+    margin-top: -50px;
+  }
+
+  .navbar .avatar-container  .avatar-img-border {
+    width: 100%;
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, .8);
+    -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .8);
+    -moz-box-shadow: 1px 1px 2px rgba(0, 0, 0, .8);
+  }
+
+  .navbar .avatar-container  .avatar-img {
+    width: 100%;
+  }
+}
+
+/* Multi-level navigation links */
+.navbar .nav .navlinks-container {
+  position: relative;
+}
+.navbar .nav .navlinks-parent:after {
+  content: " \25BC";
+}
+.navbar .nav .navlinks-children {
+  width: 100%;
+  display: none;
+  word-break: break-word;
+}
+.navbar .nav .navlinks-container .navlinks-children a {
+  display: block;
+  padding: 10px;
+  padding-left: 30px;
+  background: #f5f5f5;
+  text-decoration: none !important;
+  border-width: 0 1px 1px 1px;
+  font-weight: normal;
+}
+@media only screen and (max-width: 767px) {
+  .navbar .nav .navlinks-container.show-children {
+    background: #eee;
+  }
+  .navbar .nav .navlinks-container.show-children .navlinks-children {
+    display: block;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .navbar .nav .navlinks-container:hover {
+    background: #eee;
+  }
+  .navbar .nav .navlinks-container:hover .navlinks-children {
+    display: block;
+  }
+  .navbar .nav .navlinks-children {
+    position: absolute;
+	text-align: center;
+  }
+  .navbar .nav .navlinks-container .navlinks-children a {
+    padding-left: 10px;
+    border: 1px solid #eaeaea;
+    border-width: 0 1px 1px;
+  }
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:focus,
+.nav-pills > li.active > a:hover{
+   width: 80%;
+   color: #404040;
+   font-size: 100%;
+   background-color: #d9edf7;
+}
+
+.nav-pills > li > a {
+    border-radius: 4px;
+    font-size: 100%;
+    width: 80%;
+}
+
+
+.dropdown-menu > .active > a,
+.dropdown-menu > .active > a:focus,
+.dropdown-menu > .active > a:hover {
+  background-color: transparent;
+}
+
+
+
+
+/* --- Footer --- */
+
+footer {
+  padding: 5px;
+  background: #FFFFF8;
+  border-top: 1px #EAEAEA solid;
+  margin-top: 25px;
+  font-size: 14px;
+  width: 100%;
+}
+
+footer a {
+  color: #404040;
+}
+
+footer .list-inline {
+  margin: 0;
+  padding: 0;
+}
+
+footer .copyright {
+  font-family: Open Sans;
+  text-align: center;
+  /* margin-bottom: 0; */
+}
+footer .pkgdown {
+  font-family: Open Sans;
+  text-align: center;
+  /* margin-bottom: 0; */
+}
+footer .theme-by {
+  text-align: center;
+  margin: 10px 0 0;
+}
+
+@media only screen and (min-width: 768px) {
+  footer {
+    padding: 10px 0;
+  }
+  footer .footer-links {
+    font-size: 12px;
+  }
+  footer .copyright {
+    font-size: 12px;
+  }
+}
+
+
+/* Misc */
+
+.emph {
+  color: #E32D00 ;  /*#ff5500 #D14300*/
+  font-weight: 500;
+}
+
+/* pack func and objclass colors initially come from hcl(seq(90,360, length.out=4), c=80, l=80); redone for contrast*/
+.pack {
+  color: #990071; /*#AC9CFF #e41a1c*/
+  font-weight: 500;
+}
+
+.func {
+  color: #007020;   /*#00CBB6; #984ea3; can just use `` instead*/
+  font-weight: 600;
+}
+
+.objclass {
+  color:  #947100;  /*#AAB400 #4daf4a; #FFC5D0*/
+  font-weight: 500;
+}
+
+/* until they get syntax highlighting */
+/* function */
+.kw {
+ color: #007020;
+}
+
+/* logical NA */
+.ot {
+ color: #337ab7;
+}
+
+/* char/string */
+.ch, .st {
+ color: #aa5500;
+}
+
+/* float, other */
+.fl, .dv {
+ color: #23527c;
+}
+
+
+/* move headers down for site navbar */
+.contents .page-header {
+    margin-top: calc(60px + 1em);
+}
