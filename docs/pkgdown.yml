@@ -1,5 +1,5 @@
-pandoc: 2.11.2
-pkgdown: 1.6.1
+pandoc: '2.18'
+pkgdown: 2.0.6
 pkgdown_sha: ~
 articles:
   fixed_effects: fixed_effects.html
@@ -8,5 +8,5 @@ articles:
   random_effects: random_effects.html
   summarize_model: summarize_model.html
   variance_components: variance_components.html
-last_built: 2021-03-14T20:43Z
+last_built: 2022-10-11T01:41Z
 

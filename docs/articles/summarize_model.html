@@ -20,6 +20,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-article">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -32,7 +34,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">mixedup</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.9</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -45,7 +47,7 @@
   <a href="../news/index.html">News</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -74,14 +76,14 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/m-clark">
-    <span class="fas fa-github-alt"></span>
+  <a href="https://github.com/m-clark" class="external-link">
+    <span class="fa fa-github-alt"></span>
      
   </a>
 </li>
 <li>
-  <a href="https://m-clark.github.io">
-    <span class="fas fa-empire"></span>
+  <a href="https://m-clark.github.io" class="external-link">
+    <span class="fa fa-empire"></span>
      
   </a>
 </li>
@@ -95,63 +97,67 @@
 
       
 
-      </header><script src="summarize_model_files/header-attrs-2.6/header-attrs.js"></script><div class="row">
+      </header><div class="row">
   <div class="col-md-9 contents">
     <div class="page-header toc-ignore">
       <h1 data-toc-skip>Summarize a Mixed Model</h1>
-                        <h4 class="author">Michael Clark</h4>
+                        <h4 data-toc-skip class="author">Michael
+Clark</h4>
             
-            <h4 class="date"><span style="font-style:normal;font-family:'Open Sans'">2021-03-14</span></h4>
+            <h4 data-toc-skip class="date"><span style="font-style:normal;font-family:'Open Sans'">2022-10-10</span></h4>
       
-      <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/master/vignettes/summarize_model.Rmd"><code>vignettes/summarize_model.Rmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/m-clark/mixedup/blob/HEAD/vignettes/summarize_model.Rmd" class="external-link"><code>vignettes/summarize_model.Rmd</code></a></small>
       <div class="hidden name"><code>summarize_model.Rmd</code></div>
 
     </div>
 
     
     
-<div id="intro" class="section level2">
-<h2 class="hasAnchor">
-<a href="#intro" class="anchor"></a>Intro</h2>
-<p>This is pretty printing of results of a mixed model. Correlations of random and fixed effects are turned off by default, as the focus of interest is usually the variance components and fixed effects themselves. 95% confidence intervals are provided by default.</p>
+<div class="section level2">
+<h2 id="intro">Intro<a class="anchor" aria-label="anchor" href="#intro"></a>
+</h2>
+<p>This is pretty printing of results of a mixed model. Correlations of
+random and fixed effects are turned off by default, as the focus of
+interest is usually the variance components and fixed effects
+themselves. 95% confidence intervals are provided by default.</p>
 </div>
-<div id="examples" class="section level2">
-<h2 class="hasAnchor">
-<a href="#examples" class="anchor"></a>Examples</h2>
+<div class="section level2">
+<h2 id="examples">Examples<a class="anchor" aria-label="anchor" href="#examples"></a>
+</h2>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/">lme4</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/glmmTMB/glmmTMB">glmmTMB</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme/">nlme</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms">brms</a></span><span class="op">)</span>
-<span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">mgcv</span><span class="op">)</span>
-
-
-<span class="va">lmer_model</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html">lmer</a></span><span class="op">(</span><span class="va">Reaction</span> <span class="op">~</span> <span class="va">Days</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">Days</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">sleepstudy</span><span class="op">)</span>
-
-<span class="va">lme_model</span>  <span class="op">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html">lme</a></span><span class="op">(</span><span class="va">Reaction</span> <span class="op">~</span> <span class="va">Days</span>, random <span class="op">=</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">Days</span> <span class="op">|</span> <span class="va">Subject</span>, data <span class="op">=</span> <span class="va">sleepstudy</span><span class="op">)</span>
-
-<span class="va">tmb_model</span>  <span class="op">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html">glmmTMB</a></span><span class="op">(</span><span class="va">Reaction</span> <span class="op">~</span> <span class="va">Days</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">Days</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">sleepstudy</span><span class="op">)</span>
-
-<span class="co"># brms_model &lt;-</span>
-<span class="co">#   brm(Reaction ~ Days + (1 + Days | Subject), </span>
-<span class="co">#       data = sleepstudy,</span>
-<span class="co">#       cores = 4,</span>
-<span class="co">#       refresh = -1,</span>
-<span class="co">#       verbose = FALSE</span>
-<span class="co">#   )</span>
-
-<span class="co"># this is akin to (1 | Subject) + (0 + Days | Subject) in lme4</span>
-<span class="va">mgcv_model</span> <span class="op">&lt;-</span>
-  <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/gam.html">gam</a></span><span class="op">(</span>
-    <span class="va">Reaction</span> <span class="op">~</span>  <span class="va">Days</span> <span class="op">+</span>
-      <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span><span class="op">(</span><span class="va">Subject</span>, bs <span class="op">=</span> <span class="st">'re'</span><span class="op">)</span> <span class="op">+</span>
-      <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html">s</a></span><span class="op">(</span><span class="va">Days</span>, <span class="va">Subject</span>, bs <span class="op">=</span> <span class="st">'re'</span><span class="op">)</span>,
-    data <span class="op">=</span> <span class="fu">lme4</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lme4/man/sleepstudy.html">sleepstudy</a></span>,
-    method <span class="op">=</span> <span class="st">'REML'</span>
-  <span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/lme4/lme4/" class="external-link">lme4</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/glmmTMB/glmmTMB" class="external-link">glmmTMB</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://svn.r-project.org/R-packages/trunk/nlme/" class="external-link">nlme</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/paul-buerkner/brms" class="external-link">brms</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">mgcv</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">lmer_model</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/lme4/man/lmer.html" class="external-link">lmer</a></span><span class="op">(</span><span class="va">Reaction</span> <span class="op">~</span> <span class="va">Days</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">Days</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">sleepstudy</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">lme_model</span>  <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/nlme/man/lme.html" class="external-link">lme</a></span><span class="op">(</span><span class="va">Reaction</span> <span class="op">~</span> <span class="va">Days</span>, random <span class="op">=</span> <span class="op">~</span> <span class="fl">1</span> <span class="op">+</span> <span class="va">Days</span> <span class="op">|</span> <span class="va">Subject</span>, data <span class="op">=</span> <span class="va">sleepstudy</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">tmb_model</span>  <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/glmmTMB/man/glmmTMB.html" class="external-link">glmmTMB</a></span><span class="op">(</span><span class="va">Reaction</span> <span class="op">~</span> <span class="va">Days</span> <span class="op">+</span> <span class="op">(</span><span class="fl">1</span> <span class="op">+</span> <span class="va">Days</span> <span class="op">|</span> <span class="va">Subject</span><span class="op">)</span>, data <span class="op">=</span> <span class="va">sleepstudy</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># brms_model &lt;-</span></span>
+<span><span class="co">#   brm(Reaction ~ Days + (1 + Days | Subject), </span></span>
+<span><span class="co">#       data = sleepstudy,</span></span>
+<span><span class="co">#       cores = 4,</span></span>
+<span><span class="co">#       refresh = -1,</span></span>
+<span><span class="co">#       verbose = FALSE</span></span>
+<span><span class="co">#   )</span></span>
+<span></span>
+<span><span class="co"># this is akin to (1 | Subject) + (0 + Days | Subject) in lme4</span></span>
+<span><span class="va">mgcv_model</span> <span class="op">&lt;-</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/pkg/mgcv/man/gam.html" class="external-link">gam</a></span><span class="op">(</span></span>
+<span>    <span class="va">Reaction</span> <span class="op">~</span>  <span class="va">Days</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html" class="external-link">s</a></span><span class="op">(</span><span class="va">Subject</span>, bs <span class="op">=</span> <span class="st">'re'</span><span class="op">)</span> <span class="op">+</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/pkg/brms/man/s.html" class="external-link">s</a></span><span class="op">(</span><span class="va">Days</span>, <span class="va">Subject</span>, bs <span class="op">=</span> <span class="st">'re'</span><span class="op">)</span>,</span>
+<span>    data   <span class="op">=</span> <span class="fu">lme4</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/lme4/man/sleepstudy.html" class="external-link">sleepstudy</a></span>,</span>
+<span>    method <span class="op">=</span> <span class="st">'REML'</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mixedup)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize_model</span>(lmer_model)</span>
@@ -175,7 +181,7 @@
 <span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    Group    Effect Variance    SD SD_2<span class="fl">.5</span> SD_97<span class="fl">.5</span> Var_prop</span>
 <span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  Subject Intercept   <span class="fl">612.08</span> <span class="fl">24.74</span>  <span class="fl">15.52</span>   <span class="fl">39.44</span>     <span class="fl">0.47</span></span>
 <span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  Subject      Days    <span class="fl">35.07</span>  <span class="fl">5.92</span>   <span class="fl">3.90</span>    <span class="fl">8.98</span>     <span class="fl">0.03</span></span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a> Residual             <span class="fl">654.94</span> <span class="fl">25.59</span>  <span class="fl">22.80</span>   <span class="fl">28.73</span>     <span class="fl">0.50</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a> Residual        <span class="cn">NA</span>   <span class="fl">654.94</span> <span class="fl">25.59</span>  <span class="fl">22.80</span>   <span class="fl">28.73</span>     <span class="fl">0.50</span></span>
 <span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>Fixed Effects<span class="sc">:</span></span>
 <span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>      Term  Value   SE     Z P_value Lower_2<span class="fl">.5</span> Upper_97<span class="fl">.5</span></span>
@@ -189,7 +195,7 @@
 <span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    Group    Effect Variance    SD SD_2<span class="fl">.5</span> SD_97<span class="fl">.5</span> Var_prop</span>
 <span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  Subject Intercept   <span class="fl">565.52</span> <span class="fl">23.78</span>  <span class="fl">15.02</span>   <span class="fl">37.66</span>     <span class="fl">0.45</span></span>
 <span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  Subject      Days    <span class="fl">32.68</span>  <span class="fl">5.72</span>   <span class="fl">3.81</span>    <span class="fl">8.59</span>     <span class="fl">0.03</span></span>
-<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a> Residual             <span class="fl">654.94</span> <span class="fl">25.59</span>     <span class="cn">NA</span>      <span class="cn">NA</span>     <span class="fl">0.52</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a> Residual        <span class="cn">NA</span>   <span class="fl">654.94</span> <span class="fl">25.59</span>     <span class="cn">NA</span>      <span class="cn">NA</span>     <span class="fl">0.52</span></span>
 <span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>Fixed Effects<span class="sc">:</span></span>
 <span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>      Term  Value   SE     Z P_value Lower_2<span class="fl">.5</span> Upper_97<span class="fl">.5</span></span>
@@ -201,14 +207,14 @@
 <span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>Variance Components<span class="sc">:</span></span>
 <span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    Group    Effect Variance    SD SD_2<span class="fl">.5</span> SD_97<span class="fl">.5</span> Var_prop</span>
-<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>  Subject Intercept   <span class="fl">695.26</span> <span class="fl">26.37</span>  <span class="fl">16.61</span>   <span class="fl">44.49</span>     <span class="fl">0.49</span></span>
-<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  Subject      Days    <span class="fl">39.95</span>  <span class="fl">6.32</span>   <span class="fl">4.10</span>    <span class="fl">9.26</span>     <span class="fl">0.03</span></span>
-<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a> Residual             <span class="fl">692.39</span> <span class="fl">26.31</span>  <span class="fl">23.26</span>   <span class="fl">29.86</span>     <span class="fl">0.49</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>  Subject Intercept   <span class="fl">792.95</span> <span class="fl">28.16</span>  <span class="fl">15.85</span>   <span class="fl">46.34</span>     <span class="fl">0.53</span></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>  Subject      Days    <span class="fl">42.20</span>  <span class="fl">6.50</span>   <span class="fl">4.33</span>    <span class="fl">9.28</span>     <span class="fl">0.03</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a> Residual        <span class="cn">NA</span>   <span class="fl">669.47</span> <span class="fl">25.87</span>  <span class="fl">22.46</span>   <span class="fl">29.57</span>     <span class="fl">0.44</span></span>
 <span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>Fixed Effects<span class="sc">:</span></span>
 <span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>      Term  Value   SE Lower_2<span class="fl">.5</span> Upper_97<span class="fl">.5</span></span>
-<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a> Intercept <span class="fl">249.83</span> <span class="fl">7.13</span>    <span class="fl">233.77</span>     <span class="fl">261.74</span></span>
-<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>      Days  <span class="fl">10.60</span> <span class="fl">1.44</span>      <span class="fl">8.03</span>      <span class="fl">13.54</span></span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a> Intercept <span class="fl">250.41</span> <span class="fl">7.73</span>    <span class="fl">234.64</span>     <span class="fl">265.29</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>      Days  <span class="fl">10.48</span> <span class="fl">1.70</span>      <span class="fl">6.96</span>      <span class="fl">13.54</span></span>
 <span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize_model</span>(mgcv_model)</span>
@@ -217,19 +223,19 @@
 <span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    Group    Effect Variance    SD SD_2<span class="fl">.5</span> SD_97<span class="fl">.5</span> Var_prop</span>
 <span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>  Subject Intercept   <span class="fl">627.57</span> <span class="fl">25.05</span>  <span class="fl">16.09</span>   <span class="fl">39.02</span>     <span class="fl">0.48</span></span>
 <span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>  Subject      Days    <span class="fl">35.86</span>  <span class="fl">5.99</span>   <span class="fl">4.03</span>    <span class="fl">8.91</span>     <span class="fl">0.03</span></span>
-<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a> Residual             <span class="fl">653.58</span> <span class="fl">25.57</span>  <span class="fl">22.79</span>   <span class="fl">28.68</span>     <span class="fl">0.50</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a> Residual        <span class="cn">NA</span>   <span class="fl">653.58</span> <span class="fl">25.57</span>  <span class="fl">22.79</span>   <span class="fl">28.68</span>     <span class="fl">0.50</span></span>
 <span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a>Fixed Effects<span class="sc">:</span></span>
 <span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a>      Term  Value   SE     t P_value Lower_2<span class="fl">.5</span> Upper_97<span class="fl">.5</span></span>
 <span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a> Intercept <span class="fl">251.41</span> <span class="fl">6.89</span> <span class="fl">36.51</span>    <span class="fl">0.00</span>    <span class="fl">237.80</span>     <span class="fl">265.01</span></span>
 <span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>      Days  <span class="fl">10.47</span> <span class="fl">1.56</span>  <span class="fl">6.71</span>    <span class="fl">0.00</span>      <span class="fl">7.39</span>      <span class="fl">13.55</span></span></code></pre></div>
 </div>
-<div id="options" class="section level2">
-<h2 class="hasAnchor">
-<a href="#options" class="anchor"></a>Options</h2>
+<div class="section level2">
+<h2 id="options">Options<a class="anchor" aria-label="anchor" href="#options"></a>
+</h2>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize_model</span>(</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  lmer_model,</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci     =</span> <span class="cn">FALSE</span>,</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">cor_re =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cor_fe =</span> <span class="cn">TRUE</span>,</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">digits =</span> <span class="dv">3</span></span>
@@ -241,60 +247,63 @@
 <span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>  Subject      Days   <span class="fl">35.072</span>  <span class="fl">5.922</span>    <span class="fl">0.027</span></span>
 <span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a> Residual            <span class="fl">654.940</span> <span class="fl">25.592</span>    <span class="fl">0.503</span></span>
 <span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>Correlation of Random Effects<span class="sc">:</span></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>          Intercept  Days</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>Intercept     <span class="fl">1.000</span> <span class="fl">0.066</span></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>Days          <span class="fl">0.066</span> <span class="fl">1.000</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>Fixed Effects<span class="sc">:</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>      Term   Value    SE      t P_value Lower_2<span class="fl">.5</span> Upper_97<span class="fl">.5</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a> Intercept <span class="fl">251.405</span> <span class="fl">6.825</span> <span class="fl">36.838</span>   <span class="fl">0.000</span>   <span class="fl">238.029</span>    <span class="fl">264.781</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>      Days  <span class="fl">10.467</span> <span class="fl">1.546</span>  <span class="fl">6.771</span>   <span class="fl">0.000</span>     <span class="fl">7.438</span>     <span class="fl">13.497</span></span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>Fixed Effects<span class="sc">:</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>      Term   Value    SE      t P_value Lower_2<span class="fl">.5</span> Upper_97<span class="fl">.5</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a> Intercept <span class="fl">251.405</span> <span class="fl">6.825</span> <span class="fl">36.838</span>   <span class="fl">0.000</span>   <span class="fl">238.029</span>    <span class="fl">264.781</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>      Days  <span class="fl">10.467</span> <span class="fl">1.546</span>  <span class="fl">6.771</span>   <span class="fl">0.000</span>     <span class="fl">7.438</span>     <span class="fl">13.497</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>Correlation of Fixed Effects<span class="sc">:</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>          Intercept   Days</span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>Intercept     <span class="fl">1.000</span> <span class="sc">-</span><span class="fl">0.138</span></span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>Days         <span class="sc">-</span><span class="fl">0.138</span>  <span class="fl">1.000</span></span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_model</span>(lmer_model, <span class="at">ci =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>Variance Components<span class="sc">:</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    Group    Effect Variance    SD Var_prop</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  Subject Intercept   <span class="fl">612.10</span> <span class="fl">24.74</span>     <span class="fl">0.47</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  Subject      Days    <span class="fl">35.07</span>  <span class="fl">5.92</span>     <span class="fl">0.03</span></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a> Residual             <span class="fl">654.94</span> <span class="fl">25.59</span>     <span class="fl">0.50</span></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>Fixed Effects<span class="sc">:</span></span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>      Term  Value   SE     t P_value Lower_2<span class="fl">.5</span> Upper_97<span class="fl">.5</span></span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a> Intercept <span class="fl">251.41</span> <span class="fl">6.82</span> <span class="fl">36.84</span>    <span class="fl">0.00</span>    <span class="fl">238.03</span>     <span class="fl">264.78</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>      Days  <span class="fl">10.47</span> <span class="fl">1.55</span>  <span class="fl">6.77</span>    <span class="fl">0.00</span>      <span class="fl">7.44</span>      <span class="fl">13.50</span></span></code></pre></div>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="fu">summarise_model</span>(lmer_model, <span class="at">ci =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>Variance Components<span class="sc">:</span></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    Group    Effect Variance    SD Var_prop</span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  Subject Intercept   <span class="fl">612.10</span> <span class="fl">24.74</span>     <span class="fl">0.47</span></span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  Subject      Days    <span class="fl">35.07</span>  <span class="fl">5.92</span>     <span class="fl">0.03</span></span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a> Residual             <span class="fl">654.94</span> <span class="fl">25.59</span>     <span class="fl">0.50</span></span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>Fixed Effects<span class="sc">:</span></span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>      Term  Value   SE     t P_value Lower_2<span class="fl">.5</span> Upper_97<span class="fl">.5</span></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a> Intercept <span class="fl">251.41</span> <span class="fl">6.82</span> <span class="fl">36.84</span>    <span class="fl">0.00</span>    <span class="fl">238.03</span>     <span class="fl">264.78</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>      Days  <span class="fl">10.47</span> <span class="fl">1.55</span>  <span class="fl">6.77</span>    <span class="fl">0.00</span>      <span class="fl">7.44</span>      <span class="fl">13.50</span></span></code></pre></div>
 </div>
-<div id="get-convergence" class="section level2">
-<h2 class="hasAnchor">
-<a href="#get-convergence" class="anchor"></a>Get Convergence</h2>
-<p>Often a model estimated by <span class="pack" style="">lme4</span> needs a bit of help for convergence. At present this function only works for <span class="pack" style="">lme4</span>, but then, that’s mostly where you’re going to have the problem. This function will start with your current model and run it long enough to the point that if you still have problems, you probably <em>really</em> have data or model issues, and not just an estimation problem. See <a href="https://m-clark.github.io/posts/2020-03-16-convergence/">this</a> for details.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>lmer_not_converged <span class="ot">&lt;-</span> <span class="fu">lmer</span>(</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  score <span class="sc">~</span> Machine <span class="sc">+</span> (<span class="dv">1</span> <span class="sc">+</span> Machine <span class="sc">|</span> Worker),</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> nlme<span class="sc">::</span>Machines</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>lmer_converged <span class="ot">&lt;-</span> <span class="fu">converge_it</span>(lmer_not_converged) <span class="co"># final result is a converged model</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a><span class="fu">summarize_model</span>(lmer_converged, <span class="at">ci =</span> <span class="cn">FALSE</span>)</span>
+<div class="section level2">
+<h2 id="get-convergence">Get Convergence<a class="anchor" aria-label="anchor" href="#get-convergence"></a>
+</h2>
+<p>Often a model estimated by <span class="pack" style="">lme4</span>
+needs a bit of help for convergence. At present this function only works
+for <span class="pack" style="">lme4</span>, but then, that’s mostly
+where you’re going to have the problem. This function will start with
+your current model and run it long enough to the point that if you still
+have problems, you probably <em>really</em> have data or model issues,
+and not just an estimation problem. See <a href="https://m-clark.github.io/posts/2020-03-16-convergence/" class="external-link">this</a>
+for details.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># for some reason this example apparently only works interactively, not when knit</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ss2 <span class="ot">=</span> sleepstudy</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ss2<span class="sc">$</span>Days <span class="ot">=</span> ss2<span class="sc">$</span>Days <span class="sc">*</span> <span class="dv">10</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>lmer_not_converged <span class="ot">&lt;-</span> <span class="fu">lmer</span>(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  Reaction <span class="sc">~</span> Days <span class="sc">+</span> (Days<span class="sc">|</span>Subject),</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> ss2</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>)</span>
 <span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>Variance Components<span class="sc">:</span></span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    Group    Effect Variance   SD Var_prop</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>   Worker Intercept    <span class="fl">16.64</span> <span class="fl">4.08</span>     <span class="fl">0.25</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>   Worker  MachineB    <span class="fl">34.55</span> <span class="fl">5.88</span>     <span class="fl">0.53</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>   Worker  MachineC    <span class="fl">13.62</span> <span class="fl">3.69</span>     <span class="fl">0.21</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a> Residual               <span class="fl">0.92</span> <span class="fl">0.96</span>     <span class="fl">0.01</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>Fixed Effects<span class="sc">:</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>      Term Value   SE     t P_value Lower_2<span class="fl">.5</span> Upper_97<span class="fl">.5</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a> Intercept <span class="fl">52.36</span> <span class="fl">1.68</span> <span class="fl">31.15</span>    <span class="fl">0.00</span>     <span class="fl">49.06</span>      <span class="fl">55.65</span></span>
-<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  MachineB  <span class="fl">7.97</span> <span class="fl">2.42</span>  <span class="fl">3.29</span>    <span class="fl">0.00</span>      <span class="fl">3.22</span>      <span class="fl">12.71</span></span>
-<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  MachineC <span class="fl">13.92</span> <span class="fl">1.54</span>  <span class="fl">9.04</span>    <span class="fl">0.00</span>     <span class="fl">10.90</span>      <span class="fl">16.94</span></span></code></pre></div>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="co"># lmer_not_converged</span></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>lmer_converged <span class="ot">&lt;-</span> <span class="fu">converge_it</span>(lmer_not_converged) <span class="co"># final result is a converged model</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>lmer_converged</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>Linear mixed model fit by REML [<span class="st">'lmerMod'</span>]</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>Formula<span class="sc">:</span> Reaction <span class="sc">~</span> Days <span class="sc">+</span> (Days <span class="sc">|</span> Subject)</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>   Data<span class="sc">:</span> ss2</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>REML criterion at convergence<span class="sc">:</span> <span class="fl">1748.233</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>Random effects<span class="sc">:</span></span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a> Groups   Name        Std.Dev. Corr</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a> <span class="fu">Subject</span>  (Intercept) <span class="fl">24.7401</span>      </span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>          Days         <span class="fl">0.5922</span>  <span class="fl">0.07</span></span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a> Residual             <span class="fl">25.5918</span>      </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>Number of obs<span class="sc">:</span> <span class="dv">180</span>, groups<span class="sc">:</span>  Subject, <span class="dv">18</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>Fixed Effects<span class="sc">:</span></span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>(Intercept)         Days  </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>    <span class="fl">251.405</span>        <span class="fl">1.047</span>  </span></code></pre></div>
 </div>
   </div>
 
@@ -309,11 +318,13 @@
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="https://m-clark.github.io"><img src="man/figures/mc_logo.png" width="10%" style="display:inline"></a>.</p>
+  <p></p>
+<p>Developed by <a href="https://m-clark.github.io" class="external-link"><img src="reference/figures/mc_logo.png" width="10%" style="display:inline"></a>.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.6.</p>
 </div>
 
       </footer>
@@ -321,6 +332,8 @@
 
   
 
+
+  
 
   </body>
 </html>
