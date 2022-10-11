@@ -11,11 +11,13 @@
 
 <!-- badges: start -->
 
-[![Lifecycle:
-experimental](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Codecov test
 coverage](https://codecov.io/gh/m-clark/mixedup/branch/master/graph/badge.svg)](https://codecov.io/gh/m-clark/mixedup?branch=master)
-[![R-CMD-check](https://github.com/m-clark/mixedup/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/m-clark/mixedup/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/m-clark/mixedup/actions/workflows/check-standard.yaml/badge.svg)](https://github.com/m-clark/mixedup/actions/workflows/check-standard.yaml)
+[![pkgdown](https://github.com/m-clark/mixedup/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/m-clark/mixedup/actions/workflows/pkgdown.yaml)
+[![test-coverage](https://github.com/m-clark/mixedup/actions/workflows/test-coverage.yaml/badge.svg)](https://github.com/m-clark/mixedup/actions/workflows/test-coverage.yaml)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 This package provides extended functionality for mixed models. The goal
