@@ -170,7 +170,9 @@ extract_vc.merMod <- function(
 
   vc <- dplyr::select(vc, -effect_2)
 
-  vc <- dplyr::mutate(vc, dplyr::across(\(x) is.numeric(x), round, digits = digits))
+  vc <- vc %>%
+    tibble::as_tibble() %>%
+    dplyr::mutate(dplyr::across(\(x) is.numeric(x), round, digits = digits))
 
   # deal with correlations
   if (show_cor) {
