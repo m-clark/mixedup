@@ -293,24 +293,20 @@ won't either. You should be fine for standard mixed models</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">extract_vc</span><span class="op">(</span><span class="va">lmer_mod</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Computing profile confidence intervals ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                           group    effect variance     sd sd_2.5 sd_97.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sd_(Intercept)|Subject  Subject Intercept  612.100 24.741 14.381  37.716</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sd_Days|Subject         Subject      Days   35.072  5.922  3.801   8.753</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sigma                  Residual            654.940 25.592 22.898  28.858</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        var_prop</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sd_(Intercept)|Subject    0.470</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sd_Days|Subject           0.027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sigma                     0.503</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   group    effect      variance    sd sd_2.5 sd_97.5 var_prop</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Subject  <span style="color: #949494;">"</span>Intercept<span style="color: #949494;">"</span>    612.  24.7   14.4    37.7     0.47 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Subject  <span style="color: #949494;">"</span>Days<span style="color: #949494;">"</span>          35.1  5.92   3.80    8.75    0.027</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Residual <span style="color: #949494;">""</span>             655.  25.6   22.9    28.9     0.503</span>
 <span class="r-in"><span><span class="fu">extract_vc</span><span class="op">(</span><span class="va">lmer_mod</span>, ci_scale <span class="op">=</span> <span class="st">'var'</span><span class="op">)</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Computing profile confidence intervals ...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                           group    effect variance     sd var_2.5 var_97.5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sd_(Intercept)|Subject  Subject Intercept  612.100 24.741 206.825 1422.496</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sd_Days|Subject         Subject      Days   35.072  5.922  14.449   76.622</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sigma                  Residual            654.940 25.592 524.331  832.784</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                        var_prop</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sd_(Intercept)|Subject    0.470</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sd_Days|Subject           0.027</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> sigma                     0.503</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 3 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   group    effect      variance    sd var_2.5 var_97.5 var_prop</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> Subject  <span style="color: #949494;">"</span>Intercept<span style="color: #949494;">"</span>    612.  24.7    207.    <span style="text-decoration: underline;">1</span>422.     0.47 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> Subject  <span style="color: #949494;">"</span>Days<span style="color: #949494;">"</span>          35.1  5.92    14.4     76.6    0.027</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> Residual <span style="color: #949494;">""</span>             655.  25.6    524.     833.     0.503</span>
 <span class="r-in"><span></span></span>
 </code></pre></div>
     </div>
